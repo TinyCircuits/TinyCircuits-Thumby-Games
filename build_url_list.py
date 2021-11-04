@@ -11,7 +11,7 @@ raw_url_base = "https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thum
 f = open("url_list.txt", "w")
 
 def addDirFilesToList(parentDir):
-    items = parentDir + "/" + os.listdir()
+    items = os.listdir(parentDir)
     for item in items:
         if os.path.isdir(item):
             addDirFilesToList(item)
