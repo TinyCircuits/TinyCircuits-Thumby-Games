@@ -27,7 +27,7 @@ jobs:
           python -m pip install --upgrade pip
 
       - name: execute py script
-        run: python BuildURLList.py
+        run: python build_url_list.py
 
       - name: commit files
         run: |
