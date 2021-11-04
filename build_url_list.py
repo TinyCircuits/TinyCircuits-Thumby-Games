@@ -25,7 +25,7 @@ topLevelItems = os.listdir()
 # and add file under each directory recursively
 print(topLevelItems)
 for item in topLevelItems:
-    if os.path.isdir(item) and item != ".github":
+    if os.path.isdir(item) and item != ".github" and item != ".git":
         addDirFilesToList(item)
         f.write("\n")
 
