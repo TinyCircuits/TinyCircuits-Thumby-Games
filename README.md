@@ -25,6 +25,9 @@ NOTE: Other files and directories are allowed in your game, the above shows the 
 # Getting your game on the Arcade
 1. Submit a pull request to this repository with your game directory added ([GitHub making a pull request](https://www.google.com/search?q=github+making+a+pull+request&rlz=1C1GCEA_enUS850US850&oq=github+making+a+pull+request&aqs=chrome..69i57j0i22i30l9.918j0j9&sourceid=chrome&ie=UTF-8))
 2. Wait for TinyCircuits to review and accept the PR
-3. Wait for the URL builder GitHub action to build the new URL list
+3. Wait for the URL builder GitHub action to build the new URL list (should take minutes)
 4. Access the [web IDE](http://tinycircuits.github.io/) and click the "Arcade" button to view and find you game (at this point if you can see it, anyone else can as well)
 5. Refresh the arcade using F5 for the page or using the arcade refresh button if you do not see your game
+
+# Editing or removing your game from the Arcade
+The same process as adding a game, just submit a pull request with the edits.
