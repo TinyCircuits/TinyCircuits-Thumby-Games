@@ -6,7 +6,7 @@ Games that live here can be seen in the web IDE (http://tinycircuits.github.io/)
 
 Games can be downloaded directly to Thumby from the Arcade or opened in the IDE editors.
 
-# Getting you game ready for the Arcade
+# Getting your game ready for the Arcade
 * Some files in your game directory need to have a certain name and location
     * A Python file with the same name as the game root directory is required. For example, if a game is called `TinyBlocks` then the main game source files needs to be called `TinyBlocks.py`, this ensures the game shows up on the Thumby start screen
     * Two extra files are required for your game to show up on the arcade and should be located in the root of your game directory
