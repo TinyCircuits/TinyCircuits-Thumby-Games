@@ -7,4 +7,5 @@ as a tutorial for beginner programming
 with Thumby features.
 
 Author: Mason W.
+
 Version: 1.0
