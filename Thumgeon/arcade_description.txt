@@ -5,5 +5,4 @@ crawler. Collect items, potions, and weapons, kill monsters
 with aforementioned loot -- and stay alive!
 
 Author: Mason W.
-
 Version: 1.0
