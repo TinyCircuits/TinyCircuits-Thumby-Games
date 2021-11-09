@@ -2,7 +2,7 @@
 
 Repository of TinyCircuits and community made Thumby games.
 
-Games that live here can be seen in the web IDE (http://tinycircuits.github.io/) using arcade (click "Aracde" in the top bar).
+Games that live here can be seen in the web IDE (http://tinycircuits.github.io/) using arcade (click "Arcade" in the top bar).
 
 Games can be downloaded directly to Thumby from the Arcade or opened in the IDE editors.
 
