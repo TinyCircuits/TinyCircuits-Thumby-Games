@@ -10,7 +10,7 @@ Games can be downloaded directly to Thumby from the Arcade or opened in the IDE 
 * Some files in your game directory need to have a certain name and location
     * A Python file with the same name as the game root directory is required. For example, if a game is called `TinyBlocks` then the main game source file needs to be called `TinyBlocks.py`, this ensures the game shows up on the Thumby start screen
     * Two extra files are required for your game to show up on the arcade and should be located in the root of your game directory
-        * A .png (image) or .webm (video) of gameplay from the game called either `arcade_title_image.png` or `arcade_title_video.webm`. If both files are present, the .webm will be used instead of the .png for display in the web IDE arcade. Please keep image and video resolution between anything from 1x (72x40px) to 16x (1152x640px). High resolution images/videos are not needed for the arcade.
+        * A .png (image) or .webm (video) of gameplay from the game called either `arcade_title_image.png` or `arcade_title_video.webm`. If both files are present, the .webm will be used instead of the .png for display in the web IDE arcade. Please keep image and video resolution between anything from 8x (576x320px) to 16x (1152x640px).
         * A `arcade_description.txt` is also required. Markdown files will not work. This description is displayed when a user hovers over the game in the Arcade.
 
 Below is an example of how a game should be structured:
