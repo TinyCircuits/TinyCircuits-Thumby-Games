@@ -1,3 +1,6 @@
+NAME=Thumby_Smash
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Thumby_Smash/thumby_smash.py
+
 NAME=SaurRun
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/SaurRun/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/SaurRun/arcade_title_video.webm
