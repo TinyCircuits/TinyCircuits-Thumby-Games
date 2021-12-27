@@ -1,0 +1,11 @@
+id,name,effect:0,missile,aura;1,bless,pray;2,blink,flee;3,fireball,burn;4,siphon,drain;5,vortex,void;6,reshape,shift;7,heal,heal;8,holy,fury;9,slay,slay
+id,img,name,level,hp,active,passive,spells,items:@,5,fighter,1,6,fury,strike,0,potion;@,5,paladin,1,6,aura,might,7,potion;@,5,priest,1,4,pray,resist,7|0,map;@,5,pope,1,4,pray,regen,7|8,map;@,5,thief,1,5,flee,disarm,2,map;@,5,assassin,1,5,flee,strike,2,map;@,5,wizard,1,6,cast,learn,0|2,potion;@,5,sage,1,4,cast,regen,0|1|2|3|4|6,map|potion
+id,img,name,level,hp,active,passive,spells,items:b,6,bat,1,1,flee,dodge,,;r,6,rat,1,1,flee,dodge,,;w,7,worm,2,3,,,,;g,9,goblin,2,3,flee,,,;s,8,slime,2,2,,resist,,;c,8,changer,3,5,shift,,,;a,7,ant,4,5,,resist,,;z,10,zombie,5,5,,resist,,;f,8,formless,6,6,,resist,,;o,9,orc,6,10,,strike,,;p,10,phantom,9,9,drain,resist,,;t,9,troll,10,15,,regen,,;e,11,ender,21,99,slay,immune,,
+id,img,name,level,hp,active,passive,spells,items:v,10,vampire,10,20,drain,resist,,;m,10,minotaur,10,30,fury,might,,;l,10,lich,15,25,cast,regen,2|3|4|5,;d,11,dragon,20,40,burn,resist,,
+potion,potion,tools,tools,map,1,2,3,4,7
+story,fades,image,shake,audio:1,1,1,1,1
+capdepth,tohit,toblock,toavoid,toescape,toregen,toactive,tomove,gengaps,genmonsters,gentraps,gentreasures,genboss,timetransition,timepopup,timeinput:19,0.5,0.5,0.5,0.5,0.25,0.25,0.05,1,1,0.5,0.25,10,500,750,1000
+z,x,up,down,left,right:a,b,⬆️,⬇️,⬅️,➡️
+creator:\nk j scott\n   c.2021
+seeking\nfortune\nyou enter\ninto the\ndungeon.\nfind the\namulet to\nwin.
+items:\nto use\nan item\noutside\nof combat\npress and\nhold a\nbutton\nfor one\nsecond\n\nspells:\nuse items\nwith a *\nto learn\nthe spell\n\ntraps:\nno damage\nif going\nback to\nlast area\n\ngraphics:\na-z=enemy\n#=wall\n/=stairs\n^=trap\n!=item\n\npanel:\nh=health\n?=coords
