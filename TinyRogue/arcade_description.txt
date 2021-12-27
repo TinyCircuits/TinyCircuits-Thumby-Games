@@ -1,0 +1,7 @@
+Tiny Rogue
+
+Classic mini RPG, explore the dungeon, defeat the boss, escape alive!
+Edit trdata.txt to mod the game, readme.txt helps to explain.
+
+Author: Kieron Scott
+Version 1.0
