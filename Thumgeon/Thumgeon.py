@@ -22,14 +22,13 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '''
 
-import ssd1306
 import machine
 import time
 import uos
 import random
 import gc
 import utime
-import sys
+import thumby
 
 machine.freq(48000000)
 
@@ -43,39 +42,36 @@ gc.enable()
 
 from framebuf import FrameBuffer, MONO_VLSB
 
-sda=machine.Pin(16)
-scl=machine.Pin(17)
-i2c = machine.I2C(0, sda=sda, scl=scl, freq=1000000)
 WIDTH = 72
 HEIGHT = 40
 
 # Sprite data for game objects
 
-swordSpr = (0x03, 0x07, 0x0e, 0x5c, 0x38, 0x30, 0xc8, 0x40)
-bowSpr = (0x00, 0x81, 0x7e, 0x81, 0x81, 0x5a, 0x3c, 0x00)
-potSpr = (0x04, 0x71, 0xd2, 0xae, 0xd4, 0xae, 0xd2, 0x74)
-keySpr = (0x00, 0x18, 0x24, 0x24, 0x18, 0x08, 0x18, 0x08)
-snackSpr = (0x60, 0xc0, 0xb8, 0x34, 0x2a, 0x13, 0x0e, 0x04)
-pantsSpr = (0x00, 0xfc, 0xfe, 0x0e, 0x0e, 0xfe, 0xfc, 0x00)
-shirtSpr = (0x9c, 0xfe, 0xfe, 0xd4, 0xac, 0xfe, 0xfe, 0x9c)
-magicSpr = (0x42, 0xdb, 0x3c, 0x6e, 0x4c, 0x20, 0xdb, 0x42)
-blockSpr = (0x7e, 0xff, 0xff, 0xff, 0xff, 0xf9, 0xfb, 0x7e)
-stairSpr = (0x7e, 0xfd, 0xfd, 0xf1, 0xf1, 0xc1, 0xc1, 0x7e)
-signSpr = (0x1c, 0x2a, 0x36, 0xfa, 0xee, 0x36, 0x2a, 0x1c)
-doorSpr = (0xfe, 0x07, 0x21, 0xff, 0xff, 0x21, 0x07, 0xfe)
-chestSpr = (0xfc, 0x46, 0x7e, 0x4a, 0x52, 0x7e, 0x46, 0xfc)
-hpupSpr = (0x7c, 0x10, 0x60, 0x00, 0xf0, 0x52, 0x27, 0x02)
-mpupSpr = (0x78, 0x10, 0x20, 0x10, 0x78, 0x02, 0x07, 0x02)
+swordSpr = bytearray([0x03, 0x07, 0x0e, 0x5c, 0x38, 0x30, 0xc8, 0x40])
+bowSpr = bytearray([0x00, 0x81, 0x7e, 0x81, 0x81, 0x5a, 0x3c, 0x00])
+potSpr = bytearray([0x04, 0x71, 0xd2, 0xae, 0xd4, 0xae, 0xd2, 0x74])
+keySpr = bytearray([0x00, 0x18, 0x24, 0x24, 0x18, 0x08, 0x18, 0x08])
+snackSpr = bytearray([0x60, 0xc0, 0xb8, 0x34, 0x2a, 0x13, 0x0e, 0x04])
+pantsSpr = bytearray([0x00, 0xfc, 0xfe, 0x0e, 0x0e, 0xfe, 0xfc, 0x00])
+shirtSpr = bytearray([0x9c, 0xfe, 0xfe, 0xd4, 0xac, 0xfe, 0xfe, 0x9c])
+magicSpr = bytearray([0x42, 0xdb, 0x3c, 0x6e, 0x4c, 0x20, 0xdb, 0x42])
+blockSpr = bytearray([0x7e, 0xff, 0xff, 0xff, 0xff, 0xf9, 0xfb, 0x7e])
+stairSpr = bytearray([0x7e, 0xfd, 0xfd, 0xf1, 0xf1, 0xc1, 0xc1, 0x7e])
+signSpr = bytearray([0x1c, 0x2a, 0x36, 0xfa, 0xee, 0x36, 0x2a, 0x1c])
+doorSpr = bytearray([0xfe, 0x07, 0x21, 0xff, 0xff, 0x21, 0x07, 0xfe])
+chestSpr = bytearray([0xfc, 0x46, 0x7e, 0x4a, 0x52, 0x7e, 0x46, 0xfc])
+hpupSpr = bytearray([0x7c, 0x10, 0x60, 0x00, 0xf0, 0x52, 0x27, 0x02])
+mpupSpr = bytearray([0x78, 0x10, 0x20, 0x10, 0x78, 0x02, 0x07, 0x02])
 
-blobSpr = (0x60, 0x90, 0xf8, 0x98, 0xf8, 0xf0, 0xe0, 0xc0)
-spiritSpr = (0x00, 0x0c, 0x12, 0x3e, 0x72, 0x4c, 0x20, 0x00)
-arachSpr = (0x60, 0xd0, 0xf0, 0x74, 0x72, 0xe4, 0x78, 0x00)
-skeleSpr = (0x30, 0x08, 0xd6, 0x7f, 0xd5, 0x0a, 0x30, 0x00)
-wizardSpr = (0x90, 0xcc, 0xfe, 0xf7, 0xcc, 0x10, 0x7a, 0x04)
-tempestSpr = (0x00, 0x14, 0x54, 0x5c, 0xaa, 0xae, 0x2a, 0x0c)
+blobSpr = bytearray([0x60, 0x90, 0xf8, 0x98, 0xf8, 0xf0, 0xe0, 0xc0])
+spiritSpr = bytearray([0x00, 0x0c, 0x12, 0x3e, 0x72, 0x4c, 0x20, 0x00])
+arachSpr = bytearray([0x60, 0xd0, 0xf0, 0x74, 0x72, 0xe4, 0x78, 0x00])
+skeleSpr = bytearray([0x30, 0x08, 0xd6, 0x7f, 0xd5, 0x0a, 0x30, 0x00])
+wizardSpr = bytearray([0x90, 0xcc, 0xfe, 0xf7, 0xcc, 0x10, 0x7a, 0x04])
+tempestSpr = bytearray([0x00, 0x14, 0x54, 0x5c, 0xaa, 0xae, 0x2a, 0x0c])
 
-shopSpr = (0x80, 0xe4, 0x6a, 0xd2, 0x40, 0xfe, 0x48, 0xfe, 0x40, 0x5c, 0x62, 0x5c, 0x40, 0x7e, 0xca, 0x84,
-           0xff, 0xea, 0xf5, 0xea, 0xf5, 0xea, 0xe5, 0x30, 0xae, 0xf9, 0x3f, 0xf9, 0xae, 0x30, 0xe0, 0xff)
+shopSpr = bytearray([0x80, 0xe4, 0x6a, 0xd2, 0x40, 0xfe, 0x48, 0xfe, 0x40, 0x5c, 0x62, 0x5c, 0x40, 0x7e, 0xca, 0x84,
+           0xff, 0xea, 0xf5, 0xea, 0xf5, 0xea, 0xe5, 0x30, 0xae, 0xf9, 0x3f, 0xf9, 0xae, 0x30, 0xe0, 0xff])
 
 signMessages = (
     ("I wonder", "if anyone", "will see", "this..."),
@@ -108,8 +104,6 @@ signMessages = (
 itemSprites = (swordSpr, bowSpr, potSpr, keySpr, snackSpr, pantsSpr, shirtSpr, magicSpr, hpupSpr, mpupSpr)
 
 monsterSprites = (blobSpr, spiritSpr, arachSpr, skeleSpr, wizardSpr, tempestSpr)
-
-display = ssd1306.SSD1306_I2C(WIDTH, HEIGHT, i2c, res=machine.Pin(18))
 
 SW_L = 3
 SW_R = 5 
@@ -232,12 +226,12 @@ class dungeonTile:
                 curMsg = "nothing."
             else:
                 # Draw the sign's text
-                display.fill(0)
+                thumby.display.fill(0)
                 y = 0
                 for line in self.tiledata:
-                    display.text(line, 0, y, 1)
+                    thumby.display.drawText(line, 0, y, 1)
                     y = y + 8
-                display.show()
+                thumby.display.update()
                 
                 # Wait for the player to finish reading
                 while(getcharinputNew() == ' '):
@@ -328,35 +322,35 @@ class dungeonTile:
             selpos = 0
             inventory = 0
             while(swAstate != 1):
-                display.fill(0)
+                thumby.display.fill(0)
                 if(inventory == 0):
                     if(len(player.inventory) > 0):
                         selpos = min(selpos, len(player.inventory)-1)
-                        display.text(player.inventory[selpos], 0, 8)
-                        display.text(str(itemprice(player.inventory[selpos])[1]) + "g", 0, 16)
+                        thumby.display.drawText(player.inventory[selpos], 0, 8)
+                        thumby.display.drawText(str(itemprice(player.inventory[selpos])[1]) + "g", 0, 16)
                     if(actpos == 0):
-                        display.fill_rect(0, 0, 24, 8, 1)
-                        display.text("inv", 0, 0, 0)
-                        display.text("sell", 32, 0, 1)
+                        thumby.display.drawFilledRectangle(0, 0, 24, 8, 1)
+                        thumby.display.drawText("inv", 0, 0, 0)
+                        thumby.display.drawText("sell", 32, 0, 1)
                     else:
-                        display.text("inv", 0, 0, 1)
-                        display.fill_rect(32, 0, 32, 8, 1)
-                        display.text("sell", 32, 0, 0)
+                        thumby.display.drawText("inv", 0, 0, 1)
+                        thumby.display.drawFilledRectangle(32, 0, 32, 8, 1)
+                        thumby.display.drawText("sell", 32, 0, 0)
                 else:
                     if(len(currentRoom.shopInv) > 0):
                         selpos = min(selpos, len(currentRoom.shopInv)-1)
-                        display.text(currentRoom.shopInv[selpos], 0, 8)
-                        display.text(str(itemprice(currentRoom.shopInv[selpos])[0]) + "g", 0, 16)
+                        thumby.display.drawText(currentRoom.shopInv[selpos], 0, 8)
+                        thumby.display.drawText(str(itemprice(currentRoom.shopInv[selpos])[0]) + "g", 0, 16)
                     if(actpos == 0):
-                        display.fill_rect(0, 0, 32, 8, 1)
-                        display.text("shop", 0, 0, 0)
-                        display.text("buy", 40, 0, 1)
+                        thumby.display.drawFilledRectangle(0, 0, 32, 8, 1)
+                        thumby.display.drawText("shop", 0, 0, 0)
+                        thumby.display.drawText("buy", 40, 0, 1)
                     else:
-                        display.text("shop", 0, 0, 1)
-                        display.fill_rect(40, 0, 24, 8, 1)
-                        display.text("buy", 40, 0, 0)
-                display.text(str(player.gp)+"g", 64 - len(str(player.gp)+"g")*8, 32)
-                display.show()
+                        thumby.display.drawText("shop", 0, 0, 1)
+                        thumby.display.drawFilledRectangle(40, 0, 24, 8, 1)
+                        thumby.display.drawText("buy", 40, 0, 0)
+                thumby.display.drawText(str(player.gp)+"g", 64 - len(str(player.gp)+"g")*8, 32)
+                thumby.display.update()
                 while(getcharinputNew() == ' '):
                     pass
                 if(swUstate == 1):
@@ -402,9 +396,9 @@ class dungeonTile:
                                 player.inventory.append(currentRoom.shopInv[selpos])
                                 currentRoom.shopInv.pop(selpos)
                             else:
-                                display.text("Not", 0, 24)
-                                display.text("enough", 0, 32)
-                                display.show()
+                                thumby.display.drawText("Not", 0, 24)
+                                thumby.display.drawText("enough", 0, 32)
+                                thumby.display.update()
                                 while(getcharinputNew() == ' '):
                                     pass
                         
@@ -926,40 +920,40 @@ class dungeonRoom:
                 tile = self.tiles[y*9+x]
                 if(tile.tiletype == 1):
                     # Block tile
-                    display.blit(FrameBuffer(bytearray(blockSpr), 8, 8, MONO_VLSB), x*8, y*8)
+                    thumby.display.blit(blockSpr, x*8, y*8, 8, 8, -1, 0, 0)
                     
                 elif(tile.tiletype == 2):
                     # Door tile
-                    display.blit(FrameBuffer(bytearray(doorSpr), 8, 8, MONO_VLSB), x*8, y*8)
+                    thumby.display.blit(doorSpr, x*8, y*8, 8, 8, -1, 0, 0)
                     
                 elif(tile.tiletype == 3):
                     # Stairs tile
-                    display.blit(FrameBuffer(bytearray(stairSpr), 8, 8, MONO_VLSB), x*8, y*8)
+                    thumby.display.blit(stairSpr, x*8, y*8, 8, 8, -1, 0, 0)
                     
                 elif(tile.tiletype == 4):
                     # Sign tile
-                    display.blit(FrameBuffer(bytearray(signSpr), 8, 8, MONO_VLSB), x*8, y*8)
+                    thumby.display.blit(signSpr, x*8, y*8, 8, 8, -1, 0, 0)
                     
                 elif(tile.tiletype == 5):
                     # The player
-                    display.text('@', x*8, y*8)
+                    thumby.display.drawText('@', x*8, y*8, 1)
                     
                 elif(tile.tiletype == 6):
                     # Chest tile
-                    display.blit(FrameBuffer(bytearray(chestSpr), 8, 8, MONO_VLSB), x*8, y*8)
+                    thumby.display.blit(chestSpr, x*8, y*8, 8, 8, -1, 0, 0)
                     
                 elif(tile.tiletype == 7):
                     # item tile
-                    display.blit(FrameBuffer(bytearray(itemSprites[int(tile.tiledata[0])]), 8, 8, MONO_VLSB), x*8, y*8)
+                    thumby.display.blit(itemSprites[int(tile.tiledata[0])], x*8, y*8, 8, 8, -1, 0, 0)
                     
                 elif(tile.tiletype == 8):
                     # Monster tile
                     if(utime.ticks_ms() % 1000 > 500):
-                        display.blit(FrameBuffer(bytearray(monsterSprites[int(tile.tiledata[0])]), 8, 8, MONO_VLSB), x*8, y*8)
+                        thumby.display.blit(monsterSprites[int(tile.tiledata[0])], x*8, y*8, 8, 8, -1, 0, 0)
                     else:
-                        display.blit(FrameBuffer(bytearray(monsterSprites[int(tile.tiledata[0])]), 8, 8, MONO_VLSB), x*8, y*8-1)
+                        thumby.display.blit(monsterSprites[int(tile.tiledata[0])], x*8, y*8-1, 8, 8, -1, 0, 0)
                 if(self.hasShop):
-                    display.blit(FrameBuffer(bytearray(shopSpr), 16, 16, MONO_VLSB), 16, 8)
+                    thumby.display.blit(shopSpr, 16, 8, 16, 16, -1, 0, 0)
                     
     def getTile(self, tx, ty):
         return self.tiles[ty*9+tx]
@@ -1256,18 +1250,18 @@ turnCounter = 0
 # Draw the entire gamestate with HUD
 def drawGame():
     global display
-    display.fill(0)
+    thumby.display.fill(0)
     currentRoom.drawRoom()
     if(curMsg != ""):
-        display.fill_rect(0, 32, len(curMsg)*8, 8, 1)
-        display.text(curMsg, 0, 32, 0)
-    display.fill_rect(0, 0, 32, 8, 1)
-    display.text(str(player.hp), 0, 0, 0)
-    display.text("HP", 16, 0, 0)
-    display.fill_rect(40, 0, 32, 8, 1)
-    display.text(str(player.mp), 40, 0, 0)
-    display.text("MP", 56, 0, 0)
-    display.show()
+        thumby.display.drawFilledRectangle(0, 32, len(curMsg)*8, 8, 1)
+        thumby.display.drawText(curMsg, 0, 32, 0)
+    thumby.display.drawFilledRectangle(0, 0, 32, 8, 1)
+    thumby.display.drawText(str(player.hp), 0, 0, 0)
+    thumby.display.drawText("HP", 16, 0, 0)
+    thumby.display.drawFilledRectangle(40, 0, 32, 8, 1)
+    thumby.display.drawText(str(player.mp), 40, 0, 0)
+    thumby.display.drawText("MP", 56, 0, 0)
+    thumby.display.update()
     
 def updateMonsters():
     for y in range(5):
@@ -1331,39 +1325,39 @@ def updateMonsters():
                     currentRoom.getTile(x, y).tiledata[2] = currentRoom.getTile(x, y).tiledata[2] - 1
                     
 
-display.fill(0)
-display.text("Thumgeon", 0, 0)
-display.text("@", 32, 16)
-display.show()
+thumby.display.fill(0)
+thumby.display.drawText("Thumgeon", 11, 0, 1)
+thumby.display.drawText("@", 32, 16, 1)
+thumby.display.update()
 getcharinputNew()
 while(swAstate == 1 or swBstate == 1):
     if(time.ticks_ms() % 1000 < 500):
-        display.fill_rect(0, 32, 72, 8, 0)
-        display.text("Press A/B", 0, 32, 1)
+        thumby.display.drawFilledRectangle(0, 32, 72, 8, 0)
+        thumby.display.drawText("Press A/B", 9, 32, 1)
     else:
-        display.fill_rect(0, 32, 72, 8, 1)
-        display.text("Press A/B", 0, 32, 0)
-    display.show()
+        thumby.display.drawFilledRectangle(0, 32, 72, 8, 1)
+        thumby.display.drawText("Press A/B", 9, 32, 0)
+    thumby.display.update()
     getcharinputNew()
     pass
 while(swAstate == 0 and swBstate == 0):
     if(time.ticks_ms() % 1000 < 500):
-        display.fill_rect(0, 32, 72, 8, 0)
-        display.text("Press A/B", 0, 32, 1)
+        thumby.display.drawFilledRectangle(0, 32, 72, 8, 0)
+        thumby.display.drawText("Press A/B", 9, 32, 1)
     else:
-        display.fill_rect(0, 32, 72, 8, 1)
-        display.text("Press A/B", 0, 32, 0)
-    display.show()
+        thumby.display.drawFilledRectangle(0, 32, 72, 8, 1)
+        thumby.display.drawText("Press A/B", 9, 32, 0)
+    thumby.display.update()
     getcharinputNew()
     pass
 while(swAstate == 1 or swBstate == 1):
     if(time.ticks_ms() % 1000 < 500):
-        display.fill_rect(0, 32, 72, 8, 0)
-        display.text("Press A/B", 0, 32, 1)
+        thumby.display.drawFilledRectangle(0, 32, 72, 8, 0)
+        thumby.display.drawText("Press A/B", 9, 32, 1)
     else:
-        display.fill_rect(0, 32, 72, 8, 1)
-        display.text("Press A/B", 0, 32, 0)
-    display.show()
+        thumby.display.drawFilledRectangle(0, 32, 72, 8, 1)
+        thumby.display.drawText("Press A/B", 9, 32, 0)
+    thumby.display.update()
     getcharinputNew()
     pass
 
@@ -1628,49 +1622,49 @@ while(True):
                         l3 = player.inventory[selpos+2]
                         
                     # Draw everything
-                    display.fill(0)
-                    display.text("w", 24, 0)
-                    display.text(str(player.wt), 32, 0)
-                    display.text("/", 48, 0)
-                    display.text(str(player.maxwt), 56, 0)
+                    thumby.display.fill(0)
+                    thumby.display.drawText("w", 24, 0, 1)
+                    thumby.display.drawText(str(player.wt), 32, 0, 1)
+                    thumby.display.drawText("/", 48, 0, 1)
+                    thumby.display.drawText(str(player.maxwt), 56, 0, 1)
                     # Highlight the equipped item(s)
                     if(player.helditem == selpos or player.pantsitem == selpos or player.shirtitem == selpos):
-                        display.fill_rect(0, 8, len(l1) * 8, 8, 1)
-                        display.text(l1, 0, 8, 0)
+                        thumby.display.drawFilledRectangle(0, 8, len(l1) * 8, 8, 1)
+                        thumby.display.drawText(l1, 0, 8, 0)
                     else:
-                        display.text(l1, 0, 8, 1)
+                        thumby.display.drawText(l1, 0, 8, 1)
                     if(player.helditem == selpos+1 or player.pantsitem == selpos+1 or player.shirtitem == selpos+1):
-                        display.fill_rect(0, 16, len(l2)*8, 8, 1)
-                        display.text(l2, 0, 16, 0)
+                        thumby.display.drawFilledRectangle(0, 16, len(l2)*8, 8, 1)
+                        thumby.display.drawText(l2, 0, 16, 0)
                     else:
-                        display.text(l2, 0, 16, 1)
+                        thumby.display.drawText(l2, 0, 16, 1)
                     if(player.helditem == selpos+2 or player.pantsitem == selpos+2 or player.shirtitem == selpos+2):
-                        display.fill_rect(0, 24, len(l3)*8, 8, 1)
-                        display.text(l3, 0, 24, 0)
+                        thumby.display.drawFilledRectangle(0, 24, len(l3)*8, 8, 1)
+                        thumby.display.drawText(l3, 0, 24, 0)
                     else:
-                        display.text(l3, 0, 24, 1)
+                        thumby.display.drawText(l3, 0, 24, 1)
                     if(actpos == 0):
-                        display.fill_rect(0, 32, 32, 8, 1)
-                        display.text("drop", 0, 32, 0)
-                        display.text("eqp", 48, 32)
+                        thumby.display.drawFilledRectangle(0, 32, 32, 8, 1)
+                        thumby.display.drawText("drop", 0, 32, 0)
+                        thumby.display.drawText("eqp", 48, 32)
                     elif(actpos == 1):
-                        display.text("drop", 0, 32, 1)
-                        display.fill_rect(48, 32, 24, 8, 1)
-                        display.text("eqp", 48, 32, 0)
-                    display.show()
+                        thumby.display.drawText("drop", 0, 32, 1)
+                        thumby.display.drawFilledRectangle(48, 32, 24, 8, 1)
+                        thumby.display.drawText("eqp", 48, 32, 0)
+                    thumby.display.update()
             else:
                 # Clear the current message so the screen looks a little less cluttered
                 curMsg = ""
             drawGame()
             # Free all the memory we can, and print some game info
 
-    display.fill(0)
-    display.text("You died!", 0, 0)
-    display.text("Killed by", 0, 8)
-    display.text("dungeon", 0, 16)
-    display.text(lastHit, 0, 24)
-    display.text("floor "+str(floorNo), 0, 32)
-    display.show()
+    thumby.display.fill(0)
+    thumby.display.drawText("You died!", 0, 0, 1)
+    thumby.display.drawText("Killed by", 0, 8, 1)
+    thumby.display.drawText("dungeon", 0, 16, 1)
+    thumby.display.drawText(lastHit, 0, 24, 1)
+    thumby.display.drawText("floor "+str(floorNo), 0, 32, 1)
+    thumby.display.update()
 
     currentRoom.tiles.clear()
     gc.collect()
@@ -1719,17 +1713,17 @@ while(True):
         __import__(mod)
 
     while(swBstate != 1):
-        display.fill(0)
-        display.text("Restart?", 0, 8)
+        thumby.display.fill(0)
+        thumby.display.drawText("Restart?", 0, 8, 1)
         if(selpos == 0):
-            display.fill_rect(0, 16, 24, 8, 1)
-            display.text("yes", 0, 16, 0)
-            display.text("no", 40, 16, 1)
+            thumby.display.drawFilledRectangle(0, 16, 24, 8, 1)
+            thumby.display.drawText("yes", 0, 16, 0)
+            thumby.display.drawText("no", 40, 16, 1)
         else:
-            display.text("yes", 0, 16)
-            display.fill_rect(40, 16, 16, 8, 1)
-            display.text("no", 40, 16, 0)
-        display.show()
+            thumby.display.drawText("yes", 0, 16, 1)
+            thumby.display.drawFilledRectangle(40, 16, 16, 8, 1)
+            thumby.display.drawText("no", 40, 16, 0)
+        thumby.display.update()
         getcharinputNew()
         if(swLstate == 1):
             selpos = 0

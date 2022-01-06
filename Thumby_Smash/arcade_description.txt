@@ -1,5 +1,0 @@
-Thumby Smash
-A 2d Fighting Game for the Thumby
-
-Author Void777
-Version: 5.0

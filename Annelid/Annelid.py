@@ -28,32 +28,41 @@ import thumby
 import random
 import time
 import machine
-    # Draw the game splash
+
+# Draw the game splash
 thumby.display.fill(0)
-thumby.display.drawText("Tiny", 16, 0, 1)
-thumby.display.drawText("Annelid", 8, 8, 1)
-thumby.display.drawText("Press A/B", 0, 32, 1)
+thumby.display.drawText("Tiny", 24, 0, 1)
+thumby.display.drawText("Annelid", 15, 9, 1)
+thumby.display.drawText("Press A/B", 9, 32, 1)
 thumby.display.update()
 
-    # Wait for the user to start
+# Wait for the user to start
 while(thumby.actionPressed() == True):
     pass
 while(thumby.actionPressed() == False):
     pass
 
-    # Declare game variables
+thumby.DISPLAY_W = 72
+thumby.DISPLAY_H = 40
+
+blockSize = 4
+maxXcoordinate = thumby.display.width // blockSize
+maxYcoordinate = thumby.display.height // blockSize
+
+# Declare game variables
 worm = [[random.randint(int(thumby.DISPLAY_W*0.0625), int(thumby.DISPLAY_W*0.1875)), random.randint(int(thumby.DISPLAY_H*0.0625), int(thumby.DISPLAY_H*0.1875))]]
-food = [random.randint(0, int(thumby.DISPLAY_W * 0.25)-1), random.randint(0, int(thumby.DISPLAY_H * 0.25)-1)]
+food = [random.randint(0, maxXcoordinate-1), random.randint(0, maxYcoordinate-1)]
 dx = 0
 dy = 0
 
 gameRunning = True
-MAX_FPS = 7
+startFPS = 3.0
 
     # Draws the worm
 def drawWorm():
     for tile in worm:
-        thumby.display.rect(tile[0]*4, tile[1]*4, 4, 4, 1)
+        thumby.display.drawRectangle(tile[0]*4, tile[1]*4, 4, 4, 1)
+        print(tile[0]*4)
 
     # Updates the state of the worm
 def updateWorm():
@@ -63,7 +72,7 @@ def updateWorm():
     if(worm[0][0] == food[0] and worm[0][1] == food[1]):
             # Ate food, extend worm
         thumby.audio.play(440, 150)
-        food = [random.randint(0, int(thumby.DISPLAY_W * 0.25)-1), random.randint(0, int(thumby.DISPLAY_H * 0.25)-1)]
+        food = [random.randint(0, maxXcoordinate-1), random.randint(0, maxYcoordinate-1)]
         worm.append(worm[len(worm)-1])
     
         # Update each segment
@@ -76,7 +85,7 @@ def updateWorm():
     
     global gameRunning
         # Check collisions with walls and segments
-    if((worm[0][0] < 0) or (worm[0][0] >= thumby.DISPLAY_W * 0.25) or (worm[0][1] < 0) or (worm[0][1] >= thumby.DISPLAY_H * 0.25)):
+    if((worm[0][0] < 0) or (worm[0][0] >= maxXcoordinate) or (worm[0][1] < 0) or (worm[0][1] >= maxYcoordinate)):
         thumby.audio.play(100, 250)
         gameRunning = False
     for k in range(1, len(worm)):
@@ -84,23 +93,33 @@ def updateWorm():
             thumby.audio.play(100, 250)
             gameRunning = False
 
+startTime=time.ticks_ms()
+
 while(gameRunning == True):
-    t0 = time.ticks_ms()
+    if(thumby.buttonL.justPressed() and (dx != 1)):
+        dx = -1
+        dy = 0
+    if(thumby.buttonR.justPressed() and (dx != -1)):
+        dx = 1
+        dy = 0
+    if(thumby.buttonU.justPressed() and (dy != 1)):
+        dx = 0
+        dy = -1
+    if(thumby.buttonD.justPressed() and (dy != -1)):
+        dx = 0
+        dy = 1
     
-        # Update logic
+    # Update logic
     updateWorm()
     if(gameRunning == False):
         thumby.display.fill(0)
-        thumby.display.drawText("Game", 16, 0, 1)
-        thumby.display.drawText("over!", 16, 8, 1)
-        thumby.display.drawText("Again?", 16, 16, 1)
-        thumby.display.drawText("A:N B:Y", 8, 32, 1)
+        thumby.display.drawText("Game over!", 7, 1, 1)
+        thumby.display.drawText("Again?", 18, 22, 1)
+        thumby.display.drawText("A:N B:Y", 15, 32, 1)
         thumby.display.update()
         while(thumby.actionPressed() == False):
             pass # Wait for the user to give us something
         if(thumby.buttonA.pressed() == True):
-            while(thumby.buttonA.pressed() == True):
-                    pass
             machine.reset()
         elif(thumby.buttonB.pressed() == True):
             gameRunning = True
@@ -108,27 +127,16 @@ while(gameRunning == True):
             food = [random.randint(0, int(thumby.DISPLAY_W * 0.25)-1), random.randint(0, int(thumby.DISPLAY_H * 0.25)-1)]
             dx = 0
             dy = 0
+            startTime=time.ticks_ms()
         
-        # Draw
+    # Draw
     thumby.display.fill(0)
+    thumby.display.drawRectangle(0, 0, 72, 40, 1)
     drawWorm()
     if(time.ticks_ms() % 1000 < 500):
-        thumby.display.fillRect(food[0]*4, food[1]*4, 4, 4, 1)
+        thumby.display.drawFilledRectangle(food[0]*4, food[1]*4, 4, 4, 1)
     else:
-        thumby.display.fillRect(food[0]*4+1, food[1]*4+1, 2, 2, 1)
-    thumby.display.update()
+        thumby.display.drawFilledRectangle(food[0]*4+1, food[1]*4+1, 2, 2, 1)
     
-        # Handle input while waiting for next frame
-    while(time.ticks_diff(time.ticks_ms(), t0) < 1000 / MAX_FPS):
-        if(thumby.buttonL.pressed() and (dx != 1)):
-            dx = -1
-            dy = 0
-        if(thumby.buttonR.pressed() and (dx != -1)):
-            dx = 1
-            dy = 0
-        if(thumby.buttonU.pressed() and (dy != 1)):
-            dx = 0
-            dy = -1
-        if(thumby.buttonD.pressed() and (dy != -1)):
-            dx = 0
-            dy = 1
+    thumby.display.setFPS(startFPS + (time.ticks_ms()-startTime)/10000) # increase FPS by 1 every 10 seconds
+    thumby.display.update()

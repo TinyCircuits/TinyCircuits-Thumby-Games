@@ -1,23 +1,20 @@
-#attribution
-#level based speed?
+'''
+  Simple puzzle game for Thumby.
+  Adaption of code by Joachim Wiberg available at: https://github.com/troglobit 
+'''
 import thumby
 import time
 import uos
 import random
 import machine
 
-machine.freq(125000000)
+machine.freq(48000000)
 
-tetrisSplash=[
-0x55, 0xaa, 0x55, 0xaa, 0x55, 0xaa, 0x55, 0xaa, 0x55, 0xaa, 0x55, 0xaa, 0x55, 0xaa, 0xf5, 0xfa, 0xfd, 0xfe, 0xff, 0xfe, 0xff, 0xfe, 0xff, 0xfe, 0xff, 0xfe, 0xff, 0xfe, 0xff, 0xfe, 0xf7, 0x86, 0xf7, 0xfe, 0x87, 0xfe, 0x87, 0xef, 0xde, 0x87, 0xfe, 0xe7, 0x9e, 0xe7, 0xfe, 0xff, 0xfe, 0xff, 0xfe, 0xff, 0xfe, 0xff, 0xfe, 0xff, 0xfe, 0xfd, 0xfa, 0xf5, 0xaa, 0x55, 0xaa, 0x55, 0xaa, 0x55, 0xaa, 0x55, 0xaa, 0x55, 0xaa, 0x55, 0xaa, 0x55, 
-0x55, 0xaa, 0x55, 0xaa, 0x55, 0xaa, 0x55, 0xaa, 0x55, 0xaa, 0x55, 0xaa, 0xfd, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xfb, 0xfb, 0xfb, 0x3, 0xfb, 0xfb, 0xfb, 0xff, 0x3, 0xfb, 0xfb, 0xfb, 0xfb, 0xf7, 0xf, 0xff, 0xfb, 0xfb, 0x3, 0xfb, 0xfb, 0xff, 0xf, 0xf7, 0xfb, 0xfb, 0xfb, 0xfb, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xfd, 0xaa, 0x55, 0xaa, 0x55, 0xaa, 0x55, 0xaa, 0x55, 0xaa, 0x55, 0xaa, 0x55, 
-0x55, 0xaa, 0x55, 0xaa, 0x55, 0xaa, 0x55, 0xaa, 0x55, 0xaa, 0x55, 0xaa, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x0, 0xff, 0xff, 0xff, 0xff, 0x0, 0xf9, 0xe5, 0xdd, 0xbd, 0x7e, 0xff, 0xff, 0xff, 0xff, 0x0, 0xff, 0xff, 0xff, 0xff, 0xfe, 0xfd, 0xfd, 0xfd, 0xfb, 0x7, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xaa, 0x55, 0xaa, 0x55, 0xaa, 0x55, 0xaa, 0x55, 0xaa, 0x55, 0xaa, 0x55, 
-0x55, 0xaa, 0x55, 0xaa, 0x55, 0xaa, 0x55, 0xaa, 0x55, 0xaa, 0x55, 0xaa, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xfc, 0xff, 0xff, 0xff, 0xff, 0xfc, 0xff, 0xff, 0xff, 0xff, 0xfe, 0xfd, 0xff, 0xfd, 0xfd, 0xfc, 0xfd, 0xfd, 0xff, 0xff, 0xfd, 0xfd, 0xfd, 0xfd, 0xfe, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xaa, 0x55, 0xaa, 0x55, 0xaa, 0x55, 0xaa, 0x55, 0xaa, 0x55, 0xaa, 0x55, 
-0x55, 0xaa, 0x55, 0xaa, 0x55, 0xaa, 0x55, 0xaa, 0x55, 0xaa, 0x55, 0xaa, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xaa, 0x55, 0xaa, 0x55, 0xaa, 0x55, 0xaa, 0x55, 0xaa, 0x55, 0xaa, 0x55, 
-]
-for i in range(len(tetrisSplash)):
-    tetrisSplash[i]=tetrisSplash[i]^0xff
-
+TinyBlocksSplash = bytearray([170,85,170,85,170,85,170,85,170,85,170,85,170,21,10,5,2,1,0,1,0,1,0,1,0,1,0,1,0,1,8,121,8,1,120,1,120,16,33,120,1,24,97,24,1,0,1,0,1,0,1,0,1,0,1,2,5,10,85,170,85,170,85,170,85,170,85,170,85,170,85,170,
+           170,85,170,85,170,85,170,85,170,85,170,85,2,0,0,0,0,0,254,34,34,34,34,220,0,254,0,0,0,0,252,6,2,2,6,252,0,252,6,2,2,2,0,254,16,104,132,2,0,28,34,34,34,194,0,0,0,0,0,2,85,170,85,170,85,170,85,170,85,170,85,170,
+           170,85,170,85,170,85,170,85,170,85,170,85,0,0,0,0,0,0,7,4,4,4,4,3,0,7,4,4,4,0,3,6,4,4,6,3,0,3,6,4,4,4,0,7,0,0,1,6,0,4,4,4,4,3,0,0,0,0,0,0,85,170,85,170,85,170,85,170,85,170,85,170,
+           170,85,170,85,170,85,170,85,170,85,170,85,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,85,170,85,170,85,170,85,170,85,170,85,170,
+           170,85,170,85,170,85,170,85,170,85,170,85,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,85,170,85,170,85,170,85,170,85,170,85,170])
 B_COLS =14
 B_ROWS =22
 B_SIZE =(B_ROWS * B_COLS)
@@ -89,30 +86,23 @@ shapePos = random.randint(1, 10000000) % 7 * 4
 peek_shape = [shapes[shapePos],shapes[shapePos+1],shapes[shapePos+2],shapes[shapePos+3]]
 shape = [0,0,0,0]
 
-def drawCheckerboard():
-  thumby.display.fill(0)
-  for x in range(72/2):
-    for y in range(5):
-      thumby.display.drawSprite([0x55,0xAA], x*2, y*8, 2, 8,0,0,0)
-
 def clearScreen():
-  thumby.display.fillRect(34,2,36,12 ,0)
-  thumby.display.fillRect(39-5,18,14,12,0)
-  thumby.display.fillRect(52,18,18,12,0)
+      
+  thumby.display.drawFilledRectangle(34,2,36,12-1 ,0)
+  thumby.display.drawFilledRectangle(39-5,18,14,12-1,0)
+  thumby.display.drawFilledRectangle(52,18,18,12-1,0)
   
-  thumby.display.rect(34-1,2-1,36+2,12+2,1)
-  thumby.display.rect(39-1-5,18-1,14+2,12+2,1)
-  thumby.display.rect(52-1,18-1,18+2,12+2,1)
+  thumby.display.drawRectangle(34-1,2-1,36+2,12+2-1,1)
+  thumby.display.drawRectangle(39-1-5,18-1,14+2,12+2-1,1)
+  thumby.display.drawRectangle(52-1,18-1,18+2,12+2-1,1)
 
 def setBlock(xb, yb, val):
-  thumby.display.fillRect(xb*2, yb*2, 2, 2, val)
+  thumby.display.drawFilledRectangle(xb*2, yb*2, 2, 2, 1 if val else 0)
 
 def updateScreen():
   #print("update")
-  
-  clearScreen()
-  
   global level
+  clearScreen()
   #preview[B_COLS * 10];
   preview = []
   for i in range(B_COLS * 10):
@@ -138,8 +128,8 @@ def updateScreen():
     #lines_cleared -= 10
     #level+=1
   
-  thumby.display.drawText('%04d' % (points//10), 36, 5)
-  thumby.display.drawText('%02d' % lines_cleared, 36+18-1, 21)
+  thumby.display.drawText('%05d' % (points), 36+2, 4,1)
+  thumby.display.drawText('%02d' % lines_cleared, 36+18+2, 20,1)
   # level
   thumby.display.update()
 
@@ -174,21 +164,21 @@ def next_shape():
 def show_high_score():
     
   for y in range(40):
-    thumby.display.fillRect(8,40-y,20,1,1)
+    thumby.display.drawFilledRectangle(8,40-y,20,1,1)
     time.sleep_ms(15)
     thumby.display.update()
     thumby.audio.play(100+(40-y)*20, 50)
   
   for i in range(41):
-    thumby.display.fillRect(8,0,20,i,0)
-    thumby.display.drawText("G", 9, -2+5+0)
-    thumby.display.drawText("A", 9, -2+5+8)
-    thumby.display.drawText("M", 9, -2+5+16)
-    thumby.display.drawText("E", 9, -2+5+24)
-    thumby.display.drawText("O", 19, 2+5+0)
-    thumby.display.drawText("V", 19, 2+5+8)
-    thumby.display.drawText("E", 19, 2+5+16)
-    thumby.display.drawText("R", 19, 2+5+24)
+    thumby.display.drawFilledRectangle(8,0,20,i,0)
+    thumby.display.drawText("G", 11, -2+5+0,1)
+    thumby.display.drawText("A", 11, -2+5+8,1)
+    thumby.display.drawText("M", 11, -2+5+16,1)
+    thumby.display.drawText("E", 11, -2+5+24,1)
+    thumby.display.drawText("O", 20, 2+5+0,1)
+    thumby.display.drawText("V", 20, 2+5+8,1)
+    thumby.display.drawText("E", 20, 2+5+16,1)
+    thumby.display.drawText("R", 20, 2+5+24,1)
     time.sleep_ms(10)
     thumby.display.update()
   
@@ -197,16 +187,16 @@ def show_high_score():
     color = 1
     if (((time.ticks_ms()-lastUpdate)//500) & 1):
       color = 0
-    thumby.display.drawText("G", 9, -2+5+0, color)
-    thumby.display.drawText("A", 9, -2+5+8, color)
-    thumby.display.drawText("M", 9, -2+5+16, color)
-    thumby.display.drawText("E", 9, -2+5+24, color)
-    thumby.display.drawText("O", 19, 2+5+0, color)
-    thumby.display.drawText("V", 19, 2+5+8, color)
-    thumby.display.drawText("E", 19, 2+5+16, color)
-    thumby.display.drawText("R", 19, 2+5+24, color)
+    thumby.display.drawText("G", 11, -2+5+0, color)
+    thumby.display.drawText("A", 11, -2+5+8, color)
+    thumby.display.drawText("M", 11, -2+5+16, color)
+    thumby.display.drawText("E", 11, -2+5+24, color)
+    thumby.display.drawText("O", 20, 2+5+0, color)
+    thumby.display.drawText("V", 20, 2+5+8, color)
+    thumby.display.drawText("E", 20, 2+5+16, color)
+    thumby.display.drawText("R", 20, 2+5+24, color)
     if(i<=42):
-      thumby.display.fillRect(8,i,20,42-i,0)
+      thumby.display.drawFilledRectangle(8,i,20,42-i,0)
       i+=1
     time.sleep_ms(10)
     thumby.display.update()
@@ -226,7 +216,7 @@ while(True):
   movingLeftOrRight = 0
   
   thumby.display.fill(0)
-  thumby.display.drawSprite(tetrisSplash, 0,0, 72, 40,0,0,0)
+  thumby.display.blit(TinyBlocksSplash, 0,0, 72, 40,0,0,0)
   #thumby.display.update()
   #while(1):
   #    a=1
@@ -237,13 +227,13 @@ while(True):
   while(getcharinputNew()==' '):
     if((time.ticks_ms()//1000)&1):
       if isdisplayed == 0 :
-        thumby.display.drawText("START", 16, 30,1)
+        thumby.display.drawText("START", 72//2-14, 26,1)
         thumby.display.update()
         isdisplayed = 1
     else:
       if isdisplayed == 1 :
         #thumby.display.fillRect(10,24,72-20,16,0)
-        thumby.display.drawText("START", 16, 30,0)
+        thumby.display.drawText("START", 72//2-14, 26,0)
         thumby.display.update()
         isdisplayed = 0
 
@@ -255,13 +245,18 @@ while(True):
     else:
       board[(B_SIZE-1)-i] = 0
 
-  drawCheckerboard()
   clearScreen()
 
   shape = next_shape()
   print("startloop")
   lastUpdate=time.ticks_ms()
   lastDrop=time.ticks_ms()
+  
+  thumby.display.fill(0)
+  for x in range(72/2):
+    for y in range(5):
+      thumby.display.blit(bytearray([0x55,0xAA]), x*2, y*8, 2, 8,0,0,0)
+      
   while (1):
     c=getcharinputNew()
     if(c==' '):
@@ -289,7 +284,7 @@ while(True):
       if (fits_in (shape, pos + B_COLS)):
         pos += B_COLS
         c=' '
-        thumby.audio.play(300, 10, 5000)
+        thumby.audio.play(300, 10)
       else:
         place (shape, pos, 7)
         #points+=1;
