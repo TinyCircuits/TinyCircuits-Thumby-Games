@@ -275,7 +275,7 @@ class Player:
         self.friends = []
         self.inventory = []
         self.maxHelditems = 10
-        self.lOrR = 0
+        #self.lOrR = 0
         self.currentPos = math.ceil((9 * 5) / 2)
         self.position = []
         for i in range(9 * 5):
