@@ -2,8 +2,7 @@ Tiny Monster Trainer
 
 Train and battle with procedurally created monsters!
 
-Please see the README.md at https://github.com/BlakeBild/Tiny_Monster_Trainer/
-for more information about the game.
+Please see the README.md for more information about the game.
 
 Author: Blake B. 
 Thanks to Mason W. & Thumby Team for References
