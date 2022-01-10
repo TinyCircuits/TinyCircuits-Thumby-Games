@@ -275,7 +275,6 @@ class Player:
         self.friends = []
         self.inventory = []
         self.maxHelditems = 10
-        #self.lOrR = 0
         self.currentPos = math.ceil((9 * 5) / 2)
         self.position = []
         for i in range(9 * 5):
@@ -287,7 +286,7 @@ class Player:
         for x in range(0, 9):
             for y in range(0, 5):
                 if self.position[y*9+x] == 1 :
-                    thumby.display.blit(bytearray(player3_sprite), x*8 , y*8, 8, 8, -1, 0, 0)
+                    thumby.display.blit(bytearray(player3_sprite), x*8 , y*8, 8, 8, -1, self.lOrR, 0)
  
  
     def movePlayer(self, currentRoom, monster, monsterMovement):
@@ -318,7 +317,7 @@ class Player:
                 self.position[self.currentPos] = 0
                 self.currentPos = self.currentPos - 1
                 self.position[self.currentPos] = 1
-                #self.lOrR = 0
+                self.lOrR = 0
         elif(thumby.buttonR.pressed() == True):
             while(thumby.buttonR.pressed() == True): 
                 pass
@@ -327,7 +326,7 @@ class Player:
                 self.position[self.currentPos] = 0
                 self.currentPos = self.currentPos + 1
                 self.position[self.currentPos] = 1
-                #self.lOrR = 1
+                self.lOrR = 1
         if moved == 1:
             monster.moveMonster(self.currentPos, world[room], monsterMovement)
         monster.drawMonster()
@@ -1738,7 +1737,7 @@ npcMonRoaming = RoamingMonster()
 monsterMovement = 0
 battle = 0
 victory = 0
-
+myGuy.lOrR = 0
 ## Pretty much the game after this point :D ##
 
 while(1):
