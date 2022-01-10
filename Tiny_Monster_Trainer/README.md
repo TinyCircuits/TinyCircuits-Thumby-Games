@@ -1,6 +1,5 @@
 # Tiny_Monster_Trainer 
 A game for the Thumby  
-(I don't know what I'm doing 🥳)  
 
 Move around, fight monsters, collect monsters, train monsters.  
 
