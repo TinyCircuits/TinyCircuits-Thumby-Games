@@ -103,7 +103,7 @@ Monster Type | Attack Name | Element Type | Damage based on Strength/Mysticism
 **Basic** | | | 
 ------- |"Poke"       |No Element Type      | Strength  
 ------- |"Hit"        |No Element Type      | Strength  
-------- |MagicHit"    |No Element Type      | Mysticism   
+------- |"MagicHit"    |No Element Type      | Mysticism   
 **Earth** |   |   |  
 ------- |"RockToss"        |Earth       | Strength  
 ------- |"Quake"           |Earth       | Mysticism  
@@ -132,7 +132,7 @@ Monster Type | Attack Name | Element Type | Damage based on Strength/Mysticism
 **Darkness**|   |   |
 ------- |"Murk"        | Darkness    | Strength  
 ------- |"Shadow"      | Darkness    | Mysticism  
-------- |'Unholy Poke" | Mystical    | Strength  
+------- |"Unholy Poke" | Mystical    | Strength  
 ------- |"Dire Ruin"   | Ethereal    | Mysticism  
 **Cute**|   |   |
 ------- |"Sing Song"   | Cute        | Strength  
