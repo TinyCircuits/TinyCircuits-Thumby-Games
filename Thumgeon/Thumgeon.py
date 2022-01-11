@@ -326,8 +326,8 @@ class dungeonTile:
                 if(inventory == 0):
                     if(len(player.inventory) > 0):
                         selpos = min(selpos, len(player.inventory)-1)
-                        thumby.display.drawText(player.inventory[selpos], 0, 8)
-                        thumby.display.drawText(str(itemprice(player.inventory[selpos])[1]) + "g", 0, 16)
+                        thumby.display.drawText(player.inventory[selpos], 0, 8, 1)
+                        thumby.display.drawText(str(itemprice(player.inventory[selpos])[1]) + "g", 0, 16, 1)
                     if(actpos == 0):
                         thumby.display.drawFilledRectangle(0, 0, 24, 8, 1)
                         thumby.display.drawText("inv", 0, 0, 0)
@@ -339,8 +339,8 @@ class dungeonTile:
                 else:
                     if(len(currentRoom.shopInv) > 0):
                         selpos = min(selpos, len(currentRoom.shopInv)-1)
-                        thumby.display.drawText(currentRoom.shopInv[selpos], 0, 8)
-                        thumby.display.drawText(str(itemprice(currentRoom.shopInv[selpos])[0]) + "g", 0, 16)
+                        thumby.display.drawText(currentRoom.shopInv[selpos], 0, 8, 1)
+                        thumby.display.drawText(str(itemprice(currentRoom.shopInv[selpos])[0]) + "g", 0, 16, 1)
                     if(actpos == 0):
                         thumby.display.drawFilledRectangle(0, 0, 32, 8, 1)
                         thumby.display.drawText("shop", 0, 0, 0)
@@ -349,7 +349,7 @@ class dungeonTile:
                         thumby.display.drawText("shop", 0, 0, 1)
                         thumby.display.drawFilledRectangle(40, 0, 24, 8, 1)
                         thumby.display.drawText("buy", 40, 0, 0)
-                thumby.display.drawText(str(player.gp)+"g", 64 - len(str(player.gp)+"g")*8, 32)
+                thumby.display.drawText(str(player.gp)+"g", 64 - len(str(player.gp)+"g")*8, 32, 1)
                 thumby.display.update()
                 while(getcharinputNew() == ' '):
                     pass
@@ -396,8 +396,8 @@ class dungeonTile:
                                 player.inventory.append(currentRoom.shopInv[selpos])
                                 currentRoom.shopInv.pop(selpos)
                             else:
-                                thumby.display.drawText("Not", 0, 24)
-                                thumby.display.drawText("enough", 0, 32)
+                                thumby.display.drawText("Not", 0, 24, 1)
+                                thumby.display.drawText("enough", 0, 32, 1)
                                 thumby.display.update()
                                 while(getcharinputNew() == ' '):
                                     pass
@@ -986,6 +986,8 @@ random.seed()
 def getRandomFreePosition(room):
     px = random.randint(1, 7)
     py = random.randint(1, 3)
+    
+    # Check that tile is empty and there are no doors this could block
     while(room.getTile(px, py).tiletype != 0 and room.getTile(px-1, py).tiletype != 2 and room.getTile(px+1, py).tiletype != 2 and room.getTile(px, py-1).tiletype != 2 and room.getTile(px, py+1).tiletype != 2):
         px = random.randint(1, 7)
         py = random.randint(1, 3)
@@ -1107,9 +1109,9 @@ def generateRoom(room):
             
         # Each room has a 10% chance of having a sign
         if(random.randint(0, 9) == 0):
-            pos = getRandomFreePosition(room)
-            room.getTile(pos[0], pos[1]).tiletype = 4
-            room.getTile(pos[0], pos[1]).tiledata = signMessages[random.randint(0, len(signMessages) - 1)]
+            if room.getTile(4, 2).tiletype == 0:
+                room.getTile(4, 2).tiletype = 4
+                room.getTile(4, 2).tiledata = signMessages[random.randint(0, len(signMessages) - 1)]
             
         # Each room has a 33% chance of having a broken or basic-tier peice of loot in it
         if(random.randint(0, 2) == 0):
@@ -1646,7 +1648,7 @@ while(True):
                     if(actpos == 0):
                         thumby.display.drawFilledRectangle(0, 32, 32, 8, 1)
                         thumby.display.drawText("drop", 0, 32, 0)
-                        thumby.display.drawText("eqp", 48, 32)
+                        thumby.display.drawText("eqp", 48, 32, 1)
                     elif(actpos == 1):
                         thumby.display.drawText("drop", 0, 32, 1)
                         thumby.display.drawFilledRectangle(48, 32, 24, 8, 1)

@@ -468,14 +468,14 @@ endTime = time.ticks_ms()
 thumby.audio.stop()
 thumby.display.fill(0)
 if(time.ticks_diff(endTime, startTime) < 100000):
-    thumby.display.drawText("How?!", 0, 0)
+    thumby.display.drawText("How?!", 0, 0, 1)
 elif(time.ticks_diff(endTime, startTime) < 150000):
-    thumby.display.drawText("Nice!", 0, 0)
+    thumby.display.drawText("Nice!", 0, 0, 1)
 elif(time.ticks_diff(endTime, startTime) < 200000):
-    thumby.display.drawText("Done!", 0, 0)
+    thumby.display.drawText("Done!", 0, 0, 1)
 elif(time.ticks_diff(endTime, startTime) < 300000):
-    thumby.display.drawText("C'mon!", 0, 0)
-thumby.display.drawText(str(time.ticks_diff(endTime, startTime) / 1000) + "s", 0, 8)
+    thumby.display.drawText("C'mon!", 0, 0, 1)
+thumby.display.drawText(str(time.ticks_diff(endTime, startTime) / 1000) + "s", 0, 8, 1)
 thumby.display.update()
 
 time.sleep_ms(3000)
