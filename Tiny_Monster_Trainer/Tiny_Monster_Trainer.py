@@ -275,7 +275,6 @@ class Player:
         self.friends = []
         self.inventory = []
         self.maxHelditems = 10
-        self.lOrR = 0
         self.currentPos = math.ceil((9 * 5) / 2)
         self.position = []
         for i in range(9 * 5):
@@ -1738,7 +1737,7 @@ npcMonRoaming = RoamingMonster()
 monsterMovement = 0
 battle = 0
 victory = 0
-
+myGuy.lOrR = 0
 ## Pretty much the game after this point :D ##
 
 while(1):
