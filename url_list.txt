@@ -10,12 +10,6 @@ https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyHeli/heliSpr.bin
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyHeli/missileSpr.bin
 
-NAME=Tiny_Monster_Trainer
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Tiny_Monster_Trainer/arcade_title_video.webm
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Tiny_Monster_Trainer/arcade_description.txt
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Tiny_Monster_Trainer/Tiny_Monster_Trainer.py
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Tiny_Monster_Trainer/README.md
-
 NAME=Annelid
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Annelid/Annelid.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Annelid/arcade_title_video.webm
