@@ -5,7 +5,7 @@ import thumby
 import math
 import random
 import ujson
-import micropython
+#import micropython
 
 
 player3_sprite = [0,46,251,127,123,255,46,0]
@@ -1452,7 +1452,7 @@ def save(playerInfo):
     for x in range(0, len(playerInfo.inventory)):
         itemDict["item" + str(x)] = obj_to_dict(playerInfo.inventory[x])
     bigDict = [{"player" : playerInfo.playerBlock, "items" : [itemDict], "monsterInfo": [statDict, bodyDict, attackDict, mutateDict]}]
-    print(bigDict)
+    #print(bigDict)
     with open('Games/Tiny_Monster_Trainer/Curtian/tmt.ujson', 'w') as f:
         ujson.dump(bigDict, f)
         f.close()
@@ -1558,7 +1558,7 @@ victory = 0
 
 while(1):
     gc.collect() 
-    micropython.mem_info()
+    #micropython.mem_info()
     while(battle != 1):
         thumby.display.fill(0)
         room = mapChangeCheck(myGuy, world[room], room) # draw world map
