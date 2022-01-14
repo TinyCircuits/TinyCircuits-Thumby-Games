@@ -127,7 +127,7 @@ class AttackMove():
 
 
     def getAnAttackMove(self, selectionNum, elmType=""):
-        f = open('Games/Tiny_Monster_Trainer/Curtian/Attacks.ujson')
+        f = open('/Games/Tiny_Monster_Trainer/Curtian/Attacks.ujson')
         attackJson = ujson.load(f)
 
         self.name = attackJson[elmType][str(selectionNum)]["name"]
@@ -1381,7 +1381,7 @@ def printMon(monsterBody, x, y, playerOrNPC):
 
     
 def trainAnimation(monsterBody):
-    f = open('Games/Tiny_Monster_Trainer/Curtian/Other.ujson')
+    f = open('/Games/Tiny_Monster_Trainer/Curtian/Other.ujson')
     images = ujson.load(f)
     t0 = 0
     ct0 = time.ticks_ms()
@@ -1400,7 +1400,7 @@ def trainAnimation(monsterBody):
 
 def openScreen():
     gc.collect()
-    f = open('Games/Tiny_Monster_Trainer/Curtian/Other.ujson')
+    f = open('/Games/Tiny_Monster_Trainer/Curtian/Other.ujson')
     images = ujson.load(f)
     myScroller = TextForScroller("Press A to Start or B to Load!")
     while(1):
@@ -1419,7 +1419,7 @@ def openScreen():
             return 0
         elif whatDo == 30:
             try:
-                p = open("Games/Tiny_Monster_Trainer/Curtian/tmt.ujson", "r")
+                p = open("/Games/Tiny_Monster_Trainer/Curtian/tmt.ujson", "r")
                 p.close()
             except OSError:
                 battleStartAnimation(0)
@@ -1453,14 +1453,14 @@ def save(playerInfo):
         itemDict["item" + str(x)] = obj_to_dict(playerInfo.inventory[x])
     bigDict = [{"player" : playerInfo.playerBlock, "items" : [itemDict], "monsterInfo": [statDict, bodyDict, attackDict, mutateDict]}]
     #print(bigDict)
-    with open('Games/Tiny_Monster_Trainer/Curtian/tmt.ujson', 'w') as f:
+    with open('/Games/Tiny_Monster_Trainer/Curtian/tmt.ujson', 'w') as f:
         ujson.dump(bigDict, f)
         f.close()
 
 def loadGame():
     gc.collect()
     tempPlayer = Player()
-    f = open('Games/Tiny_Monster_Trainer/Curtian/tmt.ujson')
+    f = open('/Games/Tiny_Monster_Trainer/Curtian/tmt.ujson')
     bigJson = ujson.load(f)
     tempPlayer.playerBlock = bigJson[0]['player'].copy()
     if bigJson[0]['items'] != [{}]:
