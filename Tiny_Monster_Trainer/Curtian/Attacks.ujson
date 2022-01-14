@@ -1,0 +1,72 @@
+{"Default": {
+            "1":{"name":"Poke", "Sta":20, "bnsDmg":0, "pOrM":0, "Type":""},
+            "2":{"name":"Hit", "Sta":10, "bnsDmg":2, "pOrM":0, "Type":""},
+            "3":{"name":"MagicHit", "Sta":10, "bnsDmg":2, "pOrM":1, "Type":""}
+  },
+  "Earth": {
+    "1":{"name":"Rock Toss", "Sta":15, "bnsDmg":10, "pOrM":0, "Type":"Earth"},
+    "2":{"name":"Quake", "Sta":15, "bnsDmg":10, "pOrM":1, "Type":"Earth"},
+    "3":{"name":"Pressure", "Sta":10, "bnsDmg":5, "pOrM":1, "Type":"Water"},
+    "4":{"name":"Entomb", "Sta":10, "bnsDmg":5, "pOrM":0, "Type":"Darkness"}
+  },
+  "Wind":{
+    "1":{"name":"Gust", "Sta":15, "bnsDmg":10, "pOrM":0, "Type":"Wind"},
+    "2":{"name":"Cyclone", "Sta":15, "bnsDmg":10, "pOrM":1, "Type":"Wind"},
+    "3":{"name":"Lightning", "Sta":10, "bnsDmg":5, "pOrM":0, "Type":"Light"},
+    "4":{"name":"Divine Wind","Sta":10,"bnsDmg":5,"pOrM":1,"Type": "Ethereal"}
+  },
+  "Water":{
+    "1":{"name":"Geyser", "Sta":15, "bnsDmg":10, "pOrM":0, "Type":"Water"},
+    "2":{"name":"Ice Shards", "Sta":15, "bnsDmg":10, "pOrM":1, "Type":"Water"},
+    "3":{"name":"Freeze", "Sta":10, "bnsDmg":5, "pOrM":1, "Type":"Mind"},
+    "4":{"name":"Wave", "Sta":10, "bnsDmg":5, "pOrM":0, "Type":"Physical"}
+  },
+  "Fire":{    
+    "1":{"name":"Torch", "Sta":15, "bnsDmg":10, "pOrM":0, "Type":"Fire"},
+    "2":{"name":"Blaze", "Sta":15, "bnsDmg":10, "pOrM":1, "Type":"Fire"},
+    "3":{"name":"Flare", "Sta":10, "bnsDmg":5, "pOrM":1, "Type":"Light"},
+    "4":{"name":"Inferno", "Sta":10, "bnsDmg":5, "pOrM":0, "Type":"Wind"}
+  },
+  "Light":{
+    "1":{"name":"Dazzle", "Sta":15, "bnsDmg":10, "pOrM":0, "Type":"Light"},
+    "2":{"name":"Razzle", "Sta":15, "bnsDmg":10, "pOrM":1, "Type":"Light"},
+    "3":{"name":"Radiance", "Sta":10, "bnsDmg":5, "pOrM":0, "Type":"Fire"},
+    "4":{"name":"Gleam", "Sta":10, "bnsDmg":5, "pOrM":1, "Type":"Mystical"}
+  },
+  "Darkness": {
+    "1":{"name":"Murk", "Sta":15, "bnsDmg":10, "pOrM":0, "Type":"Darkness"},
+    "2":{"name":"Shadow", "Sta":15, "bnsDmg":10, "pOrM":1, "Type":"Darkness"},
+    "3":{"name":"Unholy Poke", "Sta":10, "bnsDmg":5, "pOrM":0, "Type": "Mystical"},
+    "4":{"name":"Dire Ruin", "Sta":10, "bnsDmg":5, "pOrM":1, "Type": "Ethereal"}
+  },
+  "Cute":{
+    "1":{"name":"Sing Song", "Sta":15, "bnsDmg":10, "pOrM":0, "Type":"Cute"},
+    "2":{"name":"Adorbes", "Sta":15, "bnsDmg":10, "pOrM":1, "Type":"Cute"},
+    "3":{"name":"Bubbles", "Sta":10, "bnsDmg":5, "pOrM":0, "Type": "Water"},
+    "4":{"name":"Fluff Ball", "Sta":10, "bnsDmg":5, "pOrM":1, "Type": "Physical"}
+  },
+    "Mind":{
+    "1":{"name":"Headbutt", "Sta":15, "bnsDmg":10, "pOrM":0, "Type":"Mind"},
+    "2":{"name":"Psychic", "Sta":15, "bnsDmg":10, "pOrM":1, "Type":"Mind"},
+    "3":{"name":"Telekinesis", "Sta":10, "bnsDmg":5, "pOrM":0, "Type": "Earth"},
+    "4":{"name":"Good Vibes", "Sta":10, "bnsDmg":5, "pOrM":1, "Type": "Cute"}
+    },
+    "Physical":{
+    "1":{"name":"Body Slam", "Sta":15, "bnsDmg":10, "pOrM":0, "Type":"Physical"},
+    "2":{"name":"Super Hit", "Sta":15, "bnsDmg":10, "pOrM":1, "Type":"Physical"},
+    "3":{"name":"Boulder Toss", "Sta":10, "bnsDmg":5, "pOrM":0, "Type": "Earth"},
+    "4":{"name":"Love Tap", "Sta":10, "bnsDmg":5, "pOrM":0, "Type": "Cute"}
+    },
+    "Mystical":{
+    "1":{"name":"Magic Missile", "Sta":15, "bnsDmg":10, "pOrM":0, "Type":"Mystical"},
+    "2":{"name":"Ritual", "Sta":15, "bnsDmg":10, "pOrM":1, "Type":"Mystical"},
+    "3":{"name":"Rune Toss", "Sta":10, "bnsDmg":5, "pOrM":0, "Type": "Wind"},
+    "4":{"name":"Immolate", "Sta":10, "bnsDmg":5, "pOrM":1, "Type": "Fire"}
+    },
+    "Ethereal":{
+    "1":{"name":"Spooky Hit", "Sta":15, "bnsDmg":10, "pOrM":0, "Type":"Ethereal"},
+    "2":{"name":"Superlunary", "Sta":15, "bnsDmg":10, "pOrM":1, "Type":"Ethereal"},
+    "3":{"name":"Obscurity", "Sta":10, "bnsDmg":5, "pOrM":1, "Type": "Darkness"},
+    "4":{"name":"Rue", "Sta":10, "bnsDmg":5, "pOrM":1, "Type": "Mind"}
+    }
+}
