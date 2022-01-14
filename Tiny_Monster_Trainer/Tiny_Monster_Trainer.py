@@ -383,7 +383,7 @@ class Monster:
     
     def makeMonBody(self):
         gc.collect()
-        f = open('Games/Tiny_Monster_Trainer/Curtian/MonsterParts.ujson')
+        f = open('/Games/Tiny_Monster_Trainer/Curtian/MonsterParts.ujson')
         monsterParts = ujson.load(f)
 
         if random.randint(0,60) != 1:
