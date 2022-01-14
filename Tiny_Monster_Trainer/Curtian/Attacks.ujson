@@ -58,7 +58,7 @@
     "4":{"name":"Love Tap", "Sta":10, "bnsDmg":5, "pOrM":0, "Type": "Cute"}
     },
     "Mystical":{
-    "1":{"name":"Magic Missile", "Sta":15, "bnsDmg":10, "pOrM":0, "Type":"Mystical"},
+    "1":{"name":"MagicMissile", "Sta":15, "bnsDmg":10, "pOrM":0, "Type":"Mystical"},
     "2":{"name":"Ritual", "Sta":15, "bnsDmg":10, "pOrM":1, "Type":"Mystical"},
     "3":{"name":"Rune Toss", "Sta":10, "bnsDmg":5, "pOrM":0, "Type": "Wind"},
     "4":{"name":"Immolate", "Sta":10, "bnsDmg":5, "pOrM":1, "Type": "Fire"}
