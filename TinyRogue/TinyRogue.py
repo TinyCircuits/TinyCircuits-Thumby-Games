@@ -508,7 +508,7 @@ def load_data():
     global screenw,screenh,screenbuffer,charw,charh,fontsize,sprites
     global spells,classes,monsters,bosses,treasures,settings,config,lang,text_credits,text_story,text_help,text_bool,text_back,text_skip,text_info
     ## load display
-    screenw,screenh=thumby.DISPLAY_W,thumby.DISPLAY_H
+    screenw,screenh=thumby.display.width,thumby.display.height
     render_cls(0)
     render_update()
     ## load graphics
@@ -524,7 +524,7 @@ def load_data():
     text_skip,text_info=lang['z']+"/"+lang['x']+" SKIPS",lang['z']+"=? "+lang['x']+"=GO"
 
 def render_cls(v=0):
-    thumby.display.fill(v)
+    thumby.display.fill(int(v))
 def render_update():
     thumby.display.update()
 def render_text(s,x,y,c=1):
@@ -532,13 +532,13 @@ def render_text(s,x,y,c=1):
 def render_rect(x,y,w,h,border=1,inner=0,edge=2):
     x,y=round(x*charw),round(y*charh)
     if inner!=0:
-        thumby.display.fillRect(x,y,w,h,inner)
-        thumby.display.rect(x,y,w,h,border)
+        thumby.display.drawFilledRectangle(x,y,w,h,inner)
+        thumby.display.drawRectangle(x,y,w,h,border)
     else:
-        thumby.display.fillRect(x,y,w,h,inner)
-        thumby.display.rect(x,y,w,h,border)
+        thumby.display.drawFilledRectangle(x,y,w,h,inner)
+        thumby.display.drawRectangle(x,y,w,h,border)
 def render_sprite(spr,x,y,w=8,h=8,k=0):
-    thumby.display.blit(spr,round(x*charw),round(y*charh),w,h,k)
+    thumby.display.blit(bytearray(spr),round(x*charw),round(y*charh),w,h,k,0,0)
 def beep():
     thumby.audio.play(440,100)
     
