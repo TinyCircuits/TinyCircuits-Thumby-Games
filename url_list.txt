@@ -29,7 +29,9 @@ https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Thumgeon/arcade_description.txt
 
 NAME=thumby_smash
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/thumby_smash/arcade_title_video.webm
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/thumby_smash/thumby_smash.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/thumby_smash/arcade_description.txt
 
 NAME=SaurRun
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/SaurRun/SaurRun.py
