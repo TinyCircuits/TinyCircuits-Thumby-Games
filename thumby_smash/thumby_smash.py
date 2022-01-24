@@ -78,6 +78,7 @@ def singleplayer_battle(char, enemy_char, config):
                 thumby.display.update()
                 time.sleep(0.1)
                 if thumby.buttonB.pressed():
+                    match_over = False
                     config = main_menu()
         #Hit function for most (NOT ALL) damaging attacks       
         def hit(damage, weight, x_knockback, y_knockback, direction, a_x, a_y, a_health):
@@ -466,8 +467,10 @@ def singleplayer_battle(char, enemy_char, config):
     while battling == True:
         thumby.display.fill(1)
         thumby.display.drawRectangle(0, 36, 100, 2, 0)
-        thumby.display.drawText(str(p_health), 0, 12, 0)
-        thumby.display.drawText(str(a_health), 0, 32, 0)
+        p_health_text = str('You:'  + str(p_health))
+        a_health_text = str('Opponent:'  + str(a_health))
+        thumby.display.drawText(str(p_health_text), 0, 0, 0)
+        thumby.display.drawText(str(a_health_text), 0, 8, 0)
         c_list = None
         c_list = character_move(char, p_jumpheight, p_attack, p_health, p_speed, p_weight, 'human', state, p_x, p_y, p_direction, ai_x, ai_y, a_jumpheight, a_attack, a_health, a_speed, a_weight, cooldown, knockback_state, trident_data, config)
         cooldown = c_list[9]
