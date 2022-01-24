@@ -2,7 +2,11 @@ import random, thumby, time, gc
 gc.enable()
 box = bytearray([0,254,254,254,254,254,254,254,254,254,254,254,254,254,254,0,
             0,127,127,127,127,127,127,127,127,127,127,127,127,127,127,0])
+knockback_state = 0
+ai_knockback_state = 0
 def singleplayer_battle(char, enemy_char, config):
+    global knockback_state
+    global ai_knockback_state
     def character_move(name, jumpheight, attack, health, speed, weight, player_type, state, x, y, direction, a_x, a_y, a_jumpheight, a_attack, a_health, a_speed, a_weight, cooldown, knockback_state, trident_data, config):
         goggles_walk_sprite = bytearray([243,245,246,150,98,108,142,158,110,108,130,22,246,245,243,255,
                255,255,255,191,222,101,155,155,99,93,126,255,255,255,255,255])
@@ -73,6 +77,8 @@ def singleplayer_battle(char, enemy_char, config):
                 thumby.display.drawText(outcome, 20, 12, 0)
                 thumby.display.update()
                 time.sleep(0.1)
+                if thumby.buttonB.pressed():
+                    config = main_menu()
         #Hit function for most (NOT ALL) damaging attacks       
         def hit(damage, weight, x_knockback, y_knockback, direction, a_x, a_y, a_health):
             if direction == 'Right':
@@ -115,7 +121,7 @@ def singleplayer_battle(char, enemy_char, config):
             decision = random.randint(1,2)
             if  x > a_x + 10:
                 L_Pressed = True
-            elif a_x > x + 10:
+            elif a_x > x + 10: 
                 R_Pressed = True
             if decision == 1:
                 BU_Pressed = True
@@ -454,8 +460,6 @@ def singleplayer_battle(char, enemy_char, config):
         a_jumpheight, a_attack, a_health, a_speed, a_weight = 12, 9, 200, 2, 6
     cooldown = 0
     ai_cooldown = 0
-    knockback_state = 0
-    ai_knockback_state = 0
     trident_data = None
     ai_trident_data = None
     
@@ -625,9 +629,9 @@ def main_menu():
      config = None
      while menu == True:
          
-         if thumby.buttonD.pressed():
+         if thumby.buttonD.pressed() and arrow_location == 0:
              arrow_location += 1
-         elif thumby.buttonU.pressed():
+         elif thumby.buttonU.pressed() and arrow_location == 1:
              arrow_location -= 1
          thumby.display.fill(1)
          thumby.display.drawText('Thumby', 0, 0, 0)
@@ -692,6 +696,8 @@ def character_select(config):
             selected += 1
         elif thumby.buttonL.pressed() and selected > 0:
             selected -= 1
+        elif thumby.buttonB.pressed():
+            config = main_menu()
         elif thumby.buttonA.pressed():
             selected_char = chars[selected][0]
             random.seed(time.ticks_us())
