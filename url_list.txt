@@ -20,12 +20,6 @@ https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyHeli/heliSpr.bin
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyHeli/arcade_title_video.webm
 
-NAME=3D_MAZE_2
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/3D_MAZE_2/arcade_title_image.png
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/3D_MAZE_2/arcade_description.txt
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/3D_MAZE_2/3D_MAZE.py
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/3D_MAZE_2/arcade_title_video.webm
-
 NAME=SaurRun
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/SaurRun/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/SaurRun/SaurRun.py
@@ -40,6 +34,12 @@ NAME=SpaceDebris
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/SpaceDebris/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/SpaceDebris/arcade_title_video.webm
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/SpaceDebris/SpaceDebris.py
+
+NAME=3D_MAZE
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/3D_MAZE/arcade_title_image.png
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/3D_MAZE/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/3D_MAZE/3D_MAZE.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/3D_MAZE/arcade_title_video.webm
 
 NAME=TinyRogue
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyRogue/arcade_description.txt
