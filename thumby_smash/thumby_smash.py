@@ -2,11 +2,7 @@ import random, thumby, time, gc
 gc.enable()
 box = bytearray([0,254,254,254,254,254,254,254,254,254,254,254,254,254,254,0,
             0,127,127,127,127,127,127,127,127,127,127,127,127,127,127,0])
-knockback_state = 0
-ai_knockback_state = 0
 def singleplayer_battle(char, enemy_char, config):
-    global knockback_state
-    global ai_knockback_state
     def character_move(name, jumpheight, attack, health, speed, weight, player_type, state, x, y, direction, a_x, a_y, a_jumpheight, a_attack, a_health, a_speed, a_weight, cooldown, knockback_state, trident_data, config):
         goggles_walk_sprite = bytearray([243,245,246,150,98,108,142,158,110,108,130,22,246,245,243,255,
                255,255,255,191,222,101,155,155,99,93,126,255,255,255,255,255])
@@ -53,12 +49,22 @@ def singleplayer_battle(char, enemy_char, config):
            255,255,255,224,223,189,183,183,183,183,189,223,224,255,255,255])
         blobbo_walk_2 = bytearray([255,255,255,255,127,127,191,191,191,191,127,127,255,255,255,255,
            255,255,225,222,223,187,175,175,175,175,187,223,222,225,255,255])
-        
+        fang_walk_1 = bytearray([255,211,161,205,204,30,246,226,246,254,252,97,3,113,56,255,
+           255,255,255,248,246,246,249,132,62,126,126,126,64,0,56,255])
+        fang_walk_2 = bytearray([255,211,161,205,204,30,246,226,246,254,252,97,3,113,56,255,
+           255,255,255,120,54,54,57,4,62,254,254,254,192,128,56,255])
+        fang_attack_1 = bytearray([255,211,161,205,204,30,246,226,246,254,252,97,3,113,56,255,
+           239,199,239,232,230,230,233,132,46,110,110,110,64,0,56,255])
+        fang_attack_2 = bytearray([7,179,49,205,205,29,246,226,246,254,254,252,61,195,227,248,
+           255,254,255,120,54,54,57,4,62,62,184,162,128,128,24,159])
         # BITMAP: width: 32, height: 8
         # BITMAP: width: 32, height: 8
         charge_beam_right = bytearray([126,189,195,239,247,239,247,239,247,239,247,239,247,239,247,239,247,239,247,239,247,239,247,239,247,239,247,239,247,239,247,239])
         line_2 = bytearray([255,129,255,135,255,129,255,135])
         waves = bytearray([189,219,231,255,189,219,231,255])
+        # BITMAP: width: 12, height: 12
+        portal = bytearray([7,251,13,246,218,172,182,246,6,253,251,7,
+           14,13,11,6,5,5,5,6,7,11,13,14])
         # BITMAP: width: 20, height: 20
         waves_2 = bytearray([127,143,241,254,127,143,241,254,255,255,255,255,254,241,143,127,254,241,143,127,
            240,15,255,255,240,15,255,255,255,255,255,255,255,255,15,240,255,255,15,240,
@@ -79,16 +85,15 @@ def singleplayer_battle(char, enemy_char, config):
                 time.sleep(0.1)
                 if thumby.buttonB.pressed():
                     match_over = False
-                    config = main_menu()
+                    battling = False
+                    character_select(config)
         #Hit function for most (NOT ALL) damaging attacks       
         def hit(damage, weight, x_knockback, y_knockback, direction, a_x, a_y, a_health):
-            if direction == 'Right':
-                a_x += int(x_knockback - weight) * (health // 50)
-            elif direction == 'Left':
-                a_x -= int(x_knockback - weight) * (health // 50)
+            knockback_state = int(int(x_knockback - weight) * (health // 50)) 
             a_y += (y_knockback - weight) * health // 50
             a_health -= damage
-            return [a_x, a_y, a_health]
+            return [a_x, a_y, a_health, knockback_state]
+            
         A_Pressed = False
         AR_Pressed = False
         AU_Pressed = False
@@ -97,6 +102,26 @@ def singleplayer_battle(char, enemy_char, config):
         R_Pressed = False
         L_Pressed = False
         U_Pressed = False
+        
+        difficulty = config[0]
+        
+        #if knockback, disable controls: 
+        if knockback_state != 0:
+                A_Pressed = False
+                AR_Pressed = False
+                AU_Pressed = False
+                BU_Pressed = False
+                B_Pressed = False
+                R_Pressed = False
+                L_Pressed = False
+                U_Pressed = False
+                print(knockback_state)
+                knockback_state -= 1
+                if direction == 'Right':
+                    a_x += 10
+                elif direction == 'Left':
+                    a_x -= 10
+        
         if player_type == 'human':
             if thumby.buttonB.pressed() and thumby.buttonU.pressed():
                 BU_Pressed = True
@@ -114,11 +139,10 @@ def singleplayer_battle(char, enemy_char, config):
                 L_Pressed = True
             elif thumby.buttonU.pressed():
                 U_Pressed = True
-                
-        difficulty = config[0]
-         
+        
+        
         #Zap AI
-        if player_type == 'ai' and name == 'zap':
+        elif player_type == 'ai' and name == 'zap':
             decision = random.randint(1,2)
             if  x > a_x + 10:
                 L_Pressed = True
@@ -164,7 +188,8 @@ def singleplayer_battle(char, enemy_char, config):
                 R_Pressed = True
             if cooldown == 0 :
                 A_Pressed = True
-            
+                
+           
                    
         #Zap Code        
         if name == 'zap':
@@ -202,10 +227,11 @@ def singleplayer_battle(char, enemy_char, config):
                                     is_hit = True
                 if is_hit == True:
                     print(hitdata)
-                    hitdata = hit(15, weight, 25, 15, direction, a_x, a_y, a_health)
+                    hitdata = hit(15, weight, 12, 15, direction, a_x, a_y, a_health)
                     a_x = hitdata[0]
                     a_y = hitdata[1]
                     a_health = hitdata[2]
+                    knockback_state = hitdata[3]
                                    
             elif BU_Pressed == True and cooldown == 0:
                 if state != 'attack_2_upper_1' and state != 'attack_2_upper_2' and state != 'attack_2_upper_3' and cooldown == 0:
@@ -219,6 +245,7 @@ def singleplayer_battle(char, enemy_char, config):
                                     a_x = hitdata[0]
                                     a_y = hitdata[1]
                                     a_health = hitdata[2]
+                                    knockback_state = hitdata[3]
                                     is_hit = True
                     if direction == 'Right':
                         is_flipped_x = False
@@ -249,10 +276,11 @@ def singleplayer_battle(char, enemy_char, config):
                                 if y - j == a_y:
                                     is_hit = True
                 if is_hit == True:
-                    hitdata = hit(20, weight, 30, 5, direction, a_x, a_y, a_health)
+                    hitdata = hit(20, weight, 15, 5, direction, a_x, a_y, a_health)
                     a_x = hitdata[0]
                     a_y = hitdata[1]
                     a_health = hitdata[2]
+                    knockback_state = hitdata[3]
             if is_hit == True and y > 20:
                 current_sprite = zap_hit
                 if direction == 'Right':
@@ -295,10 +323,11 @@ def singleplayer_battle(char, enemy_char, config):
                         if x + i == a_x:
                             for j in range(16):
                                 if y + j == a_y:
-                                    hitdata = hit(16, weight, 30, 10, direction, a_x, a_y, a_health)
+                                    hitdata = hit(16, weight, 15, 10, direction, a_x, a_y, a_health)
                                     a_x = hitdata[0]
                                     a_y = hitdata[1]
                                     a_health = hitdata[2]
+                                    knockback_state = hitdata[3]
                 else:
                     is_flipped_x = True
                     current_sprite = goggles_attack_1
@@ -307,10 +336,11 @@ def singleplayer_battle(char, enemy_char, config):
                         if x - i == a_x:
                             for j in range(16):
                                 if y - j == a_y:
-                                    hitdata = hit(16, weight, 30, 10, direction, a_x, a_y, a_health)
+                                    hitdata = hit(16, weight, 15, 10, direction, a_x, a_y, a_health)
                                     a_x = hitdata[0]
                                     a_y = hitdata[1]
                                     a_health = hitdata[2]
+                                    knockback_state = hitdata[3]
             elif B_Pressed == True:
                 in_range = False
                 if direction == 'Right':
@@ -338,7 +368,7 @@ def singleplayer_battle(char, enemy_char, config):
                                 if y - j == a_y:
                                  in_range = True
                     if in_range == True:
-                        a_x = x + 5
+                        a_x = x - 5
                     i = 0
                     for i in range(4):
                         thumby.display.blit(waves, x*-1*i, y+10, 8, 8, 1, 0, 0)
@@ -392,6 +422,7 @@ def singleplayer_battle(char, enemy_char, config):
                                     a_y += 12 - weight
                                     a_health -= attack
                                     
+                                    
             if R_Pressed == True:
                 x += speed
                 direction = 'Right'
@@ -413,6 +444,10 @@ def singleplayer_battle(char, enemy_char, config):
                 x = 70
             if 0 > x:
                 x = 0
+            if a_x > 70:
+                knockback_state = 0
+            if 0 > a_x:
+                knockback_state = 0
         elif config[3] == 'Damage':
             if 0 > x:
                 health -= 20
@@ -447,6 +482,9 @@ def singleplayer_battle(char, enemy_char, config):
     ai_x = 60
     ai_y = 20
     ai_direction = 'Right'
+    knockback_state = 0
+    ai_knockback_state = 0
+    
     if char == 'goggles':
         p_jumpheight, p_attack, p_health, p_speed, p_weight = 12, 7, 240, 3, 4
     if char == 'zap':
@@ -459,6 +497,7 @@ def singleplayer_battle(char, enemy_char, config):
         a_jumpheight, a_attack, a_health, a_speed, a_weight = 20, 5, 170, 4, 2
     if enemy_char == 'apex':
         a_jumpheight, a_attack, a_health, a_speed, a_weight = 12, 9, 200, 2, 6
+        
     cooldown = 0
     ai_cooldown = 0
     trident_data = None
@@ -482,6 +521,7 @@ def singleplayer_battle(char, enemy_char, config):
         p_direction = c_list[3]
         ai_x = c_list[4]
         ai_y = c_list[5]
+        knockback_state = c_list[8]
         trident_data = c_list[10]
         a_health = c_list[7]
         ai_mode = config[1]
@@ -500,7 +540,7 @@ def singleplayer_battle(char, enemy_char, config):
         ai_direction = ai_c_list[3]
         ai_x = ai_c_list[1]
         ai_y = ai_c_list[2]
-        ai_trident_data = c_list[10]
+        ai_knockback_state = ai_c_list[8]
         p_health = ai_c_list[7]
         time.sleep(0.1*config[2])
         thumby.display.update()
@@ -530,9 +570,9 @@ def main_menu():
          menu = True
          arrow_location = 0
          while configmenu == True:
-             if thumby.buttonD.pressed():
+             if thumby.buttonD.pressed() and arrow_location < 2:
                  arrow_location += 1
-             elif thumby.buttonU.pressed():
+             elif thumby.buttonU.pressed() and arrow_location > 0:
                  arrow_location -= 1
              thumby.display.fill(1)
              thumby.display.drawText('AI Config', 0, 0, 0)
@@ -555,19 +595,19 @@ def main_menu():
                      elif thumby.buttonB.pressed():
                          ai_config_menu = False
                      if arrow_location == 0:
-                         thumby.display.blit(menu_arrow, 5, 0, 5, 5, 1, 0, 0)
+                         thumby.display.blit(menu_arrow, 0, 0, 5, 5, 1, 0, 0)
                          if thumby.buttonR.pressed() and ai_stupidity < 20:
                             ai_stupidity += 1
                          elif thumby.buttonL.pressed() and ai_stupidity > 0:
                             ai_stupidity -= 1
                      elif arrow_location == 1:
-                         thumby.display.blit(menu_arrow, 5, 25, 5, 5, 1, 0, 0)
+                         thumby.display.blit(menu_arrow, 0, 25, 5, 5, 1, 0, 0)
                          if thumby.buttonR.pressed() and ai_mode < 1:
                             ai_mode += 1
                          elif thumby.buttonL.pressed() and ai_mode > 0:
                             ai_mode -= 1
-                     thumby.display.drawText('AI Stupidity:', 5, 0, 0)
-                     thumby.display.drawText('AI Mode:', 5, 25, 0)
+                     thumby.display.drawText('AI Stupidity:', 0, 0, 0)
+                     thumby.display.drawText('AI Mode:', 0, 20, 0)
                      thumby.display.drawRectangle(5, 10, 25, 2, 0)
                      thumby.display.drawRectangle(5, 30, 7, 2, 0)
                      thumby.display.blit(slider, ai_stupidity+5, 10, 7, 7, 1, 0, 0)
@@ -587,13 +627,13 @@ def main_menu():
                      thumby.display.drawText('Game Pace:', 5, 0, 0)
                      thumby.display.drawRectangle(1, 15, 10, 2, 0)
                      thumby.display.blit(slider, game_pace, 15, 7, 7, 1, 0, 0)
-                     thumby.display.drawText('Wall Behavior:', 5, 25, 0)
+                     thumby.display.drawText('Wall Behavior:', 5, 20, 0)
                      thumby.display.drawRectangle(1, 30, 10, 2, 0)
                      thumby.display.blit(slider, wall_int*3, 30, 7, 7, 1, 0, 0)
                      thumby.display.drawText(str(wall_int),wall_int*3, 35, 1)
-                     if thumby.buttonD.pressed():
+                     if thumby.buttonD.pressed() and arrow_location == 0:
                         arrow_location += 1
-                     elif thumby.buttonU.pressed():
+                     elif thumby.buttonU.pressed() and arrow_location == 1:
                         arrow_location -= 1
                      if arrow_location == 0:
                          thumby.display.blit(menu_arrow, 0, 15, 5, 5, 1, 0, 0)
@@ -687,6 +727,12 @@ def character_select(config):
         # BITMAP: width: 16, height: 16
         blobbo_icon_selected = bytearray([0,0,0,4,196,36,20,20,20,20,36,196,4,4,0,0,
            0,0,0,31,32,66,72,72,72,72,66,32,31,0,0,0])
+        # BITMAP: width: 16, height: 16
+        fan_icon = bytearray([255,7,251,253,238,198,238,254,254,238,198,238,253,251,7,255,
+           255,254,128,119,79,47,77,111,111,77,47,79,119,128,254,255])
+        # BITMAP: width: 16, height: 16
+        fang_icon_selecyed = bytearray([0,248,4,2,17,57,17,1,1,17,57,17,2,4,248,0,
+           0,1,127,136,176,208,178,144,144,178,208,176,136,127,1,0])
         thumby.display.fill(1)
         chars = [['goggles', goggles_icon, goggles_icon_selected], ['zap', zap_icon, zap_icon_selected], ['apex', apex_icon, apex_icon_selected]]
         for i in range(len(chars)):
