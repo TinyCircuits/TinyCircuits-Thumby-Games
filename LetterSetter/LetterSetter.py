@@ -196,7 +196,7 @@ while(1):
             strscore = str(score)
             
             #Correct order as needed
-            if (score % 6) < 3:
+            if (score % 6) < 4:
                 ActiveColumns.reverse()
             
             
