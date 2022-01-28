@@ -114,15 +114,20 @@ def ClearVars():
     global score 
     global strscore 
     global ActiveColumns 
-
+    global CurAlpha
+    global CurAlpha2
 
 #Copy LegalWords Class to create dictionary
     CurLegalWords = LegalWords
+    
+#Create clean CurAlpha    
+    CurAlpha = ALPHA.copy()
+    CurAlpha2 = CurAlpha[-5:] + CurAlpha
 
 #Select starting word from dictionary and remove it via POP
     random.seed(time.ticks_us())    
     FirstLetter = random.choice(ALPHA)
-    RandomWord = getattr(CurLegalWords, FirstLetter).pop(random.randrange(len(getattr(CurLegalWords, FirstLetter))))
+    RandomWord = random.choice(getattr(CurLegalWords, FirstLetter))
 
 #Turn word string into array.
     Playfield = list(RandomWord)
@@ -151,7 +156,6 @@ def CurAlphaRemove():
 
 
 ClearVars()
-CurAlphaRemove()
 ScrollAnimTimer1 = AlphaNum[ALPHA.index(Playfield[ActiveColumns[score % len(ActiveColumns)]])]    
 ##################################Main Game Loop   #################################### 
 while(1):
@@ -183,8 +187,13 @@ while(1):
         LegalWord = getattr(CurLegalWords, Playfield[0])
         if PlayfieldWord in LegalWord:
             LegalWord.pop(LegalWord.index(PlayfieldWord))
+            score = score + 1
+            strscore = str(score)
+            CurAlphaRemove()
         else:
             ActiveColumns.pop(score % len(ActiveColumns))
+            score = score + 1
+            strscore = str(score)
             
             #Correct order as needed
             if (score % 6) < 3:
@@ -194,6 +203,7 @@ while(1):
             #Check for Game Over
             if len(ActiveColumns) == 0:
                 while(thumby.buttonB.pressed() == False):
+                    thumby.display.fill(1)
                     thumby.display.drawText(strscore,0,0,0)
                     thumby.display.drawText("Game Over!",7,9,0)
                     thumby.display.drawText("B: Again?",14,21,0)
@@ -202,10 +212,11 @@ while(1):
                 if thumby.buttonA.pressed():
                     machine.reset()
                 ClearVars()
-                score = -1
-        score = score + 1
-        strscore = str(score)
-        CurAlphaRemove()
+            else:
+                CurAlphaRemove()
+                
+        
+
         ScrollAnimTimer1 = AlphaNum[ALPHA.index(Playfield[ActiveColumns[score % len(ActiveColumns)]])]
         
         
