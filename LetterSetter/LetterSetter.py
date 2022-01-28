@@ -2,7 +2,7 @@ import time
 import thumby
 import math
 import random
-import sys
+import machine
 
 while(thumby.buttonA.pressed() == False and thumby.buttonB.pressed() == False):
     thumby.display.fill(1)
@@ -13,7 +13,7 @@ while(thumby.buttonA.pressed() == False and thumby.buttonB.pressed() == False):
     thumby.display.update()
     
 if thumby.buttonA.pressed():
-    sys.exit()
+    machine.reset()
 
 #set FPS to 60
 thumby.display.setFPS(60)
