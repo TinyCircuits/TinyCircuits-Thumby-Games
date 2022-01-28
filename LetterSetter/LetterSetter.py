@@ -106,7 +106,6 @@ def ClearVars():
     
     global CurLegalWords
     global Playfield
-    global ScrollAnimTimer1
     global PressedLast     
     global delta 
     global direction 
@@ -124,7 +123,7 @@ def ClearVars():
     CurAlpha = ALPHA.copy()
     CurAlpha2 = CurAlpha[-5:] + CurAlpha
 
-#Select starting word from dictionary and remove it via POP
+#Select starting word from dictionary
     random.seed(time.ticks_us())    
     FirstLetter = random.choice(ALPHA)
     RandomWord = random.choice(getattr(CurLegalWords, FirstLetter))
@@ -133,7 +132,6 @@ def ClearVars():
     Playfield = list(RandomWord)
 
 #init variables
-    ScrollAnimTimer1 = AlphaNum[0]
     PressedLast = ""    
     delta = 0
     direction = 0
