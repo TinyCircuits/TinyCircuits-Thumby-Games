@@ -194,11 +194,13 @@ while(1):
             #Check for Game Over
             if len(ActiveColumns) == 0:
                 while(thumby.buttonB.pressed() == False):
-                    thumby.display.fill(1)
                     thumby.display.drawText(strscore,0,0,0)
-                    thumby.display.drawText("Game Over!",10,15,0)
-                    thumby.display.drawText("B: Again?",14,30,0)
+                    thumby.display.drawText("Game Over!",7,9,0)
+                    thumby.display.drawText("B: Again?",14,21,0)
+                    thumby.display.drawText("A>+B: Quit",7,30,0)
                     thumby.display.update()
+                if thumby.buttonA.pressed():
+                    machine.reset()
                 ClearVars()
                 score = -1
         score = score + 1
