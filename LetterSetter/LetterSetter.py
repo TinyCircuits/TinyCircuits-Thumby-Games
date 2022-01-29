@@ -54,10 +54,10 @@ ALPHA = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "
 
 #Generate list of pixel-perfect starting positions per each letter
 AlphaNum = []
-AlphaNumStep = 286
+AlphaNumStep = 280
 for z in range(26, 0, -1):
-        # I have no effing clue how\why this formula works, I just brute-forced it:
-        AlphaNum.append(int((z * AlphaNumStep) - (3*AlphaNumStep) - (6*z)))
+        # Total Row Height minus  Horizontal Offset (Letter A first) minus Vertical Offset
+        AlphaNum.append(int((z * AlphaNumStep) - (3*AlphaNumStep) - 12))
 
 #Sqaure Selector box gfx
 bitmap0 = bytearray([254,1,1,1,1,1,1,1,254,3,4,4,4,4,4,4,4,3])
@@ -110,7 +110,7 @@ def ClearVars():
     global delta 
     global direction 
     global delta2 
-    global score 
+    global turn 
     global strscore 
     global ActiveColumns 
     global CurAlpha
@@ -123,7 +123,7 @@ def ClearVars():
     CurAlpha = ALPHA.copy()
     CurAlpha2 = CurAlpha[-5:] + CurAlpha
 
-#Select starting word from dictionary
+#Select starting word from dictionary and remove it via POP
     random.seed(time.ticks_us())    
     FirstLetter = random.choice(ALPHA)
     RandomWord = random.choice(getattr(CurLegalWords, FirstLetter))
@@ -136,7 +136,7 @@ def ClearVars():
     delta = 0
     direction = 0
     delta2 = 0
-    score = 0
+    turn = 0
     strscore = "0"
     ActiveColumns = [0,1,2]
 
@@ -145,7 +145,7 @@ def CurAlphaRemove():
     global CurAlpha
     global CurAlpha2
     CurAlpha = ALPHA.copy()
-    CurLetterChar = Playfield[ActiveColumns[score % len(ActiveColumns)]]
+    CurLetterChar = Playfield[ActiveColumns[turn % len(ActiveColumns)]]
     CurLetterNumber = ALPHA.index(CurLetterChar)
     CurAlpha[CurLetterNumber] = "-"
     CurAlpha2 = CurAlpha[-5:] + CurAlpha
@@ -154,7 +154,8 @@ def CurAlphaRemove():
 
 
 ClearVars()
-ScrollAnimTimer1 = AlphaNum[ALPHA.index(Playfield[ActiveColumns[score % len(ActiveColumns)]])]    
+ScrollAnimTimer1 = AlphaNum[ALPHA.index(Playfield[ActiveColumns[turn % len(ActiveColumns)]])]  
+
 ##################################Main Game Loop   #################################### 
 while(1):
     
@@ -179,22 +180,24 @@ while(1):
     if PressedLast == "a" and thumby.buttonB.pressed() == False and (ModTime  % 8) == 0 and not CurAlpha[CurLetter] == "-":
         PressedLast = "A"
         direction = 0
-        Playfield[ActiveColumns[score % len(ActiveColumns)]] = CurAlpha[CurLetter]
+        Playfield[ActiveColumns[turn % len(ActiveColumns)]] = CurAlpha[CurLetter]
         
         PlayfieldWord = ''.join(Playfield)
         LegalWord = getattr(CurLegalWords, Playfield[0])
         if PlayfieldWord in LegalWord:
             LegalWord.pop(LegalWord.index(PlayfieldWord))
-            score = score + 1
+            turn = turn + 1
+            score = turn - (3-len(ActiveColumns))
             strscore = str(score)
             CurAlphaRemove()
         else:
-            ActiveColumns.pop(score % len(ActiveColumns))
-            score = score + 1
+            ActiveColumns.pop(turn % len(ActiveColumns))
+            turn = turn + 1
+            score = turn - (3-len(ActiveColumns))
             strscore = str(score)
             
             #Correct order as needed
-            if ((score+5) % 6) < 3:
+            if ((turn+5) % 6) < 3:
                 ActiveColumns.reverse()
             
             
@@ -215,7 +218,7 @@ while(1):
                 
         
 
-        ScrollAnimTimer1 = AlphaNum[ALPHA.index(Playfield[ActiveColumns[score % len(ActiveColumns)]])]
+        ScrollAnimTimer1 = AlphaNum[ALPHA.index(Playfield[ActiveColumns[turn % len(ActiveColumns)]])]
         
         
   
@@ -279,7 +282,7 @@ while(1):
     thumby.display.fill(0) # Fill canvas to black
 
     # Center the sprite using screen and bitmap dimensions and apply bob offset
-    x = int((thumby.display.width/2) - 28) + (ActiveColumns[(score % len(ActiveColumns))] * 24)
+    x = int((thumby.display.width/2) - 28) + (ActiveColumns[(turn % len(ActiveColumns))] * 24)
     y = int(round(thumby.display.height/2)) - 4
     
     #Cycle thru alpha based on gametime# BITMAP: width: 9, height: 11
