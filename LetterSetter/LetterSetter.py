@@ -186,11 +186,10 @@ while(1):
     if PressedLast == "a" and thumby.buttonB.pressed() == False and (ModTime  % 8) == 0 and not CurAlpha[CurLetter] == "-":
         PressedLast = "A"
         direction = 0
-	TempPlayfield = None
         TempPlayfield = Playfield.copy()
         TempPlayfield[ActiveColumns[turn % len(ActiveColumns)]] = CurAlpha[CurLetter]
         PlayfieldWord = ''.join(TempPlayfield)
-        LegalWord = getattr(CurLegalWords, Playfield[0])
+        LegalWord = getattr(CurLegalWords, TempPlayfield[0])
         if PlayfieldWord in LegalWord:
             Playfield[ActiveColumns[turn % len(ActiveColumns)]] = CurAlpha[CurLetter]
             LegalWord.pop(LegalWord.index(PlayfieldWord))
