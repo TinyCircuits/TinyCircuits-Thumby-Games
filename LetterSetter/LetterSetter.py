@@ -12,8 +12,10 @@ while(thumby.buttonA.pressed() == False and thumby.buttonB.pressed() == False):
     thumby.display.drawText("A: Quit",14,30,0)
     thumby.display.update()
     
-if thumby.buttonA.pressed():
-    machine.reset()
+    if thumby.buttonA.pressed():
+	    thumby.display.fill(0)
+	    thumby.display.update()
+	    machine.reset()
 
 #set FPS to 60
 thumby.display.setFPS(60)
@@ -102,12 +104,13 @@ thumbySpriteReverse3.y = y-2
 #Smaller is Faster
 ScrollRate = 35
 
+delta = 0
+
 def ClearVars():
     
     global CurLegalWords
     global Playfield
     global PressedLast     
-    global delta 
     global direction 
     global delta2 
     global turn 
@@ -115,6 +118,8 @@ def ClearVars():
     global ActiveColumns 
     global CurAlpha
     global CurAlpha2
+    global CurTimer
+    global WrongGuessTimer
 
 #Copy LegalWords Class to create dictionary
     CurLegalWords = LegalWords
@@ -132,13 +137,15 @@ def ClearVars():
     Playfield = list(RandomWord)
 
 #init variables
+    CurTimer = time.ticks_ms()
     PressedLast = ""    
-    delta = 0
     direction = 0
     delta2 = 0
     turn = 0
     strscore = "0"
     ActiveColumns = [0,1,2]
+    WrongGuessTimer = 0
+    
 
 
 def CurAlphaRemove():
@@ -155,7 +162,6 @@ def CurAlphaRemove():
 
 ClearVars()
 ScrollAnimTimer1 = AlphaNum[ALPHA.index(Playfield[ActiveColumns[turn % len(ActiveColumns)]])]  
-
 ##################################Main Game Loop   #################################### 
 while(1):
     
@@ -175,53 +181,29 @@ while(1):
             direction = 1
         PressedLast = "B"
         
-    #Select Letter on A button
-        #ModTime for stop directly on letter
+    #Select Letter on A button, ModTime for stop directly on letter
+        
     if PressedLast == "a" and thumby.buttonB.pressed() == False and (ModTime  % 8) == 0 and not CurAlpha[CurLetter] == "-":
         PressedLast = "A"
         direction = 0
-        Playfield[ActiveColumns[turn % len(ActiveColumns)]] = CurAlpha[CurLetter]
-        
-        PlayfieldWord = ''.join(Playfield)
+        TempPlayfield = Playfield.copy()
+        TempPlayfield[ActiveColumns[turn % len(ActiveColumns)]] = CurAlpha[CurLetter]
+        PlayfieldWord = ''.join(TempPlayfield)
         LegalWord = getattr(CurLegalWords, Playfield[0])
         if PlayfieldWord in LegalWord:
+            Playfield[ActiveColumns[turn % len(ActiveColumns)]] = CurAlpha[CurLetter]
             LegalWord.pop(LegalWord.index(PlayfieldWord))
             turn = turn + 1
             score = turn - (3-len(ActiveColumns))
             strscore = str(score)
             CurAlphaRemove()
+            ScrollAnimTimer1 = AlphaNum[ALPHA.index(Playfield[ActiveColumns[turn % len(ActiveColumns)]])]
+            CurTimer = time.ticks_ms()
         else:
-            ActiveColumns.pop(turn % len(ActiveColumns))
-            turn = turn + 1
-            score = turn - (3-len(ActiveColumns))
-            strscore = str(score)
+            WrongGuessTimer = delta + 500
             
-            #Correct order as needed
-            if ((turn+5) % 6) < 3:
-                ActiveColumns.reverse()
-            
-            
-            #Check for Game Over
-            if len(ActiveColumns) == 0:
-                while(thumby.buttonB.pressed() == False):
-                    thumby.display.fill(1)
-                    thumby.display.drawText(strscore,0,0,0)
-                    thumby.display.drawText("Game Over!",7,9,0)
-                    thumby.display.drawText("B: Again?",14,21,0)
-                    thumby.display.drawText("A>+B: Quit",7,30,0)
-                    thumby.display.update()
-                if thumby.buttonA.pressed():
-                    machine.reset()
-                ClearVars()
-            else:
-                CurAlphaRemove()
-                
-        
 
-        ScrollAnimTimer1 = AlphaNum[ALPHA.index(Playfield[ActiveColumns[turn % len(ActiveColumns)]])]
-        
-        
-  
+                
         
     if thumby.buttonA.pressed() and PressedLast != "A":
         #Slow for approach
@@ -278,17 +260,64 @@ while(1):
        
 
     
-#Render Display    
+#################### Render Display ########################################    
     thumby.display.fill(0) # Fill canvas to black
 
     # Center the sprite using screen and bitmap dimensions and apply bob offset
-    x = int((thumby.display.width/2) - 28) + (ActiveColumns[(turn % len(ActiveColumns))] * 24)
+    xprime = int((thumby.display.width/2) - 28) + (ActiveColumns[(turn % len(ActiveColumns))] * 24)
     y = int(round(thumby.display.height/2)) - 4
+    bobOffset = int(math.sin(delta / 50) * 4)
+     
+    if WrongGuessTimer > delta:
+        x = xprime + bobOffset
+        PressedLast = ""
+    else:
+        x = xprime 
+        
     
     #Cycle thru alpha based on gametime# BITMAP: width: 9, height: 11
     ModTime = ((ScrollAnimTimer1//ScrollRate) % 208)+ 1
     CurLetter = 25 - ((ModTime + 20) // 8 % 26)
     
+	#Draw timebar
+    thumby.display.drawLine(0, 39, 71, 39, 1)
+    
+    #Shrink Timebar
+    shrinkrate = len(ActiveColumns) * 5
+    shrinkx = 71 - int((72 / shrinkrate) * ((delta - CurTimer)/1000))
+    thumby.display.drawLine(71, 39, shrinkx, 39, 0)
+    print(delta, CurTimer, shrinkx)
+    
+    
+    #Freeze Column when Timer runs out
+    if shrinkx == 0:
+            ActiveColumns.pop(turn % len(ActiveColumns))
+            turn = turn + 1
+            score = turn - (3-len(ActiveColumns))
+            strscore = str(score)
+            CurTimer = time.ticks_ms()
+            
+            #Correct order as needed
+            if ((turn+5) % 6) < 3:
+                ActiveColumns.reverse()
+            
+            #Check for Game Over
+            if len(ActiveColumns) == 0:
+                while(thumby.buttonB.pressed() == False):
+                    thumby.display.fill(1)
+                    thumby.display.drawText(strscore,0,0,0)
+                    thumby.display.drawText("Game Over!",7,9,0)
+                    thumby.display.drawText("B: Again?",14,21,0)
+                    thumby.display.drawText("A>+B: Quit",7,30,0)
+                    thumby.display.update()
+                if thumby.buttonA.pressed():
+                    machine.reset()
+                ClearVars()
+                
+            ScrollAnimTimer1 = AlphaNum[ALPHA.index(Playfield[ActiveColumns[turn % len(ActiveColumns)]])]
+            
+        
+
     
     
     #Draw Current Word Letters & their Bounding Boxes
