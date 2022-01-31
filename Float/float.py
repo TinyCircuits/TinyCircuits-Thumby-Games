@@ -1,5 +1,5 @@
-# TO DO
-# Make a splash screen
+# # Version 1.0
+# I still have an issue with the way the game restarts after death. The sliderate is not resetting correctly..
 
 import time
 import thumby
