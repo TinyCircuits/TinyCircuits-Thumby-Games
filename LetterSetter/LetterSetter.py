@@ -106,6 +106,8 @@ ScrollRate = 35
 
 delta = 0
 PlayfieldWord = None
+bonus = 0
+
 
 def ClearVars():
     
@@ -145,7 +147,11 @@ def ClearVars():
     delta2 = 0
     turn = 0
     strscore = "0"
-    ActiveColumns = [0,1,2]
+    if bonus == 1:
+        ActiveColumns = [2,1,0]
+    else:
+        ActiveColumns = [0,1,2]
+    
     WrongGuessTimer = 0
     lenscore = 1
     
@@ -201,6 +207,8 @@ while(1):
             LegalWord.pop(LegalWord.index(PlayfieldWord))
             turn = turn + 1
             score = turn - (3-len(ActiveColumns))
+            if score > 99:
+                bonus = 1
             strscore = str(score)
             lenscore = len(strscore)
             CurAlphaRemove()
@@ -303,7 +311,7 @@ while(1):
             lenscore = len(strscore)
             CurTimer = time.ticks_ms()
             WrongGuessTimer = 0
-
+            
             #Correct order as needed
             if ((turn+5) % 6) < 3:
                 ActiveColumns.reverse()
@@ -313,6 +321,8 @@ while(1):
                 while(thumby.buttonB.pressed() == False):
                     thumby.display.fill(1)
                     thumby.display.drawText(strscore,0,0,0)
+                    if bonus == 1:
+                        thumby.display.drawText("BONUS",40,0,0)
                     thumby.display.drawText("Game Over!",7,9,0)
                     thumby.display.drawText("B: Again?",14,21,0)
                     thumby.display.drawText("A>+B: Quit",7,30,0)
