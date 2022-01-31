@@ -301,9 +301,9 @@ while(1):
             score = turn - (3-len(ActiveColumns))
             strscore = str(score)
             lenscore = len(strscore)
-            
             CurTimer = time.ticks_ms()
-            
+            WrongGuessTimer = 0
+
             #Correct order as needed
             if ((turn+5) % 6) < 3:
                 ActiveColumns.reverse()
