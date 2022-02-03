@@ -3,4 +3,4 @@ Thumby Smash
 2d Fighting Game for the Thumby
 
 Author: Sandy
-Version: 6.0
+Version: 7.0
