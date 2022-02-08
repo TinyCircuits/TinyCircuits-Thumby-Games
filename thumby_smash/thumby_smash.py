@@ -1002,6 +1002,7 @@ def character_select(config):
             enemy_char = enemy_char_data[0]
             while enemy_char == 'random':
                 random.seed(time.ticks_us())
+                enemy_char_data = random.choice(chars)
                 enemy_char = enemy_char_data[0]
             while enemy_char == selected_char:
                 random.seed(time.ticks_us())
