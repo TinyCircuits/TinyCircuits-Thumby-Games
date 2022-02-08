@@ -57,6 +57,11 @@ def singleplayer_battle(char, enemy_char, config):
            239,199,239,232,230,230,233,132,46,110,110,110,64,0,56,255])
         fang_attack_2 = bytearray([7,179,49,205,205,29,246,226,246,254,254,252,61,195,227,248,
            255,254,255,120,54,54,57,4,62,62,184,162,128,128,24,159])
+        delta_shift = bytearray([255,255,249,246,143,103,38,6,6,38,103,143,246,249,255,255,
+           255,243,247,231,219,92,156,155,155,156,92,219,231,247,243,255])
+        delta_walk = bytearray([255,255,249,246,143,103,38,6,6,6,7,15,246,249,255,255,
+           255,243,247,231,219,92,156,152,152,156,92,216,231,247,243,255])
+        delta_arrow =  bytearray([59,57,0,0,57,59])
         tempestas_attack_1 = bytearray([255,251,5,123,255,7,59,189,189,187,7,255,127,191,255,255,
            255,255,192,255,226,236,14,233,227,7,236,226,255,255,255,255])
         tempestas_walk_1 = bytearray([123,4,123,255,131,57,190,190,56,128,128,192,224,241,255,255,
@@ -71,6 +76,8 @@ def singleplayer_battle(char, enemy_char, config):
         lightning = bytearray([187,85,238,255])
         # BITMAP: width: 6, height: 6
         spark = bytearray([30,45,51,51,45,30])
+        # BITMAP: width: 8, height: 8
+        fang_spark = bytearray([215,187,85,170,85,187,215,255])
         # BITMAP: width: 32, height: 8
         charge_beam_right = bytearray([126,189,195,239,247,239,247,239,247,239,247,239,247,239,247,239,247,239,247,239,247,239,247,239,247,239,247,239,247,239,247,239])
         line_2 = bytearray([255,129,255,135,255,129,255,135])
@@ -129,7 +136,6 @@ def singleplayer_battle(char, enemy_char, config):
                 R_Pressed = False
                 L_Pressed = False
                 U_Pressed = False
-                print(knockback_state)
                 knockback_state -= 1
                 if direction == 'Right':
                     a_x += 10
@@ -203,7 +209,19 @@ def singleplayer_battle(char, enemy_char, config):
             if cooldown == 0 :
                 A_Pressed = True
                 
-           
+        #Fang AI
+        elif player_type == 'ai' and name == 'fang':
+            if a_x - x > 20 and direction == 'Right' or x - a_x > 20 and direction == 'Left':
+                    A_Pressed = True
+                    if state == 'charging' and data[0] > 10:
+                        A_Pressed = False
+            elif a_x > x:
+                R_Pressed = True
+            elif x > a_x:
+                L_Pressed = True
+            if cooldown == 0:
+                B_Pressed = True
+                
         #Tempestas AI
         elif player_type == 'ai' and name == 'tempestas':
             decision = random.randint(1,10)
@@ -259,7 +277,6 @@ def singleplayer_battle(char, enemy_char, config):
                                 if y - j == a_y:
                                     is_hit = True
                 if is_hit == True:
-                    print(hitdata)
                     hitdata = hit(15, a_weight, 12, 15, direction, a_x, a_y, a_health)
                     a_x = hitdata[0]
                     a_y = hitdata[1]
@@ -464,14 +481,91 @@ def singleplayer_battle(char, enemy_char, config):
                 state == 'jumping'
                 if y == 20:
                     y -= jumpheight
-            
+           
         #Fang Code
-            
+        elif name == 'fang':
+             current_sprite = fang_walk_1
+             if direction == 'Left':
+                 is_flipped_x = False
+             else:
+                 is_flipped_x = True
+             if R_Pressed == True or L_Pressed == True:
+                if state == None:
+                    state = 'walk_1'
+                    current_sprite = fang_walk_1
+                elif state == 'walk_1':
+                    state = None
+                    current_sprite = fang_walk_2
+             if state == 'releasing':
+                 current_sprite = fang_attack_1
+                 data[1] += 1
+                 if direction == 'Right':
+                     x += 4
+                     is_flipped_x = True
+                     for i in range(16):
+                            if x + i == a_x:
+                                for j in range(16):
+                                    if y + j == a_y:
+                                        hitdata = hit(int(data[0]), a_weight, data[0], 10, direction, a_x, a_y, a_health)
+                                        a_x = hitdata[0]
+                                        a_y = hitdata[1]
+                                        a_health = hitdata[2]
+                                        knockback_state = hitdata[3]
+                                        break
+                 elif direction == 'Left':
+                     x -= 4
+                     for i in range(16):
+                            if x - i == a_x:
+                                for j in range(16):
+                                    if y - j == a_y:
+                                        hitdata = hit(int(data[0]), a_weight, data[0], 10, direction, a_x, a_y, a_health)
+                                        a_x = hitdata[0]
+                                        a_y = hitdata[1]
+                                        a_health = hitdata[2]
+                                        knockback_state = hitdata[3]
+                                        break
+                 if data[1] >= data[0]:
+                     data = None
+                     state = None
+                     
+             elif A_Pressed == True and state != 'charging'  and state != 'releasing':
+                 state = 'charging'
+                 data = [0,0]
+             elif A_Pressed == True and state == 'charging'   and state != 'releasing':
+                 data[0] += 1
+                 thumby.display.blit(fang_spark, x, y-5, 6, 6, 1, 0, 0)
+             elif A_Pressed == False and state == 'charging':
+                 state = 'releasing'
+                 data[1] = 0
+             elif B_Pressed == True and cooldown == 0:
+                 current_sprite = fang_attack_2
+                 cooldown = 6
+                 if direction == 'Right':
+                     x += 4
+                     is_flipped_x = True
+                     for i in range(16):
+                            if x + i == a_x or x - i == a_x or x == a_x:
+                                for j in range(16):
+                                    if y + j == a_y or y - j == a_x or y == a_y:
+                                        hitdata = hit(10, a_weight, 5, 5, direction, a_x, a_y, a_health)
+                                        a_x = hitdata[0]
+                                        a_y = hitdata[1]
+                                        a_health = hitdata[2]
+                                        knockback_state = hitdata[3]
+                                        break
+             elif R_Pressed == True:
+                x += speed
+                is_flipped_x = True
+                direction = 'Right'
+             elif L_Pressed == True:
+                is_flipped_x = False
+                x -= speed
+                direction = 'Left'
+                 
         #Tempestas Code
         elif name == 'tempestas':
             current_sprite = tempestas_walk_1
             if state == 'cloud':
-                    print(data)
                     thumby.display.blit(cloud, data, 10, 10, 6, 1, 0, 0)
                     if R_Pressed == True:
                         data += 5
@@ -522,29 +616,34 @@ def singleplayer_battle(char, enemy_char, config):
             elif A_Pressed == True and state != 'cloud' and state != 'spark' and cooldown == 0:
                     cooldown = 16
                     state = 'spark'
-                    data = [x,0,direction]
+                    data = [x+10,y,0,direction]
             elif state == 'spark' and data != None:
-                thumby.display.blit(spark, data[0], y+10, 6, 6, 1, 0, 0)
-                if data[1] >= 10:
+                thumby.display.blit(spark, data[0], y, 6, 6, 1, 0, 0)
+                if data[2] >= 10:
                     state = None
                 else:
-                    data[1] += 1
-                    if data[2] == 'Right':
+                    data[2] += 1
+                    if data[3] == 'Right':
                         data[0] += 4
-                    elif data[2] == 'Left':
+                    elif data[3] == 'Left':
                         data[0] -= 4
                 for i in range(6):
-                    if data[0] == a_x + i or data[0] == a_x or data[0] == a_x:
-                        hitdata = hit(7, a_weight, 5, 5, direction, a_x, a_y, a_health)
-                        a_x = hitdata[0]
-                        a_y = hitdata[1]
-                        a_health = hitdata[2]
-                        knockback_state = hitdata[3]
-                        break
+                    for j in range(6):
+                        if data[0] == a_x + i or data[0] == a_x or data[0] == a_x - i:
+                            if data[1] == a_y + j or data[1] == a_y or data[1] == a_y- j:
+                                hitdata = hit(7, a_weight, 5, 5, direction, a_x, a_y, a_health)
+                                a_x = hitdata[0]
+                                a_y = hitdata[1]
+                                a_health = hitdata[2]
+                                knockback_state = hitdata[3]
+                                break
+                                break
             if direction == 'Right':
                 is_flipped_x = True
                 
-                    
+            #Delta Code
+            elif name == 'Delta':
+                current_sprite = delta_walk
                     
         y += weight
         
@@ -607,6 +706,8 @@ def singleplayer_battle(char, enemy_char, config):
         p_jumpheight, p_attack, p_health, p_speed, p_weight = 15, 9, 200, 2, 6
     if char == 'tempestas':
         p_jumpheight, p_attack, p_health, p_speed, p_weight = 18, 10, 200, 5, 4
+    if char == 'fang':
+        p_jumpheight, p_attack, p_health, p_speed, p_weight = 15, 12, 250, 3, 4
     if enemy_char == 'goggles':
         a_jumpheight, a_attack, a_health, a_speed, a_weight = 17, 7, 240, 3, 4
     if enemy_char == 'zap':
@@ -615,7 +716,10 @@ def singleplayer_battle(char, enemy_char, config):
         a_jumpheight, a_attack, a_health, a_speed, a_weight = 15, 9, 200, 2, 6
     if enemy_char == 'tempestas':
         a_jumpheight, a_attack, a_health, a_speed, a_weight = 18, 10, 200, 5, 4
+    if enemy_char == 'fang':
+        a_jumpheight, a_attack, a_health, a_speed, a_weight = 15, 12, 250, 3, 4
         
+    cooldown = 0
     cooldown = 0
     ai_cooldown = 0
     data = None
@@ -822,6 +926,7 @@ def character_select(config):
     selected_char = None
     select_screen = True
     selected = 0
+    offset = 0
     while select_screen == True:
         # BITMAP: width: 16, height: 16
         goggles_icon = bytearray([243,245,246,6,146,108,110,158,158,108,98,22,246,245,243,255,
@@ -847,10 +952,10 @@ def character_select(config):
         blobbo_icon_selected = bytearray([0,0,0,4,196,36,20,20,20,20,36,196,4,4,0,0,
            0,0,0,31,32,66,72,72,72,72,66,32,31,0,0,0])
         # BITMAP: width: 16, height: 16
-        fan_icon = bytearray([255,7,251,253,238,198,238,254,254,238,198,238,253,251,7,255,
+        fang_icon = bytearray([255,7,251,253,238,198,238,254,254,238,198,238,253,251,7,255,
            255,254,128,119,79,47,77,111,111,77,47,79,119,128,254,255])
         # BITMAP: width: 16, height: 16
-        fang_icon_selecyed = bytearray([0,248,4,2,17,57,17,1,1,17,57,17,2,4,248,0,
+        fang_icon_selected = bytearray([0,248,4,2,17,57,17,1,1,17,57,17,2,4,248,0,
            0,1,127,136,176,208,178,144,144,178,208,176,136,127,1,0])
         thumby.display.fill(1)
         # BITMAP: width: 16, height: 16
@@ -859,13 +964,22 @@ def character_select(config):
         # BITMAP: width: 16, height: 16
         tempestas_icon_selected = bytearray([0,0,192,32,48,184,56,56,56,56,184,48,32,192,0,0,
            0,0,63,64,139,164,160,160,160,160,164,139,64,63,0,0])
-        chars = [['goggles', goggles_icon, goggles_icon_selected], ['zap', zap_icon, zap_icon_selected], ['apex', apex_icon, apex_icon_selected], ['tempestas', tempestas_icon, tempestas_icon_selected]]
+        delta_icon = bytearray([255,255,249,6,207,199,198,6,6,198,199,207,6,249,255,255,
+           255,63,63,192,192,192,184,184,184,184,192,192,192,63,63,255])
+       # BITMAP: width: 16, height: 16
+        delta_icon_selected = bytearray([0,0,6,249,48,56,57,249,249,57,56,48,249,6,0,0,
+           0,224,224,63,63,63,103,103,103,103,63,63,63,192,192,0])
+        chars = [['goggles', goggles_icon, goggles_icon_selected], ['zap', zap_icon, zap_icon_selected], ['apex', apex_icon, apex_icon_selected], ['tempestas', tempestas_icon, tempestas_icon_selected], ['fang', fang_icon, fang_icon_selected]]
         for i in range(len(chars)):
             thumby.display.blit(box, (16*i) + 5, 0, 16, 16, 1, 0, 0)
+            if selected > 3:
+                offset = selected - 2
+            elif selected < 3:
+                offset = 0
             if i != selected:
-                thumby.display.blit(chars[i][1], (16*i) + 5, 0, 16, 16, 1, 0, 0)
+                thumby.display.blit(chars[i][1], (16*int(i-offset)) + 5, 0, 16, 16, 1, 0, 0)
             else:
-                thumby.display.blit(chars[i][2], (16*i) + 5, 0, 16, 16, 1, 0, 0)
+                thumby.display.blit(chars[i][2], (16*int(i-offset)) + 5, 0, 16, 16, 1, 0, 0)
         if thumby.buttonR.pressed() and selected < int(len(chars)-1) :
             selected += 1
         elif thumby.buttonL.pressed() and selected > 0:
