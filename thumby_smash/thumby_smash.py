@@ -969,7 +969,12 @@ def character_select(config):
        # BITMAP: width: 16, height: 16
         delta_icon_selected = bytearray([0,0,6,249,48,56,57,249,249,57,56,48,249,6,0,0,
            0,224,224,63,63,63,103,103,103,103,63,63,63,192,192,0])
-        chars = [['goggles', goggles_icon, goggles_icon_selected], ['zap', zap_icon, zap_icon_selected], ['apex', apex_icon, apex_icon_selected], ['tempestas', tempestas_icon, tempestas_icon_selected], ['fang', fang_icon, fang_icon_selected]]
+        question_mark = bytearray([255,255,255,223,239,247,251,251,251,251,251,251,247,111,159,255,
+           255,255,255,255,255,255,255,63,35,59,253,253,254,255,255,255])
+        # BITMAP: width: 16, height: 16
+        question_mark_selected = bytearray([0,0,0,32,16,8,4,4,4,4,4,4,8,144,96,0,
+           0,0,0,0,0,0,0,192,220,196,2,2,1,0,0,0])
+        chars = [['goggles', goggles_icon, goggles_icon_selected], ['zap', zap_icon, zap_icon_selected], ['apex', apex_icon, apex_icon_selected], ['tempestas', tempestas_icon, tempestas_icon_selected], ['fang', fang_icon, fang_icon_selected], ['random', question_mark, question_mark_selected]]
         for i in range(len(chars)):
             thumby.display.blit(box, (16*i) + 5, 0, 16, 16, 1, 0, 0)
             if selected > 3:
@@ -988,9 +993,16 @@ def character_select(config):
             config = main_menu()
         elif thumby.buttonA.pressed():
             selected_char = chars[selected][0]
+            while selected_char == 'random':
+                random.seed(time.ticks_us())
+                selected_char = random.choice(chars)
+                selected_char = selected_char[0]
             random.seed(time.ticks_us())
             enemy_char_data = random.choice(chars)
             enemy_char = enemy_char_data[0]
+            while enemy_char == 'random':
+                random.seed(time.ticks_us())
+                enemy_char = enemy_char_data[0]
             while enemy_char == selected_char:
                 random.seed(time.ticks_us())
                 enemy_char_data = random.choice(chars)
