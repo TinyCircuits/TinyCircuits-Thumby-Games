@@ -20,6 +20,9 @@ while(thumby.buttonA.pressed() == False and thumby.buttonB.pressed() == False):
 #set FPS to 60
 thumby.display.setFPS(60)
 
+#Create List StartingWords
+StartingWords = ["FOR", "NOT", "WAS", "BuT", "GET", "HER", "CAN", "NOW", "HIM", "HOW", "GOT", "DID", "HEY", "HES", "YES", "HIS", "HAD", "SAY", "WAY", "LET", "MAN", "HAS", "GOD", "DAY", "PuT", "GuY", "BIG", "LOT", "NEW", "BAD", "MOM", "DAD", "SON", "SAW", "SIR", "JOB", "BOY", "CAR", "YET", "FEW", "RuN", "SIT", "FuN", "KID", "BIT", "SET", "FAR", "DIE", "HIT", "PAY", "MEN", "BED", "CuT", "MET", "HOT", "SIX", "BET", "LIE", "TEN", "BuY", "MAD", "GuN", "TOP", "LAW", "WED", "DOG", "WIN"]
+
 #Create LegalWords Dictionary
 class LegalWords:
     A = ["AAH", "AAL", "AAS", "ABA", "ABB", "ABO", "ABS", "ABY", "ACE", "ACH", "ACT", "ADD", "ADO", "ADS", "ADZ", "AFF", "AFT", "AGA", "AGE", "AGO", "AGS", "AHA", "AHI", "AHS", "AIA", "AID", "AIL", "AIM", "AIN", "AIR", "AIS", "AIT", "AKA", "AKE", "ALA", "ALB", "ALE", "ALF", "ALL", "ALP", "ALS", "ALT", "ALu", "AMA", "AME", "AMI", "AMP", "AMu", "ANA", "AND", "ANE", "ANI", "ANN", "ANS", "ANT", "ANY", "APE", "APO", "APP", "APT", "ARB", "ARC", "ARD", "ARE", "ARF", "ARK", "ARM", "ARS", "ART", "ARY", "ASH", "ASK", "ASP", "ASS", "ATE", "ATS", "ATT", "AuA", "AuE", "AuF", "AuK", "AVA", "AVE", "AVO", "AWA", "AWE", "AWK", "AWL", "AWN", "AXE", "AYE", "AYS", "AYu", "AZO"]
@@ -67,6 +70,11 @@ bitmap0 = bytearray([254,1,1,1,1,1,1,1,254,3,4,4,4,4,4,4,4,3])
 #Inverse Square Selector box BITMAP: width: 9, height: 11
 bitmap1 = bytearray([254,255,255,255,255,255,255,255,254,
            3,7,7,7,7,7,7,7,3])
+           
+#Bonus Egg Sprite
+# BITMAP: width: 10, height: 10
+bitmap2 = bytearray([15,243,253,254,254,254,254,253,243,15,
+           3,2,1,1,1,1,1,1,2,3])
 
 
 #Copy Selector Box Sprite 4x
@@ -74,6 +82,7 @@ thumbySpriteMain = thumby.Sprite(9, 11, bitmap0)
 thumbySprite1 = thumby.Sprite(9, 11, bitmap0)
 thumbySprite2 = thumby.Sprite(9, 11, bitmap0)
 thumbySprite3 = thumby.Sprite(9, 11, bitmap0)
+EggSprite = thumby.Sprite(10, 10, bitmap2)
 
 #Copy Inverse Selector Box
 thumbySpriteReverse1 = thumby.Sprite(9, 11, bitmap1)
@@ -101,11 +110,16 @@ thumbySpriteReverse2.y = y-2
 thumbySpriteReverse3.x = 55 
 thumbySpriteReverse3.y = y-2
 
+EggSprite.x = 49
+EggSprite.y = 0
+
 #Smaller is Faster
 ScrollRate = 35
 
 delta = 0
 PlayfieldWord = None
+ModTime = 0
+bonus = -1
 
 def ClearVars():
     
@@ -129,11 +143,11 @@ def ClearVars():
 #Create clean CurAlpha    
     CurAlpha = ALPHA.copy()
     CurAlpha2 = CurAlpha[-5:] + CurAlpha
+    
 
 #Select starting word from dictionary and remove it via POP
     random.seed(time.ticks_us())    
-    FirstLetter = random.choice(ALPHA)
-    RandomWord = random.choice(getattr(CurLegalWords, FirstLetter))
+    RandomWord = random.choice(StartingWords)
 
 #Turn word string into array.
     Playfield = list(RandomWord)
@@ -145,7 +159,10 @@ def ClearVars():
     delta2 = 0
     turn = 0
     strscore = "0"
-    ActiveColumns = [0,1,2]
+    if bonus < 0:
+        ActiveColumns = [0,1,2]
+    else:
+        ActiveColumns = [2,1,0]
     WrongGuessTimer = 0
     lenscore = 1
     
@@ -169,8 +186,6 @@ ScrollAnimTimer1 = AlphaNum[ALPHA.index(Playfield[ActiveColumns[turn % len(Activ
 ################################## Main Game Loop   #################################### 
 while(1):
     
-
-    
     #Stop on B Button
 
         # ModTime for Stop Directly on Letter 
@@ -179,10 +194,10 @@ while(1):
 
     if thumby.buttonB.pressed():
         #Slow for approach
-        if direction == -2:
-            direction = -1
-        if direction == 2:
-            direction = 1
+        if direction < 0:
+            direction = -.75
+        if direction > 0:
+            direction = .75
         PressedLast = "B"
         
         
@@ -197,10 +212,14 @@ while(1):
         PlayfieldWord = ''.join(TempPlayfield)
         LegalWord = getattr(CurLegalWords, TempPlayfield[0])
         if PlayfieldWord in LegalWord:
+            thumby.audio.playBlocking(494, 100)
+            thumby.audio.playBlocking(392, 150)
             Playfield[ActiveColumns[turn % len(ActiveColumns)]] = CurAlpha[CurLetter]
             LegalWord.pop(LegalWord.index(PlayfieldWord))
             turn = turn + 1
             score = turn - (3-len(ActiveColumns))
+            if score % 100 == 0:
+                bonus = bonus + 1
             strscore = str(score)
             lenscore = len(strscore)
             CurAlphaRemove()
@@ -213,16 +232,20 @@ while(1):
         
     if thumby.buttonA.pressed() and PressedLast != "A":
         #Slow for approach
-        if direction == -2:
-            direction = -1
-        if direction == 2:
-            direction = 1
+        if direction < 0:
+            direction = -.75
+        if direction > 0:
+            direction = .75
         PressedLast = "a"
+
+    #Play Letter Selector Noise
+    if (ModTime  % 8) > 4 and direction != 0:
+            thumby.audio.play(247, 50)
 
     #Main Time Calculation for Text Selector Animation
     if time.ticks_ms() > delta:
         delta2 = time.ticks_ms() - delta
-        ScrollAnimTimer1 = ScrollAnimTimer1 + (direction * delta2)
+        ScrollAnimTimer1 = ScrollAnimTimer1 + int(direction * delta2)
         delta = time.ticks_ms()
        
     
@@ -272,9 +295,11 @@ while(1):
     xprime = int((thumby.display.width/2) - 28) + (ActiveColumns[(turn % len(ActiveColumns))] * 24)
     y = int(round(thumby.display.height/2)) - 4
     bobOffset = int(math.sin(delta / 50) * 4)
-     
+    
+    #Wrong Guess Animation / SOund 
     if WrongGuessTimer > delta:
         x = xprime + bobOffset
+        thumby.audio.play(150 + (bobOffset * 10), 50)
         PressedLast = ""
     else:
         x = xprime 
@@ -288,7 +313,7 @@ while(1):
     thumby.display.drawLine(0, 39, 71, 39, 1)
     
     #Shrink Timebar
-    shrinkrate = len(ActiveColumns) * 5
+    shrinkrate = len(ActiveColumns) * (4.75 - (bonus * .25))
     shrinkx = 71 - int((72 / shrinkrate) * ((delta - CurTimer)/1000))
     thumby.display.drawLine(71, 39, shrinkx, 39, 0)
     
@@ -296,12 +321,13 @@ while(1):
     
     #Freeze Column when Timer runs out
     if shrinkx == 0:
+            thumby.audio.playBlocking(100, 50)
+            thumby.audio.playBlocking(80, 200)
             ActiveColumns.pop(turn % len(ActiveColumns))
             turn = turn + 1
             score = turn - (3-len(ActiveColumns))
             strscore = str(score)
             lenscore = len(strscore)
-            
             CurTimer = time.ticks_ms()
             
             #Correct order as needed
@@ -316,6 +342,12 @@ while(1):
                     thumby.display.drawText("Game Over!",7,9,0)
                     thumby.display.drawText("B: Again?",14,21,0)
                     thumby.display.drawText("A>+B: Quit",7,30,0)
+                    if bonus > 0:
+                        thumby.display.drawText(str(bonus),60,1,0)
+                        print(str(bonus))
+                    if bonus > -1:
+                        thumby.display.drawSprite(EggSprite)
+                   
                     thumby.display.update()
                 if thumby.buttonA.pressed():
                     machine.reset()
@@ -325,7 +357,7 @@ while(1):
                 
               
             ScrollAnimTimer1 = AlphaNum[ALPHA.index(Playfield[ActiveColumns[turn % len(ActiveColumns)]])]
-            
+            direction = 0
         
 
     
@@ -363,9 +395,10 @@ while(1):
     thumby.display.drawSprite(thumbySpriteMain)
     
     #Draw Vertical Text Selector
-    numalph = enumerate(CurAlpha2)
-    for z in numalph:
-        thumby.display.drawText(z[1], x+1, ModTime + (z[0]*8)-208, 1)
+    
+     
+    for z in range(31):
+        thumby.display.drawText(CurAlpha2[z], x+1, ModTime + (z*8)-208, 1)
     
     #Draw Score
         #strscore = str(score)
