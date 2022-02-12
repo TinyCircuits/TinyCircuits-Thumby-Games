@@ -4,6 +4,8 @@ import math
 import random
 import machine
 
+
+#Title Screen Loop
 while(thumby.buttonA.pressed() == False and thumby.buttonB.pressed() == False):
     thumby.display.fill(1)
     thumby.display.drawText("LetterSetter",1,0,0)
@@ -15,13 +17,14 @@ while(thumby.buttonA.pressed() == False and thumby.buttonB.pressed() == False):
     if thumby.buttonA.pressed():
 	    thumby.display.fill(0)
 	    thumby.display.update()
+	    print("Quitting Because A pressed.")
 	    machine.reset()
 
 #set FPS to 60
 thumby.display.setFPS(60)
 
 #Create List StartingWords
-StartingWords = ["FOR", "NOT", "WAS", "BuT", "GET", "HER", "CAN", "NOW", "HIM", "HOW", "GOT", "DID", "HEY", "HES", "YES", "HIS", "HAD", "SAY", "WAY", "LET", "MAN", "HAS", "GOD", "DAY", "PuT", "GuY", "BIG", "LOT", "NEW", "BAD", "MOM", "DAD", "SON", "SAW", "SIR", "JOB", "BOY", "CAR", "YET", "FEW", "RuN", "SIT", "FuN", "KID", "BIT", "SET", "FAR", "DIE", "HIT", "PAY", "MEN", "BED", "CuT", "MET", "HOT", "SIX", "BET", "LIE", "TEN", "BuY", "MAD", "GuN", "TOP", "LAW", "WED", "DOG", "WIN"]
+StartingWords = ["FOR", "NOT", "BuT", "GET", "HER", "CAN", "NOW", "HIM", "HOW", "GOT", "DID", "HEY", "HES", "YES", "HIS", "HAD", "SAY", "WAY", "LET", "MAN", "HAS", "GOD", "DAY", "PuT", "GuY", "BIG", "LOT", "NEW", "BAD", "MOM", "DAD", "SON", "SAW", "SIR", "JOB", "BOY", "CAR", "FEW", "RuN", "SIT", "FuN", "KID", "BIT", "SET", "FAR", "DIE", "HIT", "PAY", "MEN", "BED", "CuT", "MET", "HOT", "SIX", "BET", "LIE", "TEN", "BuY", "MAD", "GuN", "TOP", "LAW", "WED", "DOG", "WIN"]
 
 #Create LegalWords Dictionary
 class LegalWords:
@@ -329,12 +332,13 @@ while(1):
             strscore = str(score)
             lenscore = len(strscore)
             CurTimer = time.ticks_ms()
+            WrongGuessTimer = delta - 1
             
             #Correct order as needed
             if ((turn+5) % 6) < 3:
                 ActiveColumns.reverse()
             
-            #Check for Game Over
+            #Check for Game Over / Game Over Screen
             if len(ActiveColumns) == 0:
                 while(thumby.buttonB.pressed() == False):
                     thumby.display.fill(1)
