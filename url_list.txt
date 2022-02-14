@@ -59,6 +59,13 @@ https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/3D_MAZE/3D_MAZE.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/3D_MAZE/arcade_title_image.png
 
+NAME=Tennis
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Tennis/Tennis.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Tennis/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Tennis/TennisLogoFrames.bin
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Tennis/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Tennis/TennisCourt.bin
+
 NAME=Annelid
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Annelid/Annelid.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Annelid/arcade_description.txt
