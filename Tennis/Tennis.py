@@ -281,7 +281,6 @@ def handleGameOver(received):
     
     thumby.display.update()
     
-    
     while True:
         # Send current game screen ID
         if singlePlayer != True:
@@ -329,7 +328,7 @@ def main(received):
         global lastBallRefresh
         
         # Replicate speed of link API
-        if time.ticks_ms() - lastBallRefresh >= 12:
+        if time.ticks_ms() - lastBallRefresh >= 18:
             handleBall()
             lastBallRefresh = time.ticks_ms()
         
@@ -358,7 +357,7 @@ gameScreenID = 0
 try:
     while True:
         received = None
-        if singlePlayer != True:
+        if singlePlayer != True and singlePlayer != -1:
             received = thumby.link.receive()
     
         if received != None and (received[0] == gameScreenID + 1 or received[0] < gameScreenID):
