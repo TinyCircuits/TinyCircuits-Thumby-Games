@@ -1,0 +1,6 @@
+[Brick'd]
+
+Break bricks with a bouncy ball!
+
+Author: Laveréna W.
+Version: 1.0
