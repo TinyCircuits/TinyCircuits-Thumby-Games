@@ -11,8 +11,8 @@ https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/SaurRun/SaurRun.py
 
 NAME=Brickd
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Brickd/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Brickd/arcade_title_video.webm
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Brickd/arcade_descriptions.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Brickd/Brickd.py
 
 NAME=TicTac
