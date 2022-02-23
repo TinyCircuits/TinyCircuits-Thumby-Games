@@ -4,27 +4,94 @@ import math
 import random
 import machine
 
-
-#Title Screen Loop
-while(thumby.buttonA.pressed() == False and thumby.buttonB.pressed() == False):
-    thumby.display.fill(1)
-    thumby.display.drawText("LetterSetter",1,0,0)
-    thumby.display.drawText("by Xyvir",14,9,0)
-    thumby.display.drawText("B: Start",14,21,0)
-    thumby.display.drawText("A: Quit",14,30,0)
-    thumby.display.update()
-    
-    if thumby.buttonA.pressed():
-	    thumby.display.fill(0)
-	    thumby.display.update()
-	    print("Quitting Because A pressed.")
-	    machine.reset()
-
 #set FPS to 60
 thumby.display.setFPS(60)
 
+def TitleScreen():
+    # BITMAP: width: 6, height: 27
+#    by_xyvir = bytearray([248,169,223,174,249,254,
+#               255,235,247,251,255,255,
+#               255,190,221,238,255,255,
+#               7,7,5,2,7,7])
+           
+#    by_xyvirSprite = thumby.Sprite(6, 27, by_xyvir, 61, 2,1)
+           
+    # BITMAP: width: 72, height: 12
+    mountains = bytearray([15,7,3,3,3,1,1,1,3,3,3,3,3,3,3,7,15,7,3,3,3,1,1,0,0,0,1,3,3,1,1,1,0,3,7,15,3,1,1,3,1,1,1,0,1,1,3,3,7,15,15,15,15,7,7,3,3,3,7,3,3,3,3,3,7,15,15,15,15,15,7,7,
+               0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0])
+           
+    mountainsSprite1 = thumby.Sprite(72, 12, mountains, 0, 28,1)  
+    mountainsSprite2 = thumby.Sprite(72, 12, mountains, 72, 28,1) 
+
+    # BITMAP: width: 31, height: 34
+    summit = bytearray([255,255,255,255,255,255,255,255,255,127,31,127,63,127,63,128,143,191,191,63,127,255,255,255,255,255,255,255,255,255,255,
+               255,255,255,255,255,255,255,255,255,240,7,237,239,231,174,235,235,232,235,131,48,255,255,255,255,255,255,255,255,255,255,
+               255,255,255,255,255,255,63,31,7,0,1,1,1,1,134,143,217,81,97,0,0,1,15,31,63,127,255,255,255,255,255,
+               255,255,255,63,1,0,0,0,0,0,0,12,2,33,33,192,0,0,0,0,0,0,0,3,6,4,31,63,127,255,255,
+               3,3,0,0,0,0,0,0,0,0,0,0,0,0,2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,3,3])
+           
+    summitSprite = thumby.Sprite(31,34, summit, 34, 6)
+           
+    # BITMAP: width: 31, height: 34
+    summit_mask = bytearray([0,0,0,0,0,0,0,0,0,128,224,128,192,128,192,255,240,192,192,192,128,0,0,0,0,0,0,0,0,0,0,
+               0,0,0,0,0,0,0,0,0,15,255,255,255,255,255,255,255,255,255,255,207,0,0,0,0,0,0,0,0,0,0,
+               0,0,0,0,0,0,192,224,248,255,255,255,255,255,255,255,255,255,255,255,255,254,240,224,192,128,0,0,0,0,0,
+               0,0,224,224,254,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,248,240,224,128,0,
+               2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,2])
+           
+    summit_maskSprite = thumby.Sprite(31,34, summit_mask)      
+    # BITMAP: width: 40, height: 40
+    sun = bytearray([0,0,0,0,0,128,192,224,240,248,248,252,252,254,254,254,255,255,255,255,255,255,255,255,254,254,254,252,252,248,248,240,224,192,128,0,0,0,0,0,
+               128,240,248,254,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,254,248,240,128,
+               255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,
+               1,15,31,127,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,127,31,15,1,
+               0,0,0,0,0,1,3,7,15,31,31,63,63,127,127,127,255,255,255,255,255,255,255,255,127,127,127,63,63,31,31,15,7,3,1,0,0,0,0,0])
+
+    sunSprite = thumby.Sprite(40,40, sun, 2, -10,0)           
+           
+    # BITMAP: width: 39, height: 25
+    title = bytearray([0,0,255,255,255,255,255,255,255,127,191,191,191,127,127,255,239,1,0,239,255,239,1,0,239,239,255,127,63,191,191,127,127,255,63,127,191,191,63,
+               120,48,215,215,215,215,151,55,255,248,246,246,246,242,250,255,255,48,16,255,255,255,48,16,255,255,255,248,240,246,246,242,250,255,240,240,255,255,255,
+               158,28,249,251,251,243,103,15,255,15,215,215,215,79,79,255,253,0,0,253,255,253,0,0,253,253,255,15,7,215,215,79,79,255,7,15,247,247,231,
+               1,1,0,0,0,0,0,1,1,1,0,0,0,0,1,1,1,0,0,1,1,1,0,0,1,1,1,1,0,0,0,0,1,1,0,0,1,1,1])
+           
+           
+    titleSprite = thumby.Sprite(39,25, title, 3, 2,1) 
+
+    TitleSong = [554, 329, 493, 329, 466, 329, 415, 329, 415, 311, 247, 415, 392, 277, 466, 392, 415, 415, 415, 415, 554, 311, 466, 311 , 523,523,523,523]
+
+    width = 0
+    speed = 15
+    lineystart = 350
+    Animstart = time.ticks_ms()
+    #Title Screen Loop
+    while(thumby.buttonB.pressed() == False):
+        Animnow = time.ticks_ms() - Animstart
+        tempo = int(Animnow/300)
+        if tempo < len(TitleSong): 
+            thumby.audio.play(TitleSong[tempo], 100)
+        thumby.display.fill(0)
+        if Animnow > 5250:
+           width = width + 6
+        if Animnow > 6200:
+           thumby.display.fill(1)
+        thumby.display.drawSprite(sunSprite)
+        liney = int(lineystart-(Animnow/speed))
+        thumby.display.drawFilledRectangle(22-int(width/2), liney, 1+width, 160, 1)
+        thumby.display.drawSprite(titleSprite)
+        mountainsSprite1.x = 0  - (72 - tempo % 72)
+        mountainsSprite2.x = 72 - (72 - tempo % 72)
+        thumby.display.drawSprite(mountainsSprite1)
+        thumby.display.drawSprite(mountainsSprite2)
+        thumby.display.drawSpriteWithMask(summitSprite, summit_maskSprite)
+        sunSprite.y = sunSprite.y + (Animnow/ 12000)
+        thumby.display.update()
+        
+TitleScreen()
+
+
 #Create List StartingWords
-StartingWords = ["FOR", "NOT", "BuT", "GET", "HER", "CAN", "NOW", "HIM", "HOW", "GOT", "DID", "HEY", "HES", "YES", "HIS", "HAD", "SAY", "WAY", "LET", "MAN", "HAS", "GOD", "DAY", "PuT", "GuY", "BIG", "LOT", "NEW", "BAD", "MOM", "DAD", "SON", "SAW", "SIR", "JOB", "BOY", "CAR", "FEW", "RuN", "SIT", "FuN", "KID", "BIT", "SET", "FAR", "DIE", "HIT", "PAY", "MEN", "BED", "CuT", "MET", "HOT", "SIX", "BET", "LIE", "TEN", "BuY", "MAD", "GuN", "TOP", "LAW", "WED", "DOG", "WIN"]
+StartingWords = ["FOR", "NOT", "WAS", "BuT", "GET", "HER", "CAN", "NOW", "HIM", "HOW", "GOT", "DID", "HEY", "HES", "YES", "HIS", "HAD", "SAY", "WAY", "LET", "MAN", "HAS", "GOD", "DAY", "PuT", "GuY", "BIG", "LOT", "NEW", "BAD", "MOM", "DAD", "SON", "SAW", "SIR", "JOB", "BOY", "CAR", "YET", "FEW", "RuN", "SIT", "FuN", "KID", "BIT", "SET", "FAR", "DIE", "HIT", "PAY", "MEN", "BED", "CuT", "MET", "HOT", "SIX", "BET", "LIE", "TEN", "BuY", "MAD", "GuN", "TOP", "LAW", "WED", "DOG", "WIN"]
 
 #Create LegalWords Dictionary
 class LegalWords:
@@ -332,7 +399,6 @@ while(1):
             strscore = str(score)
             lenscore = len(strscore)
             CurTimer = time.ticks_ms()
-            WrongGuessTimer = delta - 1
             
             #Correct order as needed
             if ((turn+5) % 6) < 3:
@@ -340,6 +406,18 @@ while(1):
             
             #Check for Game Over / Game Over Screen
             if len(ActiveColumns) == 0:
+                #Play Music
+                thumby.display.fill(1)
+                thumby.display.drawText("Game Over!",7,9,0)
+                thumby.display.update()
+                thumby.audio.playBlocking(392, 300)
+                for i in range(6):
+                    thumby.audio.playBlocking(415, 70)
+                    thumby.audio.playBlocking(392, 70)
+                thumby.audio.playBlocking(349, 600)
+                thumby.audio.playBlocking(392, 600)
+                thumby.audio.playBlocking(415, 1200)
+                #Game Over Loop
                 while(thumby.buttonB.pressed() == False):
                     thumby.display.fill(1)
                     thumby.display.drawText(strscore,0,0,0)
@@ -351,7 +429,6 @@ while(1):
                         print(str(bonus))
                     if bonus > -1:
                         thumby.display.drawSprite(EggSprite)
-                   
                     thumby.display.update()
                 if thumby.buttonA.pressed():
                     machine.reset()
