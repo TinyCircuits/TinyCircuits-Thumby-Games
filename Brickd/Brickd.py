@@ -26,7 +26,7 @@ padSprite.y = 36
 lose = False  
 gameScore = 0 # keeps track of the number of bricks collided with
 loopCtr = 0 # used to control the speed of the ball
-thumby.display.setFPS(35) # standardize display to 30 frames per second
+thumby.display.setFPS(35) # standardize display speed
 
 # Brick class to keep track of placement, collisions and delete (move off screen) state
 class Brick:
