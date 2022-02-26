@@ -10,13 +10,14 @@ raw_url_base = "https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thum
 # Open file that urls will be written to
 f = open("url_list.txt", "w")
 
-def addDirFilesToList(path):
-    f.write("NAME=" + path + "\n")
+def addDirFilesToList(path, childDir=False):
+    if childDir == False:
+        f.write("NAME=" + path + "\n")
     items = os.listdir(path)
     for item in items:
         abs_path = path + "/" + item
         if os.path.isdir(abs_path):
-            addDirFilesToList(abs_path)
+            addDirFilesToList(abs_path, True)
         else:
             f.write(raw_url_base + abs_path + "\n")
 

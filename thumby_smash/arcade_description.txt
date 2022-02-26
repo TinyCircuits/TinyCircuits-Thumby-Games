@@ -1,0 +1,6 @@
+Thumby Smash
+
+2d Fighting Game for the Thumby
+
+Author: Sandy
+Version: 7.5
