@@ -47,6 +47,11 @@ https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Tiny_Monster_Trainer/arcade_title_video.webm
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Tiny_Monster_Trainer/README.md
 
+NAME=Kombine
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Kombine/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Kombine/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Kombine/Kombine.py
+
 NAME=Thumgeon
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Thumgeon/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Thumgeon/arcade_title_video.webm
