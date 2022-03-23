@@ -1,0 +1,3 @@
+Eat dots and avoid ghosts in the maze!
+
+Author: CCarson
