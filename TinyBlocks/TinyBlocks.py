@@ -21,8 +21,8 @@ B_SIZE =(B_ROWS * B_COLS)
 
 KEY_LEFT   =0
 KEY_RIGHT  =1
-KEY_ROT_R  =2
-KEY_ROT_L  =3
+KEY_ROT_L  =2
+KEY_ROT_R  =3
 KEY_DROP   =4
 KEY_PAUSE  =5
 KEY_QUIT   =6
@@ -85,6 +85,7 @@ shapes = [
 shapePos = random.randint(1, 10000000) % 7 * 4
 peek_shape = [shapes[shapePos],shapes[shapePos+1],shapes[shapePos+2],shapes[shapePos+3]]
 shape = [0,0,0,0]
+ghost_flicker = False
 
 def clearScreen():
       
@@ -99,7 +100,11 @@ def clearScreen():
 def setBlock(xb, yb, val):
   thumby.display.drawFilledRectangle(xb*2, yb*2, 2, 2, 1 if val else 0)
 
-def updateScreen():
+def setGhostBlock(xb, yb):
+  thumby.display.setPixel(xb*2 + int(ghost_flicker), yb*2, 1)
+  thumby.display.setPixel(xb*2 + 1 - int(ghost_flicker), yb*2+1, 1)
+
+def updateScreen(showGhost = False, ghostPos = None):
   #print("update")
   global level
   clearScreen()
@@ -122,6 +127,16 @@ def updateScreen():
   for y in range(1, B_ROWS-1):
     for x in range(B_COLS):
       setBlock(x + 2, y-1, board[y * B_COLS + x])
+
+  if showGhost:
+      x = ghostPos % B_COLS
+      y = ghostPos // B_COLS
+      setGhostBlock(x + 2, y-1)
+      for i in shape[1:]:
+          p = i + ghostPos
+          x = p % B_COLS
+          y = p // B_COLS
+          setGhostBlock(x + 2, y-1)
 
   # Update points and level*/
   #while (lines_cleared >= 10):
@@ -258,6 +273,7 @@ while(True):
       thumby.display.blit(bytearray([0x55,0xAA]), x*2, y*8, 2, 8,0,0,0)
       
   while (1):
+    ghost_flicker = not ghost_flicker
     c=getcharinputNew()
     if(c==' '):
         if(time.ticks_ms()-lastUpdate > 50):
@@ -348,8 +364,14 @@ while(True):
       show_high_score ()
       break;
 
+    # Calculate where the ghost piece should go
+    ghost = pos
+    while fits_in (shape, ghost):
+        ghost += B_COLS
+    ghost -= B_COLS
+
     place (shape, pos, 7);
-    updateScreen ();
+    updateScreen (showGhost = True, ghostPos = ghost);
     place (shape, pos, 0);
     
   a=0
