@@ -385,15 +385,15 @@ def show_score():
     last_update = time.ticks_ms()
     thumby.display.fill(0)
     if player_score == 0:
-        thumby.display.drawText("Start", 15, 2, 1)
+        thumby.display.drawText("Start", 23, 2, 1)
     else:
         display_score()
     display_lives()
     thumby.display.update()
     wait(2000)
 def press_to_start():
-    thumby.display.drawText("Press", 16, 15, 1)
-    thumby.display.drawText("A or B", 12, 30, 1)
+    thumby.display.drawText("Press", 23, 20, 1)
+    thumby.display.drawText("A or B", 20, 30, 1)
     thumby.display.update()
     character = ' '
     while character != '1' and character != '2':
@@ -472,8 +472,8 @@ def eat_power_balls():
             power_ball_2 = False
             power_time = p_time
 def display_ghost_bonus(bonus):
-    thumby.display.drawFilledRectangle(22, 13, 28, 13, 0)
-    thumby.display.drawText(f"{bonus}", 24, 16, 1)
+    thumby.display.drawFilledRectangle(27, 13, 22, 13, 0)
+    thumby.display.drawText(f"{bonus}", 29, 16, 1)
     thumby.display.update()
     wait(1000)
     
@@ -509,7 +509,7 @@ def opening_scene():
             opening_x = opening_x + 3
             thumby.display.fill(0)
             if level == 1:
-                thumby.display.drawText("Pico Pac", 3, 2, 1)
+                thumby.display.drawText("Pico Pac", 13, 2, 1)
             else:
                 display_score()
             if opening_state == 0:
