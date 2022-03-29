@@ -102,3 +102,6 @@ https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/
 
 NAME=SimpleCookieClicker
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Simple-Cookie-Clicker/Simple-Cookie-Clicker.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Simple-Cookie-Clicker/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Simple-Cookie-Clicker/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Simple-Cookie-Clicker/arcade_title_image.png
