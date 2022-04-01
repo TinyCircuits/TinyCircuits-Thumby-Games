@@ -1,0 +1,12 @@
+Guiguitte Tribute
+
+Help Guiguitte to bring at least two beer to Gros Nenesse. If he's not drunk enough, he can't see Guiguitte...
+
+Command: Press A or B to Jump and down to slide.
+
+Author: Ping
+Version: 1.0
+License: Code is CC0 or WTFPL. Sprites are CC BY-NC-SA except backgrounds, arcade terminal, beer and gates sprites which are CC0 or WTFPL.
+Rage+ music is "Don't use it, it's implementation in the game does not make justice to it anyway (CC BY-NC-ND)".
+Libre de Droit music by Gilles Stella seams to be CC BY.
+Other musics are in public domain.
