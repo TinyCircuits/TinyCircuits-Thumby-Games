@@ -1,0 +1,12 @@
+Melody Maker
+by SuperRiley64
+
+Make little tunes on your Thumby!
+
+Controls
+left/right - select note
+up/down - change note
+B - toggle octave
+A - play melody
+
+The melody is autosaved when played!
