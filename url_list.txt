@@ -27,6 +27,11 @@ https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Brickd/Brickd.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Brickd/arcade_title_video.webm
 
+NAME=DVD-Corner-Remix
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/DVD-Corner-Remix/DVD-Corner-Remix.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/DVD-Corner-Remix/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/DVD-Corner-Remix/arcade_title_video.webm
+
 NAME=Thumgeon
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Thumgeon/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Thumgeon/arcade_title_video.webm
