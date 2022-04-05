@@ -3,4 +3,4 @@ Floppy
 Avoid pipes and flap your wings through the obstacle course.
 
 Author: Camerin Figueroa
-Version: 1.0
+Version: 1.1
