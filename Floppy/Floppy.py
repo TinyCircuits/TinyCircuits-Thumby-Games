@@ -17,6 +17,8 @@ import time
     
     Emulate using their handy Web IDE: https://code.thumby.us/
     
+    Version: 1.1
+    
     
 """
 
@@ -37,14 +39,12 @@ def_bird_pos = [5, 16]
 
 """
 Example
-
 obj = {
     "type": "bitmap" | "text" | "rectangle",
     "text" | "bitmap": bytearray | "",
     "pos": [x,y],
     "dim": [w,h]
 }
-
 """
 
 bird = {
@@ -79,7 +79,7 @@ score_text = {
 }
 
 # Dictates the space between each pipe (Should be bird's height + 2)
-space_btw = bird["dim"][0] + 3
+space_btw = bird["dim"][0] + 5
 
 
 """
@@ -265,9 +265,6 @@ def gameRender(bird, pipes, score, soundQueue):
     
         drawObj(score_text)
     
-    # Update the display
-    thumby.display.update()
-    
     # Play sound
     
     if (len(soundQueue) > 0):
@@ -296,9 +293,14 @@ def game():
     
     score = 0
     
+    velocity = 0
+    
     gameRender(bird, pipes, score, soundQueue)
     
     time.sleep(1)
+    
+    renderPm=0
+    renderCm=0
     
     while (not gameover):
         
@@ -306,13 +308,17 @@ def game():
         
         steps += 1
         
+        velocity += 0.5
+        
         # Move floppy up/down
         if thumby.buttonA.pressed() and bird["pos"][1] > 0: # Button was pressed so floppy goes up
-            bird["pos"][1] -= 3
-        else:
-            # Floppy drifts down
-            bird["pos"][1] += 1
+            #bird["pos"][1] -= 2
+            velocity = -2
+
+        # Floppy drifts down
+        bird["pos"][1] += int(velocity)
         
+            
         # Add new pipes
         if (pipes[-1]["pos"][0]+pipes[-1]["dim"][0] < display_dim[0]-26):
             pipes += generatePipe()
@@ -335,7 +341,8 @@ def game():
         # Detect collisions and endgame if so
         if (bird["pos"][1] > 40-bird["dim"][1]
             or detectCollision(bird, pipes[0])
-            or detectCollision(bird, pipes[1])):
+            or (detectCollision(bird, pipes[1])
+            and not thumby.buttonA.justPressed())):
             
             # End Game
             gameover = True
@@ -343,16 +350,104 @@ def game():
         # Render the game
         gameRender(bird, pipes, score, soundQueue)
         
+        # Update the display
+        thumby.display.update()
         # WAIT
-        time.sleep(0.1)
+        time.sleep(0.05)
        
     # Return the score when finished     
     return score
+
+def highscore_handler(score):
+    highscore = 0
+    newHS = False
+    
+    try:
+        f = open("highscore.txt", "r")
+        highscore = int(f.read())
+        f.close()
+    except:
+        print("High Score Doesn't Exist")
+    
+    if (score > highscore):
+        highscore = score # Reset highscore
+        
+        newHS = True # Signify new High Score
+        
+        # Write High Score
+        f = open("highscore.txt", 'w')
+        f.write(str(highscore))
+        f.close()
+    
+    return highscore, newHS
+    
+def gameOverScreen(score):
+    # Clear Screen
+    thumby.display.fill(0)
+
+    # Render bird in new pos
+    bird["pos"][1] = display_dim[1]-bird["dim"][1]
+    drawObj(bird)
+    
+    # Render Text
+    thumby.display.drawText("Game Over", 10, 3, 1)
+    
+    thumby.display.drawText("Score %d" % score, 10, 15, 1)
+    
+    thumby.display.drawText("Press B", 25, 30, 1)
+    
+    # Update Screen
+    thumby.display.update()
+    
+    # Controls while loop
+    waiting = True
+        
+    # Loop till button is pressed
+    while(waiting):
+        if thumby.buttonB.justPressed():
+            waiting = False
+            
+        # Animate bird while waiting
+        drawObj(bird)
+        
+        thumby.display.update()
+        
+        time.sleep(0.1)
+        
+def highScoreScreen(highscore):
+    # Clear Screen
+    thumby.display.fill(0)
+    
+    bird["pos"][1] = display_dim[1]-bird["dim"][1]
+    drawObj(bird)
+    
+    # Render Text
+    thumby.display.drawText("New HS", 10, 3, 1)
+    
+    thumby.display.drawText("%d" % highscore, 10, 15, 1)
+    
+    thumby.display.drawText("Press B", 25, 30, 1)
+    
+    # Update Screen
+    thumby.display.update()
+    
+    # Controls while loop
+    waiting = True
+        
+    # Loop till button is pressed
+    while(waiting):
+        if thumby.buttonB.justPressed():
+            waiting = False
+            
+        # Animate bird while waiting
+        drawObj(bird)
+        
+        thumby.display.update()
+        
+        time.sleep(0.1)
     
 """
-
                 MAIN FUNCTION
-
 """
 
 def main():
@@ -366,39 +461,16 @@ def main():
         
         # End Screen
         
-        # Clear Screen
-        thumby.display.fill(0)
-    
-        # Render bird in new pos
-        bird["pos"][1] = display_dim[1]-bird["dim"][1]
-        drawObj(bird)
-        
-        # Render Text
-        thumby.display.drawText("Game Over", 10, 3, 1)
-        
-        thumby.display.drawText("Score %d" % score, 10, 15, 1)
-        
-        thumby.display.drawText("Press B", 25, 30, 1)
-        
-        # Update Screen
-        thumby.display.update()
+        highscore, newHS = highscore_handler(score) # Determine high score
         
         # Play end music
         playEnd()
         
+        if (newHS):
+            # High Score Screen
+            highScoreScreen(highscore)
         
-        waiting = True
-        
-        # Loop till button is pressed
-        while(waiting):
-            if thumby.buttonB.justPressed():
-                waiting = False
-                
-            # Animate bird while waiting
-            drawObj(bird)
-            
-            thumby.display.update()
-            
-            time.sleep(0.1)
+        # Display Game Over Screen
+        gameOverScreen(score)
 
-main() # Run Program
+main()
