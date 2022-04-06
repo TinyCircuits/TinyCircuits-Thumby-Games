@@ -1,5 +1,5 @@
 Tiny Monster Trainer  
-Version: 032622  
+Version: 040622  
 
 Train and battle with procedurally created monsters!
 
