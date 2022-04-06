@@ -1,0 +1,6 @@
+Simple Cookie Clicker
+
+Click the cookie until your thumbs hurt
+
+Author: Camerin Figueroa
+Version: 1.0

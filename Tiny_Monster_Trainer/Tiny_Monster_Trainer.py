@@ -1075,28 +1075,29 @@ def trainActiveMon(myMonStats, monsterBody):
         elif currentSelect == 31:
             currentSelect = tempSelect
             if myMonStats['trainingPoints'] > 0:
-                if currentSelect == 0 and myMonStats['Health'] < myMonStats['maxHealth']: 
+                print(currentSelect, " = currentSelect")
+                if statNameList[currentSelect] == "Health" and myMonStats['Health'] < myMonStats['maxHealth']: 
                     myMonStats['Health'] = myMonStats['Health'] + 1
                     myMonStats['currentHealth'] = myMonStats['Health']
                     trainAnimation(monsterBody)
                     thingAquired(myMonStats['given_name'], "trained", "their", "health!", 2) 
-                elif currentSelect == 1 and myMonStats['Agility'] < myMonStats['maxAgility']: 
+                elif statNameList[currentSelect] == "Agility" and myMonStats['Agility'] < myMonStats['maxAgility']: 
                     myMonStats['Agility'] = myMonStats['Agility'] + 1
                     trainAnimation(monsterBody)
                     thingAquired(myMonStats['given_name'], "trained", "their", "agility!", 2)
-                elif currentSelect == 2 or currentSelect == -4 and myMonStats['Strength'] < myMonStats['maxStrength']: 
+                elif statNameList[currentSelect] == "Strength" and myMonStats['Strength'] < myMonStats['maxStrength']: 
                     myMonStats['Strength'] = myMonStats['Strength'] + 1
                     trainAnimation(monsterBody)
                     thingAquired(myMonStats['given_name'], "trained", "their", "strength!", 2)
-                elif currentSelect == 3 or currentSelect == -3  and myMonStats['Endurance'] < myMonStats['maxEndurance']: 
+                elif statNameList[currentSelect] == "Endurance"  and myMonStats['Endurance'] < myMonStats['maxEndurance']: 
                     myMonStats['Endurance'] = myMonStats['Endurance'] + 1
                     trainAnimation(monsterBody)
                     thingAquired(myMonStats['given_name'], "trained", "their", "endurance", 2)
-                elif currentSelect == 4 or currentSelect == -2  and myMonStats['Mysticism'] < myMonStats['maxMysticism']: 
+                elif statNameList[currentSelect] == "Mysticism" and myMonStats['Mysticism'] < myMonStats['maxMysticism']: 
                     myMonStats['Mysticism'] = myMonStats['Mysticism'] + 1
                     trainAnimation(monsterBody)
                     thingAquired(myMonStats['given_name'], "practiced", "their", "mysticism", 2)
-                elif currentSelect == -1 and myMonStats['Tinfoil'] < myMonStats['maxTinfoil']: 
+                elif statNameList[currentSelect] == "Tinfoil" and myMonStats['Tinfoil'] < myMonStats['maxTinfoil']: 
                     myMonStats['Tinfoil'] = myMonStats['Tinfoil'] + 1
                     trainAnimation(monsterBody)
                     thingAquired(myMonStats['given_name'], "polished", "their", "tinfoil", 2)
@@ -1317,7 +1318,7 @@ def makePlayer(monster1, monster2, monster3, seed):
     newPlayer.inventory.append(newItem)
     newPlayer.inventory.append(newItem)
     thingAquired("", "Good", "Luck", "", 2)
-    newPlayer.worldSeed = seed 
+    newPlayer.playerBlock['worldSeed'] = seed 
     return newPlayer 
     
 
@@ -1400,6 +1401,7 @@ def trainAnimation(monsterBody):
 
 def openScreen():
     gc.collect()
+    thumby.display.setFPS(40)
     f = open('/Games/Tiny_Monster_Trainer/Curtian/Other.ujson')
     images = ujson.load(f)
     myScroller = TextForScroller("Press A to Start or B to Load!")
@@ -1536,6 +1538,9 @@ myGuy = Player()
 load = openScreen()
 if load == 1: 
     myGuy = loadGame()
+    if myGuy.playerBlock["worldSeed"] == 0:
+        theWorldSeed = time.ticks_us()
+        myGuy.playerBlock["worldSeed"] = theWorldSeed
     world = makeWorld(myGuy.playerBlock['worldSeed'])
     monsterList = makeMonsterList(myGuy.playerBlock['worldSeed'])
 else:
