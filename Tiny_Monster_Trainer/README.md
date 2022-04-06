@@ -1,8 +1,9 @@
 # Tiny_Monster_Trainer 
 A game for the Thumby  
-
-
 Move around, fight monsters, collect monsters, train monsters.  
+(Version update information is at the bottom)  
+
+
 
 
 ############ **Game Info** ##############
