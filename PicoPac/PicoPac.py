@@ -62,6 +62,7 @@ pac_image_D = bytearray([99,65,112,120,112,65,99])
 pac_image_L = bytearray([127,93,28,8,0,65,99])
 # BITMAP: width: 7, height: 7
 pac_image_U = bytearray([99,65,7,15,7,65,99])
+
 # BITMAP: width: 7, height: 7
 ghost_D = bytearray([1,64,8,0,72,1,3])
 # BITMAP: width: 7, height: 7
@@ -70,6 +71,15 @@ ghost_R = bytearray([1,64,4,0,68,1,3])
 ghost_L = bytearray([3,1,68,0,4,64,1])
 # BITMAP: width: 7, height: 7
 ghost_U = bytearray([3,1,66,0,2,64,1])
+
+
+# BITMAP: width: 7, height: 7
+ghost_RD_mask = bytearray([126,63,127,127,63,126,124])
+
+# BITMAP: width: 7, height: 7
+ghost_LU_mask = bytearray([124,126,63,127,127,63,126])
+
+
 # BITMAP: width: 15, height: 14
 pac_large_1 = bytearray([224,248,252,254,254,255,255,255,255,255,254,254,252,248,224,
             1,7,15,31,31,63,63,63,63,63,31,31,15,7,1])
@@ -334,25 +344,25 @@ def portal_transport(player):
 def display_ghost(ghost):
     if power_time == 0 or (power_time > 40 and ghost_state % 2 == 0) or (power_time < 41 and ghost_state < 9):
         if (ghost.direction == 'R'):
-            thumby.display.blit(ghost_R, ghost.x, ghost.y, 7, 7,-1,0,0)
+            thumby.display.blitWithMask(ghost_R, ghost.x, ghost.y, 7, 7,-1,0,0, ghost_RD_mask)
         elif (ghost.direction == 'L'):
-            thumby.display.blit(ghost_L, ghost.x, ghost.y, 7, 7,-1,0,0)
+            thumby.display.blitWithMask(ghost_L, ghost.x, ghost.y, 7, 7,-1,0,0, ghost_LU_mask)
         elif (ghost.direction == 'U'):
-            thumby.display.blit(ghost_U, ghost.x, ghost.y, 7, 7,-1,0,0)
+            thumby.display.blitWithMask(ghost_U, ghost.x, ghost.y, 7, 7,-1,0,0, ghost_LU_mask)
         elif (ghost.direction == 'D'):
-            thumby.display.blit(ghost_D, ghost.x, ghost.y, 7, 7,-1,0,0)
+            thumby.display.blitWithMask(ghost_D, ghost.x, ghost.y, 7, 7,-1,0,0, ghost_RD_mask)
 def display_pac():
     if (pac.state == 0 and pac.moving == True):
         thumby.display.blit(pac_image, pac.x, pac.y, 7, 7,-1,0,0)
     else:
         if (pac.direction == 'R'):
-            thumby.display.blit(pac_image_R, pac.x, pac.y, 7, 7,-1,0,0)
+            thumby.display.blit(pac_image_R, pac.x, pac.y, 7, 7,1,0,0)
         elif (pac.direction == 'L'):
-            thumby.display.blit(pac_image_L, pac.x, pac.y, 7, 7,-1,0,0)
+            thumby.display.blit(pac_image_L, pac.x, pac.y, 7, 7,1,0,0)
         elif (pac.direction == 'U'):
-            thumby.display.blit(pac_image_U, pac.x, pac.y, 7, 7,-1,0,0)
+            thumby.display.blit(pac_image_U, pac.x, pac.y, 7, 7,1,0,0)
         elif (pac.direction == 'D'):
-            thumby.display.blit(pac_image_D, pac.x, pac.y, 7, 7,-1,0,0)
+            thumby.display.blit(pac_image_D, pac.x, pac.y, 7, 7,1,0,0)
 def check_collision(ghost):
     if abs(pac.x - ghost.x) < 5 and abs(pac.y - ghost.y) < 5:
         return True
@@ -481,11 +491,13 @@ def update_display():
     thumby.display.blit(maze_images[maze_index], 0, 0, 72, 40,-1,0,0)
     display_pac()
             
+    eat_balls()
+    eat_power_balls()
+            
     for ghost in ghosts:
         display_ghost(ghost)
     
-    eat_balls()
-    eat_power_balls()
+
     
     if power_ball_1 == True:
         thumby.display.blit(power_ball, 4, 32, 5, 5,1,0,0)
