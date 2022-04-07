@@ -1,8 +1,9 @@
 # Tiny_Monster_Trainer 
 A game for the Thumby  
-
-
 Move around, fight monsters, collect monsters, train monsters.  
+(Version update information is at the bottom)  
+
+
 
 
 ############ **Game Info** ##############
@@ -162,20 +163,25 @@ Monster Type | Attack Name | Element Type | Damage based on Strength/Mysticism
 ------- |"Obscurity"     | Darkness   | Mysticism  
 ------- |"Rue"           | Mind       | Mysticism  
 
-updates as of 3/26/22:
+
+Updates as of 4/6/22:  
+Added the ability to cycle up through select first monster/monster info/swap active screen.   
+Changed the way the options menu checks for the correct selection.  
+
+Updates as of 3/26/22:  
 Fixed issue where the worldseed wasn't assigned to the player block and the game would always load the default 0 world  
 If the world seed equals the default of '0' then the game will give you a new world seed.
-Fixed scroller speed on opening screen
+Fixed scroller speed on opening screen  
 
-updates as of 1/19/22:
+Updates as of 1/19/22:  
 Fixed issue where you could go above the max amount for some skills
 
-Updates as of 1/14/22:
+Updates as of 1/14/22:  
 Issue where there was not enough memory to load TMT from the thumby launcher on physical thumby. Moved images and attacks to their own ujson files in an attempt to fix this.
 Fixed issue where there where two images named legs7. Changed name of Mind move to telekinesis from project rock. Added tmt.ujson save for ease of testing.
 
-Updates as of 1/5/22:
+Updates as of 1/5/22:  
 Changed some combat math s'more. I like it better now, but I still haven't been able to play it long enough to see what it might be like at higher trainer levels. I also added some visuals and more monster parts. I fixed some more things that I found that weren’t working as intended.
 
-Updates as of 1/3/22:
+Updates as of 1/3/22:  
 Changed combat math so that the potential for high agility monsters avoiding all damage, all the time, was hopefully removed. Added a couple of monster parts. Added some visuals to help with navigating the game. Rewrote some functions to be the same, they just take up less lines. Removed some errors that caused the game to break. Fixed some things that weren't working as intended.

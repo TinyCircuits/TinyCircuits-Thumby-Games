@@ -973,34 +973,43 @@ def showMonInfo(playerInfo, startOfgameCheck=0, combatCheck=0):
     left = 1
     right = -1
     down = -1
+    up = -1
     x = 0
     xMonRange = len(playerInfo.friends)
     currentSelect = -2
     tempSelect = currentSelect
+    tempSelect2 = tempSelect
     goBack = 0
     monsterListInfo = playerInfo.friends
     while(goBack != 1): 
+        print("currentSelect = ", currentSelect)
         if currentSelect == 9:
             currentSelect = -2
+        if currentSelect == -3:
+            currentSelect = 8
         currentSelect = currentSelectCheckRange(10, currentSelect)
-        if (currentSelect < tempSelect) and currentSelect != -2:
-            currentSelect = tempSelect
+        tempSelect2 = tempSelect
         tempSelect = currentSelect
         thumby.display.fill(0)
         if currentSelect == -2: 
             printMon(monsterListInfo[x].bodyBlock, 25 ,0, 0)
-            drawArrows(left, right, down)
+            drawArrows(left, right, down, up)
             thumby.display.drawText(monsterListInfo[x].statBlock['given_name'], math.floor(((72-(len(monsterListInfo[x].statBlock['given_name']))*6))/2), 28, 1)
         elif currentSelect == -1:
             thingAquired(monsterListInfo[x].statBlock['given_name'], "is a", monsterListInfo[x].statBlock['name'], "", 0, 1)
-            drawArrows(left, right, down, -1)
+            drawArrows(left, right, down, up)
         elif currentSelect <= 8:
             while(monsterListInfo[x].statBlock[monsterListInfo[x].keyList[currentSelect]] == ""):
-                currentSelect = currentSelect + 1
+                if tempSelect2 < currentSelect:
+                    currentSelect = currentSelect + 1
+                elif tempSelect2 > currentSelect:
+                    currentSelect = currentSelect - 1
+                else:
+                    currentSelect = currentSelect - 1
             thingAquired(monsterListInfo[x].statBlock['given_name'] + "'s",
                         monsterListInfo[x].keyList[currentSelect], 
                         "is",str(monsterListInfo[x].statBlock[monsterListInfo[x].keyList[currentSelect]]), 0, 1)
-            drawArrows(left, right, down)
+            drawArrows(left, right, down, up)
         thumby.display.update()
         currentSelect = buttonInput(currentSelect)
         if currentSelect == 31 and combatCheck == 0:
@@ -1166,9 +1175,9 @@ def optionScreen(playerInfo):
             curSelect = showOptions(optionList, curSelect, bottomScreenText)
             if curSelect == 31:
                 curSelect = tempSelect
-                if optionList[curSelect] == "My Info":
+                if optionList[curSelect] == optionList[0]:
                     playerInformation(playerInfo)
-                if optionList[curSelect] == "My Monsters":
+                if optionList[curSelect] == optionList[1]:
                     goBack = 0
                     curSelect = 1
                     while(goBack != 1):
@@ -1179,31 +1188,31 @@ def optionScreen(playerInfo):
                         curSelect = showOptions(subOptionsFriends, curSelect, "My Friends")
                         if curSelect == 31:
                             curSelect = tempSelect
-                            if subOptionsFriends[curSelect] == "Swap Active":
+                            if subOptionsFriends[curSelect] == subOptionsFriends[0]:
                                 showMonInfo(playerInfo)
-                            if subOptionsFriends[curSelect] == "Train":
+                            if subOptionsFriends[curSelect] == subOptionsFriends[1]:
                                 trainActiveMon(playerInfo.friends[0].statBlock, playerInfo.friends[0].bodyBlock)
-                            if subOptionsFriends[curSelect] == "Learn Attack":
+                            if subOptionsFriends[curSelect] == subOptionsFriends[2]:
                                 trainAnAttackMove(playerInfo.friends[0].attackList, playerInfo.friends[0].statBlock, playerInfo.friends[0].keyList)
                                 while len(playerInfo.friends[0].attackList) > 6:
                                     popItOff(playerInfo.friends[0].attackList, "moves! Please forget one!")
-                            if subOptionsFriends[curSelect] == "Give Name":
+                            if subOptionsFriends[curSelect] == subOptionsFriends[3]:
                                 playerInfo.friends[0].statBlock['given_name'] = giveName(playerInfo.friends[0].statBlock['given_name'])
-                            if subOptionsFriends[curSelect] == "Mutate":
+                            if subOptionsFriends[curSelect] == subOptionsFriends[4]:
                                 playerInfo.friends[0].mutateMon()
-                            if subOptionsFriends[curSelect] == "Back":
+                            if subOptionsFriends[curSelect] == subOptionsFriends[5]:
                                 curSelect = 1
                                 goBack = 1
                         if curSelect == 30:
                             curSelect = 1
                             goBack = 1
                         thumby.display.update()
-                if optionList[curSelect] == "Items":
+                if optionList[curSelect] == optionList[2]:
                     displayItems(playerInfo)
-                if optionList[curSelect] == "Save":
+                if optionList[curSelect] == optionList[3]:
                     save(playerInfo)
                     thingAquired("","Game","Saved","", 1, 0)
-                if optionList[curSelect] == "Back": 
+                if optionList[curSelect] == optionList[4]: 
                     cancelCheck = 1
             if curSelect == 30:
                 cancelCheck = 1
@@ -1432,7 +1441,7 @@ def openScreen():
             return 1
     
 
-   
+
 def obj_to_dict(obj):
     return obj.__dict__
 
@@ -1562,7 +1571,7 @@ victory = 0
 ## Pretty much the game after this point :D ##
 
 while(1):
-    gc.collect() 
+    gc.collect()
     #micropython.mem_info()
     while(battle != 1):
         thumby.display.fill(0)
