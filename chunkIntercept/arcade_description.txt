@@ -1,0 +1,6 @@
+Chunk Intercept
+
+The goal is to collect as many chunks as possible before they overwhelm you, the game speeds up with the more you collect so be ready for a challenge.
+
+Author: Nicholas Hryckewycz
+Version: 1.0
