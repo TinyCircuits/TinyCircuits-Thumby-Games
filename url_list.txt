@@ -17,6 +17,11 @@ https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Float/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Float/Float.py
 
+NAME=chunkIntercept
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/chunkIntercept/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/chunkIntercept/chunkIntercept.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/chunkIntercept/arcade_description.txt
+
 NAME=Floppy
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Floppy/arcade_title_image.png
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Floppy/arcade_title_video.webm
