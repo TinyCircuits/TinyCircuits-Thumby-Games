@@ -162,7 +162,25 @@ Monster Type | Attack Name | Element Type | Damage based on Strength/Mysticism
 ------- |"Superlunary"   | Ethereal   | Mysticism   
 ------- |"Obscurity"     | Darkness   | Mysticism  
 ------- |"Rue"           | Mind       | Mysticism  
-
+  
+  
+Updates as of 4/11/22:   
+Fixed issue where items were not being loaded correctly, only loaded the first item that was saved.  
+Added numbers to item screen to help show how many items the player has.   
+Added text to tell the player they used an item.   
+   
+Updates as of 4/10/22:  
+Rewrote the battle animation screen.    
+Attacks will pick bolt that goes across the screen based on the element type for the attack that was selected.  
+Fixed maxFriends, so that you can't go above the max amount anymore.    
+Had to lower monster count to 22 due to memory issues that comes up when loading a game with 5 monsters on your team, from the title screen.  
+  
+Updates as of 4/9/22:  
+Changed up the combat math, trying to make it less swingy.  
+  
+Updates as of 4/8/22:  
+Fixed - now game will let you know that active monster doesn't have enough HP to fight, if in a fight it will tell you it switched to another monster that has HP  
+Added mutate animation ( That takes up too many lines :D )  
 
 Updates as of 4/6/22:  
 Added the ability to cycle up through select first monster/monster info/swap active screen.   
