@@ -276,7 +276,7 @@ class Player:
         if self.playerBlock['experience'] >= self.playerBlock['trainerLevel'] * 2:
             self.playerBlock['trainerLevel'] = self.playerBlock['trainerLevel'] + 1
             thingAquired("Your", "Trainer", "Level is", "Now " + str(self.playerBlock['trainerLevel']), 2)
-            if self.playerBlock['trainerLevel'] % 10 == 0 and self.playerBlock['friendMax'] < 4:
+            if self.playerBlock['trainerLevel'] % 10 == 0 and self.playerBlock['friendMax'] < 5:
                 self.playerBlock['friendMax'] = self.playerBlock['friendMax'] + 1
                 thingAquired(self.playerBlock['name'], "can now", "have " + str(self.playerBlock['friendMax']), "monsters!", 2)
                 
