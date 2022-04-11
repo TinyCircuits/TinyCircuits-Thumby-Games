@@ -633,10 +633,9 @@ def typeAsNum(moveType):
     typeList = ["", "Earth", "Wind", "Water", "Fire", "Light", "Darkness", "Cute", 
                 "Mind", "Physical", "Mystical", "Ethereal"]
     typeNumber = 0
-    for i in range(0,11):
+    for i in range(0,12):
         if moveType == typeList[i]:
             typeNumber = i
-            #print("typelist = ", typeNumber, ", i = ", i)
     return typeNumber
         
 
@@ -1587,7 +1586,7 @@ def loadGame():
         for x in range(0, len(bigJson[0]['items'][0])):
             tempPlayer.inventory.append(Item(bigJson[0]['items'][0]['item' + str(x)]['name'],
                                             bigJson[0]['items'][0]['item' + str(x)]['key'],
-                                            bigJson[0]['items'][0]['item' + str(x)]['bonus'])) 
+                                            bigJson[0]['items'][0]['item' + str(x)]['bonus']))
     for x in range(0, len(bigJson[0]['monsterInfo'][0])):
         tempMon = Monster()
         tempMon.statBlock = bigJson[0]['monsterInfo'][0]['mon' + str(x) + 'stat'].copy()
@@ -1685,7 +1684,7 @@ while(1):
     gc.collect()
     #micropython.mem_info()
     while(battle != 1):
-        if myGuy.playerBlock['friendMax'] > 5:      # remove friendMax checks after around 6/1/22
+        if myGuy.playerBlock['friendMax'] > 5: # remove friendMax checks after around 6/1/22
             myGuy.playerBlock['friendMax'] = 5
         if len(myGuy.friends) > myGuy.playerBlock['friendMax']:
             popItOff(myGuy.friends, "monsters, please let one go!")
