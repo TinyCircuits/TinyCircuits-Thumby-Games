@@ -1,0 +1,6 @@
+Thario Run
+
+A run and dodge game inspired by a world-saving plumber.
+
+Author: Jeroen Peters
+Version: 1.0
