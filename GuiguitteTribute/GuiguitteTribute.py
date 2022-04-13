@@ -111,6 +111,10 @@ glouglouStr="""
 205_1,S_4,
 255_1,S_4
 """
+collideStr="""
+t200_0.2,t160_0.2,t140_0.2,t120_0.2,t100_0.2,t80_0.2
+"""
+
 #ragePlusMusicStr="""D4_4,E4_1,Fs4_1,E4_2,D4_2,A3_2,S_2,
 #E4_4,Fs4_1,G4_1,Fs4_2,E4_2,A3_2,S_2,
 #D4_4,E4_1,Fs4_1,E4_2,D4_2,A3_2,S_2,
@@ -233,7 +237,7 @@ class Music:
         return self._startTime>0
 
 music=Music(ragePlusMusicStr, 200)
-#music=Music(valkyriesMusicStr, 200)
+#music=Music(collideStr, 100)
 class AlphaSprite:
     def __init__(self, width, height, dataB, dataW, x=0, y=0, mirrorX=0, mirrorY=0):
         self.spriteB=thumby.Sprite(width, height, dataB, x, y, 1, mirrorX, mirrorY)
@@ -371,17 +375,18 @@ bulleSpr = AlphaSprite(56, 40, bulleB, bulleW)
 
 
 # 13x11 for 1 frames
-sayanHairB = bytearray([31,225,11,91,232,109,221,187,199,187,1,191,127,7,4,3,5,0,7,6,6,5,2,5,3,4])
-sayanHairW = bytearray([0,224,8,88,232,108,220,184,192,184,0,128,0,0,0,3,1,0,0,0,0,1,2,1,3,0])
-sayanHairSpr = AlphaSprite(13, 11, sayanHairB, sayanHairW)
+#sayanHairB = bytearray([31,225,11,91,232,109,221,187,199,187,1,191,127,7,4,3,5,0,7,6,6,5,2,5,3,4])
+#sayanHairW = bytearray([0,224,8,88,232,108,220,184,192,184,0,128,0,0,0,3,1,0,0,0,0,1,2,1,3,0])
+# 14x12 for 1 frames
+sayanHairB = bytearray([31,224,149,109,234,216,254,222,185,183,119,187,93,227,15,8,7,8,7,9,14,14,14,9,7,2,13,8])
+sayanHairW = bytearray([0,224,148,108,232,216,254,222,184,176,112,184,28,0,0,0,7,0,7,1,0,0,0,1,7,2,1,0])
+sayanHairSpr = AlphaSprite(14, 12, sayanHairB, sayanHairW)
 
 frameRate = 60
 godMode = False
 
 # Set the FPS (without this call, the default fps is 30)
 thumby.display.setFPS(frameRate)
-
-
 
 def drawScene():
     thumby.display.fill(1)
@@ -422,7 +427,6 @@ music.play()
 
 codeState=0
 t0=time.ticks_ms()
-wasPressed=False
 displayedHelp=False
 while(1):
     a=thumby.buttonA.justPressed()
@@ -466,6 +470,9 @@ while(1):
         displayedHelp=True
 music.stop()
 
+collideMusic = None
+if godMode:
+    collideMusic = Music(collideStr, 100)
 
 
 def playGenerique(text):
@@ -632,7 +639,9 @@ def playLevel(level):
     gameOver=False
     level.music.play()
     while(1):
-        if level.music.isPlaying():
+        if collideMusic != None and collideMusic.isPlaying():
+            collideMusic.play()
+        elif level.music.isPlaying():
             level.music.play()
         currentTime = time.ticks_ms()   # Get time (ms)
         dt=currentTime-tlast
@@ -688,6 +697,7 @@ def playLevel(level):
             if jumpTime < 0 and fenceSpr.getX() < cowSpr.getWidth() and fenceSpr.getX() > 5:
                 if godMode:
                     level.fencesPos=[x for x in level.fencesPos if x - scrollCtr != fenceSpr.getX()]
+                    collideMusic.play()
                 else:
                     gameOver=True
                     print("fence hitted")
@@ -711,6 +721,7 @@ def playLevel(level):
             if jumpTime >= 0 and gateBackSpr.getX() < cowSpr.getWidth() and gateBackSpr.getX() > 5:
                  if godMode:
                     level.gatesPos=[x for x in level.gatesPos if x - scrollCtr != gateBackSpr.getX()]
+                    collideMusic.play()
                  else:
                     print("gate hitted 1")
                     gameOver=True
@@ -720,6 +731,7 @@ def playLevel(level):
             elif slideTime < 0 and gateBackSpr.getX() < cowSpr.getWidth() and gateBackSpr.getX() > 5 and gateFrontSpr.getFrame() == 1:
                  if godMode:
                     level.gatesPos=[x for x in level.gatesPos if x - scrollCtr != gateBackSpr.getX()]
+                    collideMusic.play()
                  else:
                     print("gate hitted 2")
                     gameOver=True
