@@ -273,11 +273,13 @@ class Player:
 
     def levelUpCheck(self):
         self.playerBlock['experience'] = self.playerBlock['experience'] + 1
-        if self.playerBlock['experience'] == self.playerBlock['trainerLevel'] * 2:
+        if self.playerBlock['experience'] >= self.playerBlock['trainerLevel'] * 2:
             self.playerBlock['trainerLevel'] = self.playerBlock['trainerLevel'] + 1
             thingAquired("Your", "Trainer", "Level is", "Now " + str(self.playerBlock['trainerLevel']), 2)
-            if self.playerBlock['trainerLevel'] % 10 == 0 & self.playerBlock['friendMax'] < 4:
+            if self.playerBlock['trainerLevel'] % 10 == 0 and self.playerBlock['friendMax'] < 5:
                 self.playerBlock['friendMax'] = self.playerBlock['friendMax'] + 1
+                thingAquired(self.playerBlock['name'], "can now", "have " + str(self.playerBlock['friendMax']), "monsters!", 2)
+                
 
         
 class Monster:
@@ -423,6 +425,7 @@ class Monster:
 
     def mutateMon(self):
         if self.statBlock['trainingPoints'] > 4:
+            tempBody = self.bodyBlock.copy()
             if self.mutateSeed[1] < 4:
                 random.seed(self.mutateSeed[0] + (self.mutateSeed[1] * 100))
                 mutation = random.randint(1, 5)
@@ -449,6 +452,7 @@ class Monster:
                     self.statBlock['maxHealth'] = self.statBlock['maxHealth'] + 20
                 self.mutateSeed[1] = self.mutateSeed[1] + 1
                 self.statBlock['trainingPoints'] = self.statBlock['trainingPoints'] - 5 
+                mutateAnimation(tempBody, self.bodyBlock)
                 thingAquired(self.statBlock['given_name'], "has", "mutated!", "", 2)
             else:
                 thingAquired(self.statBlock['given_name'], "is unable to", "mutate", "again", 2)
@@ -591,7 +595,7 @@ def battleStartAnimation(color):
         thumby.display.update()
     thumby.display.fill(0)
     thumby.display.update()
-    thumby.display.setFPS(30)
+    thumby.display.setFPS(40)
 
 
 def buttonInput(selectPos):                
@@ -625,42 +629,84 @@ def buttonInput(selectPos):
         selectionBoxPos = 30
     return selectionBoxPos    
 
+def typeAsNum(moveType):
+    typeList = ["", "Earth", "Wind", "Water", "Fire", "Light", "Darkness", "Cute", 
+                "Mind", "Physical", "Mystical", "Ethereal"]
+    typeNumber = 0
+    for i in range(0,12):
+        if moveType == typeList[i]:
+            typeNumber = i
+    return typeNumber
+        
 
-def attackAnimation(playerBod, nmeBod, attackIsPlayer, missFlag, amountOfDmg, playerHP, nmeHP, atkTxt):
-    for x in range(0, 4):
+def attackAnimation(playerBod, nmeBod, attackIsPlayer, missFlag, amountOfDmg, playerHP, nmeHP, atkTxt, attackType = ""):
+    
+    # BITMAP: width: 8, height: 8
+    sidewaySkull = bytearray([0,42,62,119,127,107,107,62]) # ethereal
+    darkness = bytearray([0,36,66,8,16,66,36,0]) # darkness
+    maybeFireball = bytearray([20,42,62,99,69,89,99,62]) # fire
+    maybeWaterball = bytearray([16,68,16,40,68,76,56,0]) # water
+    windBlow = bytearray([68,85,85,34,8,138,170,68]) # wind
+    rock = bytearray([20,65,28,42,66,86,36,56]) # earth
+    punch =  bytearray([189,165,36,116,148,180,132,120])  # physical
+    spiral = bytearray([124,130,57,69,149,153,66,60]) # mind
+    fourFlowers = bytearray([32,82,37,2,64,164,74,4]) # light
+    heart = bytearray([28,62,126,252,252,126,62,28]) # cute
+    arrow = bytearray([4,60,39,114,90,78,120,0]) # mystic
+    basic = bytearray([56,108,130,162,138,154,130,124]) #basic
+    
+    BoltArray = [basic, rock, windBlow, maybeWaterball, maybeFireball, fourFlowers, darkness, heart, spiral, punch, arrow, sidewaySkull]
+    attackTypeNum = typeAsNum(attackType)
+    
+    nmeAfterDmg = nmeHP - amountOfDmg
+    playerAfterDmg = playerHP - amountOfDmg
+    combatText = ""
+    
+    t0 = 0
+    ct0 = time.ticks_ms()
+    bobRate = 250
+    bobRange = 5
+    animateX = 0
+    
+    thumby.display.setFPS(40)
+    while(t0 - ct0 < 4000):
+        t0 = time.ticks_ms()
+        bobOffset = math.sin(t0 / bobRate) * bobRange
+        if(t0 - ct0 >= 4000):
+            combatText = ""
         playerX = 8
         nmeX = 42
         y = 0
         nmeY = 0
-        if x == 2 and attackIsPlayer == 1:
-            y = 10
-        elif x == 2 and attackIsPlayer == 0:
-            nmeY = 10
-        thumby.display.fill(0)
+        if (t0 - ct0 >= 2000) and (t0 - ct0 <= 3000) and attackIsPlayer == 1:
+            y = 5
+        elif (t0 - ct0 >= 2000) and (t0 - ct0 <= 3000) and attackIsPlayer == 0:
+            nmeY = 5
+        thumby.display.fill(0) 
         printMon(playerBod, playerX + y, 1, 0)
         printMon(nmeBod, nmeX - nmeY, 1, 1)
         thumby.display.drawFilledRectangle(0, 29, 72, 9, 1)
         thumby.display.drawText(str(playerHP), 2, 30, 0)
         thumby.display.drawText(str(nmeHP), 72 - len(str(nmeHP) * 7), 30, 0)
-        thumby.display.update()
-        if missFlag == 1 and x > 1 and attackIsPlayer == 1: # player misses
-            thumby.display.drawText(atkTxt, math.ceil(((72-(len(atkTxt))*6))/2)+1, 30, 0)
-        if missFlag == 0 and x > 1 and attackIsPlayer == 1: # player hits
-            thumby.display.drawFilledRectangle(0, 29, 72, 9, 1)
-            thumby.display.drawText(atkTxt, math.ceil(((72-(len(atkTxt))*6))/2)+1, 30, 0)
-            thumby.display.drawText(str(playerHP), 2, 30, 0)
-            thumby.display.drawText(str(nmeHP - amountOfDmg), 72 - len(str(nmeHP - amountOfDmg) * 7), 30, 0)
-        if missFlag == 1 and x > 1 and attackIsPlayer == 0: # nme misses
+        thumby.display.drawText(combatText, math.ceil(((72-(len(combatText))*6))/2)+1, 30, 0)
+        if missFlag == 1 and (t0 - ct0) > 2000 and (t0 - ct0 <= 3500) and attackIsPlayer == 1: # player misses
+            combatText = atkTxt
+        if missFlag == 0 and (t0 - ct0) > 2000 and (t0 - ct0 <= 4000) and attackIsPlayer == 1: # player hits
+            thumby.display.blit(BoltArray[attackTypeNum], (30 + animateX), math.floor(10+bobOffset), 8, 8, 0, 0, 0) #, flippy, 0)
+            nmeHP = nmeAfterDmg
+            combatText = atkTxt
+        if missFlag == 1 and (t0 - ct0) > 2000 and (t0 - ct0 <= 3500) and attackIsPlayer == 0: # nme misses
             thumby.display.drawText("Miss", 25, 30, 0)
-        if missFlag == 0 and x > 1 and attackIsPlayer == 0: # nme hits
-            thumby.display.drawFilledRectangle(0, 29, 72, 9, 1)
-            thumby.display.drawText(atkTxt, math.ceil(((72-(len(atkTxt))*6))/2)+1, 30, 0)
-            thumby.display.drawText(str(nmeHP), 72 - len(str(nmeHP) * 7), 30, 0)
-            thumby.display.drawText(str(playerHP - amountOfDmg), 2, 30, 0)
+            combatText = "Miss"
+        if missFlag == 0 and (t0 - ct0) > 2000 and (t0 - ct0 <= 4000) and attackIsPlayer == 0: # nme hits
+            thumby.display.blit(BoltArray[attackTypeNum], (36 - animateX), math.floor(10+bobOffset), 8, 8, 0, 1, 0) #, flippy, 0)
+            combatText = atkTxt
+            playerHP = playerAfterDmg
         thumby.display.update()
-        time.sleep(1)
         y = 0
         nmeY = 0
+        if (t0 - ct0) % 2 == 0 and (t0 - ct0) > 2000:
+            animateX = animateX + 1
 
 
 def isTypeWeak(mon1Type, mon2Type): 
@@ -694,20 +740,24 @@ def isTypeStrong(mon1Type, mon2Type):
 
 
 def attack(attackMon, defenceMon, activeAttack, attackTrainLevel=0, defTrainLevel=0): 
+    
     if activeAttack.magic == 1:
+        dodgeBonus = defenceMon.statBlock['Tinfoil'] + random.randint(-1, 5)
         attackAmnt = attackMon.statBlock['Mysticism'] + attackTrainLevel + math.ceil((attackTrainLevel + activeAttack.baseDamage) * .2) 
-        defence = defenceMon.statBlock['Tinfoil'] + defTrainLevel + random.randint(-1, 5)
+        defence =  defTrainLevel + dodgeBonus
     else:
+        dodgeBonus = defenceMon.statBlock['Endurance'] + random.randint(-1, 5)
         attackAmnt = attackMon.statBlock['Strength'] + attackTrainLevel + math.ceil((attackTrainLevel + activeAttack.baseDamage) * .2)
-        defence = defenceMon.statBlock['Endurance'] + defTrainLevel + random.randint(-1, 5)
+        defence = defTrainLevel + dodgeBonus
     hp2 = defenceMon.statBlock['currentHealth']
-    dodge = defenceMon.statBlock['Agility'] + math.ceil(defence/2) 
+    dodge = defenceMon.statBlock['Agility'] + dodgeBonus 
     damage = 0
     hit = 1
     atkTypeBonus = 1
     defTypeBonus = 1
-    if (dodge + random.randint(-abs(attackTrainLevel),100)) > (90 - defTrainLevel): # check for dodge
-        if ((attackAmnt + attackMon.statBlock['Agility']) + random.randint(-10, 10)) >= dodge: # check for glance
+    if (dodge + random.randint(-abs(attackTrainLevel),(100 - defTrainLevel)))+200 > (90 - defTrainLevel)+200: # check for dodge
+        glanceCheck = random.randint(-20, 20)
+        if ((math.ceil(attackAmnt/2) + attackMon.statBlock['Agility']) + glanceCheck) >= dodge+defTrainLevel: # check for glance
             hit = 2
         else:
             hit = 0
@@ -716,11 +766,15 @@ def attack(attackMon, defenceMon, activeAttack, attackTrainLevel=0, defTrainLeve
             atkTypeBonus = isTypeStrong(activeAttack.moveElementType, defenceMon.statBlock[defenceMon.keyList[x]]) + atkTypeBonus
         for x in range(1,3):
             defTypeBonus = isTypeWeak(defenceMon.statBlock[defenceMon.keyList[x]], activeAttack.moveElementType) + defTypeBonus
-        damage = (attackAmnt * atkTypeBonus) - (defence * defTypeBonus)
+        damage = math.ceil((attackAmnt * atkTypeBonus)/3) - math.ceil((defence * defTypeBonus)/3)
         if damage <= 0:
             damage = 1
         else:
             damage = math.ceil(damage/hit)
+    if hit == 1:
+        piz = [0,0,0,0,1,1,1,2,3]
+        paz = random.randint(0,8)
+        damage = damage + piz[paz]
     hp2 = hp2 - damage
     if hp2 < 0:
         hp2 = 0
@@ -730,7 +784,7 @@ def attack(attackMon, defenceMon, activeAttack, attackTrainLevel=0, defTrainLeve
     elif hit == 2:
         return "Glance"
     else: # hit == 0:
-        return "Miss"
+        return "Miss"  
         
 
 def afterAttackSelect(attackingMon, atkChoice, defMon, playerTrainLevel, npcTrainLevel, attackIsPlayer):
@@ -740,10 +794,10 @@ def afterAttackSelect(attackingMon, atkChoice, defMon, playerTrainLevel, npcTrai
     amntOfDmg = hpBeforeDmg - defMon.statBlock['currentHealth'] 
     if amntOfDmg >= 1:
         if attackIsPlayer == 1:
-            attackAnimation(attackingMon.bodyBlock, defMon.bodyBlock, attackIsPlayer, 0, amntOfDmg, attackingMon.statBlock['currentHealth'], hpBeforeDmg, attackText)
+            attackAnimation(attackingMon.bodyBlock, defMon.bodyBlock, attackIsPlayer, 0, amntOfDmg, attackingMon.statBlock['currentHealth'], hpBeforeDmg, attackText, attackingMon.attackList[atkChoice].moveElementType)
             scrollText = (attackingMon.statBlock['given_name'] + " did " + str(amntOfDmg) + " points of damage!")
         else:
-            attackAnimation(defMon.bodyBlock, attackingMon.bodyBlock, attackIsPlayer, 0, amntOfDmg, hpBeforeDmg, attackingMon.statBlock['currentHealth'], attackText)
+            attackAnimation(defMon.bodyBlock, attackingMon.bodyBlock, attackIsPlayer, 0, amntOfDmg, hpBeforeDmg, attackingMon.statBlock['currentHealth'], attackText, attackingMon.attackList[atkChoice].moveElementType)
     else:
         if attackIsPlayer == 1:
             attackAnimation(attackingMon.bodyBlock, defMon.bodyBlock, attackIsPlayer, 1, amntOfDmg, attackingMon.statBlock['currentHealth'], hpBeforeDmg, attackText)
@@ -884,6 +938,8 @@ def autoSwitchMon(playerInfo):
             if playerInfo.friends[x].statBlock['currentHealth'] > 0:
                 switchActiveMon(playerInfo, playerInfo.friends[0], playerInfo.friends[x], x)
             x = x + 1
+        if playerInfo.friends[0].statBlock['currentHealth'] > 0:
+            thingAquired(playerInfo.friends[0].statBlock['given_name'], "is now", "your active", "monster!", 2)
 
 
 def currentSelectCheckRange(optionAmount, currentSelect):
@@ -940,8 +996,10 @@ def displayItems(playerInfo):
     tempSelect = curSelect
     cancelCheck = 0
     optionList = []
+    i = 0
     for items in playerInfo.inventory:
-        optionList.append(items.name)
+        i = i+1
+        optionList.append(str(i) + ". " + items.name)
     x = len(optionList)
     if x > 0:
         while curSelect < 11:
@@ -949,7 +1007,10 @@ def displayItems(playerInfo):
             tempSelect = curSelect
             curSelect = showOptions(optionList, curSelect, bottomScreenText)
             if curSelect ==  31:
-                playerInfo.inventory[tempSelect].doAction(playerInfo.friends[0]) 
+                playerInfo.inventory[tempSelect].doAction(playerInfo.friends[0])
+                thingAquired(playerInfo.playerBlock['name'],
+                "gave", playerInfo.friends[0].statBlock['given_name'],
+                playerInfo.inventory[tempSelect].name, 2)
                 playerInfo.inventory.pop(tempSelect)
             elif curSelect == 30:
                 pass
@@ -973,40 +1034,52 @@ def showMonInfo(playerInfo, startOfgameCheck=0, combatCheck=0):
     left = 1
     right = -1
     down = -1
+    up = -1
     x = 0
     xMonRange = len(playerInfo.friends)
     currentSelect = -2
     tempSelect = currentSelect
+    tempSelect2 = tempSelect
     goBack = 0
     monsterListInfo = playerInfo.friends
     while(goBack != 1): 
         if currentSelect == 9:
             currentSelect = -2
+        if currentSelect == -3:
+            currentSelect = 8
         currentSelect = currentSelectCheckRange(10, currentSelect)
-        if (currentSelect < tempSelect) and currentSelect != -2:
-            currentSelect = tempSelect
+        tempSelect2 = tempSelect
         tempSelect = currentSelect
         thumby.display.fill(0)
         if currentSelect == -2: 
             printMon(monsterListInfo[x].bodyBlock, 25 ,0, 0)
-            drawArrows(left, right, down)
+            drawArrows(left, right, down, up)
             thumby.display.drawText(monsterListInfo[x].statBlock['given_name'], math.floor(((72-(len(monsterListInfo[x].statBlock['given_name']))*6))/2), 28, 1)
         elif currentSelect == -1:
             thingAquired(monsterListInfo[x].statBlock['given_name'], "is a", monsterListInfo[x].statBlock['name'], "", 0, 1)
-            drawArrows(left, right, down, -1)
+            drawArrows(left, right, down, up)
         elif currentSelect <= 8:
             while(monsterListInfo[x].statBlock[monsterListInfo[x].keyList[currentSelect]] == ""):
-                currentSelect = currentSelect + 1
+                if tempSelect2 < currentSelect:
+                    currentSelect = currentSelect + 1
+                elif tempSelect2 > currentSelect:
+                    currentSelect = currentSelect - 1
+                else:
+                    currentSelect = currentSelect - 1
             thingAquired(monsterListInfo[x].statBlock['given_name'] + "'s",
                         monsterListInfo[x].keyList[currentSelect], 
                         "is",str(monsterListInfo[x].statBlock[monsterListInfo[x].keyList[currentSelect]]), 0, 1)
-            drawArrows(left, right, down)
+            drawArrows(left, right, down, up)
         thumby.display.update()
         currentSelect = buttonInput(currentSelect)
-        if currentSelect == 31 and combatCheck == 0:
+        if currentSelect == 31 and combatCheck != 1:
             if playerInfo.friends[0] != playerInfo.friends[x] or startOfgameCheck == 1:
+                if playerInfo.friends[x].statBlock['currentHealth'] == 0:
+                    thingAquired(monsterListInfo[x].statBlock['given_name'], "does not", "have enough", "HP to fight!", 2)
                 switchActiveMon(playerInfo, monsterListInfo[0], monsterListInfo[x], x)
-                thingAquired(monsterListInfo[0].statBlock['given_name'], "is now", "your active", "monster!", 2)
+                goBack = 1
+                if combatCheck != 2: #need to while switching in battle if selected mon has HPs
+                    thingAquired(monsterListInfo[0].statBlock['given_name'], "is now", "your active", "monster!", 2)
                 x = 0
                 currentSelect = -2
                 if startOfgameCheck == 1:
@@ -1075,28 +1148,28 @@ def trainActiveMon(myMonStats, monsterBody):
         elif currentSelect == 31:
             currentSelect = tempSelect
             if myMonStats['trainingPoints'] > 0:
-                if currentSelect == 0 and myMonStats['Health'] < myMonStats['maxHealth']: 
+                if statNameList[currentSelect] == "Health" and myMonStats['Health'] < myMonStats['maxHealth']: 
                     myMonStats['Health'] = myMonStats['Health'] + 1
                     myMonStats['currentHealth'] = myMonStats['Health']
                     trainAnimation(monsterBody)
                     thingAquired(myMonStats['given_name'], "trained", "their", "health!", 2) 
-                elif currentSelect == 1 and myMonStats['Agility'] < myMonStats['maxAgility']: 
+                elif statNameList[currentSelect] == "Agility" and myMonStats['Agility'] < myMonStats['maxAgility']: 
                     myMonStats['Agility'] = myMonStats['Agility'] + 1
                     trainAnimation(monsterBody)
                     thingAquired(myMonStats['given_name'], "trained", "their", "agility!", 2)
-                elif currentSelect == 2 or currentSelect == -4 and myMonStats['Strength'] < myMonStats['maxStrength']: 
+                elif statNameList[currentSelect] == "Strength" and myMonStats['Strength'] < myMonStats['maxStrength']: 
                     myMonStats['Strength'] = myMonStats['Strength'] + 1
                     trainAnimation(monsterBody)
                     thingAquired(myMonStats['given_name'], "trained", "their", "strength!", 2)
-                elif currentSelect == 3 or currentSelect == -3  and myMonStats['Endurance'] < myMonStats['maxEndurance']: 
+                elif statNameList[currentSelect] == "Endurance"  and myMonStats['Endurance'] < myMonStats['maxEndurance']: 
                     myMonStats['Endurance'] = myMonStats['Endurance'] + 1
                     trainAnimation(monsterBody)
                     thingAquired(myMonStats['given_name'], "trained", "their", "endurance", 2)
-                elif currentSelect == 4 or currentSelect == -2  and myMonStats['Mysticism'] < myMonStats['maxMysticism']: 
+                elif statNameList[currentSelect] == "Mysticism" and myMonStats['Mysticism'] < myMonStats['maxMysticism']: 
                     myMonStats['Mysticism'] = myMonStats['Mysticism'] + 1
                     trainAnimation(monsterBody)
                     thingAquired(myMonStats['given_name'], "practiced", "their", "mysticism", 2)
-                elif currentSelect == -1 and myMonStats['Tinfoil'] < myMonStats['maxTinfoil']: 
+                elif statNameList[currentSelect] == "Tinfoil" and myMonStats['Tinfoil'] < myMonStats['maxTinfoil']: 
                     myMonStats['Tinfoil'] = myMonStats['Tinfoil'] + 1
                     trainAnimation(monsterBody)
                     thingAquired(myMonStats['given_name'], "polished", "their", "tinfoil", 2)
@@ -1165,9 +1238,9 @@ def optionScreen(playerInfo):
             curSelect = showOptions(optionList, curSelect, bottomScreenText)
             if curSelect == 31:
                 curSelect = tempSelect
-                if optionList[curSelect] == "My Info":
+                if optionList[curSelect] == optionList[0]:
                     playerInformation(playerInfo)
-                if optionList[curSelect] == "My Monsters":
+                if optionList[curSelect] == optionList[1]:
                     goBack = 0
                     curSelect = 1
                     while(goBack != 1):
@@ -1178,31 +1251,31 @@ def optionScreen(playerInfo):
                         curSelect = showOptions(subOptionsFriends, curSelect, "My Friends")
                         if curSelect == 31:
                             curSelect = tempSelect
-                            if subOptionsFriends[curSelect] == "Swap Active":
+                            if subOptionsFriends[curSelect] == subOptionsFriends[0]:
                                 showMonInfo(playerInfo)
-                            if subOptionsFriends[curSelect] == "Train":
+                            if subOptionsFriends[curSelect] == subOptionsFriends[1]:
                                 trainActiveMon(playerInfo.friends[0].statBlock, playerInfo.friends[0].bodyBlock)
-                            if subOptionsFriends[curSelect] == "Learn Attack":
+                            if subOptionsFriends[curSelect] == subOptionsFriends[2]:
                                 trainAnAttackMove(playerInfo.friends[0].attackList, playerInfo.friends[0].statBlock, playerInfo.friends[0].keyList)
                                 while len(playerInfo.friends[0].attackList) > 6:
                                     popItOff(playerInfo.friends[0].attackList, "moves! Please forget one!")
-                            if subOptionsFriends[curSelect] == "Give Name":
+                            if subOptionsFriends[curSelect] == subOptionsFriends[3]:
                                 playerInfo.friends[0].statBlock['given_name'] = giveName(playerInfo.friends[0].statBlock['given_name'])
-                            if subOptionsFriends[curSelect] == "Mutate":
+                            if subOptionsFriends[curSelect] == subOptionsFriends[4]:
                                 playerInfo.friends[0].mutateMon()
-                            if subOptionsFriends[curSelect] == "Back":
+                            if subOptionsFriends[curSelect] == subOptionsFriends[5]:
                                 curSelect = 1
                                 goBack = 1
                         if curSelect == 30:
                             curSelect = 1
                             goBack = 1
                         thumby.display.update()
-                if optionList[curSelect] == "Items":
+                if optionList[curSelect] == optionList[2]:
                     displayItems(playerInfo)
-                if optionList[curSelect] == "Save":
+                if optionList[curSelect] == optionList[3]:
                     save(playerInfo)
                     thingAquired("","Game","Saved","", 1, 0)
-                if optionList[curSelect] == "Back": 
+                if optionList[curSelect] == optionList[4]: 
                     cancelCheck = 1
             if curSelect == 30:
                 cancelCheck = 1
@@ -1270,7 +1343,8 @@ def makeMonsterList(mSeed):
     gc.collect()
     random.seed(mSeed) 
     monsterList = []
-    for i in range (0 , 25): # numberOfMons = 25
+    for i in range (0 , 22): # numberOfMons = 22
+        gc.collect()
         thingAquired("", "Generating", "Monsters",str(i+1), 0)
         newMon = Monster()
         newMon.makeMonster()
@@ -1286,6 +1360,8 @@ def makeMonsterList(mSeed):
         monsterList[i].attackList.append(newMonAtk)
         noDupAtk(newMon.attackList)
         monsterList[i].makeMonBody()
+        #micropython.mem_info()
+        #print("Mon: ", i, ", name is ", newMon.statBlock['name'])
     return monsterList
     
 
@@ -1317,7 +1393,7 @@ def makePlayer(monster1, monster2, monster3, seed):
     newPlayer.inventory.append(newItem)
     newPlayer.inventory.append(newItem)
     thingAquired("", "Good", "Luck", "", 2)
-    newPlayer.worldSeed = seed 
+    newPlayer.playerBlock['worldSeed'] = seed 
     return newPlayer 
     
 
@@ -1379,7 +1455,50 @@ def printMon(monsterBody, x, y, playerOrNPC):
         thumby.display.blit(bytearray(monsterBody['body']), x, y+9, 20, 9, 0, playerOrNPC, 0)
         thumby.display.blit(bytearray(monsterBody['legs']), x, y+18, 20, 9, 0, playerOrNPC, 0)
 
+
+def mutateAnimation(tempBody, monsterBody):
+    random.seed(time.ticks_ms())
+    t0 = 0
+    ct0 = time.ticks_ms()
+    # BITMAP: width: 20, height: 30
+    poppy = bytearray([0,0,0,0,0,0,0,8,120,208,16,16,24,14,4,12,24,16,16,24,
+           0,0,0,6,14,10,154,243,1,1,0,0,0,0,0,0,0,0,0,0,
+           0,0,2,2,3,7,133,140,120,0,0,0,0,0,0,0,0,0,0,0,
+           0,0,0,1,19,39,37,60,0,0,0,0,0,0,0,0,0,0,0,0])
+
+    while(t0 - ct0 < 6000):
+        t0 = time.ticks_ms()
+        randoNum = random.randint(-1,1)
+        randoNum2 = random.randint(-1,1)
+        randoNum3 = random.randint(-1,1)
     
+        thumby.display.fill(0) # Fill canvas to black
+        thumby.display.drawLine(6+randoNum, 6+randoNum2, 18+randoNum3, 12, 1)
+        thumby.display.drawLine(6+randoNum, 6+randoNum2+1, 18+randoNum3, 12+1, 1)
+        thumby.display.drawLine(6+randoNum2, 18+randoNum, 18+randoNum3, 20, 1)
+        thumby.display.drawLine(6+randoNum2, 18+randoNum+1, 18+randoNum3, 20+1, 1)
+        thumby.display.drawLine(6+randoNum3, 30+randoNum2, 18+randoNum, 28, 1)
+        thumby.display.drawLine(6+randoNum3, 30+randoNum2+1, 18+randoNum, 28+1, 1)
+        thumby.display.drawLine(72-6-randoNum3, 6-randoNum2, 72-18-randoNum, 12, 1)
+        thumby.display.drawLine(72-6-randoNum3, 6-randoNum2+1, 72-18-randoNum, 12+1, 1)
+        thumby.display.drawLine(72-6-randoNum2, 18-randoNum, 72-18-randoNum3, 20, 1)
+        thumby.display.drawLine(72-6-randoNum2, 18-randoNum+1, 72-18-randoNum3, 20+1, 1)
+        thumby.display.drawLine(72-6-randoNum, 30-randoNum3, 72-18-randoNum2, 28, 1)
+        thumby.display.drawLine(72-6-randoNum, 30-randoNum3+1, 72-18-randoNum2, 28+1, 1)
+
+        if t0 - ct0 > 3000:
+            thumby.display.blit(poppy, 15+randoNum2, 1 + randoNum3, 20, 30, 0, 0, 0)
+            thumby.display.blit(poppy, 72-37+randoNum2, 1 + randoNum3, 20, 30, 0, 1, 0)
+        if t0 - ct0 < 3000:
+            if (t0 - ct0) % 3 == 0 and t0 - ct0 > 2300:
+                printMon(monsterBody, 25+randoNum2, 8, 0)
+            else:
+                printMon(tempBody, 25, 8, 0)
+        if t0 - ct0 > 3000:
+            printMon(monsterBody, 25+randoNum2, 8+randoNum, 0)
+        thumby.display.update()
+
+
 def trainAnimation(monsterBody):
     f = open('/Games/Tiny_Monster_Trainer/Curtian/Other.ujson')
     images = ujson.load(f)
@@ -1400,6 +1519,7 @@ def trainAnimation(monsterBody):
 
 def openScreen():
     gc.collect()
+    thumby.display.setFPS(40)
     f = open('/Games/Tiny_Monster_Trainer/Curtian/Other.ujson')
     images = ujson.load(f)
     myScroller = TextForScroller("Press A to Start or B to Load!")
@@ -1430,7 +1550,6 @@ def openScreen():
             return 1
     
 
-   
 def obj_to_dict(obj):
     return obj.__dict__
 
@@ -1464,8 +1583,10 @@ def loadGame():
     bigJson = ujson.load(f)
     tempPlayer.playerBlock = bigJson[0]['player'].copy()
     if bigJson[0]['items'] != [{}]:
-        for x in range(0, len(bigJson[0]['items'])):
-            tempPlayer.inventory.append(Item(bigJson[0]['items'][0]['item' + str(x)]['name'], bigJson[0]['items'][0]['item' + str(x)]['key'], bigJson[0]['items'][0]['item' + str(x)]['bonus'])) ############# key, bonus=0
+        for x in range(0, len(bigJson[0]['items'][0])):
+            tempPlayer.inventory.append(Item(bigJson[0]['items'][0]['item' + str(x)]['name'],
+                                            bigJson[0]['items'][0]['item' + str(x)]['key'],
+                                            bigJson[0]['items'][0]['item' + str(x)]['bonus']))
     for x in range(0, len(bigJson[0]['monsterInfo'][0])):
         tempMon = Monster()
         tempMon.statBlock = bigJson[0]['monsterInfo'][0]['mon' + str(x) + 'stat'].copy()
@@ -1508,13 +1629,13 @@ def makeRandomMon(monsterList, roomElm):
     spawnType = ["Earth", "Wind", "Water", "Fire", "Light", "Darkness", "Cute", 
                 "Mind", "Physical", "Mystical", "Ethereal"]
     for x in range(0,10):
-        thisGuyRightHere = monsterList[random.randint(0,24)]
+        thisGuyRightHere = monsterList[random.randint(0,21)] 
         if (thisGuyRightHere.statBlock['Type1'] == spawnType[roomElm]
                 or thisGuyRightHere.statBlock['Type2'] == spawnType[roomElm] 
                 or thisGuyRightHere.statBlock['Type3'] == spawnType[roomElm]):
             thisGuyRightHere = makeRandomStats(thisGuyRightHere, 0)
             return thisGuyRightHere
-    thisGuyRightHere = monsterList[random.randint(0,24)]
+    thisGuyRightHere = monsterList[random.randint(0,21)] 
     thisGuyRightHere = makeRandomStats(thisGuyRightHere, 0)
     return thisGuyRightHere
 
@@ -1536,6 +1657,9 @@ myGuy = Player()
 load = openScreen()
 if load == 1: 
     myGuy = loadGame()
+    if myGuy.playerBlock['worldSeed'] == 0:
+        theWorldSeed = time.ticks_us()
+        myGuy.playerBlock['worldSeed'] = theWorldSeed
     world = makeWorld(myGuy.playerBlock['worldSeed'])
     monsterList = makeMonsterList(myGuy.playerBlock['worldSeed'])
 else:
@@ -1557,9 +1681,13 @@ victory = 0
 ## Pretty much the game after this point :D ##
 
 while(1):
-    gc.collect() 
+    gc.collect()
     #micropython.mem_info()
     while(battle != 1):
+        if myGuy.playerBlock['friendMax'] > 5: # remove friendMax checks after around 6/1/22
+            myGuy.playerBlock['friendMax'] = 5
+        if len(myGuy.friends) > myGuy.playerBlock['friendMax']:
+            popItOff(myGuy.friends, "monsters, please let one go!")
         thumby.display.fill(0)
         room = mapChangeCheck(myGuy, world[room], room) # draw world map
         if tempRoom != room:
@@ -1609,7 +1737,7 @@ while(1):
             else:
                 thingAquired("You don't", "have any", "Taming", "Crystals", 2)
         if victory == 4:
-            showMonInfo(myGuy)
+            showMonInfo(myGuy, 0, 2)
             victory = 0
         thumby.display.update()
     battleStartAnimation(0) 
