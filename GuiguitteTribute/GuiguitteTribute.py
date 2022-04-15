@@ -111,6 +111,10 @@ glouglouStr="""
 205_1,S_4,
 255_1,S_4
 """
+collideStr="""
+t200_0.2,t160_0.2,t140_0.2,t120_0.2,t100_0.2,t80_0.2
+"""
+
 #ragePlusMusicStr="""D4_4,E4_1,Fs4_1,E4_2,D4_2,A3_2,S_2,
 #E4_4,Fs4_1,G4_1,Fs4_2,E4_2,A3_2,S_2,
 #D4_4,E4_1,Fs4_1,E4_2,D4_2,A3_2,S_2,
@@ -159,6 +163,8 @@ B3_3,Fs3_1,B3_2,Ds4_8,
 S_2
 
 """
+codeMusicStr="""
+G5_1,C6_1,E6_1,C6_1,D6_1,G6_2"""
 class Note:
     def __init__(self, frequency, nbBeat):
         self.frequency=frequency
@@ -231,7 +237,7 @@ class Music:
         return self._startTime>0
 
 music=Music(ragePlusMusicStr, 200)
-#music=Music(valkyriesMusicStr, 200)
+#music=Music(collideStr, 100)
 class AlphaSprite:
     def __init__(self, width, height, dataB, dataW, x=0, y=0, mirrorX=0, mirrorY=0):
         self.spriteB=thumby.Sprite(width, height, dataB, x, y, 1, mirrorX, mirrorY)
@@ -366,12 +372,21 @@ bulleW = bytearray([0,252,254,254,254,254,30,238,238,110,94,254,62,254,62,254,46
 #bulleB = bytearray([0,252,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,252,0,255,255,255,255,255,255,0,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,0,255,255,255,255,255,255,0,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,31,152,51,103,79,31,191,191,0,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,0,255,255,255,255,255,255,255,0,63,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,63,0,255,255,255,255,255,255,255])
 #bulleW = bytearray([0,252,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,252,0,0,0,0,0,0,0,0,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,0,0,0,0,0,0,0,0,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,31,24,48,96,64,0,0,0,0,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,0,0,0,0,0,0,0,0,0,63,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,63,0,0,0,0,0,0,0,0])
 bulleSpr = AlphaSprite(56, 40, bulleB, bulleW)
+
+
+# 13x11 for 1 frames
+#sayanHairB = bytearray([31,225,11,91,232,109,221,187,199,187,1,191,127,7,4,3,5,0,7,6,6,5,2,5,3,4])
+#sayanHairW = bytearray([0,224,8,88,232,108,220,184,192,184,0,128,0,0,0,3,1,0,0,0,0,1,2,1,3,0])
+# 14x12 for 1 frames
+sayanHairB = bytearray([31,224,149,109,234,216,254,222,185,183,119,187,93,227,15,8,7,8,7,9,14,14,14,9,7,2,13,8])
+sayanHairW = bytearray([0,224,148,108,232,216,254,222,184,176,112,184,28,0,0,0,7,0,7,1,0,0,0,1,7,2,1,0])
+sayanHairSpr = AlphaSprite(14, 12, sayanHairB, sayanHairW)
+
 frameRate = 60
+godMode = False
 
 # Set the FPS (without this call, the default fps is 30)
 thumby.display.setFPS(frameRate)
-
-
 
 def drawScene():
     thumby.display.fill(1)
@@ -381,6 +396,13 @@ def drawScene():
     gateBackSpr.draw()
     bottleSpr.draw()
     cowSpr.draw()
+    if godMode:
+        sayanHairSpr.setX(cowSpr.getX()+16)
+        if cowSpr.getFrame() != 6:
+            sayanHairSpr.setY(cowSpr.getY()-4)
+        else:
+            sayanHairSpr.setY(cowSpr.getY()+1)
+        sayanHairSpr.draw()
     cowFaceSpr.draw()
     borneSpr.draw()
     grosNenessSpr.draw()
@@ -403,15 +425,42 @@ thumby.display.drawSprite(titleSprite)
 thumby.display.update()
 music.play()
 
+codeState=0
 t0=time.ticks_ms()
-wasPressed=False
 displayedHelp=False
 while(1):
+    a=thumby.buttonA.justPressed()
+    b=thumby.buttonB.justPressed()
+    up=thumby.buttonU.justPressed()
+    down=thumby.buttonD.justPressed()
+    left=thumby.buttonL.justPressed()
+    right=thumby.buttonR.justPressed()
     if music.isPlaying():
         music.play()
-    if not wasPressed and thumby.buttonA.pressed() or thumby.buttonB.pressed():
-        wasPressed=True
-    elif wasPressed and not thumby.buttonA.pressed() and not thumby.buttonB.pressed():
+    if (codeState == 0 or codeState == 1) and up:
+        codeState+=1
+    elif (codeState == 2 or codeState == 3) and down:
+        codeState+=1
+    elif (codeState == 4 or codeState == 6) and left:
+        codeState+=1
+    elif (codeState == 5 or codeState == 7) and right:
+        codeState+=1
+    elif codeState == 8 and b:
+        codeState+=1
+    elif codeState ==9 and a:
+        codeState+=1
+    elif a or b or up or down or left or right:
+        codeState=0
+    if codeState == 10:
+        godMode = True
+        codeState = 0
+        music.stop()
+        print("konami code")
+        music=Music(codeMusicStr,100)
+        music.play()
+        a=False
+        b=False
+    if codeState == 0 and (a or b):
         break
     if not displayedHelp and time.ticks_ms() - t0 > 8000:
         titleSprite2.draw()
@@ -421,6 +470,9 @@ while(1):
         displayedHelp=True
 music.stop()
 
+collideMusic = None
+if godMode:
+    collideMusic = Music(collideStr, 100)
 
 
 def playGenerique(text):
@@ -587,7 +639,9 @@ def playLevel(level):
     gameOver=False
     level.music.play()
     while(1):
-        if level.music.isPlaying():
+        if collideMusic != None and collideMusic.isPlaying():
+            collideMusic.play()
+        elif level.music.isPlaying():
             level.music.play()
         currentTime = time.ticks_ms()   # Get time (ms)
         dt=currentTime-tlast
@@ -641,15 +695,19 @@ def playLevel(level):
             fenceSpr.setX(-100)
         else:
             if jumpTime < 0 and fenceSpr.getX() < cowSpr.getWidth() and fenceSpr.getX() > 5:
-                gameOver=True
-                print("fence hitted")
-                drawScene()
-                thumby.display.update()
-                break
+                if godMode:
+                    level.fencesPos=[x for x in level.fencesPos if x - scrollCtr != fenceSpr.getX()]
+                    collideMusic.play()
+                else:
+                    gameOver=True
+                    print("fence hitted")
+                    drawScene()
+                    thumby.display.update()
+                    break
         found=False
         i=0
         for f in level.gatesPos:
-            if scrollCtr < f+ gateFrontSpr.getWidth() and scrollCtr > f - thumby.display.width:
+            if scrollCtr < f+ gateFrontSpr.getWidth() and scrollCtr > f - thumby.display.width - gateFrontSpr.getWidth():
                 found=True
                 gateFrontSpr.setX(f-scrollCtr)
                 gateBackSpr.setX(f-scrollCtr)
@@ -660,18 +718,26 @@ def playLevel(level):
             gateFrontSpr.setX(-100)
             gateBackSpr.setX(-100)
         else:
-            if jumpTime >= 0 and gateBackSpr.getX() < gateBackSpr.getWidth() and gateBackSpr.getX() > 5:
-                print("gate hitted")
-                gameOver=True
-                drawScene()
-                thumby.display.update()
-                break
-            elif slideTime < 0 and gateBackSpr.getX() < gateBackSpr.getWidth() and gateBackSpr.getX() > 5 and gateFrontSpr.getFrame() == 1:
-                print("gate hitted")
-                gameOver=True
-                drawScene()
-                thumby.display.update()
-                break
+            if jumpTime >= 0 and gateBackSpr.getX() < cowSpr.getWidth() and gateBackSpr.getX() > 5:
+                 if godMode:
+                    level.gatesPos=[x for x in level.gatesPos if x - scrollCtr != gateBackSpr.getX()]
+                    collideMusic.play()
+                 else:
+                    print("gate hitted 1")
+                    gameOver=True
+                    drawScene()
+                    thumby.display.update()
+                    break
+            elif slideTime < 0 and gateBackSpr.getX() < cowSpr.getWidth() and gateBackSpr.getX() > 5 and gateFrontSpr.getFrame() == 1:
+                 if godMode:
+                    level.gatesPos=[x for x in level.gatesPos if x - scrollCtr != gateBackSpr.getX()]
+                    collideMusic.play()
+                 else:
+                    print("gate hitted 2")
+                    gameOver=True
+                    drawScene()
+                    thumby.display.update()
+                    break
         found=False
         i=0
         for f in level.bottlesPos:
@@ -909,6 +975,7 @@ def generateLevel(speed):
     return level
     
 currentSpeed = level3.scrollSpeed
+godMode = False
 while not gameOver:
     
     if currentSpeed < 80:
