@@ -35,8 +35,7 @@ gc.enable() # This line helps make sure we don't run out of memory
 
 from framebuf import FrameBuffer, MONO_VLSB # Graphics stuff
 
-# Sensitive game parameters
-
+# Interesting game parameters
 XVel = 0.06
 YVel = 0
 YPos = 0
@@ -59,8 +58,8 @@ titleFace = bytearray([0,8,4,200,68,72,116,10,245,250,5,10,5,10,53,58,245,234,52
 # BITMAP: width: 16, height: 16
 PlayerRunFrame1 = bytearray([255,255,255,199,89,96,104,124,124,80,205,221,221,255,255,255,255,255,255,240,224,0,24,24,10,128,128,179,255,255,255,255])
 PlayerRunFrame2 = bytearray([255,255,255,71,25,96,104,124,124,80,205,221,221,255,255,255,255,159,15,6,64,192,224,226,192,192,192,132,129,195,255,255])
-PlayerRunFrame3 = bytearray([255,255,255,143,179,193,209,249,249,161,155,187,187,255,255,255,159,135,199,199,192,0,0,0,0,64,231,255,255,255,255,255])          
-           
+PlayerRunFrame3 = bytearray([255,255,255,143,179,193,209,249,249,161,155,187,187,255,255,255,159,135,199,199,192,0,0,0,0,64,231,255,255,255,255,255])
+
 CloudSpr = bytearray([0x9F, 0x4F, 0x63, 0x59, 0xBD, 0x73, 0x73, 0x65, 0x5C, 0x7E, 0x7E, 0x51, 0x57, 0x4F, 0x1F, 0xBF])
 
 # BITMAP: width: 8, height: 12
@@ -97,8 +96,8 @@ thumby.audio.playBlocking(1568, 125)
 thumby.display.setFPS(60)
 
 # Wait until the player is ready to play
-while(thumby.buttonA.pressed() == False):
-    if(time.ticks_ms() % 1000 < 500):
+while not thumby.buttonA.pressed():
+    if time.ticks_ms() % 1000 < 500:
         thumby.display.drawFilledRectangle(0, 31, 72, 9, 0)
         thumby.display.drawText("Press A", 15, 32, 1)
     else:
@@ -108,13 +107,13 @@ while(thumby.buttonA.pressed() == False):
     pass
 
 
-while(GameRunning):
+while GameRunning:
     t0 = utime.ticks_us() # Check the time
 
     # Is the player on the ground and trying to jump?
-    if(JumpSoundTimer < 0):
+    if JumpSoundTimer < 0:
         JumpSoundTimer = 0
-    if((thumby.buttonA.pressed() == True or thumby.buttonB.pressed() == True) and YPos == 0.0):
+    if (thumby.buttonA.pressed() == True or thumby.buttonB.pressed() == True) and YPos == 0.0:
         # Jump!
         JumpSoundTimer = 200
         YVel = -2.5
@@ -124,8 +123,8 @@ while(GameRunning):
     YVel += Gravity
     Points += XVel
     JumpSoundTimer -= 15
-   
-    if(JumpSoundTimer > 0):
+
+    if JumpSoundTimer > 0:
         thumby.audio.set(500-JumpSoundTimer)
     else:
         thumby.audio.stop()
@@ -133,16 +132,16 @@ while(GameRunning):
     # Accelerate the player just a little bit
     XVel += 0.000025
 
-    # Make sure we haven't fallen below the groundW
-    if(YPos > 0):
+    # Make sure we haven't fallen below the ground
+    if YPos > 0:
         YPos = 0.0
         YVel = 0.0
 
-    # Has the player hit a cactus?
-    if(EnemyPos < 8 and EnemyPos > -8 and YPos > -8):
+    # Did Thario hit an enemy?
+    if EnemyPos < 8 and EnemyPos > -8 and YPos > -8:
         # Stop the game and give a prompt
         GameRunning = False
-       
+
         thumby.display.fill(0)
         thumby.audio.stop()
         thumby.display.setFont("/lib/font8x8.bin", 8, 8, 0)
@@ -153,7 +152,7 @@ while(GameRunning):
         thumby.display.drawText("Play again?", 4, 24, 1)
         thumby.display.drawText("A:Y  B:N", 12, 32, 1)
         thumby.display.update()
-       
+
         thumby.audio.playBlocking(250, 125)
         thumby.audio.playBlocking(250, 125)
         thumby.audio.playBlocking(20, 125)
@@ -162,11 +161,11 @@ while(GameRunning):
         thumby.audio.playBlocking(20, 125)
         thumby.audio.playBlocking(120, 500)
 
-        while(thumby.inputPressed() == False):
+        while not thumby.inputPressed():
             pass # Wait for the user to give us something
 
-        while(GameRunning == False):
-            if(thumby.buttonA.pressed() == True == 1):
+        while not GameRunning:
+            if thumby.buttonA.pressed() == True == 1:
                 # Restart the game
                 XVel = 0.05
                 YVel = 0
@@ -176,12 +175,12 @@ while(GameRunning):
                 EnemyPos = random.randint(72, 300)
                 CloudPos = random.randint(60, 200)
 
-            elif(thumby.buttonB.pressed() == True):
+            elif thumby.buttonB.pressed() == True:
                 # Quit
                 machine.reset()
 
     # Is the enemy out of view?
-    if(EnemyPos < -24):
+    if EnemyPos < -24:
         Points += 10
         thumby.audio.play(440, 300)
         EnemyPos = random.randint(72, 500)
@@ -194,7 +193,7 @@ while(GameRunning):
         # "spawn" another one
         CloudPos = random.randint(40, 200)
 
-    # More dynaaaaaaaaaaaamics
+    # More dynamics
     EnemyPos -= XVel * 16
     CloudPos -= XVel * 2
 
@@ -202,22 +201,21 @@ while(GameRunning):
     thumby.display.fill(1)
     thumby.display.blit(CloudSpr, int(16 + CloudPos), 8, 16, 8, 1, 0, 0)
 
-    if(t0 % 250000 < 125000 or YPos != 0.0):
+    if t0 % 250000 < 125000 or YPos != 0.0:
         # Player is in first frame of run animation
         thumby.display.blit(PlayerRunFrame1, 8, int(23 + YPos), 16, 16, 1, 0, 0)
     else:
         # Player is in second frame of run animation
         thumby.display.blit(PlayerRunFrame2, 8, int(24 + YPos), 16, 16, 1, 0, 0)
-       
-    if(t0 % 250000 < 125000):
+
+    if t0 % 250000 < 125000:
         thumby.display.blit(EnemySet[0], int(16 + EnemyPos), 28, 8, 12, 1, 0, 0)
     else:
         thumby.display.blit(EnemySet[1], int(16 + EnemyPos), 28, 8, 12, 1, 0, 0)
 
-    #thumby.display.drawFilledRectangle(0, 31, thumby.display.width, 9, 0) # Ground
     thumby.display.drawText(fscore(int(Points)), 1, 1, 0) # Current points
     thumby.display.update()
 
     # Spin wheels until we've used up one frame's worth of time
-    while(utime.ticks_us() - t0 < 1000000.0 / MaxFPS):
+    while utime.ticks_us() - t0 < 1000000.0 / MaxFPS:
         pass
