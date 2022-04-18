@@ -65,6 +65,7 @@ def makeMonsterList(mSeed):
         newMonAtk.getAnAttackMove(random.randint(1,4), myGuy.friends[0].statBlock['Type1'])
         myGuy.friends[0].attackList.append(newMonAtk)
         noDupAtk(myGuy.friends[0].attackList)
+        noDupAtk(myGuy.friends[0].attackList)
         save(myGuy)
 
 def makePlayer(monster1, monster2, monster3, seed):
