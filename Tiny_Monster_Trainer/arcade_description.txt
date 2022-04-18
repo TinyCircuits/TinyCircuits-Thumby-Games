@@ -1,9 +1,9 @@
 Tiny Monster Trainer  
-Version: 041122  
-
 Train and battle with procedurally created monsters!
 
 Please see the README.md for more information about the game.
+Version: 041822  
+(Please back up your save and delete previous version of game before updating to this version.)
 
 Author: Blake B. 
 Thanks to Mason W. & Thumby Team for References
