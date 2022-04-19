@@ -389,7 +389,48 @@ def displayItems(playerInfo):
     else:
         pass
 
-
+     
+def mutateMon(self):
+    #micropython.mem_info()
+    if self.statBlock['trainingPoints'] > 4:
+        tempBody = self.bodyBlock.copy()
+        if self.mutateSeed[1] < 4:
+            random.seed(self.mutateSeed[0] + (self.mutateSeed[1] * 100))
+            mutation = random.randint(1, 5)
+            if mutation > 2 :
+                mutation = random.randint(4, 8) 
+                if mutation == 0 or mutation > 3 :
+                        self.statBlock['max' + self.keyList[mutation]] = self.statBlock['max' + self.keyList[mutation]] + 10
+            else:
+                if (random.randint(1,3)) != 1:
+                        self.makeMonBody()
+                if self.statBlock['Type2'] == "":
+                    self.statBlock['Type2'] = self.makeType()
+                    myAttack = AttackMove()
+                    randoNum = random.randint(0,3)
+                    myAttack.getAnAttackMove(randoNum, self.statBlock['Type2'])
+                    self.attackList.append(myAttack)
+                    noDupAtk(self.attackList)
+                elif self.statBlock['Type3'] == "":
+                    self.statBlock['Type3'] = self.makeType()
+                    myAttack = AttackMove()
+                    randoNum = random.randint(0,3)
+                    myAttack.getAnAttackMove(randoNum, self.statBlock['Type3'])
+                    noDupAtk(self.attackList)
+                self.statBlock['maxHealth'] = self.statBlock['maxHealth'] + 20
+            self.mutateSeed[1] = self.mutateSeed[1] + 1
+            self.statBlock['trainingPoints'] = self.statBlock['trainingPoints'] - 5 
+            gc.collect()
+            #micropython.mem_info()
+            mutateAnimation(tempBody, self.bodyBlock)
+            thingAquired(self.statBlock['given_name'], "has", "mutated!", "", 2)
+        else:
+            thingAquired(self.statBlock['given_name'], "is unable to", "mutate", "again", 2)
+    else:
+        howManyPoints = self.statBlock['trainingPoints']
+        thingAquired(self.statBlock['given_name'], ("needs " + str(5 - howManyPoints) + " more"), "Training", "Points", 2)     
+     
+     
 def trainActiveMon(myMonStats, monsterBody):
     #gc.collect()
     thumby.display.fill(0)
