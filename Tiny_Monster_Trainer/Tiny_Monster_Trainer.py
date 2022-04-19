@@ -57,7 +57,7 @@ def optionScreen():
         if curSelect == 31:
             curSelect = tempSelect
             if optionList[curSelect] == optionList[0]:
-                thingAquired( "Entering", "The", "Wilderness!", "^^^^^^^^^^^^", 0, 0, 0)
+                thingAquired( "vvvvvvvvvvvvv", "The", "Wilderness!", "^^^^^^^^^^^^^", 0, 0, 0)
                 gc.collect()
                 #micropython.mem_info()
                 import wilderness
