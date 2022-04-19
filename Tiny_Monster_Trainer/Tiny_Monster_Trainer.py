@@ -7,7 +7,6 @@ sys.path.append("/Games/Tiny_Monster_Trainer/Curtain/")
 from classLib import TextForScroller
 from funcLib import thingAquired, battleStartAnimation, buttonInput, showOptions
 #import micropython
-#remember this for later ---->         machine.unique_id
 
 def openScreen():
     gc.collect()
