@@ -164,6 +164,11 @@ Monster Type | Attack Name | Element Type | Damage based on Strength/Mysticism
 ------- |"Rue"           | Mind       | Mysticism  
   
   
+Updates as of 04/18/22:  
+Fixed Folder Name from Curtian to Curtain. I'm a dork :D
+Restructured things, now using methods and stuff. The game will now make a list of monsters to load from for when you encounter a roaming monster. Player now roams the wilderness. (Which is just the map from the previous version, that is based on the player seed.)  
+Things are setup so that new modes can be added, multiplayer is coming "soon(TM)" (Planning on adding live multiplayer via Link Cable & Ghost Multiplayer, to load someone else's trainer you have saved to fight them that way too), A storage mode to save monsters & be able to trade them via Link Cable. We'll see how far I can get with those things.  
+  
 Updates as of 4/11/22:   
 Fixed issue where items were not being loaded correctly, it only loaded the first item that was saved.  
 Added numbers to item screen, to help show how many items the player has.   
