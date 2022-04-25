@@ -1,0 +1,4 @@
+A classic mine sweeping game. Features chords and saving.
+
+Author: TPReal
+Version: 1.0
