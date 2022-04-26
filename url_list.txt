@@ -60,6 +60,12 @@ https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/DVD-Corner-Remix/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/DVD-Corner-Remix/DVD-Corner-Remix.py
 
+NAME=3D_Cube
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/3D_Cube/arcade_title_image.png
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/3D_Cube/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/3D_Cube/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/3D_Cube/3D_Cube.py
+
 NAME=3D_MAZE
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/3D_MAZE/arcade_title_image.png
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/3D_MAZE/3D_MAZE.py
