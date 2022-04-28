@@ -1,0 +1,11 @@
+{
+  "name": "Snake",
+  "desc": "A very minimalistic implementation of the popular game Snake. Eat the apples to grow the snake, but be careful that you don't hit your tail!\n\nMove the snake around using UP, DOWN, LEFT and RIGHT.",
+  "type": "VIP",
+  "keys": {
+    "up": 5,
+    "down": 8,
+    "left": 7,
+    "right": 9
+  }
+}
