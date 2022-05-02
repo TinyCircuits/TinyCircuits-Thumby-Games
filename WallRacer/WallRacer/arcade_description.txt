@@ -1,0 +1,15 @@
+WallRacer 1.1
+
+Tron like game using a scrolling virtual screen 4 times the thumby screen size.
+
+In the menu you can select the speed using Up/Down button.
+Start the game with A or B.
+
+In the game use ANY direction button to turn left, use A or B button to turn right.
+Collect the flashing dots for bonus points.
+
+After a crash your points and the highscore are displayed.
+There is a seperate highscore for each speed.
+
+Return to the menu using A or B button.
+
