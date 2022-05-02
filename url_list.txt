@@ -27,6 +27,12 @@ https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/3D_MAZE/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/3D_MAZE/3D_MAZE.py
 
+NAME=yatzy
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/yatzy/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/yatzy/yatzy.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/yatzy/yatzy.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/yatzy/fs_images.bin
+
 NAME=PicoPac
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/PicoPac/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/PicoPac/PicoPac.py
