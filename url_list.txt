@@ -1,13 +1,16 @@
+NAME=WallRacer
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/WallRacer/WallRacer.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/WallRacer/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/WallRacer/WallRacer.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/WallRacer/WallRacer/WallRacer.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/WallRacer/WallRacer/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/WallRacer/WallRacer/WallRacer.webm
+
 NAME=yatzy
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/yatzy/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/yatzy/yatzy.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/yatzy/yatzy.webm
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/yatzy/fs_images.bin
-
-NAME=WallRacer
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/WallRacer/WallRacer.py
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/WallRacer/arcade_description.txt
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/WallRacer/WallRacer.webm
 
 NAME=3D_Cube
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/3D_Cube/arcade_title_video.webm
