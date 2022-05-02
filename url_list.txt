@@ -143,6 +143,11 @@ https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/LetterSetter/LetterSetter.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/LetterSetter/LetterSetter.webm
 
+NAME=WallRacer
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/WallRacer/WallRacer.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/WallRacer/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/WallRacer/WallRacer.webm
+
 NAME=SaurRun
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/SaurRun/arcade_title_video.webm
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/SaurRun/arcade_description.txt
