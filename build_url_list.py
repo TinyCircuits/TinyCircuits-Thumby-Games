@@ -29,6 +29,7 @@ topLevelItems = os.listdir()
 print(topLevelItems)
 for item in topLevelItems:
     if os.path.isdir(item) and item != ".github" and item != ".git":
+        print(os.popen("git log -- " + item).read())
         addDirFilesToList(item)
         f.write("\n")
 
