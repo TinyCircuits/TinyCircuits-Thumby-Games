@@ -2,9 +2,6 @@ NAME=WallRacer
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/WallRacer/WallRacer.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/WallRacer/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/WallRacer/WallRacer.webm
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/WallRacer/WallRacer/WallRacer.py
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/WallRacer/WallRacer/arcade_description.txt
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/WallRacer/WallRacer/WallRacer.webm
 
 NAME=yatzy
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/yatzy/arcade_description.txt
