@@ -1,3 +1,17 @@
+NAME=HollowSeeker
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/HollowSeeker/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/HollowSeeker/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/HollowSeeker/obnfont.bin
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/HollowSeeker/HollowSeeker.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/HollowSeeker/obnlib.py
+
+NAME=Micro2048
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Micro2048/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Micro2048/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Micro2048/obnfont.bin
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Micro2048/Micro2048.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Micro2048/obnlib.py
+
 NAME=WallRacer
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/WallRacer/WallRacer.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/WallRacer/arcade_description.txt
