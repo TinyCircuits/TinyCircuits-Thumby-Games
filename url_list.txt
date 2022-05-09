@@ -1,3 +1,8 @@
+NAME=OutThumb
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/OutThumb/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/OutThumb/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/OutThumb/OutThumb.py
+
 NAME=HollowSeeker
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/HollowSeeker/arcade_title_video.webm
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/HollowSeeker/arcade_description.txt
