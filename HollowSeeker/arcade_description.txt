@@ -1,0 +1,7 @@
+Hollow Seeker
+
+Go forward in right direction. Seek a hollow as refuge not to be crushed.
+
+Author: OBONO
+Version: 0.1
+License: MIT
