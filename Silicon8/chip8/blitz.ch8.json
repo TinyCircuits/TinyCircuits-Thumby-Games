@@ -1,0 +1,10 @@
+{
+  "name": "Blitz (David Winter, 199?)",
+  "link": "https://www.pong-story.com/chip8/",
+  "desc": "Another game by David Winter. It resembles the game Airplane, but with a twist. You are in a plane, bombing a city. But you have to hit the buildings just right, and get rid of them before your plane hits them. How many levels will you survive?\n\nDrop a bomb with A or B.",
+  "type": "VIP",
+  "keys": {
+    "a": 5,
+    "b": 5
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "name": "AstroDodge (Revival Studios, 2008)",
+  "link": "http://www.revival-studios.com/other.php",
+  "desc": "Astro Dodge is an arcade game for the Chip8 and SuperChip8 systems. Your goal is to make your way through the asteroids field and dodge the asteroids, scoring points for each asteroid you are able to dodge.\n\nStart the game with A or B and move your ship with UP, DOWN, LEFT and RIGHT.",
+  "type": "VIP",
+  "keys": {
+    "up": 2,
+    "down": 8,
+    "left": 4,
+    "right": 6,
+    "a": 5,
+    "b": 5
+  }
+}

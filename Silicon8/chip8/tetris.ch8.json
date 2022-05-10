@@ -1,0 +1,12 @@
+{
+  "name": "Tetris (Fran Dachille, 1991)",
+  "desc": "A very minimalistic implementation of the popular game Tetris. The objective is to fill horizontal lines, so they disappear. When your blocks hit the top, you are game over.\n\nMove the blocks with LEFT, RIGHT or DOWN and rotate them with A or B.",
+  "type": "VIP",
+  "keys": {
+    "left": 5,
+    "right": 6,
+    "down": 7,
+    "a": 4,
+    "b": 4
+  }
+}
