@@ -1,6 +1,5 @@
 # https://canovasjm.netlify.app/2020/11/29/github-actions-run-a-python-script-on-schedule-and-commit-changes/
 
-from msilib.schema import Error
 import os
 import datetime
 from posixpath import dirname
