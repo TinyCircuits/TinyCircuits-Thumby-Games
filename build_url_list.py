@@ -1,5 +1,6 @@
 # https://canovasjm.netlify.app/2020/11/29/github-actions-run-a-python-script-on-schedule-and-commit-changes/
 
+from msilib.schema import Error
 import os
 import datetime
 from posixpath import dirname
@@ -28,7 +29,11 @@ unsortedPairs = []
 for item in topLevelItems:
     if os.path.isdir(item) and item != ".github" and item != ".git":
         dateStr = os.popen("git log -- " + item).read().splitlines()[2][8:]
-        date = datetime.datetime.strptime(dateStr, '%a %b %d %H:%M:%S %Y %z')
+        print(dateStr)
+        try:
+            date = datetime.datetime.strptime(dateStr, '%a %b %d %H:%M:%S %Y %z')
+        except:
+            print("ERROR")
         unsortedPairs.append((date, item))
 
 
