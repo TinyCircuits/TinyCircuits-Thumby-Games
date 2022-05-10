@@ -1,6 +1,7 @@
 # https://canovasjm.netlify.app/2020/11/29/github-actions-run-a-python-script-on-schedule-and-commit-changes/
 
 import os
+import datetime
 from posixpath import dirname
 print("Starting URL list builder using Python in GH Action...")
 
@@ -23,15 +24,19 @@ def addDirFilesToList(path, childDir=False):
 
 
 topLevelItems = os.listdir()
-
-# Start looping through items in the root of the repo, ignore .github,
-# and add file under each directory recursively
-print(topLevelItems)
+unsortedPairs = []
 for item in topLevelItems:
     if os.path.isdir(item) and item != ".github" and item != ".git":
-        addDirFilesToList(item)
-        f.write("\n")
+        dateStr = os.popen("git log -- " + item).read().splitlines()[2][8:]
+        date = datetime.datetime.strptime(dateStr, '%a %b %d %H:%M:%S %Y %z')
+        unsortedPairs.append((date, item))
 
 
-# Close file that urls were written to
+sortedPairsNewestAtLast = sorted(unsortedPairs, key=lambda x: x[0])
+sortedPairsNewestAtLast.reverse()
+
+for pair in sortedPairsNewestAtLast:
+    addDirFilesToList(pair[1])
+    f.write("\n")
+
 f.close()

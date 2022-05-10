@@ -1,0 +1,8 @@
+Yatzy
+
+The classic 5 of a kind dice game for solo or pass and play up to 2 players. Yatzy is a dice game where players need to score as many points as possible, by rolling five dice to make different combinations. This game consists of 13 rounds with the scorecard having 13 categories. Roll the dice up to three times and choose which scoring category is to be used for that round. Once a category has been used in the game, it cannot be used again. The winner is the player who scores the most points.
+
+Author: NeoRetro Games
+Code: SHDWWZRD
+Art: VAMPIRICS
+Version: 0.2

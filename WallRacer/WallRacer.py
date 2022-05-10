@@ -596,4 +596,3 @@ while(1):
   else:      
     points = playGame()    
     displayPoints(points)
-
