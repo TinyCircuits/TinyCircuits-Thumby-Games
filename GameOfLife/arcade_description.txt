@@ -1,0 +1,1 @@
+A clone of the iconic Conway’s game of life for the Thumby console!
