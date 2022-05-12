@@ -1,6 +1,8 @@
 import thumby
 import time
 
+__version__='1.1.1'
+
 IN_EMULATOR=not hasattr(thumby.display.display,"cs")
 
 @micropython.viper
@@ -29,11 +31,11 @@ class display:
 
         @staticmethod
         def font57i1():
-            thumby.display.setFont('lib/font5x7.bin',5,8,1)
+            thumby.display.setFont("/lib/font5x7.bin",5,8,1)
 
         @staticmethod
         def font88():
-            thumby.display.setFont('lib/font8x8.bin',8,8,0)
+            thumby.display.setFont("/lib/font8x8.bin",8,8,0)
 
         @staticmethod
         def print(text,row,column=0,color=1):
@@ -50,7 +52,7 @@ class display:
             xPerChar=thumby.display.textWidth+thumby.display.textSpaceWidth
             display.fillRect(
                 column*xPerChar,row*thumby.display.textHeight,
-                columns*xPerChar-1,rows*thumby.display.textHeight-1,not color)
+                columns*xPerChar-1,rows*thumby.display.textHeight,not color)
 
     @staticmethod
     @micropython.viper
@@ -162,6 +164,7 @@ class display:
         thumby.display.display.buffer=buffer
 
     @staticmethod
+    @micropython.native
     def show():
         d=thumby.display.display
         if IN_EMULATOR:
@@ -175,18 +178,22 @@ class display:
 
     @staticmethod
     def waitFrame():
+        timeLeftMs=None
         if thumby.display.frameRate>0:
-            frEndTime=thumby.display.lastUpdateEnd+round(1000/thumby.display.frameRate)
-            while time.ticks_ms()<frEndTime-1:
-                time.sleep_ms(1)
+            frEndTime=thumby.display.lastUpdateEnd+\
+                1000//thumby.display.frameRate
+            timeLeftMs=frEndTime-time.ticks_ms()
+            if timeLeftMs>1:
+                time.sleep_ms(timeLeftMs-1)
             while time.ticks_ms()<frEndTime:
                 pass
         thumby.display.lastUpdateEnd=time.ticks_ms()
+        return timeLeftMs
 
     @staticmethod
     def update():
         display.show()
-        display.waitFrame()
+        return display.waitFrame()
 
 class buttons:
 
@@ -227,7 +234,7 @@ class buttons:
             self.longPress=longPressNow
             if self.edge>0:
                 self.downSinceMs=now
-            elif self.edge<0:
+            elif not self.down:
                 self.downSinceMs=0
 
         def assumeUp(self):
@@ -236,18 +243,25 @@ class buttons:
 
     UP=Button(thumby.buttonU.pin)
     DOWN=Button(thumby.buttonD.pin)
-    LEFT=Button(thumby.buttonL.pin)
     RIGHT=Button(thumby.buttonR.pin)
+    LEFT=Button(thumby.buttonL.pin)
     A=Button(thumby.buttonA.pin)
     B=Button(thumby.buttonB.pin)
 
-    ALL=[UP,DOWN,LEFT,RIGHT,A,B]
+    UD=[UP,DOWN]
+    RL=[RIGHT,LEFT]
+    DPAD=UD+RL
+    AB=[A,B]
+    ALL=DPAD+AB
+
+    UD_VALS=[(UP,1),(DOWN,-1)]
+    RL_VALS=[(RIGHT,1),(LEFT,-1)]
 
     DPAD_VECTORS=[
         (UP,(0,-1)),
         (DOWN,(0,1)),
-        (LEFT,(-1,0)),
         (RIGHT,(1,0)),
+        (LEFT,(-1,0)),
     ]
 
     @staticmethod
@@ -297,4 +311,4 @@ class audio:
 def update():
     display.show()
     buttons.update()
-    display.waitFrame()
+    return display.waitFrame()

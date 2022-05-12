@@ -1,7 +1,7 @@
 # MineSweep
 
 # Author: TPReal
-# Last updated: 2022-04-22
+# Last updated: 2022-05-10
 
 GAME_NAME="MineSweep"
 GAME_DIR=f"/Games/{GAME_NAME}"
@@ -160,7 +160,10 @@ class save_file:
         try:
             with open(save_file.PATH,"b") as f:
                 save=f.read()
-        except OSError:
+        except OSError as e:
+            if e.errno==errno.ENOENT:
+                return None
+            print(f"Error opening save file ({save_file.PATH}): {e}")
             return None
         return Game.deserialise(save)
 
@@ -174,12 +177,11 @@ class save_file:
 
     @staticmethod
     def save(game):
-        try:
-            for dir in save_file.DIRS:
+        for dir in save_file.DIRS:
+            try:
                 os.mkdir(dir)
-        except OSError:
-            pass
-        save_file.PATH.split("/")
+            except OSError:
+                pass
         with open(save_file.PATH,"wb") as f:
             f.write(game.serialise())
 
