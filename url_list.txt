@@ -4,6 +4,11 @@ https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/MineSweep/MineSweep.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/MineSweep/lib/thumby2.py
 
+NAME=GameOfLife
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/GameOfLife/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/GameOfLife/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/GameOfLife/GameOfLife.py
+
 NAME=OutThumb
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/OutThumb/OutThumb.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/OutThumb/arcade_title_video.webm
