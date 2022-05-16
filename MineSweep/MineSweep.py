@@ -1,7 +1,7 @@
 # MineSweep
 
 # Author: TPReal
-# Last updated: 2022-05-10
+# Last updated: 2022-05-16
 
 GAME_NAME="MineSweep"
 GAME_DIR=f"/Games/{GAME_NAME}"
@@ -87,9 +87,14 @@ def drawMineDigit(digit,x,y):
 
 # BITMAP: width: 6, height: 6
 MINE_BLIT=bytearray([18,45,30,30,45,18])
+# BITMAP: width: 10, height: 10
+EXPLODED_MINE_BLIT=bytearray([75,181,74,181,122,122,181,74,181,75,3,2,1,2,1,1,2,1,2,3])
 
 def drawMine(x,y):
     thumby.display.blit(MINE_BLIT,x+2,y+2,6,6,-1,False,False)
+
+def drawExplodedMine(x,y):
+    thumby.display.blit(EXPLODED_MINE_BLIT,x,y,10,10,-1,False,False)
 
 # BITMAP: width: 6, height: 6
 FLAG_BLIT=bytearray([5,39,55,63,48,32])
@@ -261,16 +266,19 @@ class Game:
                     fx=x*SIDE+x0
                     if -SIDE<fx<72:
                         field=self[(x,y)]
-                        if field&F_OPEN==0:
+                        if field&F_OPEN!=0:
+                            if field&F_MINE!=0:
+                                drawExplodedMine(fx,fy)
+                            else:
+                                drawMineDigit(field&F_NUM_MASK,x*SIDE+x0,y*SIDE+y0)
+                        else:
                             if field&F_FLAG!=0:
                                 if not self.running and field&F_MINE==0:
                                     drawBadFlag(fx,fy)
                                 else:
                                     drawFlag(fx,fy)
-                        elif field&F_MINE!=0:
-                            drawMine(fx,fy)
-                        else:
-                            drawMineDigit(field&F_NUM_MASK,x*SIDE+x0,y*SIDE+y0)
+                            elif not self.running and field&F_MINE!=0:
+                                drawMine(fx,fy)
         minesLeft=self.mines-self.numFlags
         minesLeftWid=3
         if minesLeft>=10:
@@ -290,9 +298,9 @@ class Game:
         thumby2.display.fillRect(
             72-scrollBlockWid,yScroll[0],scrollBlockWid,yScroll[1],1)
         if not self.running:
-            text="YOU WIN!" if self.win else "You lose"
+            text="YOU WIN!" if self.win else "GAME OVER"
             textW=len(text)*6-1
-            textX=(72-textW)//2
+            textX=71-textW
             thumby2.display.fillRect(textX-3,0,textW+6,10,0)
             thumby2.display.drawRect(textX-2,-1,textW+5,10,1)
             thumby.display.drawText(text,textX,0,1)
@@ -328,11 +336,6 @@ class Game:
 
     def giveUp(self):
         self.__ensureInited(fieldOpened=False)
-        for x in range(self.size[0]):
-            for y in range(self.size[1]):
-                p=(x,y)
-                if self[p]&F_MINE!=0 and self[p]&F_FLAG==0:
-                    self[p]|=F_OPEN
         self.running=False
         self.win=False
 
