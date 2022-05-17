@@ -1,9 +1,3 @@
-NAME=MineSweep
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/MineSweep/arcade_title_video.webm
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/MineSweep/arcade_description.txt
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/MineSweep/MineSweep.py
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/MineSweep/lib/thumby2.py
-
 NAME=Canvas
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Canvas/Canvas.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Canvas/arcade_title_video.webm
@@ -12,6 +6,12 @@ https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Canvas/demos/Title_72x40.bin
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Canvas/lib/font3x5.bin
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Canvas/lib/thumby2.py
+
+NAME=MineSweep
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/MineSweep/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/MineSweep/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/MineSweep/MineSweep.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/MineSweep/lib/thumby2.py
 
 NAME=GameOfLife
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/GameOfLife/arcade_title_video.webm
