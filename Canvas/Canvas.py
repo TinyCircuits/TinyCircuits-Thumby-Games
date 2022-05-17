@@ -166,6 +166,7 @@ def enterName(name,text):
     thumby2.buttons.assumeUp()
     thumby.display.fill(0)
     thumby2.display.text.print(text,0)
+    thumby2.display.text.print("A=save",4,6)
     nn=[0]*10
     for i in range(len(name)):
         nn[i]=max(0,NAME_CHARS.find(name[i]))
@@ -258,6 +259,7 @@ class save_files:
 
     @staticmethod
     def _listEquivSavesPaths(name):
+        save_files._ensureDirs()
         res=[]
         for f in os.listdir(save_files.DIR):
             path=f"{save_files.DIR}/{f}"
