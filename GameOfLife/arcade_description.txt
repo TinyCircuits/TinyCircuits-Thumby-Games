@@ -1,5 +1,7 @@
-A clone of the iconic Conway’s game of life for the Thumby console!
+A clone/port of the iconic Conway’s game of life for the Thumby console!
 Feel free to submit code changes :)
 
-Ported by Thomas Duffin, May 2022.
-Github: TDuffinNTU
+Author: TDuffinNTU
+Version: 1.1
+
+Update: v1.1 now includes better documentation, as well as audio feedback on inputs!

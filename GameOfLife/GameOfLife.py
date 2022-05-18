@@ -32,14 +32,14 @@ controls = bytearray([0,0,0,0,0,4,60,4,0,24,36,36,24,0,60,36,52,0,60,36,52,0,60,
            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,18,20,20,20,20,18,15,0,0,0,0,0,0,0,0,15,18,20,20,20,18,15,0,0,0,0,0,0,0,0,0,0,0,0])
 
 
-cover_screen = thumby.Sprite(72, 40, cover1+cover2, 0, 0, -1)
+cover_screen = thumby.Sprite(72, 40, cover1+cover2, 0, 0, -1) # combining bitmaps as animation frames
 
 controls_screen = thumby.Sprite(72, 40, controls, 0, 0, -1)
 
 simulate = False # are we simulating?
 
 buf = bytearray() # our pixel data; like a texture!
-cells = []
+cells = [] # the board we run our simulation on
 
 wb = 72//8 # 9 -> pixel width in bytes
 hb = 360//wb # 40 -> pixel width in bytes
@@ -47,7 +47,7 @@ hb = 360//wb # 40 -> pixel width in bytes
 wc = 72//2 # 36 -> width in cells
 hc = 40//2 # 20 -> height in cells
 
-def BuildBuffer():
+def BuildBuffer(): # converts game screen (cells) into a screen buffer
     global buf
     buf = bytearray() # will store our pixel data
     gi=0 # index into cells array
@@ -61,6 +61,7 @@ def BuildBuffer():
                 buf.append(nb)
         else:
             buf.extend(buf[-wb:])
+            
 
 def RandomizeGrid():
     global cells
@@ -70,12 +71,14 @@ def RandomizeGrid():
     
     BuildBuffer()
     
+    
 def handleInput(): # called every frame
     global cursor
     global simulate
     global cells
     
     if thumby.buttonA.justPressed(): # toggle cell at cursor's position
+        Beep()
         #print(f'x: {cursor.x}, y: {cursor.y}') # debugging cursor pos
         i = (cursor.x//2) + ((cursor.y//2) * 36)
         if cells[i] == 1:
@@ -85,6 +88,7 @@ def handleInput(): # called every frame
         BuildBuffer()
         
     if thumby.buttonB.justPressed(): # toggles the simulate flag
+        Beep()
         if simulate:
             simulate = False
         else:
@@ -92,21 +96,26 @@ def handleInput(): # called every frame
     
     if not simulate:
         if thumby.buttonL.justPressed(): # cursor control and screen wrapping
+            Beep()
             cursor.x -= 2
             if cursor.x < 0:
                 cursor.x = 2*wc-2
         if thumby.buttonR.justPressed():
+            Beep()
             cursor.x += 2
             if cursor.x > 2*wc-2:
                 cursor.x = 0
         if thumby.buttonU.justPressed():
+            Beep()
             cursor.y -= 2
             if cursor.y < 0:
                 cursor.y = 2*hc-2
         if thumby.buttonD.justPressed():
+            Beep()
             cursor.y += 2
             if cursor.y > 2*hc-2:
                 cursor.y = 0
+    
             
 def Simulate(): # inefficient, feel free to send suggestions!
     global cells
@@ -140,6 +149,11 @@ def Simulate(): # inefficient, feel free to send suggestions!
     BuildBuffer()
     
     
+def Beep(): # audio feedback for inputs!
+    thumby.audio.play(1000, 50)
+    
+
+### BOARD/STATE SETUP ###    
 fbuffer = FrameBuffer(thumby.display.display.buffer, 72, 40, MONO_VLSB) # create thumby buffer
 
 old_ticks=0 # timer count on last frame
@@ -150,7 +164,8 @@ blinks = 0 # used for animating sprite
 thumby.display.setFPS(30) # who needs 60fps?!
 RandomizeGrid() # randomize grid before we start
 
-def Timing():
+
+def Timing(): # does some common timing and animation handling
     global old_ticks
     global blink_interval
     global next_blink
@@ -164,26 +179,30 @@ def Timing():
     if next_blink <= 0:
         next_blink = blink_interval
         blinks += 1
-
+        
+        
+### MAIN GAMEPLAY LOOPS ###
 while 1: # splash screen
     Timing()
     if thumby.buttonA.justPressed(): # break from loop to go to next screen
+        Beep()
         break
     
     thumby.display.fill(0)
-    cover_screen.setFrame(blinks) # animate the controls screen :)
+    cover_screen.setFrame(blinks) # animate the controls screen
     thumby.display.drawSprite(cover_screen)
     thumby.display.update()
 
 while 1: # controls screen
     if thumby.buttonA.justPressed():
+        Beep()
         break
     
     thumby.display.fill(0)
     thumby.display.drawSprite(controls_screen)
     thumby.display.update()
 
-while 1: # main game loop
+while 1: # simulation screen
     Timing()
     
     thumby.display.fill(0)

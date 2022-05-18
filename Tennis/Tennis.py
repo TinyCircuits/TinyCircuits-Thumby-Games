@@ -19,11 +19,14 @@ waitOnPressedAB()
 def handleLogoScreen():
     logo = thumby.Sprite(72, 40, "/Games/Tennis/TennisLogoFrames.bin")
     
-    while thumby.buttonA.pressed() == False and thumby.buttonB.pressed() == False:
+    while True:
         # Alternate and display frames until a button is pressed
         logo.setFrame(int((time.ticks_ms() % 2000) / 1000))
         thumby.display.drawSprite(logo)
         thumby.display.update()
+        
+        if thumby.buttonA.justPressed() or thumby.buttonB.justPressed():
+            break
         
     # Return next game screen ID
     return 1
@@ -46,10 +49,15 @@ def waitForPlayer(received):
     
     thumby.display.fill(0)
     thumby.display.drawFilledRectangle(3, 13, 60, 17, 0)
-    thumby.display.drawText("Waiting for", 4, 14, 1)
-    thumby.display.drawText(message, 4, 21, 1)
+    thumby.display.drawText("Waiting for", 4, 4, 1)
+    thumby.display.drawText(message, 4, 11, 1)
+    thumby.display.drawText('A/B: Back', 4, 26, 1)
     
     thumby.display.update()
+    
+    # Navigate back if button is pressed while waiting
+    if thumby.buttonA.justPressed() or thumby.buttonB.justPressed():
+        return 1
     
     # Return current game screen ID
     thumby.link.send(bytearray([2]))
