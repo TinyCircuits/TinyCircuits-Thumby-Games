@@ -1,3 +1,13 @@
+NAME=WallRacer
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/WallRacer/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/WallRacer/WallRacer.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/WallRacer/WallRacer.py
+
+NAME=Suits
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Suits/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Suits/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Suits/Suits.py
+
 NAME=GameOfLife
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/GameOfLife/arcade_title_video.webm
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/GameOfLife/arcade_description.txt
@@ -143,11 +153,6 @@ https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Floppy/arcade_title_video.webm
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Floppy/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Floppy/Floppy.py
-
-NAME=WallRacer
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/WallRacer/arcade_description.txt
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/WallRacer/WallRacer.webm
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/WallRacer/WallRacer.py
 
 NAME=MelodyMaker
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/MelodyMaker/arcade_title_image.png
