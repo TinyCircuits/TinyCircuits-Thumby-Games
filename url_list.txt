@@ -1,3 +1,8 @@
+NAME=GameOfLife
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/GameOfLife/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/GameOfLife/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/GameOfLife/GameOfLife.py
+
 NAME=Canvas
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Canvas/Canvas.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Canvas/arcade_title_video.webm
@@ -7,16 +12,18 @@ https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Canvas/lib/font3x5.bin
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Canvas/lib/thumby2.py
 
+NAME=Tennis
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Tennis/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Tennis/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Tennis/TennisCourt.bin
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Tennis/Tennis.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Tennis/TennisLogoFrames.bin
+
 NAME=MineSweep
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/MineSweep/arcade_title_video.webm
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/MineSweep/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/MineSweep/MineSweep.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/MineSweep/lib/thumby2.py
-
-NAME=GameOfLife
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/GameOfLife/arcade_title_video.webm
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/GameOfLife/arcade_description.txt
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/GameOfLife/GameOfLife.py
 
 NAME=OutThumb
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/OutThumb/OutThumb.py
@@ -187,13 +194,6 @@ NAME=DVD-Corner-Remix
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/DVD-Corner-Remix/arcade_title_video.webm
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/DVD-Corner-Remix/DVD-Corner-Remix.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/DVD-Corner-Remix/arcade_description.txt
-
-NAME=Tennis
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Tennis/arcade_title_video.webm
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Tennis/arcade_description.txt
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Tennis/TennisCourt.bin
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Tennis/Tennis.py
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Tennis/TennisLogoFrames.bin
 
 NAME=thumby_smash
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/thumby_smash/arcade_title_video.webm
