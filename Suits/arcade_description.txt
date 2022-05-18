@@ -1,0 +1,18 @@
+Suits
+
+Guess the next card
+
+Controls:
+A - Black
+B - Red
+(1 point if guessed correct)
+
+up = Spade
+down = Heart
+right = Club 
+left = Diamond
+(4 points if guessed correct)
+
+
+A + L = Reset Game
+B + U = Cycle Number of Decks Used
