@@ -111,7 +111,7 @@ def handleInput(): # called every frame
             if cursor.y < 0:
                 cursor.y = 2*hc-2
         if thumby.buttonD.justPressed():
-            Beep
+            Beep()
             cursor.y += 2
             if cursor.y > 2*hc-2:
                 cursor.y = 0
