@@ -1,7 +1,7 @@
 # MineSweep
 
 # Author: TPReal
-# Last updated: 2022-05-16
+# Last updated: 2022-05-19
 
 GAME_NAME="MineSweep"
 GAME_DIR=f"/Games/{GAME_NAME}"
