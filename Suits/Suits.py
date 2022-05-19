@@ -231,13 +231,7 @@ def get_user_input():
         return 'Red-B'
     return ' '
 
-<<<<<<< HEAD
 
-# initial settings, for when the script is first executed
-=======
-# initial setup, create all necessary global variables
-
->>>>>>> f49e218a3be3533d6e51e386ecc18bf4bf87b7cd
 do_indicator('blank')
 deck = deck_shuffle()
 history_list = ['o','o','o','o','o']
