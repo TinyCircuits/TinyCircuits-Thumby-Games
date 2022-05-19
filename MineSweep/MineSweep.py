@@ -393,6 +393,8 @@ class Game:
                 boardVal,m=divmod(boardVal,len(Game.B_SERIALISATION))
                 val=Game.B_SERIALISATION[m]
                 g.b[i]|=val
+                if val&F_OPEN!=0:
+                    g.safeLeft-=1
                 if val&F_FLAG!=0:
                     g.numFlags+=1
                 if val&F_MINE!=0:
