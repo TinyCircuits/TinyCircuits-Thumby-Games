@@ -37,6 +37,43 @@ random.seed(time.ticks_us()) # Relies on minor inconsistencies to differ a littl
 
 # bitmap information
 
+# BITMAP: width: 72, height: 40
+title_spritemap = bytearray([255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,31,31,223,223,223,223,207,207,207,239,239,239,239,15,255,255,255,31,199,247,231,239,239,207,223,223,159,191,63,63,127,127,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,
+           255,255,255,255,255,255,255,255,255,255,255,255,127,127,63,63,159,223,207,231,231,243,192,0,63,255,255,159,15,39,19,39,15,159,255,252,0,195,240,254,135,3,19,67,15,39,135,199,255,127,15,129,204,159,159,63,127,127,255,255,255,255,255,255,255,255,255,255,255,255,255,255,
+           255,255,255,255,255,255,255,255,255,255,113,32,134,206,223,223,95,95,131,179,131,11,195,255,128,7,127,127,123,57,56,56,57,59,39,32,14,31,159,223,223,223,28,60,126,255,127,15,97,96,22,7,147,171,3,255,127,62,140,225,241,255,255,255,255,255,255,255,255,255,255,255,
+           255,255,255,255,255,255,255,255,255,48,166,15,31,63,63,60,120,248,248,241,225,192,24,1,9,253,253,253,1,0,240,0,252,252,252,0,0,224,8,28,252,252,252,0,2,132,4,254,254,255,255,4,5,133,225,1,16,121,125,229,197,197,141,137,67,223,255,255,255,255,255,255,
+           255,255,255,255,255,255,255,255,255,248,249,243,246,228,228,228,228,231,231,227,241,240,248,255,248,243,247,231,230,228,244,246,247,231,231,230,224,241,244,230,231,231,231,228,224,247,248,241,247,231,231,230,228,226,240,248,242,228,228,228,231,231,231,227,240,249,255,255,255,255,255,255])
+
+suits_title_Spr = thumby.Sprite(72, 40, title_spritemap, 0, 0)
+thumby.display.drawSprite(suits_title_Spr)
+thumby.display.update()
+
+show_title = True
+
+def get_user_input():
+    if(thumby.buttonL.justPressed()):
+        return 'Diamond-L'
+    if(thumby.buttonR.justPressed()):
+        return 'Club-R'
+    if(thumby.buttonU.justPressed()):
+        return 'Spade-U'
+    if(thumby.buttonD.justPressed()):
+        return 'Heart-D'
+    if(thumby.buttonA.justPressed()):
+        return 'Black-A'
+    if(thumby.buttonB.justPressed()):
+        return 'Red-B'
+    return ' '
+
+while show_title:
+    
+    c = get_user_input()
+    any_button_is_pressed = c != ' '
+    
+    if any_button_is_pressed:
+        show_title = False
+        break
+    
 # sprites to use for the history 0:blank 1:spade 2:heart 3:club 4:diamond
 # 11x13 for 5 frames  
 suit_spritemap = bytearray([255,1,1,1,1,1,1,1,1,1,255,31,16,16,16,16,16,16,16,16,16,31,159,15,7,3,1,0,1,3,7,15,159,31,31,30,22,19,16,19,22,30,31,31,124,254,255,255,254,252,254,255,255,254,124,0,0,1,3,7,15,7,3,1,0,0,255,15,15,25,48,0,48,25,15,15,255,31,28,28,22,19,16,19,22,28,28,31,96,240,248,252,254,255,254,252,248,240,96,0,0,1,3,7,15,7,3,1,0,0])
@@ -214,30 +251,9 @@ def compare_card(user_select, deck):
 
     return card, point, deck
 
-
-# return the user input, mapped key pressed to suit or colour
-def get_user_input():
-    if(thumby.buttonL.justPressed()):
-        return 'Diamond-L'
-    if(thumby.buttonR.justPressed()):
-        return 'Club-R'
-    if(thumby.buttonU.justPressed()):
-        return 'Spade-U'
-    if(thumby.buttonD.justPressed()):
-        return 'Heart-D'
-    if(thumby.buttonA.justPressed()):
-        return 'Black-A'
-    if(thumby.buttonB.justPressed()):
-        return 'Red-B'
-    return ' '
-
-<<<<<<< HEAD
-
 # initial settings, for when the script is first executed
-=======
 # initial setup, create all necessary global variables
 
->>>>>>> f49e218a3be3533d6e51e386ecc18bf4bf87b7cd
 do_indicator('blank')
 deck = deck_shuffle()
 history_list = ['o','o','o','o','o']
