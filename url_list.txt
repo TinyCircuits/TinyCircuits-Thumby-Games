@@ -1,3 +1,11 @@
+NAME=Canvas
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Canvas/demos/Cat_15x14.bin
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Canvas/demos/Title_72x40.bin
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Canvas/lib/thumby2.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Canvas/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Canvas/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Canvas/Canvas.py
+
 NAME=Suits
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Suits/Suits.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Suits/arcade_title_video.webm
@@ -13,15 +21,6 @@ NAME=GameOfLife
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/GameOfLife/arcade_title_video.webm
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/GameOfLife/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/GameOfLife/GameOfLife.py
-
-NAME=Canvas
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Canvas/demos/Cat_15x14.bin
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Canvas/demos/Title_72x40.bin
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Canvas/lib/thumby2.py
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Canvas/lib/font3x5.bin
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Canvas/arcade_title_video.webm
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Canvas/arcade_description.txt
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Canvas/Canvas.py
 
 NAME=Tennis
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Tennis/arcade_title_video.webm
