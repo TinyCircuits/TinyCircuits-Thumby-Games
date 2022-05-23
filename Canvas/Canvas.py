@@ -1,7 +1,9 @@
 # Canvas
 
 # Author: TPReal
-# Last updated: 2022-05-13
+# Last updated: 2022-05-23
+
+__version__="1.1.0"
 
 GAME_NAME="Canvas"
 GAME_DIR="/Games/"+GAME_NAME
@@ -15,6 +17,8 @@ import thumby
 import time
 
 thumby2=__import__(GAME_DIR+"/lib/thumby2")
+
+thumby2.requireMinThumbyVersion("1.6")
 
 @micropython.native
 def scrollCalc(
@@ -993,7 +997,7 @@ Saves dir:
 
 def selectRect(c):
     thumby2.buttons.assumeUp()
-    font35()
+    thumby2.display.text.font35i1()
     while True:
         c.draw()
         thumby2.update()
@@ -1181,13 +1185,10 @@ def showDrawMenu(c):
         elif sel=="!FailNow!":
             failingNow
 
-def font35():
-    thumby.display.setFont(GAME_DIR+"/lib/font3x5.bin",3,5,1)
-
 CANVAS_DPAD_LONG_PRESS_MS=200
 
 def useCanvas(c):
-    font35()
+    thumby2.display.text.font35i1()
     thumby.display.setFPS(15)
     dpadAnyLongPress=False
     pureBLongPress=False
@@ -1207,7 +1208,7 @@ def useCanvas(c):
                 sel=showDrawMenu(c)
                 if sel=="close":
                     return
-                font35()
+                thumby2.display.text.font35i1()
             else:
                 for btn,zoomDir in thumby2.buttons.UD_VALS:
                     if btn.edge>0:
