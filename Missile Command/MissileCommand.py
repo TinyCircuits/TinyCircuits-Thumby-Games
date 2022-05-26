@@ -66,12 +66,6 @@ thumby.display.setFPS(60)
 
 
 cities=[]
-
-# X-coordinates of cities, city type
-for i in range(5):
-    cities.append((int(random.random()*w),int(random.random()*len(city_sprites))))
-
-
 missiles=[]
 explosions=[]
 nukes=[]
@@ -257,6 +251,12 @@ play_again=True
 while play_again:
     # Missile probability
     missile_P=0.001
+    missiles=[]
+    explosions=[]
+    nukes=[]
+    # X-coordinates of cities, city type
+    for i in range(5):
+        cities.append((int(random.random()*w),int(random.random()*len(city_sprites))))
 
     thumby.display.fill(0)
     thumby.display.update()
