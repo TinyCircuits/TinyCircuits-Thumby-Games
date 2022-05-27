@@ -1,4 +1,4 @@
-# Missile command game
+# Thumby command game
 # Written by Daniel Spångberg
 
 """
@@ -260,7 +260,7 @@ while play_again:
 
     thumby.display.fill(0)
     thumby.display.update()
-    thumby.display.drawText("Missile",int((w-7*5)/2),int((h-7)/2)-10,1)
+    thumby.display.drawText("Thumby",int((w-6*5)/2),int((h-7)/2)-10,1)
     thumby.display.drawText("Command",int((w-7*5)/2),int((h-7)/2),1)
     thumby.display.drawText("Press A",int((w-7*5)/2),int((h-7)/2)+10,1)
     thumby.display.update()
