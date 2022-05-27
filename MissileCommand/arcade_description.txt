@@ -1,0 +1,6 @@
+Missile Command
+
+Shoot down the unfriendly missiles, before they blow up your cities
+
+Author: Daniel S.
+Version: 1.0a
