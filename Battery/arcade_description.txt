@@ -1,0 +1,8 @@
+Battery Indicator Icon
+
+Shows current battery level as a typical smartphone icon
+Press B to see approximate voltage value (based on lowest voltage of pin 26)
+Press A to exit back to Thumby Start screen
+
+Author: AyreGuitar
+Version: 1.2.1
