@@ -1,7 +1,7 @@
-NAME=MissileCommand
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/MissileCommand/arcade_title_video.webm
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/MissileCommand/MissileCommand.py
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/MissileCommand/arcade_description.txt
+NAME=ThumbyCommand
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/ThumbyCommand/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/ThumbyCommand/ThumbyCommand.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/ThumbyCommand/arcade_description.txt
 
 NAME=Mandelbrot
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Mandelbrot/Mandelbrot.py
