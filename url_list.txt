@@ -1,3 +1,24 @@
+NAME=WallRacer
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/WallRacer/WallRacer.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/WallRacer/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/WallRacer/WallRacer.webm
+
+NAME=Battery
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Battery/Battery.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Battery/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Battery/arcade_title_image.png
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Battery/arcade_description.txt
+
+NAME=ThumbyCommand
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/ThumbyCommand/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/ThumbyCommand/ThumbyCommand.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/ThumbyCommand/arcade_description.txt
+
+NAME=Mandelbrot
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Mandelbrot/Mandelbrot.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Mandelbrot/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Mandelbrot/arcade_title_video .webm
+
 NAME=Canvas
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Canvas/demos/Cat_15x14.bin
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Canvas/demos/Title_72x40.bin
@@ -188,11 +209,6 @@ NAME=TicTac
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TicTac/TicTac.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TicTac/arcade_title_image.png
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TicTac/arcade_description.txt
-
-NAME=WallRacer
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/WallRacer/WallRacer.py
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/WallRacer/arcade_description.txt
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/WallRacer/WallRacer.webm
 
 NAME=DVD-Corner-Remix
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/DVD-Corner-Remix/DVD-Corner-Remix.py
