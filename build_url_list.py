@@ -27,7 +27,17 @@ topLevelItems = os.listdir()
 unsortedPairs = []
 for item in topLevelItems:
     if os.path.isdir(item) and item != ".github" and item != ".git":
-        dateStr = os.popen("git log -- " + item).read().splitlines()[2][8:]
+        pipe = os.popen("git log -- \"" + item + "\"").read()
+        print("Loaded " + item)
+        if len(pipe) == 0:
+            continue
+        try:
+            for line in pipe.splitlines():
+                if line[:4] == "Date":    
+                    dateStr = line[8:]
+                    break
+        except IndexError:
+            print(str(item) + " Has malformed git log!")
         print(dateStr)
         try:
             date = datetime.datetime.strptime(dateStr, '%a %b %d %H:%M:%S %Y %z')
