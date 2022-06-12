@@ -101,7 +101,15 @@ thumby.display.update()
 while (not (thumby.buttonA.justPressed() or thumby.buttonB.justPressed())):
     thumby.display.update()
 
-get_high_score()
+highScore = get_high_score()
+thumby.display.fill(0) # clear screen
+thumby.display.setFont("/lib/font8x8.bin", 8, 8, 1)
+thumby.display.drawText("HIGH", 12, 22, 1)
+thumby.display.drawText(str(highScore), 12, 31, 1)
+while (not (thumby.buttonA.justPressed() or thumby.buttonB.justPressed())):
+    thumby.display.update()
+
+
 endGameTime=2*60*1000
 startTime = time.ticks_ms()
 totalScore = 0
