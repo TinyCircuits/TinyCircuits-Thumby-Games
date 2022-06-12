@@ -218,7 +218,11 @@ if (totalScore>highScore):
     save_high_score(totalScore)
 thumby.display.fill(0) # clear screen
 thumby.display.setFont("/lib/font8x8.bin", 8, 8, 1)
-thumby.display.drawText("SCORE", 12, 15, 1)
-thumby.display.drawText(str(totalScore), 12, 24, 1)
-thumby.display.update()
+
+thumby.display.drawText("SCORE", 12, 5, 1)
+thumby.display.drawText(str(totalScore), 12, 14, 1)
+thumby.display.drawText("HIGH", 12, 22, 1)
+thumby.display.drawText(str(highScore), 12, 31, 1)
+while (not (thumby.buttonA.justPressed() or thumby.buttonB.justPressed())):
+    thumby.display.update()
 
