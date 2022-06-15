@@ -1,3 +1,8 @@
+NAME=MicroMeows
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/MicroMeows/MicroMeows.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/MicroMeows/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/MicroMeows/arcade_title_video.webm
+
 NAME=SpaceEvader
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/SpaceEvader/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/SpaceEvader/SpaceEvader.py
