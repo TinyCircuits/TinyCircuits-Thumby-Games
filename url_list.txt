@@ -1,3 +1,13 @@
+NAME=MicroGradient
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/MicroGradient/MicroGradient.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/MicroGradient/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/MicroGradient/emulator_video.webm
+
+NAME=8bdungeon
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/8bdungeon/8bdungeon.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/8bdungeon/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/8bdungeon/emulator_video.webm
+
 NAME=TheTowers
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TheTowers/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TheTowers/TheTowers.py
