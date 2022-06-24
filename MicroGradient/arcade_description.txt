@@ -1,0 +1,3 @@
+MicroGradient is a side-scrolling space shooter game.
+
+More detailed information is available at https://microgradient.github.io/
