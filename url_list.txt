@@ -1,3 +1,8 @@
+NAME=OBS
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/OBS/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/OBS/emulator_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/OBS/OBS.py
+
 NAME=MicroGradient
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/MicroGradient/MicroGradient.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/MicroGradient/arcade_description.txt
