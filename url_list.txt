@@ -1,3 +1,7 @@
+NAME=Bouncer
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Bouncer/Bouncer.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Bouncer/arcade_description.txt
+
 NAME=OBS
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/OBS/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/OBS/emulator_video.webm
@@ -17,11 +21,6 @@ NAME=TheTowers
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TheTowers/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TheTowers/TheTowers.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TheTowers/arcade_title_video.webm
-
-NAME=Bouncer
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Bouncer/arcade_bouncer_video.webm
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Bouncer/Bouncer.py
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Bouncer/arcade_description.txt
 
 NAME=MicroMeows
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/MicroMeows/MicroMeows.py
