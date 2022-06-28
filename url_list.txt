@@ -1,4 +1,5 @@
 NAME=Bouncer
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Bouncer/arcade_bouncer_video.webm
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Bouncer/Bouncer.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Bouncer/arcade_description.txt
 
