@@ -1,0 +1,15 @@
+Bouncer
+
+Bounce the ball off the paddle and break some bricks for as long as you can handle it!
+
+The score is kept track through P (short for "Paddle") and T (short for "Total").
+
+Borrows code from Brick'd by Laveréna W and Annelid by Mason W.
+
+Port of a PC game I previously made in Game Maker Studio 2 and released on Itch.io.
+
+LINK TO ORIGINAL: https://billycrawdad.itch.io/bouncer
+
+Author: Billy Crawdad
+Version 1.0.0
+Size: 0.02 MB
