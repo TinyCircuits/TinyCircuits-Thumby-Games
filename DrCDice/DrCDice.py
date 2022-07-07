@@ -11,7 +11,7 @@ from machine import ADC
 adc = ADC(26)
 charging = 38000
 thumby.display.setFPS(15)
-sides = 100
+sides = 6
 
 def center(text, y=0, width=5, height=7, spacing=1, color=1):
     x = int((72 - (width + spacing) * len(text)) / 2)
