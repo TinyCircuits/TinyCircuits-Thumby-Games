@@ -1,3 +1,7 @@
+# Dr. C. Dice
+# Version 1.1
+# By Charles "Cyndi" Cavanaugh, Ph.D.
+# https://www.cyndicavanaugh.com/
 import time
 import thumby
 import math
@@ -7,7 +11,7 @@ from machine import ADC
 adc = ADC(26)
 charging = 38000
 thumby.display.setFPS(15)
-sides = 6
+sides = 100
 
 def center(text, y=0, width=5, height=7, spacing=1, color=1):
     x = int((72 - (width + spacing) * len(text)) / 2)
@@ -82,7 +86,7 @@ while(1):
                 thumby.display.fill(0)
                 center("Test results", 0)
                 center(f"^v)side {side}", 8)
-                center(f"{frequency[side]} times", 16)
+                center(f"{frequency.get(side)} times", 16)
                 center(f"{rolls} rolls", 24)
                 center("A)continue", 32)
                 thumby.display.update()
