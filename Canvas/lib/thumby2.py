@@ -1,7 +1,7 @@
 import thumby
 import time
 
-__version__='1.2'
+__version__='1.2.1'
 
 IN_EMULATOR=not hasattr(thumby.display.display,"cs")
 
@@ -319,7 +319,13 @@ def update():
 
 def requireMinThumbyVersion(reqVersion):
     actVersion=thumby.__version__
-    act,req=(list(map(int,v.split("."))) for v in [actVersion,reqVersion])
+    try:
+        act,req=(list(map(int,v.split("."))) for v in [actVersion,reqVersion])
+    except ValueError:
+        println(f"Cannot parse version. Required: {reqVersion}, "+
+            f"actual: {actVersion}. Accepted.")
+        return
+    act,req=(list(v.split(".")) for v in [actVersion,reqVersion])
     if act<req:
         thumby.display.fill(0)
         display.text.font57i1()
