@@ -1,7 +1,7 @@
 import thumby
 import time
 
-__version__='1.1.1'
+__version__='1.2.1'
 
 IN_EMULATOR=not hasattr(thumby.display.display,"cs")
 
@@ -28,6 +28,10 @@ def __checkClampRange(v1:int,v2:int,min:int,max:int)->(bool,int,int):
 class display:
 
     class text:
+
+        @staticmethod
+        def font35i1():
+            thumby.display.setFont("/lib/font3x5.bin",3,6,1)
 
         @staticmethod
         def font57i1():
@@ -312,3 +316,21 @@ def update():
     display.show()
     buttons.update()
     return display.waitFrame()
+
+def requireMinThumbyVersion(reqVersion):
+    actVersion=thumby.__version__
+    try:
+        act,req=(list(map(int,v.split("."))) for v in [actVersion,reqVersion])
+    except ValueError:
+        println(f"Cannot parse version. Required: {reqVersion}, "+
+            f"actual: {actVersion}. Accepted.")
+        return
+    act,req=(list(v.split(".")) for v in [actVersion,reqVersion])
+    if act<req:
+        thumby.display.fill(0)
+        display.text.font57i1()
+        display.text.print(
+            ["Cannot run!","Update libs","in IDE!","",f"{actVersion}<{reqVersion}"],0)
+        display.show()
+        buttons.wait()
+        thumby.reset()
