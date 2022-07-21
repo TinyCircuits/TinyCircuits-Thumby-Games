@@ -1,0 +1,10 @@
+Flucht
+
+Wall jump as high as you can!
+
+Press any button to play it, in portrait mode.
+
+You can also play it in your web browser, plus more info: http://sergilazaro.itch.io/flucht
+
+Author: Sergi Lazaro
+Version: 1.0
