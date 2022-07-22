@@ -1,6 +1,7 @@
 import time
 import thumby
 import math
+import machine
 
 # Bitmaps
 ballMap = bytearray([6,15,15,6]) # BITMAP: width: 4, height: 4
