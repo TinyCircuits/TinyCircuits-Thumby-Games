@@ -1,3 +1,8 @@
+NAME=Brickd
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Brickd/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Brickd/Brickd.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Brickd/arcade_title_video.webm
+
 NAME=Flucht
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Flucht/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Flucht/common_code.py
@@ -248,11 +253,6 @@ NAME=Kombine
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Kombine/Kombine.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Kombine/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Kombine/arcade_title_video.webm
-
-NAME=Brickd
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Brickd/arcade_description.txt
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Brickd/Brickd.py
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Brickd/arcade_title_video.webm
 
 NAME=TicTac
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TicTac/arcade_description.txt
