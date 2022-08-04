@@ -1,3 +1,8 @@
+NAME=TestCupymini
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TestCupymini/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TestCupymini/TestCupymini.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TestCupymini/TestCupymini_Video.webm
+
 NAME=Brickd
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Brickd/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Brickd/Brickd.py
