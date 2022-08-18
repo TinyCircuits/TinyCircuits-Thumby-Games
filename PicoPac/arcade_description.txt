@@ -10,7 +10,7 @@ New in Version 1.1:
 New title screen
 New sounds/music on game start/death/eating ghost
 Pause the game by pressing A
-Can view batter level on pause screen
+Can view battery level on pause screen
 Keeps track of high score
 Can exit game from title screen
 New lives at every 5k points
