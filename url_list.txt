@@ -1,3 +1,8 @@
+NAME=PicoPac
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/PicoPac/PicoPac.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/PicoPac/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/PicoPac/PicoPac.webm
+
 NAME=Canvas
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Canvas/Canvas.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Canvas/arcade_description.txt
@@ -216,11 +221,6 @@ NAME=GuiguitteTribute
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/GuiguitteTribute/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/GuiguitteTribute/arcade_title_video.webm
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/GuiguitteTribute/GuiguitteTribute.py
-
-NAME=PicoPac
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/PicoPac/PicoPac.py
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/PicoPac/arcade_description.txt
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/PicoPac/PicoPac.webm
 
 NAME=chunkIntercept
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/chunkIntercept/arcade_description.txt
