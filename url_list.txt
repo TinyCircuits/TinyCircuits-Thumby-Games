@@ -1,3 +1,8 @@
+NAME=Thario
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Thario/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Thario/Thario.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Thario/arcade_title_video.webm
+
 NAME=PicoPac
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/PicoPac/PicoPac.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/PicoPac/arcade_description.txt
@@ -193,11 +198,6 @@ https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/3D_Cube/arcade_title_video.webm
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/3D_Cube/3D_Cube.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/3D_Cube/arcade_title_image.png
-
-NAME=Thario
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Thario/arcade_description.txt
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Thario/Thario.py
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Thario/arcade_title_video.webm
 
 NAME=Tiny_Monster_Trainer
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Tiny_Monster_Trainer/arcade_description.txt
