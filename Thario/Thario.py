@@ -118,9 +118,48 @@ while not thumby.buttonA.pressed():
     thumby.display.update()
     pass
 
+#Music Example
+MusicNoteDict = { 0:40000, 
+                 "C4":261,
+                 "D4":293,
+                 "E4":329,
+                 "F4":349,
+                 "G4":392,
+                 "A4":440,
+                 "B4":494,
+                 "C5":523,
+                 "D5":587,
+                 "E5":659,
+                 "F5":698,
+                 "G5":783,
+                 "A5":880}
 
+#Overworld theme
+SongList = ["E5","E5", 0  , 0  ,"C5","C5", 0  , 0  ,"A4", 0  ,"C5", 0  ,"C5","C5","C5", 0  ,
+            "G4", 0  ,"C5", 0  ,"C5",  0 ,"G5", 0  ,"E5","E5", 0  , 0  ,"D5","D5", 0  , 0  ,
+            "E5","E5", 0  , 0  ,"C5","C5", 0  , 0  ,"A4", 0  ,"C5", 0  ,"C5","C5","C5", 0  ,
+            "G4", 0  ,"C5", 0  ,"F5","E5","D5", 0  ,"C5","C5","C5","C5", 0  ,"B4","C5","D5",]
+
+
+NoteLengthMS = 200
+
+NoteLengthUS = NoteLengthMS * 1000 
+SongLength = len(SongList) * NoteLengthUS
+
+def PlayMusic(utimeTicksUS):
+    CurSongBeat = int((utimeTicksUS % SongLength)/NoteLengthUS)
+    CurNote = SongList[CurSongBeat] 
+    CurFreq = MusicNoteDict[CurNote]
+    #print(CurFreq)
+    thumby.audio.play(CurFreq, NoteLengthMS)
+    return
+
+BGMOffset = utime.ticks_us()
 while GameRunning:
     t0 = utime.ticks_us() # Check the time
+    
+    #MusicStuff
+    PlayMusic(t0 - BGMOffset)
 
     # Is the player on the ground and trying to jump?
     if JumpSoundTimer < 0:
@@ -138,8 +177,8 @@ while GameRunning:
 
     if JumpSoundTimer > 0:
         thumby.audio.set(500-JumpSoundTimer)
-    else:
-        thumby.audio.stop()
+    #else:
+    #thumby.audio.stop()
 
     # Accelerate the player just a little bit
     XVel += 0.000025
@@ -187,6 +226,7 @@ while GameRunning:
                 EnemyPos = random.randint(72, 300)
                 CloudPos = random.randint(60, 200)
                 CoinPos = random.randint(60, 200)
+                BGMOffset = utime.ticks_us()
 
             elif thumby.buttonB.pressed() == True:
                 # Quit
