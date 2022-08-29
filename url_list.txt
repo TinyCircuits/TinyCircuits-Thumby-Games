@@ -1,3 +1,8 @@
+NAME=Orion_Trail_Beta
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Orion_Trail_Beta/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Orion_Trail_Beta/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Orion_Trail_Beta/Orion_Trail_Beta.py
+
 NAME=Thario
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Thario/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Thario/Thario.py
