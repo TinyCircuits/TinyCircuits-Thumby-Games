@@ -1,0 +1,9 @@
+A small 3D demo, using a display controller hack for flicker-free 4 shade greyscale (16 shades with dithering).
+Features spinning and/or bouncing objects, an Outrun-style road, stars, mountains that might be pyramids, and randomly generated music.
+The full source code is over 100KiB, so this version has been tidied up and stripped of comments for the arcade... full source can be found at github.com/doogle/Journey3Dg
+
+Please note that this will not run in the emulator.
+
+Author: David Steinberg (Doogle)
+Version: 1.1g
+License: GPL3
