@@ -1,3 +1,14 @@
+NAME=PSdemo
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/PSdemo/PSdemo.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/PSdemo/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/PSdemo/logo.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/PSdemo/polysynth.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/PSdemo/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/PSdemo/logo.bin
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/PSdemo/midi.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/PSdemo/moontheme.mid
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/PSdemo/evergreen.mid
+
 NAME=Orion_Trail_Beta
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Orion_Trail_Beta/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Orion_Trail_Beta/arcade_title_video.webm
