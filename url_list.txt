@@ -1,3 +1,8 @@
+NAME=Orion_Trail_Beta
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Orion_Trail_Beta/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Orion_Trail_Beta/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Orion_Trail_Beta/Orion_Trail_Beta.py
+
 NAME=Journey3Dg
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Journey3Dg/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Journey3Dg/musicplayer.py
@@ -6,11 +11,6 @@ https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Journey3Dg/Journey3Dg_main.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Journey3Dg/arcade_title_video.webm
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Journey3Dg/ssd1306grey.py
-
-NAME=Orion_Trail_Beta
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Orion_Trail_Beta/arcade_description.txt
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Orion_Trail_Beta/arcade_title_video.webm
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Orion_Trail_Beta/Orion_Trail_Beta.py
 
 NAME=Thario
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Thario/arcade_description.txt
