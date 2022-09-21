@@ -21,7 +21,7 @@ def main():
         character_screen(character)
         
     def save_game(crew, ship, money, day):
-               with open('Games/Orion/savestate.json',"w") as save_file:
+               with open('Games/Orion_Trail_Beta/savestate.json',"w") as save_file:
                     json.dump({"crew":crew,"ship":ship,"money":money,"day":day},save_file)
               
     def save_state_menu(crew, ship, money, day):

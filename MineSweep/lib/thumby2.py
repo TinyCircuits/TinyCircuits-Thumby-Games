@@ -1,175 +1,303 @@
 import thumby
 import time
 
-__version__='1.2.1'
+__version__='1.3.0'
 
 IN_EMULATOR=not hasattr(thumby.display.display,"cs")
 
-@micropython.viper
-def clamp(v:int,min:int,max:int)->int:
-    if v<min:
-        return min
-    elif v>max:
-        return max
-    else:
-        return v
 
-def __checkClampRange(v1:int,v2:int,min:int,max:int)->(bool,int,int):
-    if v1>max:
-        return (False,0,0)
-    if v1<min:
-        if v2<min:
-            return (False,0,0)
-        v1=min
-    if v2>max:
-        v2=max
-    return (True,v1,v2)
+class Sprite:
 
-class display:
+    def __init__(self,blit:ptr8,width:int,height:int):
+        self.blit=blit
+        self.width=width
+        self.height=height
 
-    class text:
 
-        @staticmethod
-        def font35i1():
-            thumby.display.setFont("/lib/font3x5.bin",3,6,1)
+class Buffer:
 
-        @staticmethod
-        def font57i1():
-            thumby.display.setFont("/lib/font5x7.bin",5,8,1)
-
-        @staticmethod
-        def font88():
-            thumby.display.setFont("/lib/font8x8.bin",8,8,0)
-
-        @staticmethod
-        def print(text,row,column=0,color=1):
-            if isinstance(text,str):
-                text=[text]
-            x0=column*(thumby.display.textWidth+thumby.display.textSpaceWidth)
-            yPerRow=thumby.display.textHeight
-            y0=row*yPerRow
-            for row,line in enumerate(text):
-                thumby.display.drawText(line,x0,y0+row*yPerRow,color)
-
-        @staticmethod
-        def clear(row,column=0,rows=1,columns=1000,color=1):
-            xPerChar=thumby.display.textWidth+thumby.display.textSpaceWidth
-            display.fillRect(
-                column*xPerChar,row*thumby.display.textHeight,
-                columns*xPerChar-1,rows*thumby.display.textHeight,not color)
+    def __init__(self,buffer:ptr8,width:int,height:int):
+        self.buffer=buffer
+        self.width=width
+        self.height=height
+        self.textBuffer=None
 
     @staticmethod
+    def screenSized(buffer:ptr8):
+        return Buffer(buffer,72,40)
+
     @micropython.viper
-    def drawLineH(x1:int,y:int,x2:int,color:int):
-        if 0<=y<40:
-            x1=int(clamp(x1,0,71))
-            x2=int(clamp(x2,0,71))
+    def fill(self,val:int):
+        if val:
+            val=0xFF
+        b=ptr8(self.buffer)
+        for i in range(int(len(b))):
+            b[i]=val
+
+    @micropython.viper
+    def drawLineH(self,x1:int,y:int,x2:int,color:int):
+        ww=int(self.width)
+        hh=int(self.height)
+        if 0<=y<hh:
+            x1=int(min(max(x1,0),ww-1))
+            x2=int(min(max(x2,0),ww-1))
             if x1>x2:
                 x1,x2=x2,x1
             mask=int(1<<(y&0b111))
-            pageAddr=int((y>>3)*72)
-            buf=ptr8(thumby.display.display.buffer)
+            pageAddr=int((y>>3)*ww)
+            b=ptr8(self.buffer)
             if color:
                 for offset in range(x1,x2+1):
-                    buf[pageAddr+offset]|=mask
+                    b[pageAddr+offset]|=mask
             else:
                 mask=int(mask^-1)
                 for offset in range(x1,x2+1):
-                    buf[pageAddr+offset]&=mask
+                    b[pageAddr+offset]&=mask
 
-    @staticmethod
     @micropython.viper
-    def drawLineV(x:int,y1:int,y2:int,color:int):
-        if 0<=x<72:
-            y1=int(clamp(y1,0,39))
-            y2=int(clamp(y2,0,39))
+    def drawLineV(self,x:int,y1:int,y2:int,color:int):
+        ww=int(self.width)
+        hh=int(self.height)
+        if 0<=x<ww:
+            y1=int(min(max(y1,0),hh-1))
+            y2=int(min(max(y2,0),hh-1))
             if y1>y2:
                 y1,y2=y2,y1
             firstPage=int(y1>>3)
             lastPage=int(y2>>3)
             maskStart=int(0x100-(1<<(y1&0b111)))
             maskEnd=int((1<<((y2&0b111)+1))-1)
-            buf=ptr8(thumby.display.display.buffer)
+            b=ptr8(self.buffer)
             if firstPage==lastPage:
                 mask=int(maskStart&maskEnd)
                 if color:
-                    buf[firstPage*72+x]|=mask
+                    b[firstPage*ww+x]|=mask
                 else:
-                    buf[firstPage*72+x]&=mask^0xFF
+                    b[firstPage*ww+x]&=mask^0xFF
             else:
                 if color:
-                    buf[firstPage*72+x]|=maskStart
-                    buf[lastPage*72+x]|=maskEnd
+                    b[firstPage*ww+x]|=maskStart
+                    b[lastPage*ww+x]|=maskEnd
                     for page in range(firstPage+1,lastPage):
-                        buf[page*72+x]=0xFF
+                        b[page*ww+x]=0xFF
                 else:
-                    buf[firstPage*72+x]&=maskStart^0xFF
-                    buf[lastPage*72+x]&=maskEnd^0xFF
+                    b[firstPage*ww+x]&=maskStart^0xFF
+                    b[lastPage*ww+x]&=maskEnd^0xFF
                     for page in range(firstPage+1,lastPage):
-                        buf[page*72+x]=0x00
+                        b[page*ww+x]=0x00
 
-    @staticmethod
     @micropython.viper
-    def drawRect(x:int,y:int,width:int,height:int,color:int):
-        display.drawLineH(x,y,x+width-1,color)
-        display.drawLineH(x,y+height-1,x+width-1,color)
-        display.drawLineV(x,y,y+height-1,color)
-        display.drawLineV(x+width-1,y,y+height-1,color)
+    def drawRect(self,x:int,y:int,width:int,height:int,color:int):
+        self.drawLineH(x,y,x+width-1,color)
+        self.drawLineH(x,y+height-1,x+width-1,color)
+        self.drawLineV(x,y,y+height-1,color)
+        self.drawLineV(x+width-1,y,y+height-1,color)
 
-    @staticmethod
     @micropython.viper
-    def fillRect(x:int,y:int,width:int,height:int,color:int):
-        x1x2=__checkClampRange(x,x+width-1,0,71)
-        if not x1x2[0]:
+    def fillRect(self,x:int,y:int,width:int,height:int,color:int):
+        ww=int(self.width)
+        hh=int(self.height)
+        x2=int(min(x+width-1,ww-1))
+        y2=int(min(y+height-1,hh-1))
+        if x>=ww or x2<0 or y>=hh or y2<0:
             return
-        y1y2=__checkClampRange(y,y+height-1,0,39)
-        if not y1y2[0]:
-            return
-        x1=int(x1x2[1])
-        x2=int(x1x2[2])
-        y1=int(y1y2[1])
-        y2=int(y1y2[2])
-        firstPage=int(y1>>3)
+        x=int(max(x,0))
+        y=int(max(y,0))
+        firstPage=int(y>>3)
         lastPage=int(y2>>3)
-        maskStart=int(0x100-(1<<(y1&0b111)))
+        maskStart=int(0x100-(1<<(y&0b111)))
         maskEnd=int((1<<((y2&0b111)+1))-1)
-        buf=ptr8(thumby.display.display.buffer)
+        b=ptr8(self.buffer)
         if firstPage==lastPage:
             mask=int(maskStart&maskEnd)
             if color:
-                for offset in range(x1,x2+1):
-                    buf[firstPage*72+offset]|=mask
+                for offset in range(x,x2+1):
+                    b[firstPage*ww+offset]|=mask
             else:
                 mask^=0xFF
-                for offset in range(x1,x2+1):
-                    buf[firstPage*72+offset]&=mask
+                for offset in range(x,x2+1):
+                    b[firstPage*ww+offset]&=mask
         else:
             if color:
-                for offset in range(x1,x2+1):
-                    buf[firstPage*72+offset]|=maskStart
-                    buf[lastPage*72+offset]|=maskEnd
+                for offset in range(x,x2+1):
+                    b[firstPage*ww+offset]|=maskStart
+                    b[lastPage*ww+offset]|=maskEnd
                     for page in range(firstPage+1,lastPage):
-                        buf[page*72+offset]=0xFF
+                        b[page*ww+offset]=0xFF
             else:
                 maskStart^=0xFF
                 maskEnd^=0xFF
-                for offset in range(x1,x2+1):
-                    buf[firstPage*72+offset]&=maskStart
-                    buf[lastPage*72+offset]&=maskEnd
+                for offset in range(x,x2+1):
+                    b[firstPage*ww+offset]&=maskStart
+                    b[lastPage*ww+offset]&=maskEnd
                     for page in range(firstPage+1,lastPage):
-                        buf[page*72+offset]=0x00
+                        b[page*ww+offset]=0x00
+
+    @micropython.viper
+    def _blit(self,sprite:ptr8,x:int,y:int,width:int,height:int,
+            key:int,mirrorX:int,mirrorY:int):
+        ww=int(self.width)
+        hh=int(self.height)
+        if not 0-width<x<ww or not 0-height<y<hh:
+            return
+        xStart=int(x)
+        yStart=int(y)
+        b=ptr8(self.buffer)
+        yFirst=int(max(0-yStart,0))
+        blitHeight=int(min(height,hh-yStart))
+        xFirst=int(max(0-xStart,0))
+        blitWidth=int(min(width,ww-xStart))
+        y=yFirst
+        if key==0:
+            while y<blitHeight:
+                x=xFirst
+                while x<blitWidth:
+                    if sprite[((height-1-y if mirrorY==1 else y)>>3)*width+(width-1-x if mirrorX==1 else x)]&(
+                            1<<((height-1-y if mirrorY==1 else y)&0x07)):
+                        b[((yStart+y)>>3)*ww+xStart+x]|=1<<((yStart+y)&0x07)
+                    x+=1
+                y+=1
+        elif key==1:
+            while y<blitHeight:
+                x=xFirst
+                while x<blitWidth:
+                    if sprite[((height-1-y if mirrorY==1 else y)>>3)*width+(width-1-x if mirrorX==1 else x)]&(
+                            1<<((height-1-y if mirrorY==1 else y)&0x07))==0:
+                        b[((yStart+y)>>3)*ww+xStart+x]&=0xFF^(1<<((yStart+y)&0x07))
+                    x+=1
+                y+=1
+        else:
+            while y<blitHeight:
+                x=xFirst
+                while x<blitWidth:
+                    if sprite[((height-1-y if mirrorY==1 else y)>>3)*width+(width-1-x if mirrorX==1 else x)]&(
+                            1<<((height-1-y if mirrorY==1 else y)&0x07)):
+                        b[((yStart+y)>>3)*ww+xStart+x]|=1<<((yStart+y)&0x07)
+                    else:
+                        b[((yStart+y)>>3)*ww+xStart+x]&=0xFF^(1<<((yStart+y)&0x07))
+                    x+=1
+                y+=1
+
+    def blit(self,blit:ptr8,x,y,width,height,key=-1,mirrorX=False,mirrorY=False):
+        self._blit(blit,x,y,width,height,key,mirrorX,mirrorY)
+
+    def sprite(self,sprite:Sprite,x,y,key=-1,mirrorX=False,mirrorY=False):
+        self._blit(sprite.blit,x,y,sprite.width,sprite.height,key,mirrorX,mirrorY)
+
+    def text(self,font=None):
+        if self.textBuffer is None or font!=self.textBuffer.font:
+            if font is None:
+                raise RuntimeError("Font needed")
+            self.textBuffer=TextBuffer(self,font)
+        return self.textBuffer
+
+    def text35(self):
+        return self.text(Font.font35())
+
+    def text57(self):
+        return self.text(Font.font57())
+
+    def text88(self):
+        return self.text(Font.font88())
+
+
+class Font:
+
+    fontsDict=dict()
+
+    def __init__(self,fontFile,charW,charH,spacingX,spacingY):
+        with open(fontFile,"rb") as f:
+            self.data=f.read()
+        self.charW=charW
+        self.charH=charH
+        self.spacingX=spacingX
+        self.spacingY=spacingY
+        self.charDX=charW+spacingX
+        self.charDY=charH+spacingY
+        self.glyphCount=len(self.data)//charW
+
+    def charData(self,char:str):
+        chInd=int(ord(char)-0x20)
+        if chInd<self.glyphCount:
+            dInd=chInd*self.charW
+            return self.data[dInd:dInd+self.charW]
 
     @staticmethod
-    def cloneBuffer():
-        return thumby.display.display.buffer[:]
+    def font(fontFile,charW,charH,spacingX=0,spacingY=0):
+        key=(fontFile,charW,charH,spacingX,spacingY)
+        font=Font.fontsDict.get(key)
+        if font is None:
+            font=Font(*key)
+            Font.fontsDict[key]=font
+        return font
 
     @staticmethod
-    def setBuffer(buffer):
+    def font35():
+        return Font.font("/lib/font3x5.bin",3,5,1,1)
+
+    @staticmethod
+    def font57():
+        return Font.font("/lib/font5x7.bin",5,7,1,1)
+
+    @staticmethod
+    def font88():
+        return Font.font("/lib/font8x8.bin",8,8)
+
+
+class TextBuffer:
+
+    def __init__(self,screen,font):
+        self.screen=screen
+        self.font=font
+
+    @micropython.viper
+    def _printXY(self,text,x:int,y:int,color:int):
+        if isinstance(text,str):
+            text=[text]
+        ww=int(self.screen.width)
+        hh=int(self.screen.height)
+        for row,line in enumerate(text):
+            if 0-int(self.font.charH)<y<hh:
+                xx=int(x)
+                for ch in line:
+                    chData=self.font.charData(ch)
+                    if chData:
+                        if not color:
+                            chData=bytearray(chData)
+                            for i in range(int(self.font.charW)):
+                                chData[i]=int(chData[i])^0xFF
+                        self.screen.blit(chData,xx,y,self.font.charW,self.font.charH,
+                            key=1-color)
+                    xx+=int(self.font.charDX)
+            y+=int(self.font.charDY)
+
+    def printXY(self,text,x,y,color=1):
+        self._printXY(text,x,y,color)
+
+    def print(self,text,row,column=0,color=1):
+        self.printXY(text,column*self.font.charDX,row*self.font.charDY,color)
+
+    def clear(self,row,column=0,rows=1,columns=1000,color=1):
+        self.screen.fillRect(
+            column*self.font.charDX,row*self.font.charDY,
+            columns*self.font.charDX,rows*self.font.charDY,
+            not color)
+
+
+class ThumbyDisplayBuffer(Buffer):
+
+    def __init__(self):
+        super().__init__(thumby.display.display.buffer,72,40)
+
+    def cloneBuffer(self):
+        return self.buffer[:]
+
+    def setBuffer(self,buffer):
         thumby.display.display.buffer=buffer
+        self.buffer=buffer
 
-    @staticmethod
     @micropython.native
-    def show():
+    def show(self):
         d=thumby.display.display
         if IN_EMULATOR:
             d.show()
@@ -180,12 +308,10 @@ class display:
             d.spi.write(d.buffer)
             d.cs(1)
 
-    @staticmethod
-    def waitFrame():
+    def waitFrame(self):
         timeLeftMs=None
         if thumby.display.frameRate>0:
-            frEndTime=thumby.display.lastUpdateEnd+\
-                1000//thumby.display.frameRate
+            frEndTime=thumby.display.lastUpdateEnd+1000//thumby.display.frameRate
             timeLeftMs=frEndTime-time.ticks_ms()
             if timeLeftMs>1:
                 time.sleep_ms(timeLeftMs-1)
@@ -194,10 +320,12 @@ class display:
         thumby.display.lastUpdateEnd=time.ticks_ms()
         return timeLeftMs
 
-    @staticmethod
-    def update():
-        display.show()
-        return display.waitFrame()
+    def update(self):
+        self.show()
+        return self.waitFrame()
+
+display=ThumbyDisplayBuffer()
+
 
 class buttons:
 
@@ -293,6 +421,7 @@ class buttons:
                     return b
             time.sleep_ms(10)
 
+
 class audio:
 
     BASE_FREQ=440
@@ -311,6 +440,7 @@ class audio:
                 thumby.audio.playBlocking(
                     audio.freq(halftones,baseFreq),
                     int(duration*baseIntervalMs))
+
 
 def update():
     display.show()

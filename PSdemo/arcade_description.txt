@@ -1,0 +1,15 @@
+A small demo of the polysynth audio library
+Plays two full songs after an intro, all with multi-channel audio
+Pressing A will skip the current song
+
+Note: This will not work in the emulator
+
+For more information, including how to use this in your own games, see https://github.com/transistortester/thumby-polysynth
+
+Author: transistortester
+Version: 1.0
+
+If you want to contact the author, please consider joining the official discord server - I'm usually lurking in there
+
+First song: The Moon - DuckTales (NES)
+Second song: Evergreen - Akumajou Densetsu (Famicom) / Japanese Castlevania 3
