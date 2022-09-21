@@ -2,6 +2,8 @@ import time
 import thumby
 import math
 
+thumby.display.setFPS(30)
+
 #the level map
 T_Map =  [
             [1, 2, 1, 1, 5, 1, 1, 1, 4, 1, 1, 1],

@@ -41,6 +41,8 @@ async def main():
 	import thumby
 	import math
 	
+	thumby.display.setFPS(30)
+	
 	#the level map
 	T_Map =  [
 	            [1, 2, 1, 1, 5, 1, 1, 1, 4, 1, 1, 1],
@@ -239,7 +241,7 @@ async def main():
 	        # draw sky
 	        xo = PA - x
 	        if (xo < 0): xo += 72; xo = xo % 72
-	        for y in range(0, drawStart-2):
+	        for y in range(0, int(drawStart)-2):
 	            color=T_City[y*72+xo]
 	            if( color==1): thumby.display.setPixel(x, y, color)#sky
 	            thumby.display.setPixel(x, 40-y,1)#floor
