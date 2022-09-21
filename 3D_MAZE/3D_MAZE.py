@@ -141,7 +141,6 @@ def init():
     global ITGM 
     global COS 
     global SIN
-    global level1
     global exitX
     global exitY
     directionX = 1.0
