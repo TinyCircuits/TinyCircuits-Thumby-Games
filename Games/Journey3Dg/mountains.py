@@ -1,4 +1,4 @@
-# This is the Mountains class, split from the await main file to avoid out-of-
+# This is the Mountains class, split from the main file to avoid out-of-
 # memory errors when compiling native/viper functions.
 
 # Note that this version is tidied up and stripped of comments for the arcade,
@@ -27,8 +27,8 @@ from array import array
 
 
 def draw_mountain_range(disp, x0, mountbuff1:ptr32, mountbuff2:ptr32, mountmask:ptr32):
-    buffer1:ptr8 = ptr8(disp.buffer1)
-    buffer2:ptr8 = ptr8(disp.buffer2)
+    buffer1:ptr8 = disp.buffer1
+    buffer2:ptr8 = disp.buffer2
     x = 72
     x0 &= 0xff
     while x < 84:

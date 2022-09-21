@@ -60,7 +60,7 @@ async async def main():
 	        await character_screen(character)
 	        
 	    def save_game(crew, ship, money, day):
-	               with open('Games/Orion/savestate.json',"w") as save_file:
+	               with open('Games/Orion_Trail_Beta/savestate.json',"w") as save_file:
 	                    json.dump({"crew":crew,"ship":ship,"money":money,"day":day},save_file)
 	              
 	    def await save_state_menu(crew, ship, money, day):
@@ -1139,4 +1139,5 @@ async async def main():
 	    await playing(crew, ship, money, day)
 	while running == True:
 	    await main()
+
 aawait syncio.run(main())

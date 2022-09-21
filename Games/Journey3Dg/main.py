@@ -36,13 +36,13 @@ def open(path, mode):
 os.chdir(sys.path[0])
 
 
-async async def main():
+async def main():
 	# This is a small loader stub to
 	# a) check version
 	# b) show button usage
-	# c) hide the import/parse/init time for the larger await main file
+	# c) hide the import/parse/init time for the larger main file
 	
-	# Please take a look at await Journey3Dg_main.py for the main() attraction
+	# Please take a look at Journey3Dg_main.py for the main() attraction
 	
 	# Note that this version is tidied up and stripped of comments for the arcade.
 	
@@ -197,13 +197,13 @@ async async def main():
 	        collect()
 	
 	        exec('''
-	from await Games.Journey3Dg.Journey3Dg_main import main
-	await main(fade_out)
+	from Games.Journey3Dg.Journey3Dg_main import main
+	main(fade_out)
 	''', {'fade_out': fade_out})
 	
 	        end()
 	
-	    if __name__ != await '__main__':
+	    if __name__ != '__main__':
 	        soft_reset()
 
-aawait syncio.run(main())
+asyncio.run(main())

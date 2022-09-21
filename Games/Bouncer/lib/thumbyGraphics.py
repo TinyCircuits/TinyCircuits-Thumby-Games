@@ -113,6 +113,9 @@ class GraphicsClass:
         ib = 0
         for row in range(0, height, 8):
             for col in range(0, width, 1):
+                if ib >= len(sprtptr):
+                    break
+
                 for i in range(0, 8, 1):
                     color = ((sprtptr[ib] & (0b00000001 << i)) >> i) * 255
                     blitSurface.set_at((col, row + i), (color, color, color))

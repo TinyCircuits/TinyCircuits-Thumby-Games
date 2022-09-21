@@ -6,7 +6,7 @@ from display import AccurateDisplay
 
 
 def any(array) -> bool:
-    ptr = ptr8(array)
+    ptr = array
     for i in range(int(len(array))):
         if ptr[i]:
             return True
@@ -138,8 +138,8 @@ class CPU:
 
     
     def run(self, program):
-        ram = ptr8(self.ram)
-        prog = ptr8(program)
+        ram = self.ram
+        prog = program
         for i in range(int(len(program))):
             ram[i + 0x200] = prog[i]
         while self.running and not thumbyinterface.breakCombo():
@@ -449,7 +449,7 @@ class CPU:
 
     
     def maths(self, x, y, n):
-        regs = ptr8(self.v)
+        regs = self.v
     	if n == 0x0:
     		regs[x] = regs[y]
     	elif n == 0x1:

@@ -184,7 +184,7 @@ async def main():
 	def DrawStars():
 	    yp = int(round(YPos)) | 0x1
 	    xp = int(round(XPos)) | 0x1
-	    ptr = ptr8(thumby.display.display.buffer)
+	    ptr = thumby.display.display.buffer
 	    y = 0
 	    seed = 0
 	    yOffset = 0

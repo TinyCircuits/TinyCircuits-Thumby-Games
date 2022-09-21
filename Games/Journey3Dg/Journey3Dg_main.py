@@ -238,8 +238,8 @@ def hline_dither(x0, x1, y, dither_row1, dither_row2, dith_x_off):
     dither_row1 >>= (dith_x_off + x0) & dith_w_mask
     dither_row2 >>= (dith_x_off + x0) & dith_w_mask
 
-    buffer1 = ptr8(disp.buffer1)
-    buffer2 = ptr8(disp.buffer2)
+    buffer1 = disp.buffer1
+    buffer2 = disp.buffer2
 
     for ww in range(index+x0, index+x1):
         if dither_row1 & 1:
@@ -353,7 +353,7 @@ class Road:
     
     def draw(self) -> int:
         zmap:ptr32 = ptr32(self.zmap)
-        edgerast:ptr8 = ptr8(self.edgerast)
+        edgerast:ptr8 = self.edgerast
         zoff:list = int(self.zoff)
         dithA1 = self.dithA1
         dithB1 = self.dithB1
@@ -613,8 +613,8 @@ class Shape:
         dith_mat2:ptr32 = ptr32(dither2[s])
         dy = 0
         dx = 65536
-        rastmin = ptr8(self.rastmin)
-        rastmax = ptr8(self.rastmax)
+        rastmin = self.rastmin
+        rastmax = self.rastmax
         for y in range(40):
             mn = int(rastmin[y])
             mx = int(rastmax[y])
@@ -1009,7 +1009,7 @@ def shape_update():
 
 
 
-async def main(on_load):
+def main(on_load):
     global player, disp, road, stars, mountains
 
     if on_load:

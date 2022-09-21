@@ -5,7 +5,7 @@ def freq(f):
     print("machine.freq() called")
 
 def reset():
-    print("machine.reset() called")
+    pygame.quit()
 
 
 class Pin:

@@ -221,7 +221,7 @@ class MusicPlayer:
         random.seed(seed)
         # Save the last seed to a file. If you want to replay a tune, you can grab the seed
         # from the file and pass a list containing it (and any other seeds) to the MusicPlayer constructor.
-        seedstr:ptr8 = ptr8(self.seedstr)
+        seedstr:ptr8 = self.seedstr
         seedstr[9] = (seed % 10) + 0x30
         v = int(seed) // 10
         i = 8

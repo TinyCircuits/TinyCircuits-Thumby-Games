@@ -31,12 +31,12 @@ class ButtonClass:
         self.lastState = currentState
         
 # Button instantiation
-buttonA = ButtonClass(pygame.K_a) # Left (A) button
-buttonB = ButtonClass(pygame.K_d) # Right (B) button
+buttonA = ButtonClass(pygame.K_RIGHT) # Right (A) button
+buttonB = ButtonClass(pygame.K_LEFT) # Left (B) button
 buttonU = ButtonClass(pygame.K_w) # D-pad up
 buttonD = ButtonClass(pygame.K_s) # D-pad down
-buttonL = ButtonClass(pygame.K_LEFT) # D-pad left
-buttonR = ButtonClass(pygame.K_RIGHT) # D-pad right
+buttonL = ButtonClass(pygame.K_a) # D-pad left
+buttonR = ButtonClass(pygame.K_d) # D-pad right
 
 # Returns true if any buttons are currently pressed on the thumby.
 def inputPressed():

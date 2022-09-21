@@ -89,7 +89,7 @@ async def main():
 	    # Ask user to await choose a ROM
 	    while True:
 	        gb_collect()
-	        program, index, scroll = menu.Menu(index, await await scroll).choose(roms.catalog())
+	        program, index, scroll = menu.Menu(index, await scroll).choose(roms.catalog())
 	        if not program["file"]:
 	            return False
 	        if await menu.Confirm().choose(program):

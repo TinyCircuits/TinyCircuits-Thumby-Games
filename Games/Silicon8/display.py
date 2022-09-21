@@ -110,7 +110,7 @@ class AccurateDisplay:
 
         # Do the actual drawing
         erases:bool = False
-        ramPtr:ptr8 = ptr8(self.cpu.ram)
+        ramPtr:ptr8 = self.cpu.ram
         ramIndx = int(self.cpu.i)
         selPlane = int(self.selectedPlane)
         bufSize = int(self.width) * int(self.height) >> 3
@@ -122,7 +122,7 @@ class AccurateDisplay:
         for plane in range(1, 3):                   # Go through both planes
             if plane & selPlane == 0:               # Only manipulate if this plane is currently selected
                 continue
-            bufPtr:ptr8 = ptr8(self.buffers[plane-1])
+            bufPtr:ptr8 = self.buffers[plane-1]
             bufIndx = (yPos*width + xPos) >> 3
             for i in range(height):                 # Draw N lines
                 # Does this line fall off the bottom of the screen?

@@ -44,8 +44,8 @@ def get_functions_to_await(file_str, functions_to_await, structure, game_dir):
                         if s["name"] not in functions_to_await:
                             functions_to_await.append(s["name"])
                         s = s["parent"]
-            elif hasattr(statement, "body"):
-                # elif "ast.Class" in str(statement) or "ast.While" in str(statement) or "ast.For" in str(statement) or "ast.If" in str(statement):
+            # elif hasattr(statement, "body"):
+            elif "ast.Class" in str(statement) or "ast.While" in str(statement) or "ast.For" in str(statement) or "ast.If" in str(statement):
                 recursive_find(statement.body, structure)
 
     try:
@@ -73,6 +73,11 @@ def convert_file_contents(file_contents, functions_to_await, is_main=True):
             line = line.replace("@micropython.viper", "")
         if ":int" in line:
             line = line.replace(":int", "")
+        if ("ptr8(") in line:
+            start_index = line.find("ptr8(")
+            end_index = line.find(")", start_index)
+
+            line = line[0:start_index] + line[start_index+5:end_index] + line[end_index+1:]
         
         if(is_main):
             converted_game_contents += "\t" + line
@@ -214,3 +219,6 @@ pygame.display.set_caption("Thumby game")
             f = open(file_path, "w")
             f.write(converted)
             f.close()
+        
+        # Make the web build and apk
+        os.system("pygbag --build Games/" + game_dir)

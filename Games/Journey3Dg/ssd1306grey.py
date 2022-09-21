@@ -226,11 +226,11 @@ class SSD1306_SPI_Grey:
 
     
     def _display_thread(self):
-        buffers:ptr32 = ptr32(array('L', [ptr8(self._buffer1), ptr8(self._buffer2), ptr8(self._buffer3)]))
-        post_frame_adj:ptr32 = ptr32(array('L', [ptr8(self.post_frame_adj[0]), ptr8(self.post_frame_adj[1]), ptr8(self.post_frame_adj[2])]))
+        buffers:ptr32 = ptr32(array('L', [self._buffer1, ptr8(self._buffer2), ptr8(self._buffer3)]))
+        post_frame_adj:ptr32 = ptr32(array('L', [self.post_frame_adj[0], ptr8(self.post_frame_adj[1]), ptr8(self.post_frame_adj[2])]))
         state:ptr32 = ptr32(self._state)
-        pre_frame_cmds:ptr8 = ptr8(self.pre_frame_cmds)
-        post_frame_cmds:ptr8 = ptr8(self.post_frame_cmds)
+        pre_frame_cmds:ptr8 = self.pre_frame_cmds
+        post_frame_cmds:ptr8 = self.post_frame_cmds
 
         spi0:ptr32 = ptr32(0x4003c000)
         tmr:ptr32 = ptr32(0x40054000)
@@ -238,7 +238,7 @@ class SSD1306_SPI_Grey:
 
         b1:ptr32 = ptr32(self.buffer1) ; b2:ptr32 = ptr32(self.buffer2)
         _b1:ptr32 = ptr32(self._buffer1) ; _b2:ptr32 = ptr32(self._buffer2) ; _b3:ptr32 = ptr32(self._buffer3)
-        pending_cmds:ptr8 = ptr8(self.pending_cmds)
+        pending_cmds:ptr8 = self.pending_cmds
 
         fn ; i ; t0
         v1 ; v2 ; contrast
@@ -264,7 +264,7 @@ class SSD1306_SPI_Grey:
 
                 sio[5] = 1 << 17 # dc(1)
                 i = 0
-                spibuff:ptr8 = ptr8(buffers[fn])
+                spibuff:ptr8 = buffers[fn]
                 while i < 360:
                     while (spi0[3] & 2) == 0: pass
                     spi0[2] = spibuff[i]
@@ -275,7 +275,7 @@ class SSD1306_SPI_Grey:
 
                 sio[6] = 1 << 17 # dc(0)
                 i = 0
-                spibuff:ptr8 = ptr8(post_frame_adj[fn])
+                spibuff:ptr8 = post_frame_adj[fn]
                 while i < 2:
                     while (spi0[3] & 2) == 0: pass
                     spi0[2] = spibuff[i]
@@ -294,7 +294,7 @@ class SSD1306_SPI_Grey:
                     spi0[2] = post_frame_cmds[i]
                     i += 1
                 i = 0
-                spibuff:ptr8 = ptr8(post_frame_adj[fn])
+                spibuff:ptr8 = post_frame_adj[fn]
                 while i < 2:
                     while (spi0[3] & 2) == 0: pass
                     spi0[2] = spibuff[i]
@@ -316,9 +316,9 @@ class SSD1306_SPI_Grey:
                 elif (fn == 2) and (state[SSD1306_SPI_Grey_StateIndex_ContrastChng] != 0xff):
                     contrast = state[SSD1306_SPI_Grey_StateIndex_ContrastChng]
                     state[SSD1306_SPI_Grey_StateIndex_ContrastChng] = 0xff
-                    ptr8(post_frame_adj[0])[1] = contrast >> 6
-                    ptr8(post_frame_adj[1])[1] = contrast >> 1
-                    ptr8(post_frame_adj[2])[1] = contrast
+                    post_frame_adj[0][1] = contrast >> 6
+                    post_frame_adj[1][1] = contrast >> 1
+                    post_frame_adj[2][1] = contrast
                 elif state[SSD1306_SPI_Grey_StateIndex_PendingCmd]:
                     i = 0
                     while i < 8:
@@ -369,8 +369,8 @@ class SSD1306_SPI_Grey:
         o = (y >> 3) * 72 + x
         m = 1 << (y & 7)
         im = 255-m
-        buffer1 = ptr8(self.buffer1)
-        buffer2 = ptr8(self.buffer2)
+        buffer1 = self.buffer1
+        buffer2 = self.buffer2
         if s & 1:
             buffer1[o] |= m
         else:

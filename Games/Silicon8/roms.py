@@ -4,7 +4,7 @@ import ujson
 
 ROM_PATH = '/Games/Silicon8/chip8'
 
-async def catalog():
+def catalog():
     try:
         files = os.listdir(ROM_PATH)
     except OSError as err:
@@ -13,7 +13,7 @@ async def catalog():
             "name": "ROMs directory '"+ROM_PATH+"' not found"
         }]
 
-    await catalog = []
+    catalog = []
     for file in files:
         if file.endswith('.ch8'):
             defaults = {
@@ -40,15 +40,15 @@ async def catalog():
                         defaults.update(config)
                 except ValueError as err:
                     print('JSON parse error for ' + configFile + ':', err)
-            await catalog.append(defaults);
-    if await len(catalog) == 0:
+            catalog.append(defaults);
+    if len(catalog) == 0:
         print("No ROMs found in '"+ROM_PATH+"'")
         return [{
             "name": "No ROMs found in '"+ROM_PATH+"'"
         }]
 
-    await catalog.sort(key=lambda p: p["name"])
-    return await catalog
+    catalog.sort(key=lambda p: p["name"])
+    return catalog
 
 def load(entry):
     try:
