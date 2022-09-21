@@ -180,7 +180,6 @@ async def main():
 	    nonlocal ITGM 
 	    nonlocal COS 
 	    nonlocal SIN
-	    nonlocal level1
 	    nonlocal exitX
 	    nonlocal exitY
 	    directionX = 1.0
