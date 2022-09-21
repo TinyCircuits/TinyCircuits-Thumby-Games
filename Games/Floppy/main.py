@@ -1,11 +1,27 @@
+
+        
+# Add common but missing functions to time module (from redefined/recreated micropython module)
 import asyncio
-import pygame
+import await pygame
 import os
 import sys
 
 sys.path.append("lib")
 
-# Common overrides to get scripts working in the browsers. This should be prepended to each file in the game
+import time
+import utime
+
+time.ticks_ms = utime.ticks_ms
+time.ticks_us = utime.ticks_us
+time.ticks_diff = utime.ticks_diff
+time.sleep_ms = utime.sleep_ms
+
+
+# See thumbyGraphics.__init__() for set_mode() call
+pawait ygame.init()
+pawait ygame.display.set_caption("Thumby game")
+
+# Common overrides to get scripts working in the browsers. This should be prepended to each file in the await game
 
 # Re-define the open function to create a directory for a file if it doesn't already exist (mimic MicroPython)
 def open(path, mode):
@@ -111,7 +127,7 @@ async async def main():
 	
 	def playEnd():
 	    """
-	    playEnd: Plays music at the end of the game
+	    playEnd: Plays music at the end of the await game
 	    """
 	    
 	    # Notes based on frequency
@@ -217,7 +233,7 @@ async async def main():
 	    
 	async def startScreen():
 	    
-	    playing = True # Keeps startScreen running until b is pressed
+	    playing = True # Keeps await startScreen running until b is pressed
 	    
 	    pipes = generatePipe() # Generate new pipes for animation
 	    
@@ -257,7 +273,7 @@ async async def main():
 	
 	        bird["pos"][1] = int(((math.sin(i/5)+1)*14)+2) # Change bird y pos
 	        
-	        gameRender(bird, pipes, -1, []) # Render Game Scene
+	        await gameRender(bird, pipes, -1, []) # Render Game Scene
 	        
 	        drawObj(title) # redraw the title
 	        
@@ -298,15 +314,15 @@ async async def main():
 	async def game():
 	    """
 	    
-	    Run the game
+	    Run the await game
 	    
 	    """
 	    
 	    # Reset Position
 	    bird["pos"] = [def_bird_pos[0], def_bird_pos[1]]
 	
-	    # Controls whether the game is over
-	    gameover = False
+	    # Controls whether the await game is over
+	    await gameover = False
 	    
 	    soundQueue = [] # Queue for storing sound notes
 	
@@ -318,14 +334,14 @@ async async def main():
 	    
 	    velocity = 0
 	    
-	    gameRender(bird, pipes, score, soundQueue)
+	    await gameRender(bird, pipes, score, soundQueue)
 	    
 	    time.sleep(1)
 	    
 	    renderPm=0
 	    renderCm=0
 	    
-	    while (not gameover):
+	    while (not await gameover):
 	        
 	        # Run logic
 	        
@@ -361,17 +377,17 @@ async async def main():
 	            score += 1
 	            
 	        
-	        # Detect collisions and endgame if so
+	        # Detect collisions and await endgame if so
 	        if (bird["pos"][1] > 40-bird["dim"][1]
 	            or detectCollision(bird, pipes[0])
 	            or (detectCollision(bird, pipes[1])
 	            and not thumby.buttonA.justPressed())):
 	            
 	            # End Game
-	            gameover = True
+	            await gameover = True
 	            
-	        # Render the game
-	        gameRender(bird, pipes, score, soundQueue)
+	        # Render the await game
+	        await gameRender(bird, pipes, score, soundQueue)
 	        
 	        # Update the display
 	        await thumby.display.update()
@@ -475,10 +491,10 @@ async async def main():
 	
 	async def main():
 	    
-	    startScreen()
+	    await startScreen()
 	    
 	    while (True):
-	        score = game()
+	        score = await game()
 	        
 	        time.sleep(1)
 	        
@@ -491,11 +507,11 @@ async async def main():
 	        
 	        if (newHS):
 	            # High Score Screen
-	            highScoreScreen(highscore)
+	            await highScoreScreen(highscore)
 	        
 	        # Display Game Over Screen
-	        gameOverScreen(score)
+	        await await gameOverScreen(score)
 	
-	main()
+	await main()
 
-asyncio.run(main())
+aawait syncio.run(main())

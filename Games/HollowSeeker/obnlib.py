@@ -166,7 +166,7 @@ async def check(version):
         thumby.display.drawText("Update", 0, 0, 1)
         thumby.display.drawText("\"obnlib.py\"", 6, 8, 1)
         while not thumby.inputJustPressed():
-            await thumby.display.update()
+            await await thumby.display.update()
         return False
     return True
 
@@ -194,14 +194,14 @@ async def start(fps, app_code, app_version, func_table):
         if logo_cnt == 0:
             if prepare:
                 func_table[state].prepare()
-            next_state = func_table[state].update()
+            next_state = await func_table[state].update()
             func_table[state].draw()
             prepare = state != next_state
             state = next_state
         else:
             logo_cnt -= 1
-        mml_player.update()
-        await thumby.display.update()
+        await mml_player.update()
+        await await thumby.display.update()
         frames += 1
 
 def cls(color=0):

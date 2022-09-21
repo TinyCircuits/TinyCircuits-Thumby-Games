@@ -1,9 +1,25 @@
+
+        
+# Add common but missing functions to time module (from redefined/recreated micropython module)
 import asyncio
 import pygame
 import os
 import sys
 
 sys.path.append("lib")
+
+import time
+import utime
+
+time.ticks_ms = utime.ticks_ms
+time.ticks_us = utime.ticks_us
+time.ticks_diff = utime.ticks_diff
+time.sleep_ms = utime.sleep_ms
+
+
+# See thumbyGraphics.__init__() for set_mode() call
+pygame.init()
+pygame.display.set_caption("Thumby game")
 
 # Common overrides to get scripts working in the browsers. This should be prepended to each file in the game
 
@@ -1410,7 +1426,7 @@ async def main():
 	        
 	        # Put the player in their correct location
 	        currentRoom.getTile(player.tilex, player.tiley).tiletype = 5
-	        drawGame()
+	        await drawGame()
 	        # Get and handle input
 	        if(getcharinputNew() != ' '):
 	            
@@ -1474,7 +1490,7 @@ async def main():
 	            # Handle action button
 	            elif(swBstate == 1):
 	                curMsg = "act on?"
-	                drawGame()
+	                await drawGame()
 	                while(getcharinputNew() == ' '):
 	                    pass
 	                if(swUstate == 1):
@@ -1568,7 +1584,7 @@ async def main():
 	                        elif(actpos == 0 and len(player.inventory) != 0):
 	                            # Drop selected item
 	                            curMsg = "where?"
-	                            drawGame()
+	                            await drawGame()
 	                            while(getcharinputNew() == ' '):
 	                                pass
 	                            tile = itemtile(player.inventory[selpos])
@@ -1680,7 +1696,7 @@ async def main():
 	            else:
 	                # Clear the current message so the screen looks a little less cluttered
 	                curMsg = ""
-	            drawGame()
+	            await drawGame()
 	            # Free all the memory we can, and print some game info
 	
 	    thumby.display.fill(0)

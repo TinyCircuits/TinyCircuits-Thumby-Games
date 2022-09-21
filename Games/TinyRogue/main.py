@@ -1,9 +1,25 @@
+
+        
+# Add common but missing functions to time module (from redefined/recreated micropython module)
 import asyncio
 import pygame
 import os
 import sys
 
 sys.path.append("lib")
+
+import time
+import utime
+
+time.ticks_ms = utime.ticks_ms
+time.ticks_us = utime.ticks_us
+time.ticks_diff = utime.ticks_diff
+time.sleep_ms = utime.sleep_ms
+
+
+# See thumbyGraphics.__init__() for set_mode() call
+pygame.init()
+pygame.display.set_caption("Thumby game")
 
 # Common overrides to get scripts working in the browsers. This should be prepended to each file in the game
 
@@ -131,7 +147,7 @@ async def main():
 	            render_rect(10-w/charw,0,w,screenh,Colors.black)
 	            
 	class Text():
-	    choice=0 ## possibly move out of class
+	    choice=0 ## possibly await move out of class
 	    def __init__(self,x,y,w,h,s=5,i=0):
 	        self.x=x
 	        self.y=y
@@ -219,7 +235,7 @@ async def main():
 	    def attack(self,t,c,d):
 	        if t.hp>0:
 	            if self.active=="might": d+=1
-	            if self.passive=="strike": c*=1.5
+	            if await self.passive=="strike": c*=1.5
 	            if t.passive=="dodge": c*=0.67
 	            if random()<c:
 	                t.damage(d)
@@ -228,11 +244,11 @@ async def main():
 	    def special(self,t,c,v=None,i=None,supress=False):
 	        v=v if v else self.active
 	        m=choice(t) if type(t)==list and len(t)>0 else t
-	        if not supress: init_message(self.name+"\nuses\n"+v)
+	        if not supress: await init_message(self.name+"\nuses\n"+v)
 	        if v=="flee":
-	            self.run(True)
+	            await self.run(True)
 	            init_message(self.name+"\nflees")
-	        elif v=="cast":
+	        elif await v=="cast":
 	            l=len(self.spells)
 	            if i and l>0:
 	                s=spells[int(i)]
@@ -241,12 +257,12 @@ async def main():
 	            else:
 	                self.heal(self.level*2)
 	                return
-	            if not supress: init_message(self.name+"\ncasts\n"+s["name"])
+	            if not supress: await init_message(self.name+"\ncasts\n"+s["name"])
 	            self.special(t,c,s["effect"],None,True)
 	        elif v=="pray":
 	            r=randrange(4)
 	            if r==0:
-	                self.special(t,c,"cast",None,True)
+	                await self.special(t,c,"cast",None,True)
 	            elif r==1:
 	                self.special(t,c,"heal",None,True)
 	            elif r==2:
@@ -317,10 +333,10 @@ async def main():
 	    async def move(self):
 	        ttile=self.map.get_random_neighbour(self.tile.x,self.tile.y)
 	        ttile.monsters.append(self)
-	        self.tile.monsters.remove(self)
+	        await self.tile.monsters.remove(self)
 	        self.tile=ttile
 	    async def run(self,auto=False):
-	        self.move()
+	        await self.move()
 	    async def strike(self,t):
 	        super().attack(t,config["toblock"],randrange(self.level))
 	
@@ -344,14 +360,14 @@ async def main():
 	                else:
 	                    init_message("caught\nby trap")
 	                    self.damage(self.depth)
-	            ## update location and state
+	            ## await update location and state
 	            self.xlast,self.ylast=self.x,self.y
 	            self.x,self.y=tx,ty
 	            self.tile=self.map.get_tile(self.x,self.y)
 	            self.map.set_visible(self.x,self.y,1)
-	            self.update()
-	            self.map.update(self,True)
-	            update_state()
+	            await self.update()
+	            await self.map.update(self,True)
+	            await update_state()
 	            ## messages
 	            if len(self.tile.monsters)>0:
 	                s="fighting"
@@ -362,55 +378,55 @@ async def main():
 	            self.damage(len(self.tile.monsters))
 	            if random()>config["toescape"]:
 	                init_message("did not\nescape")
-	                self.map.update(self)
+	                await self.map.update(self)
 	                return
-	        ## get random nearby moveable tile
+	        ## get random nearby await moveable tile
 	        ttile=self.map.get_random_neighbour(self.x,self.y)
-	        self.move({"x":(ttile.x-self.x)//2,"y":(ttile.y-self.y)//2})
+	        await self.move({"x":(ttile.x-self.x)//2,"y":(ttile.y-self.y)//2})
 	    async def strike(self):
 	        super().attack(choice(self.tile.monsters),config["tohit"],self.level)
-	        self.map.update(self)
+	        await self.map.update(self)
 	    def action(self):
 	        if self.active==None:
 	            pass
-	        elif self.active=="cast":
+	        elif await self.active=="cast":
 	            set_state(Const.spells)
 	        else:
 	            super().special(self.tile.monsters,config["tohit"])
-	            self.map.update(self)
+	            await self.map.update(self)
 	    async def cast(self,v):
-	        self.hp-=1 ## damage player for casting a spell
-	        super().special(self.tile.monsters,config["tohit"],"cast",v,True)
-	        self.map.update(self)
-	        update_state()
+	        self.hp-=1 ## damage player for await casting a spell
+	        await super().special(self.tile.monsters,config["tohit"],"cast",v,True)
+	        await self.map.update(self)
+	        await update_state()
 	    async def use(self,v):
-	        #init_message(self.name+"\nuses item")
+	        await #init_message(self.name+"\nuses item")
 	        if type(v)==int:
 	            s,i=spells[v],str(v)
 	            if len(self.tile.monsters)>0:
 	                super().special(self.tile.monsters,config["tohit"],s["effect"],None,True)
-	                self.items.remove(i)
+	                await self.items.remove(i)
 	            elif self.passive=="learn":
 	                if v in self.spells:
 	                    init_message("already\nknown")
 	                else:
 	                    init_message("learned\n"+s["name"])
 	                    self.spells.append(v)
-	                    self.items.remove(i)
+	                    await self.items.remove(i)
 	            else:
-	                init_message("combat\nuse only")
+	                await init_message("combat\nuse only")
 	        else:
 	            super().special(self.tile.monsters,config["tohit"],v)
-	            self.items.remove(v)
-	        ## update map and return to previous state
-	        self.map.update(self)
-	        update_state()
+	            await self.items.remove(v)
+	        ## await update map and return to previous state
+	        await self.map.update(self)
+	        await update_state()
 	    def stairs(self):
 	        self.depth+=-1 if self.boss else 1
 	        if self.depth>0:
 	            set_transition(Const.genlevel)
 	        else:
-	            update_state()
+	            await update_state()
 	        
 	class Tile():
 	    def __init__(self,x,y):
@@ -426,9 +442,9 @@ async def main():
 	        self.w=0
 	        self.h=0
 	        self.map=None
-	    async def update(self,p,moved=False):
-	        ## update monsters
-	        if not moved and len(p.tile.monsters)>0:
+	    async def await await update(self,p,moved=False):
+	        ## await update monsters
+	        if not await moved and len(p.tile.monsters)>0:
 	            ## player regeneration
 	            if p.passive=="regen" and random()<config["toregen"]: p.heal(1,True)
 	            ## loop through monsters
@@ -439,7 +455,7 @@ async def main():
 	                    m.heal(1,True)
 	                ## monster is dead
 	                if m.hp<1:
-	                    ## remove is destroying order of
+	                    ## await remove is destroying order of
 	                    init_message(m.name+"\ndied!")
 	                    p.boss=p.boss or m.boss 
 	                    p.xp+=m.level
@@ -450,24 +466,24 @@ async def main():
 	                        p.level+=1
 	                        init_message("level\nup!")
 	                    if m.boss: init_message("boss\nkilled\nnow\nescape!")
-	                    p.tile.monsters.remove(m)
-	                ## activate specical move
+	                    await p.tile.monsters.remove(m)
+	                ## activate specical await move
 	                elif m.active and random()<config["toactive"]:
 	                    m.special(p,config["toblock"])
 	                ## else standard attack
 	                else:
-	                    m.strike(p)
-	        ## move monsters
+	                    await m.strike(p)
+	        ## await move monsters
 	        else:
-	            movelist=[]
+	            await movelist=[]
 	            for x in range(self.w):
 	                for y in range(self.h):
 	                    tile=self.map[x][y]
 	                    for m in tile.monsters:
-	                        m.update()
-	                        if not self.is_same_tile(tile,p) and random()<config["tomove"]:
-	                            movelist.append(m)
-	            for m in movelist: m.move()
+	                        await m.update()
+	                        if not self.is_same_tile(tile,p) and await random()<config["tomove"]:
+	                            await movelist.append(m)
+	            for m in await movelist: m.move()
 	    def clear(self):
 	        if self.map:
 	            for x in range(len(self.map)):
@@ -519,7 +535,7 @@ async def main():
 	   
 	# ===============================================
 	# picodisplay pack display functions
-	# move to include?
+	# await move to include?
 	# ===============================================
 	class Colors():
 	    black=0
@@ -533,7 +549,7 @@ async def main():
 	    ## load display
 	    screenw,screenh=thumby.display.width,thumby.display.height
 	    render_cls(0)
-	    render_update()
+	    await await render_update()
 	    ## load graphics
 	    charw,charh,fontsize=8,8,1
 	    with open("/Games/TinyRogue/trtgraphics.txt") as f: sprites=[list(map(int,(line.strip().split(",")))) for line in f]
@@ -548,35 +564,35 @@ async def main():
 	
 	def render_cls(v=0):
 	    thumby.display.fill(int(v))
-	async def render_update():
-	    await thumby.display.update()
+	async def await render_update():
+	    await await thumby.display.update()
 	def render_text(s,x,y,c=1):
-	    for i,n in enumerate(s.split("\n")): thumby.display.drawText(n.upper(),round(x*charw),round(y*charh)+i*charh,c)
+	    for i,n in enumerate(s.split("\n")): await thumby.display.drawText(n.upper(),round(x*charw),round(y*charh)+i*charh,c)
 	def render_rect(x,y,w,h,border=1,inner=0,edge=2):
 	    x,y=round(x*charw),round(y*charh)
 	    if inner!=0:
-	        thumby.display.drawFilledRectangle(x,y,w,h,inner)
-	        thumby.display.drawRectangle(x,y,w,h,border)
+	        await thumby.display.drawFilledRectangle(x,y,w,h,inner)
+	        await thumby.display.drawRectangle(x,y,w,h,border)
 	    else:
-	        thumby.display.drawFilledRectangle(x,y,w,h,inner)
-	        thumby.display.drawRectangle(x,y,w,h,border)
+	        await thumby.display.drawFilledRectangle(x,y,w,h,inner)
+	        await thumby.display.drawRectangle(x,y,w,h,border)
 	def render_sprite(spr,x,y,w=8,h=8,k=0):
 	    thumby.display.blit(bytearray(spr),round(x*charw),round(y*charh),w,h,k,0,0)
 	def beep():
 	    thumby.audio.play(440,100)
 	    
-	def init_input_move():
+	def await init_input_move():
 	    state.clear()
-	    state.add(get_key_up,Callback(player.move,{"x":0,"y":-1}))
-	    state.add(get_key_down,Callback(player.move,{"x":0,"y":1}))
-	    state.add(get_key_left,Callback(player.move,{"x":-1,"y":0}))
-	    state.add(get_key_right,Callback(player.move,{"x":1,"y":0}))
+	    await state.add(get_key_up,Callback(player.move,{"x":0,"y":-1}))
+	    await state.add(get_key_down,Callback(player.move,{"x":0,"y":1}))
+	    await state.add(get_key_left,Callback(player.move,{"x":-1,"y":0}))
+	    await state.add(get_key_right,Callback(player.move,{"x":1,"y":0}))
 	    state.add(get_key_x,Callback(set_state,Const.items))
 	    state.add(get_key_z,Callback(set_state,Const.items))
 	def init_input_menu():
 	    state.clear()
-	    state.add(get_key_up,Callback(options.update,-1))
-	    state.add(get_key_menu_down,Callback(options.update,1))
+	    await state.add(get_key_up,Callback(options.update,-1))
+	    await state.add(get_key_menu_down,Callback(options.update,1))
 	    state.add(get_key_x,Callback(options.execute),Callback(options.execute,True))
 	    state.add(get_key_z,Callback(options.execute),Callback(options.execute,True))
 	    
@@ -603,30 +619,30 @@ async def main():
 	# core functionality
 	# ===============================================
 	def init():
-	    nonlocal arr_init,arr_update,arr_draw,state,level,handler,options,text,player
+	    nonlocal await await arr_init,arr_update,arr_draw,state,level,handler,options,text,player
 	    ## load information
 	    load_data()
 	    ## setup arrays
 	    arr_init=[None,init_menu,init_settings,init_help,init_credits,init_newgame,init_newinfo,init_newstory,init_genlevel,init_explore,init_fight,init_items,init_spells,init_stairs,init_gameover,init_gamewon,init_quit]
-	    arr_update=[update_title,None,None,None,None,None,None,None,None,update_explore,update_fight,None,None,None,update_menuwait,update_menuwait,None]
-	    arr_draw=[draw_title,draw_menu,None,None,None,None,draw_newinfo,None,None,draw_explore,draw_map,None,None,draw_map,None,None,None]
+	    await arr_update=[update_title,None,None,None,None,None,None,None,None,update_explore,update_fight,None,None,None,update_menuwait,update_menuwait,None]
+	    await arr_draw=[draw_title,draw_menu,None,None,None,None,draw_newinfo,None,None,draw_explore,draw_map,None,None,draw_map,None,None,None]
 	    ## setup classes
 	    state,level,handler,player=States(),Level(),Handler(),Player(classes[0])
 	    options,text=Options(0,0,screenw,screenh),Text(0,0,screenw,screenh)
 	async def update():
 	    if handler.active:
-	        handler.update()
+	        await handler.update()
 	    else:
-	        state.update()
-	        text.update()
-	        if arr_update[state.current]: arr_update[state.current]()
+	        await state.update()
+	        await text.update()
+	        if await arr_update[state.current]: arr_update[state.current]()
 	async def draw():
 	    render_cls()
-	    options.draw()
-	    text.draw()
-	    if arr_draw[state.current]: arr_draw[state.current]()
-	    if handler.active: handler.draw()
-	    render_update()
+	    await options.draw()
+	    await text.draw()
+	    if await arr_draw[state.current]: arr_draw[state.current]()
+	    if handler.active: await handler.draw()
+	    await await render_update()
 	def shutdown():
 	    state.clear()
 	    state.active=False
@@ -744,7 +760,7 @@ async def main():
 	            ctile=level.get_corridor_neighbour(tile,ttile)
 	            ttile.wall=False
 	            ctile.wall=False
-	        opentiles.remove(tile)
+	        await opentiles.remove(tile)
 	    ## generate stairs
 	    while True:
 	        ttile=level.get_random_tile()
@@ -790,31 +806,31 @@ async def main():
 	            l=int(m["level"])
 	            if l>depth//2 and l<=depth: break
 	        ttile.monsters.append(Monster(m,level,ttile,True))
-	    ## update state
+	    ## await update state
 	    set_state(Const.gamewon if player.depth==0 else Const.explore)
 	def init_explore():
 	    options.clear()
-	    init_input_move()
+	    await init_input_move()
 	def init_fight():
 	    options.clear(5,1,4)
-	    options.add("hit",Callback(player.strike))
+	    await options.add("hit",Callback(player.strike))
 	    options.add("item",Callback(set_state,Const.items))
 	    options.add(player.active,Callback(player.action))
-	    options.add("run",Callback(player.run))
+	    await options.add("run",Callback(player.run))
 	    init_input_menu()
 	def init_items():
 	    options.clear(0,0,min(5,len(player.items)+1))
-	    options.add("back",Callback(update_state))
+	    await options.add("back",Callback(update_state))
 	    for n in player.items:
 	        if n.isdigit(): v,s=int(n),"*"+spells[int(n)]["name"]
 	        else: v,s=n,n
-	        options.add(s,Callback(player.use,v))
+	        await options.add(s,Callback(player.use,v))
 	    init_input_menu()
 	def init_spells():
 	    options.clear(0,0,min(5,len(player.spells)+1))
 	    options.add("back",Callback(set_state,Const.fight))
 	    for n in player.spells:
-	        options.add(spells[int(n)]["name"],Callback(player.cast,n))
+	        await options.add(spells[int(n)]["name"],Callback(player.cast,n))
 	    init_input_menu()
 	def init_stairs():
 	    options.clear(5,1,2)
@@ -840,9 +856,9 @@ async def main():
 	        del sprites[len(sprites)-1]
 	        set_state(Const.menu)
 	async def update_explore():
-	    if player.hp<1 or len(player.tile.monsters)>0: update_state()
+	    if player.hp<1 or len(player.tile.monsters)>0: await update_state()
 	async def update_fight():
-	    if player.hp<1 or len(player.tile.monsters)<1: update_state()
+	    if player.hp<1 or len(player.tile.monsters)<1: await update_state()
 	async def update_menuwait():
 	    if time()>state.time+2: set_transition(Const.menu)
 	async def update_state():
@@ -855,12 +871,12 @@ async def main():
 	    elif player.tile.state&2>0 and player.passive=="disarm":
 	        init_message("trap\ndisarmed")
 	        player.tile.state-=2
-	        update_state()
+	        await update_state()
 	    elif player.tile.state&4>0:
 	        init_message("found\nitem")
 	        player.items.append(choice(treasures))
 	        player.tile.state-=4
-	        update_state()
+	        await update_state()
 	    elif player.tile.state&1>0:
 	        set_state(Const.stairs)
 	    elif state.current!=Const.explore:
@@ -874,7 +890,7 @@ async def main():
 	    c=classes[Options.choice-1]
 	    render_text(c["name"]+"\n"+str(c["hp"])+" hp/lv\n"+(c["active"] or "none")+"\n"+c["passive"] or "none",0,0)
 	async def draw_explore():
-	    draw_map()
+	    await draw_map()
 	    info="f"+str(player.depth) if time()%4<2 else "l"+str(player.level)
 	    px,py,cw,ch,size=player.x,player.y,fontsize/charw,fontsize/charh,level.w+2
 	    render_text("?"+str(px//2)+","+str(py//2),5,1)
@@ -923,15 +939,15 @@ async def main():
 	
 	# core loop
 	while state.active:
-	    update()
-	    draw()
+	    await update()
+	    await draw()
 	    collect()
 	
 	## clear screen
 	render_cls(0.0)
-	render_update()
+	await await render_update()
 	
 	## restart machine
 	reset()
 
-asyncio.run(main())
+aawait syncio.run(main())

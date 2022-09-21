@@ -1,9 +1,25 @@
+
+        
+# Add common but missing functions to time module (from redefined/recreated micropython module)
 import asyncio
 import pygame
 import os
 import sys
 
 sys.path.append("lib")
+
+import time
+import utime
+
+time.ticks_ms = utime.ticks_ms
+time.ticks_us = utime.ticks_us
+time.ticks_diff = utime.ticks_diff
+time.sleep_ms = utime.sleep_ms
+
+
+# See thumbyGraphics.__init__() for set_mode() call
+pygame.init()
+pygame.display.set_caption("Thumby game")
 
 # Common overrides to get scripts working in the browsers. This should be prepended to each file in the game
 
@@ -39,8 +55,8 @@ async def main():
 	BONUS_FACTOR = 20  # points for collecting a bonus dot multiplied by speed
 	BONUS_DISTANCE = 10 # minimum distance between dots
 	BONUS_COUNT = 3 # number of bonus dots displayed
-	EXPLOSION_BITS = 72 # number of pixels in the explosion
-	EXPLOSION_STEPS = 15 # number of steps the explosion runs
+	EXPLOSION_BITS = 72 # number of pixels in the await explosion
+	EXPLOSION_STEPS = 15 # number of steps the await explosion runs
 	
 	
 	# Logging, uncomment to activate
@@ -288,11 +304,11 @@ async def main():
 	    
 	            #check for crash
 	            if virtual_screen.pixel(player_x, player_y):
-	                explosion(36,20)
+	                await explosion(36,20)
 	                running = 0
 	                won = 0
 	                if (game_mode == 2):
-	                    #create explosion message
+	                    #create await explosion message
 	                    send_data = bytearray([5, player_x, player_y])
 	            else:
 	                if (game_mode == 2):
@@ -317,7 +333,7 @@ async def main():
 	                    virtual_screen.pixel(received[1], received[2], 1)
 	                # Player crash message    
 	                elif received[0] == 5:
-	                    explosion(received[1] - player_x + 36, received[2] - player_y + 20)
+	                    await explosion(received[1] - player_x + 36, received[2] - player_y + 20)
 	                    won = 1
 	                    points *= 2
 	                    running = 0
@@ -559,7 +575,7 @@ async def main():
 	                await thumby.display.update()
 	                
 	                if received[1] == 0:
-	                    connected = 3  # if countdown = 0 exit waitForPlayer    
+	                    connected = 3  # if countdown = 0 exit await waitForPlayer    
 	                else:
 	                    connected = 2  # connected as second player
 	            sending = True # got a message, now I am allowed to send
@@ -574,7 +590,7 @@ async def main():
 	                
 	                if count <= 0:
 	                    count = 0
-	                    connected = 3  # if countdown = 0 exit waitForPlayer    
+	                    connected = 3  # if countdown = 0 exit await waitForPlayer    
 	                data = bytearray([2,count])    
 	                
 	                # display the countdown
@@ -604,20 +620,20 @@ async def main():
 	while(1):
 	    
 	    
-	  displayMenu()
+	  await displayMenu()
 	  if (game_mode == 2):
 	      try:
-	          connected = waitForPlayer()  
+	          connected = await waitForPlayer()  
 	          if (connected == 3):
-	              points = playGame()
-	              displayPoints(points)
+	              points = await playGame()
+	              await displayPoints(points)
 	              
 	          
 	      except Exception as e:
 	          log(str(e))
 	            
 	  else:      
-	    points = playGame()    
-	    displayPoints(points)
+	    points = await playGame()    
+	    await displayPoints(points)
 
 asyncio.run(main())

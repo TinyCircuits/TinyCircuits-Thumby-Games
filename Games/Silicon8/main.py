@@ -1,9 +1,25 @@
+
+        
+# Add common but missing functions to time module (from redefined/recreated micropython module)
 import asyncio
 import pygame
 import os
 import sys
 
 sys.path.append("lib")
+
+import time
+import utime
+
+time.ticks_ms = utime.ticks_ms
+time.ticks_us = utime.ticks_us
+time.ticks_diff = utime.ticks_diff
+time.sleep_ms = utime.sleep_ms
+
+
+# See thumbyGraphics.__init__() for set_mode() call
+pygame.init()
+pygame.display.set_caption("Thumby game")
 
 # Common overrides to get scripts working in the browsers. This should be prepended to each file in the game
 
@@ -70,13 +86,13 @@ async def main():
 	
 	async def runSilicon8():
 	    nonlocal index, scroll
-	    # Ask user to choose a ROM
+	    # Ask user to await choose a ROM
 	    while True:
 	        gb_collect()
-	        program, index, scroll = menu.Menu(index, scroll).choose(roms.catalog())
+	        program, index, scroll = menu.Menu(index, await await scroll).choose(roms.catalog())
 	        if not program["file"]:
 	            return False
-	        if menu.Confirm().choose(program):
+	        if await menu.Confirm().choose(program):
 	            break
 	
 	    gb_collect()
@@ -96,7 +112,7 @@ async def main():
 	    instance.run(roms.load(program))
 	    return True
 	
-	while runSilicon8():
+	while await runSilicon8():
 	    pass
 	
 	thumby.reset()

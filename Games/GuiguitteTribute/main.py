@@ -1,9 +1,25 @@
+
+        
+# Add common but missing functions to time module (from redefined/recreated micropython module)
 import asyncio
 import pygame
 import os
 import sys
 
 sys.path.append("lib")
+
+import time
+import utime
+
+time.ticks_ms = utime.ticks_ms
+time.ticks_us = utime.ticks_us
+time.ticks_diff = utime.ticks_diff
+time.sleep_ms = utime.sleep_ms
+
+
+# See thumbyGraphics.__init__() for set_mode() call
+pygame.init()
+pygame.display.set_caption("Thumby game")
 
 # Common overrides to get scripts working in the browsers. This should be prepended to each file in the game
 
@@ -578,7 +594,7 @@ async def main():
 	        #thumby.display.drawText("Tu es la", 2, 13, 0)
 	        #thumby.display.drawText("Jouons!", 5, 21, 0)
 	    
-	    waitForButton()
+	    await waitForButton()
 	    await thumby.display.update()
 	    if nbBottles>=2:
 	        grosNenessSpr.setFrame(1)
@@ -608,7 +624,7 @@ async def main():
 	    await thumby.display.update()
 	    screen_end=None
 	    screen_endSpr=None
-	    waitForButton()
+	    await waitForButton()
 	    # 72x40 for 1 frames
 	    screen_end = bytearray([255,255,255,255,255,255,255,127,255,255,255,255,192,24,164,143,135,151,247,247,247,247,247,247,247,247,247,231,207,15,23,144,1,67,255,255,255,255,255,1,252,254,254,254,254,14,174,174,174,254,14,222,222,254,254,254,126,190,190,126,254,62,190,126,254,254,254,254,254,254,252,0,255,255,255,255,255,255,254,252,250,56,20,0,114,249,249,241,249,249,255,255,255,27,233,245,245,246,119,45,31,126,104,233,193,33,240,240,241,250,248,0,255,255,255,255,255,252,253,253,253,15,214,253,93,159,63,255,22,253,237,6,239,252,255,252,255,255,255,255,255,255,255,0,255,255,255,255,63,143,231,193,192,192,224,224,240,255,255,15,3,249,253,255,255,248,241,243,243,243,227,250,248,243,131,7,123,248,255,63,95,111,179,216,31,255,255,255,255,207,183,183,7,254,135,191,134,254,150,167,142,255,135,247,142,255,207,183,131,255,255,255,255,255,255,0,15,7,1,0,0,12,253,255,255,255,255,255,255,255,255,56,0,224,243,231,231,192,28,38,130,90,176,85,255,255,215,255,62,114,66,4,0,131,255,255,0,255,255,255,255,255,255,255,254,255,255,255,255,129,255,151,167,143,255,255,255,255,255,255,255,255,255,255,255,255,255,0,0,48,240,248,252,254,255,255,252,3,31,255,255,255,187,0,0,15,255,255,255,255,255,254,253,249,245,240,228,240,248,248,252,254,255,255,255,255,255,255,0,63,127,127,91,85,85,111,127,67,95,67,127,66,127,125,96,93,127,99,85,83,127,127,126,86,122,125,127,127,63,0])
 	    screen_endSpr=thumby.Sprite(72,40,screen_end)
@@ -616,7 +632,7 @@ async def main():
 	    await thumby.display.update()
 	    screen_end=None
 	    screen_endSpr=None
-	    waitForButton()
+	    await waitForButton()
 	    # 72x40 for 1 frames
 	    screen_end = bytearray([255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,1,252,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,134,50,122,50,134,254,14,126,14,254,10,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,252,1,255,255,255,255,255,255,255,127,63,159,159,159,159,31,159,159,63,255,255,255,255,255,0,255,255,255,255,255,255,255,255,129,243,207,129,255,199,171,167,255,135,251,135,255,199,171,167,255,183,171,171,223,183,171,171,223,255,199,171,167,255,161,255,255,255,255,255,255,255,255,255,0,255,255,255,255,255,15,224,96,22,135,183,183,167,183,135,71,39,176,7,95,111,179,216,31,255,255,255,255,255,255,135,218,133,255,255,255,207,183,183,7,255,135,191,135,255,151,167,143,255,135,247,143,255,207,183,131,255,255,255,135,191,135,255,135,247,143,255,255,255,255,255,0,63,159,239,239,239,238,238,225,158,185,179,183,151,229,229,231,227,232,239,159,127,255,255,0,255,3,251,251,75,75,251,179,15,15,247,251,75,75,251,246,15,247,251,11,75,203,203,7,251,251,75,75,75,43,7,223,223,223,193,253,253,253,193,223,223,223,31,247,183,215,239,0,0,223,223,7,191,96,238,241,255,224,234,255,248,231,248,127,191,7,223,223,0,255,255,128,63,96,111,111,96,96,111,111,108,96,111,111,96,96,111,111,96,103,111,108,108,111,111,96,111,111,108,109,109,109,96,125,125,125,65,95,95,95,65,125,125,125,124,127,126,127,63,128])
 	    screen_endSpr=thumby.Sprite(72,40,screen_end)
@@ -624,7 +640,7 @@ async def main():
 	    await thumby.display.update()
 	    screen_end=None
 	    screen_endSpr=None
-	    waitForButton()
+	    await waitForButton()
 	    # 72x40 for 1 frames
 	    screen_end = bytearray([255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,127,191,191,191,191,191,191,63,191,191,191,191,191,63,255,127,191,191,191,191,191,63,63,191,191,191,191,63,255,63,191,191,191,191,63,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,127,63,159,159,159,159,31,159,159,63,255,255,255,255,255,255,255,255,255,255,255,255,254,254,0,255,255,0,254,0,255,255,4,4,255,251,192,0,127,255,193,193,255,255,0,192,255,255,192,222,223,30,192,255,255,192,222,223,31,255,255,255,255,255,255,255,255,255,255,255,15,224,96,22,135,183,183,167,183,135,71,39,176,7,255,255,255,255,255,255,255,255,255,255,255,255,254,254,254,254,255,254,254,254,254,254,254,254,254,30,222,222,222,222,222,30,254,254,254,254,254,254,254,254,254,254,254,254,254,254,254,255,255,255,255,255,255,63,159,239,239,239,238,238,225,158,185,179,182,149,229,229,231,227,232,239,159,127,255,255,255,255,255,255,255,255,191,95,239,247,251,241,247,247,247,247,247,247,247,247,247,240,255,255,255,255,255,0,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,0,223,223,7,191,96,238,241,255,224,234,255,248,231,248,127,191,7,223,223,0,255,255,255,255,255,255,255,255,255,255,254,253,251,241,253,253,253,253,253,253,253,253,253,253,253,253,253,253,253,252,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255])
 	    screen_endSpr=thumby.Sprite(72,40,screen_end)
@@ -651,7 +667,7 @@ async def main():
 	    thumby.display.fill(0)
 	    thumby.display.drawText(level.name, 0, 15, 1)
 	    await thumby.display.update()
-	    waitForButton()
+	    await waitForButton()
 	    await thumby.display.update()
 	    scrollCtr = 0
 	    frame=0
@@ -805,12 +821,12 @@ async def main():
 	        else:
 	            music=Music(gameOverMusicStr, 200)
 	            gameOver=True
-	        playEndLevel(bottlesCollected)
+	        await playEndLevel(bottlesCollected)
 	        
 	    music.play()
 	    while(music.isPlaying()):
 	        music.play()
-	    waitForButton()
+	    await waitForButton()
 	    cowSpr.setX(0)
 	    cowSpr.setY(18)
 	    cowFaceSpr.setX(-100)
@@ -828,9 +844,9 @@ async def main():
 	level1.scrollSpeed = 30 # px/s
 	level1.music=Music(odeToJoyStr,200)
 	gameOver = False
-	gameOver = playLevel(level1)
+	gameOver = await playLevel(level1)
 	while gameOver:
-	    gameOver = playLevel(level1)
+	    gameOver = await playLevel(level1)
 	
 	if not gameOver:
 	    level2 = Level()
@@ -844,11 +860,11 @@ async def main():
 	    level2.end=72*12
 	    level2.scrollSpeed = 40 # px/s
 	    level2.music=Music(ohSusannaMusicStr,170)
-	    gameOver = playLevel(level2)
+	    gameOver = await playLevel(level2)
 	    while gameOver:
 	        cowSpr.setX(0)
 	        cowSpr.setY(18)
-	        gameOver = playLevel(level2)
+	        gameOver = await playLevel(level2)
 	
 	if not gameOver:
 	    cowSpr.setX(0)
@@ -865,13 +881,13 @@ async def main():
 	    level3.end=72*13
 	    level3.scrollSpeed = 50 # px/s
 	    level3.music=Music(valkyriesMusicStr,150)
-	    gameOver = playLevel(level3)
+	    gameOver = await playLevel(level3)
 	    while gameOver:
 	        cowSpr.setX(0)
 	        cowSpr.setY(18)
-	        gameOver = playLevel(level3)
+	        gameOver = await playLevel(level3)
 	
-	playEndGame()
+	await playEndGame()
 	
 	genericText = """
 	  Guiguitte
@@ -923,7 +939,7 @@ async def main():
 	--------------
 	"""
 	if not gameOver:
-	    playGenerique(genericText)
+	    await playGenerique(genericText)
 	def checkObstablePos(level, type, pos):
 	    for f in level.fencesPos:
 	        if type == 0:
@@ -1008,7 +1024,7 @@ async def main():
 	    else:
 	        currentSpeed += 1
 	    level = generateLevel(currentSpeed)
-	    gameOver = playLevel(level)
+	    gameOver = await playLevel(level)
 	
 	print("game ended")
 	thumby.reset()

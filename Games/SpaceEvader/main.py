@@ -1,11 +1,27 @@
+
+        
+# Add common but missing functions to time module (from redefined/recreated micropython module)
 import asyncio
-import pygame
+import await pygame
 import os
 import sys
 
 sys.path.append("lib")
 
-# Common overrides to get scripts working in the browsers. This should be prepended to each file in the game
+import time
+import utime
+
+time.ticks_ms = utime.ticks_ms
+time.ticks_us = utime.ticks_us
+time.ticks_diff = utime.ticks_diff
+time.sleep_ms = utime.sleep_ms
+
+
+# See thumbyGraphics.__init__() for set_mode() call
+pawait ygame.init()
+pawait ygame.display.set_caption("Thumby game")
+
+# Common overrides to get scripts working in the browsers. This should be prepended to each file in the await game
 
 # Re-define the open function to create a directory for a file if it doesn't already exist (mimic MicroPython)
 def open(path, mode):
@@ -231,7 +247,7 @@ async def main():
 	        self.sprite_heart = thumby.Sprite(7, 7, self.bitmap_heart, 1, self.y_pos - 8, -1, 0, 0)
 	        self.sprite_cow.setFrame(0)
 	        
-	    def update(self, ufo_spots, game_level):
+	    def update(self, ufo_spots, await game_level):
 	        self.sprite_heart.x = self.sprite_cow.x + 2
 	        self.sprite_heart.y = self.sprite_cow.y - 8
 	        
@@ -245,7 +261,7 @@ async def main():
 	                #draw tractor beam
 	                thumby.display.drawFilledRectangle(self.cur_pos, 7, 10, 33, 1)
 	                
-	                if self.frame % (11-game_level//2) == 0:
+	                if self.frame % await (11-game_level//2) == 0:
 	                    self.y_pos -= 1 
 	                    self.sprite_cow.setFrame(self.spin_seq[self.spin_idx])
 	                    
@@ -287,7 +303,7 @@ async def main():
 	                        
 	            thumby.display.drawSprite(self.sprite_cow)
 	        elif self.targeted:
-	            dialog("Oh no!", 2)
+	            await dialog("Oh no!", 2)
 	            self.ufo.takeOff(ufo_spots)
 	            self.targeted = False
 	    
@@ -437,9 +453,9 @@ async def main():
 	    myAmmo = Ammo(36, 35, 0.25)
 	    frame = 0
 	    title_screen = True
-	    game_over = False
+	    await game_over = False
 	    
-	    game_level = 1
+	    await game_level = 1
 	    points = 0
 	    last_points = 0
 	    
@@ -508,12 +524,12 @@ async def main():
 	                await thumby.display.update()
 	                frame += 1
 	        
-	        while not game_over:
+	        while not await game_over:
 	            #UFO movement
-	            if frame % (120 - game_level*5) == 0:
+	            if frame % (120 - await game_level*5) == 0:
 	                #attempt an abduction once in a while
 	                #becomes more frequent with level
-	                if game_level == 20 or random.randrange(0, 4 - game_level//5) == 0:
+	                if await game_level == 20 or random.randrange(0, 4 - game_level//5) == 0:
 	                    targeting_cow = random.choice(Cows)
 	                    if not targeting_cow.gone:
 	                        moving_ufo = random.choice(UFOS)
@@ -563,7 +579,7 @@ async def main():
 	                ufo.update()
 	                
 	            for cow in Cows:
-	                cow.update(ufo_spots, game_level)
+	                cow.update(ufo_spots, await game_level)
 	                
 	            myTank.update()
 	            
@@ -573,35 +589,35 @@ async def main():
 	            await thumby.display.update()
 	            frame += 1
 	            
-	            #game over condition
+	            await #game over condition
 	            if Cows[0].gone and Cows[1].gone and not Cows[0].targeted and not Cows[1].targeted:
-	                game_over = True
+	                await game_over = True
 	                
 	            #leveling
-	            if points % 5 == 0 and game_level < 20 and points != last_points: #every 5 hits
-	                game_level += 1
+	            if points % 5 == 0 and await game_level < 20 and points != last_points: #every 5 hits
+	                await game_level += 1
 	                last_points = points
-	                dialog("Level " + str(game_level), 2)
+	                await dialog("Level " + await str(game_level), 2)
 	                
 	            #spawn more UFOs
-	            if game_level == 3 and len(UFOS) < 2:
+	            if await game_level == 3 and len(UFOS) < 2:
 	                new_pos = random.randrange(0,7)
 	                while ufo_spots[new_pos]:
 	                    new_pos = random.randrange(0,7)
 	                UFOS.append(UFO(new_pos))
-	            if game_level == 7 and len(UFOS) < 3:
+	            if await game_level == 7 and len(UFOS) < 3:
 	                new_pos = random.randrange(0,7)
 	                while ufo_spots[new_pos]:
 	                    new_pos = random.randrange(0,7)
 	                UFOS.append(UFO(new_pos))
-	            if game_level == 11 and len(UFOS) < 4:
+	            if await game_level == 11 and len(UFOS) < 4:
 	                new_pos = random.randrange(0,7)
 	                while ufo_spots[new_pos]:
 	                    new_pos = random.randrange(0,7)
 	                UFOS.append(UFO(new_pos))
 	            
-	        #game over screen
-	        while game_over:
+	        await #game over screen
+	        while await game_over:
 	            thumby.display.fill(0)
 	            
 	            try:
@@ -634,16 +650,16 @@ async def main():
 	            thumby.display.drawText("B: Quit", 15, 33, 0)
 	            
 	            if thumby.buttonA.pressed():
-	                game()
+	                await game()
 	            elif thumby.buttonB.pressed():
 	                thumby.reset()
 	            
 	            await thumby.display.update()
 	
 	thumby.display.fill(0)
-	dialog("SuperRiley64", 0.25)
+	await dialog("SuperRiley64", 0.25)
 	thumby.audio.playBlocking(523, 100)
 	thumby.audio.playBlocking(1046, 400)
-	dialog("SuperRiley64", 0.75)
-	game()
+	await dialog("SuperRiley64", 0.75)
+	await game()
 asyncio.run(main())

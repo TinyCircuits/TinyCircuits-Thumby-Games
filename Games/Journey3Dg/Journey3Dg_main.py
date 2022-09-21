@@ -1009,7 +1009,7 @@ def shape_update():
 
 
 
-def main(on_load):
+async def main(on_load):
     global player, disp, road, stars, mountains
 
     if on_load:

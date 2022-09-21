@@ -14,7 +14,7 @@ class Menu:
         })
         while True:
             self.animate = 0
-            self.render()
+            await self.render()
             self.lastInputTime = time.ticks_ms()
             self.lastAnimateTime = time.ticks_ms()
             if self.waitInput():
@@ -49,7 +49,7 @@ class Menu:
                     else:
                         self.animate += 1
                     self.lastAnimateTime = now
-                    self.render()
+                    await self.render()
 
     def printline(self, string, highlight = False):
         if highlight:
@@ -82,7 +82,7 @@ class Confirm:
         self.text = self.breakText(totalText)
 
         while True:
-            self.render()
+            await self.render()
             while thumby.buttonU.pressed() or \
                   thumby.buttonD.pressed() or \
                   thumby.buttonA.pressed() or \

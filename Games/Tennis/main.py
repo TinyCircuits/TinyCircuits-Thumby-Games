@@ -1,9 +1,25 @@
+
+        
+# Add common but missing functions to time module (from redefined/recreated micropython module)
 import asyncio
 import pygame
 import os
 import sys
 
 sys.path.append("lib")
+
+import time
+import utime
+
+time.ticks_ms = utime.ticks_ms
+time.ticks_us = utime.ticks_us
+time.ticks_diff = utime.ticks_diff
+time.sleep_ms = utime.sleep_ms
+
+
+# See thumbyGraphics.__init__() for set_mode() call
+pygame.init()
+pygame.display.set_caption("Thumby game")
 
 # Common overrides to get scripts working in the browsers. This should be prepended to each file in the game
 
@@ -395,15 +411,15 @@ async async def main():
 	            gameScreenID = received[0]
 	    
 	        if gameScreenID == 0:
-	            gameScreenID = handleLogoScreen()
+	            gameScreenID = await handleLogoScreen()
 	        elif gameScreenID == 1:
-	            gameScreenID = handleModeSelect()
+	            gameScreenID = await handleModeSelect()
 	        elif gameScreenID == 2:
-	            gameScreenID = waitForPlayer(received)
+	            gameScreenID = await waitForPlayer(received)
 	        elif gameScreenID == 3:
-	            gameScreenID = main(received)
+	            gameScreenID = await main(received)
 	        elif gameScreenID == 4:
-	            gameScreenID = handleGameOver(received)
+	            gameScreenID = await handleGameOver(received)
 	            
 	except Exception as e:
 	    f = open("/crash.log", "w")
@@ -411,4 +427,4 @@ async async def main():
 	    f.close()
 	
 
-asyncio.run(main())
+aawait syncio.run(main())

@@ -1,9 +1,25 @@
+
+        
+# Add common but missing functions to time module (from redefined/recreated micropython module)
 import asyncio
 import pygame
 import os
 import sys
 
 sys.path.append("lib")
+
+import time
+import utime
+
+time.ticks_ms = utime.ticks_ms
+time.ticks_us = utime.ticks_us
+time.ticks_diff = utime.ticks_diff
+time.sleep_ms = utime.sleep_ms
+
+
+# See thumbyGraphics.__init__() for set_mode() call
+pygame.init()
+pygame.display.set_caption("Thumby game")
 
 # Common overrides to get scripts working in the browsers. This should be prepended to each file in the game
 
@@ -122,7 +138,7 @@ async def main():
 	                self.room[1] -= 1
 	                self.room_neighbors = d.room_neighbors(p1.room[1], p1.room[0])
 	                self.charSprite.x += 61
-	                self.blank_wait()
+	                await self.blank_wait()
 	            else:
 	                self.charSprite.x -= self.moveNum
 	                self.charSprite.setFrame(1)
@@ -135,7 +151,7 @@ async def main():
 	                self.room[1] += 1
 	                self.room_neighbors = d.room_neighbors(p1.room[1], p1.room[0])
 	                self.charSprite.x -= 61
-	                self.blank_wait()
+	                await self.blank_wait()
 	            else:
 	                self.charSprite.x += self.moveNum
 	                self.charSprite.setFrame(0)
@@ -148,7 +164,7 @@ async def main():
 	                self.room[0] -= 1
 	                self.room_neighbors = d.room_neighbors(p1.room[1], p1.room[0])
 	                self.charSprite.y += 30
-	                self.blank_wait()
+	                await self.blank_wait()
 	            else:
 	                self.charSprite.y -= self.moveNum
 	                self.charSprite.setFrame(2)
@@ -161,7 +177,7 @@ async def main():
 	                self.room[0] += 1
 	                self.room_neighbors = d.room_neighbors(p1.room[1], p1.room[0])
 	                self.charSprite.y -= 30
-	                self.blank_wait()
+	                await self.blank_wait()
 	            else:
 	                self.charSprite.y += self.moveNum
 	                self.charSprite.setFrame(3)
@@ -506,7 +522,7 @@ async def main():
 	
 	while True:
 	    if status == 0: 
-	        loading_splash()
+	        await loading_splash()
 	        status = 1
 	        
 	    elif p1.life < 1:
@@ -599,7 +615,7 @@ async def main():
 	                life = p1.maxlife
 	                atk = p1.attack
 	                s = shop()
-	                gold,life,atk = s.shopping_loop(gold,life,atk)
+	                gold,life,atk = await s.shopping_loop(gold,life,atk)
 	                p1.gold = gold
 	                p1.maxlife = life
 	                p1.attack = atk
@@ -631,7 +647,7 @@ async def main():
 	        if shopCooldown > 0:
 	            shopCooldown -= 1
 	            
-	        p1.user_move()
+	        await p1.user_move()
 	        attack_status, attack = p1.user_attack()
 	        if attack_status:
 	            attacks.append(attack)

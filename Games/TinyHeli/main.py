@@ -1,9 +1,25 @@
+
+        
+# Add common but missing functions to time module (from redefined/recreated micropython module)
 import asyncio
 import pygame
 import os
 import sys
 
 sys.path.append("lib")
+
+import time
+import utime
+
+time.ticks_ms = utime.ticks_ms
+time.ticks_us = utime.ticks_us
+time.ticks_diff = utime.ticks_diff
+time.sleep_ms = utime.sleep_ms
+
+
+# See thumbyGraphics.__init__() for set_mode() call
+pygame.init()
+pygame.display.set_caption("Thumby game")
 
 # Common overrides to get scripts working in the browsers. This should be prepended to each file in the game
 
@@ -208,9 +224,9 @@ async def main():
 	def checkCollision():
 	    # Check if the helicopter hit a white pixel (cave or obstacle) or went out of bound on y
 	    if thumby.display.getPixel(heliSprite.x, heliSprite.y) == 1 or thumby.display.getPixel(heliSprite.x+9, heliSprite.y) == 1 or thumby.display.getPixel(heliSprite.x, heliSprite.y+5) == 1 or thumby.display.getPixel(heliSprite.x+9, heliSprite.y+5) == 1:
-	        return showEndScreen()
+	        return await showEndScreen()
 	    elif heliSprite.y < 0 or heliSprite.y+8 > thumby.display.height:
-	        return showEndScreen()
+	        return await showEndScreen()
 	    return False
 	
 	
@@ -240,7 +256,7 @@ async def main():
 	    
 	    
 	thumby.display.setFPS(60)
-	showStartScreen()
+	await showStartScreen()
 	
 	
 	# Main loop that restarts game if player crashes and decides to play again

@@ -1,9 +1,25 @@
+
+        
+# Add common but missing functions to time module (from redefined/recreated micropython module)
 import asyncio
 import pygame
 import os
 import sys
 
 sys.path.append("lib")
+
+import time
+import utime
+
+time.ticks_ms = utime.ticks_ms
+time.ticks_us = utime.ticks_us
+time.ticks_diff = utime.ticks_diff
+time.sleep_ms = utime.sleep_ms
+
+
+# See thumbyGraphics.__init__() for set_mode() call
+pygame.init()
+pygame.display.set_caption("Thumby game")
 
 # Common overrides to get scripts working in the browsers. This should be prepended to each file in the game
 
@@ -61,7 +77,7 @@ async def main():
 	        if not continuable:
 	            menu_items = menu_items[1:]
 	        self.menu = z.Menu(menu_items)
-	        self.start = False
+	        await self.start = False
 	        self.credit = False
 	        self.dirty = True
 	
@@ -73,7 +89,7 @@ async def main():
 	                z.click()
 	        else:
 	            self.menu.update()
-	        return GameState.ID if self.start else self.ID
+	        return GameState.ID if await self.start else self.ID
 	
 	    def draw(self):
 	        if self.dirty:
@@ -87,12 +103,12 @@ async def main():
 	        self.dirty = False
 	
 	    def menu_continue(self):
-	        self.start = True
+	        await self.start = True
 	
 	    def menu_new_game(self):
 	        nonlocal continuable
 	        continuable = False
-	        self.start = True
+	        await self.start = True
 	
 	    def menu_sound(self):
 	        z.sound(not z.sound_on)
@@ -407,6 +423,6 @@ async def main():
 	
 	#------------------------------------------------------------------------------
 	
-	z.start(APP_FPS, APP_CODE, APP_VERSION, [TitleState(), GameState()])
+	await z.start(APP_FPS, APP_CODE, APP_VERSION, [TitleState(), GameState()])
 
 asyncio.run(main())

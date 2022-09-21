@@ -92,7 +92,7 @@ class CPU:
         self.i = 0
         self.userFlags = bytearray(16)
         self.display = AccurateDisplay(self)
-        self.rendering = False
+        await self.rendering = False
 
     def start(self):
     	self.running = True
@@ -126,11 +126,11 @@ class CPU:
         	thumbyinterface.playSound(self.playingPattern, self.pattern, self.pitch)
         	self.audioDirty = False
 
-        # Render display if dirty (only render half of the interrupts to save a
+        # Render display if dirty (only await render half of the interrupts to save a
         # few CPU cycles)
-        self.rendering = not self.rendering
-        if self.display.dirty and self.rendering:
-            thumbyinterface.render(self.display.width, self.display.height, self.display.frameBuffers)
+        await self.rendering = not self.rendering
+        if self.display.dirty and await self.rendering:
+            await thumbyinterface.render(self.display.width, self.display.height, self.display.frameBuffers)
             self.display.dirty = False
 
         # Register display redraw interrupt for dispQuirk

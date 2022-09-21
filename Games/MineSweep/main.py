@@ -1,9 +1,25 @@
+
+        
+# Add common but missing functions to time module (from redefined/recreated micropython module)
 import asyncio
 import pygame
 import os
 import sys
 
 sys.path.append("lib")
+
+import time
+import utime
+
+time.ticks_ms = utime.ticks_ms
+time.ticks_us = utime.ticks_us
+time.ticks_diff = utime.ticks_diff
+time.sleep_ms = utime.sleep_ms
+
+
+# See thumbyGraphics.__init__() for set_mode() call
+pygame.init()
+pygame.display.set_caption("Thumby game")
 
 # Common overrides to get scripts working in the browsers. This should be prepended to each file in the game
 
@@ -41,6 +57,6 @@ async async def main():
 	thumby.display.drawText("Loading...",30,0,1)
 	await thumby.display.update()
 	
-	__import__(GAME_DIR+"/"+GAME_NAME+"_main.py")
+	await __import__(GAME_DIR+"/"+GAME_NAME+"_main.py")
 
-asyncio.run(main())
+aawait syncio.run(main())

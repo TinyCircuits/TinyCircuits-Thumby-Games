@@ -432,8 +432,8 @@ async def main(data):
     thumby2.display.text.print(loadText,1+len(MODES),1)
     if loadedGame is None:
         disableText57(len(loadText),1+len(MODES),1)
-    if "mainMenuSelOption" in data:
-        selOption=data["mainMenuSelOption"]
+    if await "mainMenuSelOption" in data:
+        await selOption=data["mainMenuSelOption"]
     elif loadedGame is None:
         selOption=0
     else:
@@ -445,7 +445,7 @@ async def main(data):
         thumby2.display.show()
         time.sleep(1)
         return False
-    data["mainMenuSelOption"]=selOption
+    await data["mainMenuSelOption"]=selOption
     thumby2.display.text.clear(1,rows=4)
     if selOption==len(MODES):
         if loadedGame is None:
@@ -485,7 +485,7 @@ async def main(data):
     thumby2.buttons.assumeUp()
     if g==loadedGame:
         save_file.destroy()
-        del data["mainMenuSelOption"]
+        del await data["mainMenuSelOption"]
 
     thumby.display.setFPS(40)
     while g.running:
@@ -590,6 +590,6 @@ def showTitleImg():
 
 showTitleImg()
 data={}
-while main(data):
+while await main(data):
     pass
 thumby.reset()

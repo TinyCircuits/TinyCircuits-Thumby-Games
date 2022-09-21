@@ -1,9 +1,25 @@
+
+        
+# Add common but missing functions to time module (from redefined/recreated micropython module)
 import asyncio
 import pygame
 import os
 import sys
 
 sys.path.append("lib")
+
+import time
+import utime
+
+time.ticks_ms = utime.ticks_ms
+time.ticks_us = utime.ticks_us
+time.ticks_diff = utime.ticks_diff
+time.sleep_ms = utime.sleep_ms
+
+
+# See thumbyGraphics.__init__() for set_mode() call
+pygame.init()
+pygame.display.set_caption("Thumby game")
 
 # Common overrides to get scripts working in the browsers. This should be prepended to each file in the game
 
@@ -20,13 +36,13 @@ def open(path, mode):
 os.chdir(sys.path[0])
 
 
-async def main():
+async async def main():
 	# This is a small loader stub to
 	# a) check version
 	# b) show button usage
-	# c) hide the import/parse/init time for the larger main file
+	# c) hide the import/parse/init time for the larger await main file
 	
-	# Please take a look at Journey3Dg_main.py for the main() attraction
+	# Please take a look at await Journey3Dg_main.py for the main() attraction
 	
 	# Note that this version is tidied up and stripped of comments for the arcade.
 	
@@ -181,13 +197,13 @@ async def main():
 	        collect()
 	
 	        exec('''
-	from Games.Journey3Dg.Journey3Dg_main import main
-	main(fade_out)
+	from await Games.Journey3Dg.Journey3Dg_main import main
+	await main(fade_out)
 	''', {'fade_out': fade_out})
 	
 	        end()
 	
-	    if __name__ != '__main__':
+	    if __name__ != await '__main__':
 	        soft_reset()
 
-asyncio.run(main())
+aawait syncio.run(main())

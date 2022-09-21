@@ -1,9 +1,25 @@
+
+        
+# Add common but missing functions to time module (from redefined/recreated micropython module)
 import asyncio
 import pygame
 import os
 import sys
 
 sys.path.append("lib")
+
+import time
+import utime
+
+time.ticks_ms = utime.ticks_ms
+time.ticks_us = utime.ticks_us
+time.ticks_diff = utime.ticks_diff
+time.sleep_ms = utime.sleep_ms
+
+
+# See thumbyGraphics.__init__() for set_mode() call
+pygame.init()
+pygame.display.set_caption("Thumby game")
 
 # Common overrides to get scripts working in the browsers. This should be prepended to each file in the game
 
@@ -336,12 +352,12 @@ async def main():
 	              while (j % B_COLS>1):
 	                board[j] = 0
 	                j-=1
-	              updateScreen()
+	              await updateScreen()
 	              thumby.audio.play(1000, 50)
 	              while(j):
 	                board[j + B_COLS] = board[j]
 	                j-=1
-	              updateScreen()
+	              await updateScreen()
 	              thumby.audio.play(100, 100)
 	            j+=1
 	          j = B_COLS * (j // B_COLS + 1)
@@ -384,7 +400,7 @@ async def main():
 	    if (c == keys[KEY_DROP]):
 	      a=1
 	    if (c == keys[KEY_QUIT]):
-	      show_high_score ()
+	      await show_high_score ()
 	      break;
 	
 	    # Calculate where the ghost piece should go
@@ -394,7 +410,7 @@ async def main():
 	    ghost -= B_COLS
 	
 	    place (shape, pos, 7);
-	    updateScreen (showGhost = True, ghostPos = ghost);
+	    await updateScreen (showGhost = True, ghostPos = ghost);
 	    place (shape, pos, 0);
 	    
 	  a=0

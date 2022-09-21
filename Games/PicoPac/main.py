@@ -1,9 +1,25 @@
+
+        
+# Add common but missing functions to time module (from redefined/recreated micropython module)
 import asyncio
 import pygame
 import os
 import sys
 
 sys.path.append("lib")
+
+import time
+import utime
+
+time.ticks_ms = utime.ticks_ms
+time.ticks_us = utime.ticks_us
+time.ticks_diff = utime.ticks_diff
+time.sleep_ms = utime.sleep_ms
+
+
+# See thumbyGraphics.__init__() for set_mode() call
+pygame.init()
+pygame.display.set_caption("Thumby game")
 
 # Common overrides to get scripts working in the browsers. This should be prepended to each file in the game
 
@@ -450,13 +466,13 @@ async def main():
 	        x = x + 20
 	        
 	async def show_level():
-	    opening_scene()
+	    await opening_scene()
 	    thumby.display.fill(0)
 	    display_score()
 	    thumby.display.drawText(f"Level:{level}", 10, 25, 1)
 	    await thumby.display.update()
 	    wait(2000)
-	    show_score()
+	    await show_score()
 	    
 	async def show_score():
 	    nonlocal last_update
@@ -476,7 +492,7 @@ async def main():
 	    thumby.display.drawText("v1.1", 50, 32, 1)
 	    await thumby.display.update()
 	    character = ' '
-	    show_pac(-2)
+	    await show_pac(-2)
 	    while True:
 	        if thumby.buttonB.pressed():
 	            thumby.reset()
@@ -505,7 +521,7 @@ async def main():
 	            break
 	    thumby.display.fill(0)
 	    display_title()
-	    press_to_start()
+	    await press_to_start()
 	
 	async def get_input():
 	    key = getcharinputNew()
@@ -612,7 +628,7 @@ async def main():
 	        display_title()
 	    else:
 	        display_score()
-	    show_pac(85)
+	    await show_pac(85)
 	
 	async def show_pac(ending_x):
 	    last_update = time.ticks_ms()
@@ -660,10 +676,10 @@ async def main():
 	    wait(50)
 	    
 	if skip_opening == False:
-	    opening_scene()
-	    press_to_start()
-	    show_score()
-	    update_display()
+	    await opening_scene()
+	    await press_to_start()
+	    await show_score()
+	    await update_display()
 	    opening_music()
 	
 	# main game loop
@@ -699,7 +715,7 @@ async def main():
 	        else:
 	            ghost_multiplier = 0
 	        
-	        get_input()
+	        await get_input()
 	        move(pac)
 	        
 	        if (balls_eaten > 57 and maze_index == 0) or  (balls_eaten > 55 and maze_index > 0):
@@ -710,10 +726,10 @@ async def main():
 	                maze_index = 0
 	            if ghost_speed > 30:
 	                ghost_speed -= 5
-	            show_level()
+	            await show_level()
 	            reset_players()
 	            reset_balls()
-	            update_display()
+	            await update_display()
 	            opening_music()
 	
 	        portal_transport(pac)
@@ -729,7 +745,7 @@ async def main():
 	                if power_time > 0:
 	                    eat_ghosts_sound()
 	                    ghost_multiplier += 1
-	                    display_ghost_bonus(100 * (2 ** ghost_multiplier))
+	                    await display_ghost_bonus(100 * (2 ** ghost_multiplier))
 	                    player_score += 100 * (2 ** ghost_multiplier)
 	                    ghost.x = 60 + player_offset[0]
 	                    ghost.y = 50
@@ -746,19 +762,19 @@ async def main():
 	                    reset_players()
 	                    player_lives = player_lives - 1
 	                    if player_lives == 0:
-	                        game_over()
+	                        await game_over()
 	                        init_state()
-	                        show_score()
+	                        await show_score()
 	                    else:
-	                        show_score()
+	                        await show_score()
 	                    break
 	        
 	        if player_score > extra_life_score:
-	            display_ghost_bonus('1UP')
+	            await display_ghost_bonus('1UP')
 	            player_lives += 1
 	            extra_life_score += 5000
 	            
 	        last_update = time.ticks_ms()
-	        update_display()
+	        await update_display()
 
 asyncio.run(main())

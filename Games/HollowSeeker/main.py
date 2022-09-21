@@ -1,9 +1,25 @@
+
+        
+# Add common but missing functions to time module (from redefined/recreated micropython module)
 import asyncio
 import pygame
 import os
 import sys
 
 sys.path.append("lib")
+
+import time
+import utime
+
+time.ticks_ms = utime.ticks_ms
+time.ticks_us = utime.ticks_us
+time.ticks_diff = utime.ticks_diff
+time.sleep_ms = utime.sleep_ms
+
+
+# See thumbyGraphics.__init__() for set_mode() call
+pygame.init()
+pygame.display.set_caption("Thumby game")
 
 # Common overrides to get scripts working in the browsers. This should be prepended to each file in the game
 
@@ -56,13 +72,13 @@ async def main():
 	    ID = 0
 	
 	    def prepare(self):
-	        menu_items = [z.Menu.Item("START GAME", self.menu_start_game),
+	        menu_items = [z.Menu.Item("START GAME", await self.menu_start_game),
 	                      z.Menu.Item(None,         self.menu_sound),
 	                      z.Menu.Item("CREDIT",     self.menu_credit)]
 	        self.menu_item_sound = menu_items[1]
 	        self.set_sound_menu_label()
 	        self.menu = z.Menu(menu_items)
-	        self.start = False
+	        await self.start = False
 	        self.credit = False
 	        self.dirty = True
 	
@@ -73,8 +89,8 @@ async def main():
 	                self.dirty = True
 	                z.click()
 	        else:
-	            self.menu.update()
-	        return GameState.ID if self.start else self.ID
+	            await self.menu.update()
+	        return GameState.ID if await self.start else self.ID
 	
 	    def draw(self):
 	        if self.dirty:
@@ -91,8 +107,8 @@ async def main():
 	            self.menu.draw()
 	        self.dirty = False
 	
-	    def menu_start_game(self):
-	        self.start = True
+	    def await menu_start_game(self):
+	        await self.start = True
 	
 	    def menu_sound(self):
 	        z.sound(not z.sound_on)
@@ -158,10 +174,10 @@ async def main():
 	                dir = 1
 	        if not self.pause and z.frames & 1:
 	            self.dirty = True
-	            self.cave.update(forward)
-	            self.player.update(self.cave, dir)
+	            await self.cave.update(forward)
+	            await self.player.update(self.cave, dir)
 	            if forward > 0:
-	                self.dots.update(self.cave)
+	                await self.dots.update(self.cave)
 	            if self.cave.phase >= Cave.PHASE_SHAKE:
 	                z.tone(random.randint(40, 100), 40)
 	            if self.player.move == UNIT - 1 and self.counter == 0:
@@ -347,7 +363,7 @@ async def main():
 	        self.offset = cave.offset
 	        base = cave.base_bottom
 	        for d in reversed(self.dots):
-	            if d.update(scroll, base):
+	            if await d.update(scroll, base):
 	                self.dots.remove(d)
 	        if random.random() > cave.phase/Cave.PHASE_MAX + 0.25:
 	            x = random.randrange(z.SCRN_W)
@@ -378,7 +394,7 @@ async def main():
 	
 	#------------------------------------------------------------------------------
 	
-	if z.check(0.02):
-	    z.start(APP_FPS, APP_CODE, APP_VERSION, [TitleState(), GameState()])
+	if await z.check(0.02):
+	    await z.start(APP_FPS, APP_CODE, APP_VERSION, [TitleState(), GameState()])
 
 asyncio.run(main())

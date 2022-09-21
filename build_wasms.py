@@ -28,8 +28,6 @@ def get_functions_to_await(file_str, functions_to_await, structure, game_dir):
                 next_structure = {"parent": structure, "name": statement.name, "defs": [], "calls": []}
                 structure["defs"].append(next_structure)
                 recursive_find(statement.body, next_structure)
-            elif "ast.Class" in str(statement) or "ast.While" in str(statement) or "ast.For" in str(statement) or "ast.If" in str(statement):
-                recursive_find(statement.body, structure)
             elif "ast.Expr" in str(statement) and "ast.Call" in str(statement.value):
                 function_name = ""
 
@@ -46,6 +44,9 @@ def get_functions_to_await(file_str, functions_to_await, structure, game_dir):
                         if s["name"] not in functions_to_await:
                             functions_to_await.append(s["name"])
                         s = s["parent"]
+            elif hasattr(statement, "body"):
+                # elif "ast.Class" in str(statement) or "ast.While" in str(statement) or "ast.For" in str(statement) or "ast.If" in str(statement):
+                recursive_find(statement.body, structure)
 
     try:
         recursive_find(ast.parse(file_str).body, structure)
@@ -136,14 +137,30 @@ for game_dir in root_contents:
         wasm_file = open("Games/" + game_dir + "/main.py", "w")
         all_converted_game_file_paths.append("Games/" + game_dir + "/main.py")
 
-        # Start building the file by adding imports
-        wasm_file.write("import asyncio\n")
-        wasm_file.write("import pygame\n")
-        wasm_file.write("import os\n")
-        wasm_file.write("import sys\n\n")
+        wasm_file.write("""
+        
+# Add common but missing functions to time module (from redefined/recreated micropython module)
+import asyncio
+import pygame
+import os
+import sys
 
-        # Add path for custom thumby module
-        wasm_file.write("sys.path.append(\"lib\")\n\n")
+sys.path.append(\"lib\")
+
+import time
+import utime
+
+time.ticks_ms = utime.ticks_ms
+time.ticks_us = utime.ticks_us
+time.ticks_diff = utime.ticks_diff
+time.sleep_ms = utime.sleep_ms
+
+
+# See thumbyGraphics.__init__() for set_mode() call
+pygame.init()
+pygame.display.set_caption("Thumby game")
+
+""")
 
         # Add overrides/re-defines
         wasm_file.write(prepend_contents + "\n\n")
@@ -174,4 +191,26 @@ for game_dir in root_contents:
             
             f = open(file_path, "w")
             f.write(contents)
+            f.close()
+        
+
+        for file_path in all_converted_game_file_paths:
+            f = open(file_path, "r")
+            lines = f.readlines()
+            f.close()
+
+            converted = ""
+            for line in lines:
+                for func in functions_to_await:
+                    if func in line and "def " + func not in line:
+                        start_col = line.find(func)
+                        while start_col > 0 and line[start_col] != ' ' and line[start_col] != '\t':
+                            start_col = start_col - 1
+
+                        line = line[0:start_col+1] + "await " + line[start_col+1:]
+
+                converted += line
+            
+            f = open(file_path, "w")
+            f.write(converted)
             f.close()

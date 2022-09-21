@@ -1,4 +1,4 @@
-# This is the Mountains class, split from the main file to avoid out-of-
+# This is the Mountains class, split from the await main file to avoid out-of-
 # memory errors when compiling native/viper functions.
 
 # Note that this version is tidied up and stripped of comments for the arcade,

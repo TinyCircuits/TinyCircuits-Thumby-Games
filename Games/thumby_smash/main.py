@@ -1,9 +1,25 @@
+
+        
+# Add common but missing functions to time module (from redefined/recreated micropython module)
 import asyncio
 import pygame
 import os
 import sys
 
 sys.path.append("lib")
+
+import time
+import utime
+
+time.ticks_ms = utime.ticks_ms
+time.ticks_us = utime.ticks_us
+time.ticks_diff = utime.ticks_diff
+time.sleep_ms = utime.sleep_ms
+
+
+# See thumbyGraphics.__init__() for set_mode() call
+pygame.init()
+pygame.display.set_caption("Thumby game")
 
 # Common overrides to get scripts working in the browsers. This should be prepended to each file in the game
 
@@ -129,7 +145,7 @@ async def main():
 	                if thumby.buttonB.pressed():
 	                    match_over = False
 	                    battling = False
-	                    character_select(config)
+	                    await character_select(config)
 	                    
 	        #Hit function for most (NOT ALL) damaging attacks       
 	        def hit(damage, weight, x_knockback, y_knockback, direction, a_x, a_y, a_health):
@@ -700,13 +716,13 @@ async def main():
 	        thumby.display.blit(current_sprite, x, y, 16, 16, 1, is_flipped_x, is_flipped_y)         
 	        #end game code
 	        if health <= 0 and player_type == 'ai':
-	            match_screen('win')
+	            await match_screen('win')
 	        elif health <= 0 and player_type == 'human':
-	            match_screen('lose')
+	            await match_screen('lose')
 	        elif a_health <= 0 and player_type == 'ai':
-	            match_screen('lose')
+	            await match_screen('lose')
 	        elif a_health <= 0 and player_type == 'human':
-	            match_screen('win')
+	            await match_screen('win')
 	            
 	        return [state, x, y, direction, a_x, a_y, health,  a_health, knockback_state, cooldown, data]
 	    battling = True 
@@ -756,7 +772,7 @@ async def main():
 	        thumby.display.drawText(str(p_health_text), 0, 0, 0)
 	        thumby.display.drawText(str(a_health_text), 0, 8, 0)
 	        c_list = None
-	        c_list = character_move(char, p_jumpheight, p_attack, p_health, p_speed, p_weight, 'human', state, p_x, p_y, p_direction, ai_x, ai_y, a_jumpheight, a_attack, a_health, a_speed, a_weight, cooldown, knockback_state, data, config)
+	        c_list = await character_move(char, p_jumpheight, p_attack, p_health, p_speed, p_weight, 'human', state, p_x, p_y, p_direction, ai_x, ai_y, a_jumpheight, a_attack, a_health, a_speed, a_weight, cooldown, knockback_state, data, config)
 	        cooldown = c_list[9]
 	        if cooldown > 0:
 	            cooldown -= 1
@@ -774,7 +790,7 @@ async def main():
 	            ai_mode = 'ai'
 	        else:
 	            ai_mode = 'static'
-	        ai_c_list = character_move(enemy_char, a_jumpheight, a_attack, a_health, a_speed, a_weight, ai_mode, ai_state, ai_x, ai_y, ai_direction, p_x, p_y, p_jumpheight, p_attack, p_health, p_speed, p_weight, ai_cooldown, ai_knockback_state, ai_data, config)
+	        ai_c_list = await character_move(enemy_char, a_jumpheight, a_attack, a_health, a_speed, a_weight, ai_mode, ai_state, ai_x, ai_y, ai_direction, p_x, p_y, p_jumpheight, p_attack, p_health, p_speed, p_weight, ai_cooldown, ai_knockback_state, ai_data, config)
 	        ai_cooldown = ai_c_list[9]
 	 
 	        if ai_cooldown > 0:
@@ -832,14 +848,14 @@ async def main():
 	                thumby.display.blit(menu_arrow, 15, 16, 5, 5, 1, 0, 0)
 	             time.sleep(0.1)
 	             if thumby.buttonA.pressed() and arrow_location == 0:
-	                 ai_config_menu = True
-	                 while ai_config_menu == True:
+	                 await ai_config_menu = True
+	                 while await ai_config_menu == True:
 	                     if thumby.buttonD.pressed() and arrow_location == 0:
 	                        arrow_location += 1
 	                     elif thumby.buttonU.pressed() and arrow_location == 1:
 	                        arrow_location -= 1
 	                     elif thumby.buttonB.pressed():
-	                         ai_config_menu = False
+	                         await ai_config_menu = False
 	                     if arrow_location == 0:
 	                         thumby.display.blit(menu_arrow, 0, 0, 5, 5, 1, 0, 0)
 	                         if thumby.buttonR.pressed() and ai_stupidity < 20:
@@ -868,8 +884,8 @@ async def main():
 	                     await thumby.display.update()
 	                     thumby.display.fill(1)
 	             elif thumby.buttonA.pressed() and arrow_location == 1:
-	                 gameplay_config_menu = True
-	                 while gameplay_config_menu == True:
+	                 await gameplay_config_menu = True
+	                 while await gameplay_config_menu == True:
 	                     thumby.display.drawText('Game Pace:', 5, 0, 0)
 	                     thumby.display.drawRectangle(1, 15, 10, 2, 0)
 	                     thumby.display.blit(slider, game_pace, 15, 7, 7, 1, 0, 0)
@@ -900,7 +916,7 @@ async def main():
 	                     elif wall_int == 2:
 	                         wall_behavior = 'Damage'
 	                     if thumby.buttonB.pressed():
-	                             gameplay_config_menu = False
+	                             await gameplay_config_menu = False
 	                     time.sleep(0.1)
 	                     await thumby.display.update()
 	                     thumby.display.fill(1)
@@ -933,7 +949,7 @@ async def main():
 	             if arrow_location == 0:
 	                 menu = False
 	             elif arrow_location == 1:
-	                 config = config_menu()
+	                 config = await config_menu()
 	         thumby.display.drawText('PLAY', 20, 20, 0)
 	         thumby.display.drawText('CONFIG', 20, 30, 0)
 	         time.sleep(0.1)
@@ -1013,7 +1029,7 @@ async def main():
 	        elif thumby.buttonL.pressed() and selected > 0:
 	            selected -= 1
 	        elif thumby.buttonB.pressed():
-	            config = main_menu()
+	            config = await main_menu()
 	        elif thumby.buttonA.pressed():
 	            selected_char = chars[selected][0]
 	            while selected_char == 'random':
@@ -1036,15 +1052,15 @@ async def main():
 	                thumby.display.drawText(str(3-i), 30, 15, 0)
 	                await thumby.display.update()
 	                time.sleep(1)
-	            singleplayer_battle(selected_char, enemy_char, config)
+	            await singleplayer_battle(selected_char, enemy_char, config)
 	        thumby.display.drawText(chars[selected][0], 10, 25, 0)
 	        time.sleep(0.1)
 	        await thumby.display.update()
 	        i = 0
 	running = True
 	while running == True:
-	    config = main_menu()
-	    character_select(config)
+	    config = await main_menu()
+	    await character_select(config)
 	    time.sleep(1)
 
 asyncio.run(main())

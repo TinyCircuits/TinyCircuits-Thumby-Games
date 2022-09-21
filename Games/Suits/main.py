@@ -1,9 +1,25 @@
+
+        
+# Add common but missing functions to time module (from redefined/recreated micropython module)
 import asyncio
 import pygame
 import os
 import sys
 
 sys.path.append("lib")
+
+import time
+import utime
+
+time.ticks_ms = utime.ticks_ms
+time.ticks_us = utime.ticks_us
+time.ticks_diff = utime.ticks_diff
+time.sleep_ms = utime.sleep_ms
+
+
+# See thumbyGraphics.__init__() for set_mode() call
+pygame.init()
+pygame.display.set_caption("Thumby game")
 
 # Common overrides to get scripts working in the browsers. This should be prepended to each file in the game
 
@@ -228,7 +244,7 @@ async def main():
 	    history_list = ['o','o','o','o','o']
 	    score = 0
 	    deck = deck_shuffle(stack)
-	    do_indicator('blank')
+	    await do_indicator('blank')
 	    
 	    return history_list, score, deck
 	
@@ -277,10 +293,10 @@ async def main():
 	# initial settings, for when the script is first executed
 	# initial setup, create all necessary nonlocal variables
 	
-	do_indicator('blank')
+	await do_indicator('blank')
 	deck = deck_shuffle()
 	history_list = ['o','o','o','o','o']
-	update_history(history_list)
+	await update_history(history_list)
 	point = 0
 	score = 0
 	card = ''
@@ -297,18 +313,18 @@ async def main():
 	
 	        if len(deck) < 1:
 	            print('deck is empty')
-	            do_indicator('end')
+	            await do_indicator('end')
 	
 	        else:
 	            card, point, deck = compare_card(c, deck)
 	            
 	            history_list.insert(0, card)
-	            update_history(history_list)
+	            await update_history(history_list)
 	            
 	            if point > 0:
-	                do_indicator('tick')
+	                await do_indicator('tick')
 	            else:
-	                do_indicator('cross')
+	                await do_indicator('cross')
 	            
 	            score = score + point
 	            
@@ -321,8 +337,8 @@ async def main():
 	# will reset the game                
 	        if thumby.buttonL.pressed() and thumby.buttonA.pressed():
 	            print('Reset')
-	            history_list, score, deck = do_reset(stack)
-	            update_history()
+	            history_list, score, deck = await do_reset(stack)
+	            await update_history()
 	
 	# toggle between the number of decks to use, 1, 4, 6. will update the indicator line below the score
 	        if thumby.buttonU.pressed() and thumby.buttonB.pressed():
@@ -343,8 +359,8 @@ async def main():
 	                stack = 1
 	                thumby.display.drawLine(36, 38, 38, 38, 1)
 	                
-	            history_list, score, deck, = do_reset(stack)
-	            update_history()
+	            history_list, score, deck, = await do_reset(stack)
+	            await update_history()
 	            await thumby.display.update()
 	            
 	            print("Card in the Deck:", len(deck))

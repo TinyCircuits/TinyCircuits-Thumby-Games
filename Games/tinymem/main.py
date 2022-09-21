@@ -1,9 +1,25 @@
+
+        
+# Add common but missing functions to time module (from redefined/recreated micropython module)
 import asyncio
 import pygame
 import os
 import sys
 
 sys.path.append("lib")
+
+import time
+import utime
+
+time.ticks_ms = utime.ticks_ms
+time.ticks_us = utime.ticks_us
+time.ticks_diff = utime.ticks_diff
+time.sleep_ms = utime.sleep_ms
+
+
+# See thumbyGraphics.__init__() for set_mode() call
+pygame.init()
+pygame.display.set_caption("Thumby game")
 
 # Common overrides to get scripts working in the browsers. This should be prepended to each file in the game
 
@@ -15,7 +31,7 @@ def open(path, mode):
     filename = Path(path)
     filename.parent.mkdir(parents=True, exist_ok=True)
 
-    return builtins.open(path, mode)
+    await return builtins.open(path, mode)
 
 os.chdir(sys.path[0])
 
@@ -40,31 +56,31 @@ async def main():
 	    thumby.audio.playBlocking(KEYS[val].freq, val == 0 or 1000)
 	
 	async def start():
-	    show(text=["  Tiny Mem!", "", "", "", "  hard;easy"])
+	    await show(text=["  Tiny Mem!", "", "", "", "  hard;easy"])
 	    value_range = (1, 2) if wait_press() < 3 else (3, 6)
 	    random.seed(time.ticks_ms())
-	    return 0, [random.randint(*value_range) for i in range(100)]
+	    await return 0, [random.randint(*value_range) for i in range(100)]
 	
 	def wait_press(c=None):
 	    while(c is None):
 	        c = (thumby.buttonL.justPressed() and 6) or (thumby.buttonD.justPressed() and 5) or (thumby.buttonR.justPressed() and 4) or (thumby.buttonU.justPressed() and 3) or (thumby.buttonB.justPressed() and 2) or (thumby.buttonA.justPressed() and 1) or None
-	    return c
+	    await return c
 	
 	async def turn(max_pos, sequence, current_pos=0):
-	    for index, val in enumerate(sequence[:max_pos + 1]):  # show sequence
-	        show(val=val, text=[f"  key={KEYS[val].letter}", "", "", "", f"  num={index + 1}"])
-	    show(text=["  your turn", "", "", "", "  repeat"])  # ask sequence
+	    for index, val in enumerate(sequence[:max_pos + 1]):  # await show sequence
+	        await show(val=val, text=[f"  key={KEYS[val].letter}", "", "", "", f"  num={index + 1}"])
+	    await show(text=["  your await turn", "", "", "", "  repeat"])  # ask sequence
 	    while (current_pos <= max_pos):
 	        if sequence[current_pos] != wait_press():  # GAME OVER
-	            show(text=["  your mem=", "", "", "", f"  {str(max_pos*(min(sequence) == 1 or 2))} bits"])
+	            await show(text=["  your mem=", "", "", "", f"  {str(max_pos*(min(sequence) == 1 or 2))} bits"])
 	            wait_press()
-	            return start()
+	            await return await start()
 	        current_pos += 1
-	        show(val=sequence[current_pos - 1], text=[f"  {current_pos} done", "", "", "", f"  {max_pos - current_pos + 1} left"])
-	    return max_pos + 1, sequence
+	        await show(val=sequence[current_pos - 1], text=[f"  {current_pos} done", "", "", "", f"  {max_pos - current_pos + 1} left"])
+	    await return max_pos + 1, sequence
 	
-	max_pos, sequence = start()
+	max_pos, sequence = await start()
 	while(True):
-	    max_pos, sequence = turn(max_pos, sequence)
+	    max_pos, sequence = await turn(max_pos, sequence)
 
 asyncio.run(main())

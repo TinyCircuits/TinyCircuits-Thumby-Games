@@ -1,9 +1,25 @@
+
+        
+# Add common but missing functions to time module (from redefined/recreated micropython module)
 import asyncio
 import pygame
 import os
 import sys
 
 sys.path.append("lib")
+
+import time
+import utime
+
+time.ticks_ms = utime.ticks_ms
+time.ticks_us = utime.ticks_us
+time.ticks_diff = utime.ticks_diff
+time.sleep_ms = utime.sleep_ms
+
+
+# See thumbyGraphics.__init__() for set_mode() call
+pygame.init()
+pygame.display.set_caption("Thumby game")
 
 # Common overrides to get scripts working in the browsers. This should be prepended to each file in the game
 
@@ -41,23 +57,23 @@ async async def main():
 	 # Core Engine Functions    
 	    def new_game(crew):
 	        character = create_character('You', crew)
-	        character_screen(character)
+	        await character_screen(character)
 	        
 	    def save_game(crew, ship, money, day):
 	               with open('Games/Orion/savestate.json',"w") as save_file:
 	                    json.dump({"crew":crew,"ship":ship,"money":money,"day":day},save_file)
 	              
-	    def save_state_menu(crew, ship, money, day):
+	    def await save_state_menu(crew, ship, money, day):
 	        time.sleep(1)
-	        menu = True
-	        while menu:
+	        await menu = True
+	        while await menu:
 	            thumby.display.drawText('A: Continue', 0, 12, 0)
 	            thumby.display.drawText('B: New Game', 0, 24, 0)
 	            if thumby.buttonA.pressed():
 	                if emulator:
-	                    draw_text_blocks('Sorry, you cannot save or load games on virutal hardware')
+	                    await draw_text_blocks('Sorry, you cannot save or load games on virutal hardware')
 	                    new_game(crew)
-	                    menu = False
+	                    await menu = False
 	                else:
 	                    with open('Games/Orion/savestate.json',"r") as save_file:
 	                        data = json.load(save_file)
@@ -65,11 +81,11 @@ async async def main():
 	                        ship = data["ship"]
 	                        money = data["money"]
 	                        day = data["day"]
-	                menu = False
+	                await menu = False
 	            elif thumby.buttonB.pressed():
 	                new_game(crew)
-	                menu = False
-	            redraw_screen(1, 1)
+	                await menu = False
+	            await redraw_screen(1, 1)
 	        return crew, ship, money, day
 	    
 	    async def draw_stars(num):
@@ -87,26 +103,26 @@ async async def main():
 	    async def draw_text_blocks(text, dialog_face=None):
 	        char_width = 14
 	        chars = len(text)
-	        remaining_chars = chars
+	        await remaining_chars = chars
 	        iterator = chars // char_width
-	        remainder = chars % char_width
+	        await remainder = chars % char_width
 	        if dialog_face != None:
 	                thumby.display.blit(dialog_face, 0, 10, 32, 32, 1, 0, 0)
-	        redraw_screen(1,1)
+	        await redraw_screen(1,1)
 	        for i in range(int(iterator)):
-	                if remaining_chars >= char_width:
-	                    remaining_chars -= char_width
+	                if await remaining_chars >= char_width:
+	                    await remaining_chars -= char_width
 	                    for j in range(char_width):
 	                        thumby.display.drawText(text[j+(i*char_width)], j*5, i*8, 0)
-	                if remaining_chars < char_width:
-	                    for j in range(remaining_chars):
-	                        thumby.display.drawText(text[j+(chars-remainder)], j*5, int((i+1))*8, 0)
-	                    remaining_chars= 0
-	        redraw_screen(1,1)
+	                if await remaining_chars < char_width:
+	                    for j in await range(remaining_chars):
+	                        await thumby.display.drawText(text[j+(chars-remainder)], j*5, int((i+1))*8, 0)
+	                    await remaining_chars= 0
+	        await redraw_screen(1,1)
 	        reading =  True
 	        while reading:
 	            reading = check_escape()
-	        redraw_screen(1,1)
+	        await redraw_screen(1,1)
 	                    
 	    
 	    
@@ -116,7 +132,7 @@ async async def main():
 	        a_button = bytearray([195,189,70,106,106,70,189,195])
 	        for i in range(10):
 	            time.sleep(0.2)
-	            draw_stars(i)
+	            await draw_stars(i)
 	        thumby.display.drawText('Welcome to', 0, 0, 1)
 	        thumby.display.drawText('Orion Trail', 0, 10, 1)
 	        await thumby.display.update()
@@ -142,35 +158,35 @@ async async def main():
 	    #Menu Functions                        
 	                        
 	    async def menu(menu_items, header=None, display_stat=None, image=None):
-	        #Do NOT use display_stat parameter unless menu_items is a crew object
-	        in_menu = True
+	        #Do NOT use display_stat parameter unless await menu_items is a crew object
+	        await in_menu = True
 	        arrow  = bytearray([31,31,0,17,27])
 	        arrow_position = 0
-	        while in_menu:
+	        while await in_menu:
 	            header_space = 0
 	            if header != None:
 	                thumby.display.drawText(header, 10, 0, 0)
 	                header_space = 1
-	            for i in range(len(menu_items)):
+	            for i in await range(len(menu_items)):
 	                j = i + header_space
 	                if display_stat != None:
-	                    thumby.display.drawText(menu_items[i][0], 10, j*8, 0)
-	                    stat = get_character_stat(menu_items[i], display_stat)
+	                    await thumby.display.drawText(menu_items[i][0], 10, j*8, 0)
+	                    stat = await get_character_stat(menu_items[i], display_stat)
 	                    thumby.display.drawText(str(stat), 50, j*8, 0)
 	                else:
-	                    thumby.display.drawText(menu_items[i], 6, j*8, 0)
+	                    await thumby.display.drawText(menu_items[i], 6, j*8, 0)
 	                thumby.display.blit(arrow , 0, arrow_position*8+int(header_space*8), 5, 5, 1, 0, 0)
 	            if thumby.buttonU.pressed() and arrow_position > 0:
 	                arrow_position -= 1
-	            elif thumby.buttonD.pressed() and arrow_position < int(len(menu_items)-1):
+	            elif thumby.buttonD.pressed() and arrow_position < await int(len(menu_items)-1):
 	                arrow_position += 1
-	            redraw_screen(1, 0.2)
-	            in_menu = check_escape('a')
-	        return menu_items[arrow_position]
+	            await redraw_screen(1, 0.2)
+	            await in_menu = check_escape('a')
+	        return await menu_items[arrow_position]
 	            
-	    def stat_comparison_menu(crew, stat):
+	    def await stat_comparison_menu(crew, stat):
 	        stat_text = str(stat + ' stat')
-	        chosen = menu(crew, stat_text, stat)
+	        chosen = await menu(crew, stat_text, stat)
 	        return chosen
 	     
 	    #character functions 
@@ -317,7 +333,7 @@ async async def main():
 	            if 'Gmblrs Snglasses' in character:
 	                name = character[0]
 	                text = str(name + 'Tells you that the odds of persuading the robbers are approximately ' +  str(skill) + ' in ' + str(difficulty))
-	                draw_text_blocks(text)
+	                await draw_text_blocks(text)
 	        if skill > num:
 	            return True
 	        else:
@@ -387,16 +403,16 @@ async async def main():
 	    
 	    #the next two functions are completely useless, even for testing as of now            
 	    async def casino(money, character):
-	        casino_menu = True
+	        await await casino_menu = True
 	        arrow_position = 0
 	        arrow  = bytearray([31,31,0,17,27])
 	        games = ['']
-	        menu(games)
+	        await menu(games)
 	            
 	    async def planet_locations(planet, money):
 	        
 	        def select_location(locations):
-	            selecting_location = menu(locations)
+	            selecting_location = await menu(locations)
 	            
 	        # BITMAP: width: 72, hreight: 40
 	        in_transport = bytearray([255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,127,191,191,127,127,255,255,255,255,255,255,127,191,255,191,255,255,255,255,255,255,255,
@@ -409,24 +425,24 @@ async async def main():
 	           252,243,239,223,191,127,255,255,255,255,255,255,255,63,95,143,95,63,255,255,255,255,255,255,255,127,191,223,239,241,254,255,
 	           255,255,255,255,255,255,254,253,253,253,251,231,223,184,181,99,181,184,223,231,251,253,253,253,254,255,255,255,255,255,255,255])
 	        # BITMAP: width: 30, height: 20
-	        casino_small = bytearray([255,255,239,223,23,223,239,255,255,255,255,255,255,255,255,255,255,255,255,239,223,23,223,239,255,255,255,255,255,255,
+	        await casino_small = bytearray([255,255,239,223,23,223,239,255,255,255,255,255,255,255,255,255,255,255,255,239,223,23,223,239,255,255,255,255,255,255,
 	           254,242,242,254,0,251,203,251,203,251,19,235,109,109,235,19,251,251,251,251,251,0,254,242,242,254,0,255,255,255,
 	           1,1,1,1,0,1,1,1,1,1,0,1,0,0,1,0,1,1,1,1,1,0,1,1,1,1,0,1,1,1])
 	        if planet == 'Gidone':
 	            locations = ['Casino', 'Ship Repair', 'Mall']
-	            draw_text_blocks('Now Where would you like to go? Ive appointed Flombar as Your Guide', gidonian_face)
-	            draw_text_blocks('Just Say The Word and He`ll Take You There', gidonian_face)
+	            await draw_text_blocks('Now Where would you like to go? Ive appointed Flombar as Your Guide', gidonian_face)
+	            await draw_text_blocks('Just Say The Word and He`ll Take You There', gidonian_face)
 	            location = select_location(locations)
-	            if location == 'casino':
-	                draw_text_blocks('Next Stop, The Casino')
-	            redraw_screen(0, 4)
+	            if location == await 'casino':
+	                await draw_text_blocks('Next Stop, The Casino')
+	            await redraw_screen(0, 4)
 	            thumby.display.blit(in_transport, 72, 40, 0, 0, 1, 0, 0)
-	            redraw_screen(0,10)
-	            draw_text_blocks('Were Here, Let Me Show You Around')
-	            casino(money)
+	            await redraw_screen(0,10)
+	            await draw_text_blocks('Were Here, Let Me Show You Around')
+	            await casino(money)
 	        elif planet == 'Notera':
 	            locations = ['Archive', 'Reimagine Studios']
-	            draw_text_blocks('Now Where would you like to go?', noteran__face)
+	            await draw_text_blocks('Now Where would you like to go?', noteran__face)
 	            location = select_location(locations)
 	            
 	    #Landing Sequence Functions these have no use without the planet functions being implemented other than for testing purposes
@@ -438,7 +454,7 @@ async async def main():
 	           255,255,255,255,255,1,254,230,154,154,230,254,254,254,254,254,254,254,254,254,230,154,154,230,253,3,255,255,255,255,255,255,
 	           255,255,255,255,255,128,95,191,191,127,191,127,191,127,191,127,191,127,191,127,191,127,191,191,95,128,255,255,255,255,255,255,
 	           255,255,255,255,255,255,255,254,253,251,251,251,251,251,251,251,251,251,251,251,251,251,253,254,255,255,255,255,255,255,255,255])
-	        draw_text_blocks('Welcome to Notera', noteran_face)
+	        await draw_text_blocks('Welcome to Notera', noteran_face)
 	        
 	    async def GidoneLandingSequence(crashed=False):
 	        # BITMAP: width: 24, height: 24
@@ -471,9 +487,9 @@ async async def main():
 	                current_helix = landing_helix_A
 	            thumby.display.blit(current_helix, 30,16, 8, 20, 1, 0, 0)
 	            thumby.display.blit(player_ship, 30,(i*5), 8, 8, 1, 0, 0)
-	            redraw_screen(1, 2)
-	        draw_text_blocks('Welcome to Gidone, Your Ship is Safe With Us', gidonian_face)
-	        planet_locations('Gidone', money)
+	            await redraw_screen(1, 2)
+	        await draw_text_blocks('Welcome to Gidone, Your Ship is Safe With Us', gidonian_face)
+	        await planet_locations('Gidone', money)
 	        #hearing, sight, movement, resilience for sense list
 	        #shooting, melee, piloting, social, repair for stat list
 	        #Diseases List
@@ -484,7 +500,7 @@ async async def main():
 	        b_button = bytearray([195,189,126,2,42,70,189,195])
 	        dead = False
 	        
-	    async async def main_menu(crew, ship, money):
+	    async async def await await main_menu(crew, ship, money):
 	        async def dev_code_screen(crew, ship, money):
 	            deving = True
 	            test_number = 0
@@ -496,23 +512,23 @@ async async def main():
 	                    test_number -= 1
 	                elif thumby.buttonA.pressed():
 	                    if test_number == 1:
-	                        raid(crew, ship)
+	                        await raid(crew, ship)
 	                    elif test_number == 2:
-	                        end_screen('Forced')
+	                        await end_screen('Forced')
 	                    elif test_number == 3:
-	                        GidoneLandingSequence(crashed=False)
+	                        await GidoneLandingSequence(crashed=False)
 	                    elif test_number == 4:
 	                        charname = str('test ' +  str(int(len(crew))))
 	                        create_character(charname, crew)
-	                        character_screen(crew[-1])
+	                        await character_screen(crew[-1])
 	                    elif test_number == 5:
-	                        give_disease('bloatworms', random.choice(crew))
+	                        await give_disease('bloatworms', random.choice(crew))
 	                    elif test_number == 6:
-	                        robbery(crew, ship)
+	                        await robbery(crew, ship)
 	                    elif test_number == 7:
-	                        crew, ship, money = buisness_ship(crew, ship, money)
+	                        crew, ship, money = await buisness_ship(crew, ship, money)
 	                thumby.display.drawText(str(test_number), 30,10,0)
-	                redraw_screen(1, 0.5)
+	                await redraw_screen(1, 0.5)
 	                deving = check_escape()
 	            return crew, ship, money
 	                
@@ -537,9 +553,9 @@ async async def main():
 	       11,13,12,13,13,13,13,13,13,13,12,4,0,8,12,12,12,12,12,12,12,12,12,12,13,13,13,13,13,13,13,13,13,12,15])
 	        # BITMAP: width: 5, height: 5
 	            ship_data = [['General View', ship_image], ['Nav View', ship_image_nav_selected], ['Wings View', ship_image_wings_selected], ['Engine View' , ship_image_engine_selected], ['Vitals View', ship_image_cabin_selected]] 
-	            ship_menu = True
+	            await ship_menu = True
 	            selected = 0
-	            while ship_menu:
+	            while await ship_menu:
 	                if thumby.buttonR.pressed() and selected < int(len(ship_data)-1):
 	                    selected += 1
 	                elif thumby.buttonL.pressed() and selected > 0:
@@ -595,13 +611,13 @@ async async def main():
 	                thumby.display.drawText(ship_text, 0, 30, 0)
 	                current_image = ship_data[selected][1]
 	                thumby.display.blit(current_image, 0, 0, 35, 20, 1, 0, 0)
-	                redraw_screen(1, 0.2)
-	                ship_menu = check_escape()
+	                await redraw_screen(1, 0.2)
+	                await ship_menu = check_escape()
 	                
 	        arrow  = bytearray([31,31,0,17,27])
 	        arrow_position = 0        
 	        options = ['Inventory', 'Crew', 'Log', 'Ship', 'Dev Codes']
-	        selection = menu(options)
+	        selection = await menu(options)
 	        if selection == 'Inventory':
 	            running_inv = True
 	            while running_inv:
@@ -613,23 +629,23 @@ async async def main():
 	                            j = i + 1
 	                            thumby.display.drawText(character[6][i][0], 0, j*10, 0)
 	                            thumby.display.drawText(num, 60, j*10, 0)
-	                redraw_screen(1, 0.2)
+	                await redraw_screen(1, 0.2)
 	                running_inv = check_escape()
 	        elif selection == 'Crew':
 	            crew_inv = get_crew_names(crew)
-	            character = menu(crew_inv)
+	            character = await menu(crew_inv)
 	            for i in range(len(crew)):
 	                if crew[i][0] == character:
-	                    character_screen(crew[i])
+	                    await character_screen(crew[i])
 	        elif selection == 'Ship':
-	            ship_screen(ship)
+	            await ship_screen(ship)
 	        elif selection == 'Dev Codes':
-	            crew, ship, money = dev_code_screen(crew, ship, money)
+	            crew, ship, money = await dev_code_screen(crew, ship, money)
 	        return crew, ship, money
 	    
 	    async def robbery(crew, ship):
-	        draw_text_blocks('A voice comes over your communications system, it says;')
-	        draw_text_blocks('We have weapons aimed at your ship, either give us the following or die dishonorably')   
+	        await draw_text_blocks('A voice comes over your communications system, it says;')
+	        await draw_text_blocks('We have weapons aimed at your ship, either give us the following or die dishonorably')   
 	        possible_items = get_full_inventory(crew)
 	        requested = []
 	        options = ['Take it', 'Fire Away', 'Are you sure?']
@@ -639,26 +655,26 @@ async async def main():
 	                requested.append(random.choice(possible_items))
 	            for i in range(len(requested)):
 	                thumby.display.drawText((str(str(requested[i][0][1]) + 'x '+ str(requested[i][0][0]))), 0, 10*i, 0)
-	            redraw_screen(1, 5)
-	            answer = menu(options, header='Choices:')
+	            await redraw_screen(1, 5)
+	            answer = await menu(options, header='Choices:')
 	            if answer == 'Take it':
-	                draw_text_blocks('Intercom: Good Choice')
+	                await draw_text_blocks('Intercom: Good Choice')
 	                for i in range(len(requested)):
 	                    crew = remove_item(requested[i][0], requested[i][1], crew)
 	            elif answer == 'Fire Away':
-	                draw_text_blocks('Intercom: Very Well, Now Die')
-	                boss_ship(crew, ship)
+	                await draw_text_blocks('Intercom: Very Well, Now Die')
+	                await boss_ship(crew, ship)
 	            elif answer == 'Are you sure?':
-	                persuader = stat_comparison_menu(crew, 'social')
+	                persuader = await stat_comparison_menu(crew, 'social')
 	                persuasion_skill = get_character_stat(persuader, 'social')
-	                if attempt_persuasion(persuader, persuasion_skill, 30):
-	                    draw_text_blocks('They fly away without another word')
+	                if await attempt_persuasion(persuader, persuasion_skill, 30):
+	                    await draw_text_blocks('They fly away without another word')
 	                else:
-	                    draw_text_blocks('We dont fear you! Now Die')
-	                    boss_ship(crew, ship)
+	                    await draw_text_blocks('We dont fear you! Now Die')
+	                    await boss_ship(crew, ship)
 	        else:
-	            draw_text_blocks('It seems you dont have anything of value that the robbers want')
-	        redraw_screen(1,0.1)
+	            await draw_text_blocks('It seems you dont have anything of value that the robbers want')
+	        await redraw_screen(1,0.1)
 	        
 	        
 	        
@@ -674,20 +690,20 @@ async async def main():
 	        
 	    async def check_ship(ship):
 	        if ship[0][1] <= 0:
-	            end_screen('Engine Explosion')
+	            await end_screen('Engine Explosion')
 	        if ship[0][2] <= 0:
 	            fuel_screen = True
-	            draw_text_blocks('Your Fuel is Empty, Your Ship Cannot Move, The Best You Can Do Is Hope For Help')
+	            await draw_text_blocks('Your Fuel is Empty, Your Ship Cannot Move, The Best You Can Do Is Hope For Help')
 	        return ship
 	        
 	    async def give_disease(disease, character, severity=1):
-	        draw_text_blocks(str(character[0] + ' has contracted' + disease + '!'))
-	        draw_text_blocks('either seek a doctor, or hope they fight off the infection on their own')
+	        await draw_text_blocks(str(character[0] + ' has contracted' + disease + '!'))
+	        await draw_text_blocks('either seek a doctor, or hope they fight off the infection on their own')
 	        if disease == 'bloatworms':
-	            draw_text_blocks('bloatworms is a parasitic disease')
-	            draw_text_blocks('which causes rapid growth in the host') 
-	            draw_text_blocks('they will continue to grow, consuming more and')
-	            draw_text_blocks('more food until they are cured or die from starvation')
+	            await draw_text_blocks('bloatworms is a parasitic disease')
+	            await draw_text_blocks('which causes rapid growth in the host') 
+	            await draw_text_blocks('they will continue to grow, consuming more and')
+	            await draw_text_blocks('more food until they are cured or die from starvation')
 	        character[3].append([disease, [0, 0], severity])
 	    
 	    #Amogus functions is a placeholder, has no use, even in testing.    
@@ -699,7 +715,7 @@ async async def main():
 	        # BITMAP: width: 8, height: 8
 	        player_ship = bytearray([189,126,60,60,60,60,24,24])
 	        # BITMAP: width: 30, height: 40
-	        boss_ship = bytearray([0,192,64,64,64,192,32,32,32,16,16,16,16,16,16,16,16,16,16,16,144,144,144,16,48,96,128,0,0,0,
+	        await boss_ship = bytearray([0,192,64,64,64,192,32,32,32,16,16,16,16,16,16,16,16,16,16,16,144,144,144,16,48,96,128,0,0,0,
 	       0,3,2,2,255,0,0,2,2,0,2,130,0,2,2,160,64,160,0,7,10,15,202,39,16,8,7,0,0,0,
 	       0,0,0,0,255,60,66,66,66,126,153,24,24,24,24,24,24,24,24,24,24,24,255,0,0,0,0,0,0,0,
 	       0,192,64,64,255,0,0,32,32,0,32,33,0,32,32,5,2,5,0,192,160,224,163,196,8,24,240,0,0,0,
@@ -708,14 +724,14 @@ async async def main():
 	        explosion = bytearray([0,128,0,32,64,8,0,66,34,34,34,66,0,8,64,32,0,128,0,0,
 	       0,16,0,64,32,7,0,16,37,34,37,16,0,7,32,64,0,16,0,0,
 	       0,0,0,0,0,0,1,4,4,4,4,4,1,0,0,0,0,0,0,0])
-	        draw_text_blocks('You have chosen to fight the robbers!')
-	        draw_text_blocks('You Must Choose a Pilot')
-	        pilot = stat_comparison_menu(crew, 'pilot')
+	        await draw_text_blocks('You have chosen to fight the robbers!')
+	        await draw_text_blocks('You Must Choose a Pilot')
+	        pilot = await stat_comparison_menu(crew, 'pilot')
 	        pilot_skill = get_character_stat(pilot, 'pilot')
 	        top_down_ship = True
 	        player_ship_axis = 20
-	        boss_ship_axis = 0
-	        boss_ship_direction = 'UP'
+	        await boss_ship_axis = 0
+	        await boss_ship_direction = 'UP'
 	        to_fire = 'TOP'
 	        bullet_axis = 20
 	        bullet_timer = 0
@@ -746,48 +762,48 @@ async async def main():
 	                player_ship_axis = 40
 	            if bullet_timer > 0:
 	                bullet_timer -= 1
-	            thumby.display.blit(boss_ship, 40, boss_ship_axis, 30, 40, 0, 0, 0)
-	            if boss_ship_direction == 'UP':
-	                boss_ship_axis += 2
-	                if boss_ship_axis > 20:
-	                    boss_ship_direction = 'DOWN'
+	            await thumby.display.blit(boss_ship, 40, boss_ship_axis, 30, 40, 0, 0, 0)
+	            if await boss_ship_direction == 'UP':
+	                await boss_ship_axis += 2
+	                if await boss_ship_axis > 20:
+	                    await boss_ship_direction = 'DOWN'
 	            else:
-	                boss_ship_axis -= 2
-	                if boss_ship_axis < -20:
-	                    boss_ship_direction = 'UP'
+	                await boss_ship_axis -= 2
+	                if await boss_ship_axis < -20:
+	                    await boss_ship_direction = 'UP'
 	            if boss_bullet_timer <= 0:
 	                if to_fire == 'TOP':
-	                    thumby.display.drawLine(40, boss_ship_axis+8, 0,boss_ship_axis+8, 1)
+	                    thumby.display.drawLine(40, await boss_ship_axis+8, 0,boss_ship_axis+8, 1)
 	                    to_fire = 'DOWN'
 	                    for i in range(8):
-	                        if player_ship_axis + i == boss_ship_axis+8:
-	                            redraw_screen(0,6)
-	                            end_screen('Robbed')
+	                        if player_ship_axis + i == await boss_ship_axis+8:
+	                            await redraw_screen(0,6)
+	                            await end_screen('Robbed')
 	                else:
 	                    to_fire = 'TOP'
-	                    thumby.display.drawLine(40, boss_ship_axis+32, 0,boss_ship_axis+32, 1)
+	                    thumby.display.drawLine(40, await boss_ship_axis+32, 0,boss_ship_axis+32, 1)
 	                    for i in range(8):
-	                        if player_ship_axis + i == boss_ship_axis+32:
-	                            redraw_screen(0,6)
-	                            end_screen('Robbed')
+	                        if player_ship_axis + i == await boss_ship_axis+32:
+	                            await redraw_screen(0,6)
+	                            await end_screen('Robbed')
 	                boss_bullet_timer = 20
 	            else:
 	                boss_bullet_timer -= 1
 	            if boss_health <= 0:
-	                redraw_screen(0, 0.1)
+	                await redraw_screen(0, 0.1)
 	                thumby.display.blit(player_ship, 20, player_ship_axis, 8, 8, 0, 0, 0)
 	                thumby.display.blit(explosion, 40, 15, 20, 20, 0, 0, 0)
-	                redraw_screen(0, 8)
+	                await redraw_screen(0, 8)
 	                top_down_ship = False
-	            redraw_screen(0, 0.1)
+	            await redraw_screen(0, 0.1)
 	       
 	    async def raid(crew, ship):
-	        raid_types = ['Air Strike']
-	        raid_factions = ['Pirates']
-	        raid_type = random.choice(raid_types)
-	        raid_faction = random.choice(raid_factions)
+	        await raid_types = ['Air Strike']
+	        await raid_factions = ['Pirates']
+	        await raid_type = random.choice(raid_types)
+	        await raid_faction = random.choice(raid_factions)
 	        # BITMAP: width: 10, height: 10
-	        raider_ship = bytearray([240,192,240,200,196,196,200,240,192,224,
+	        await raider_ship = bytearray([240,192,240,200,196,196,200,240,192,224,
 	       1,0,1,1,1,1,1,1,0,1])
 	        ti_fighter = bytearray([255,48,48,48,72,72,48,48,48,255,
 	       3,0,0,0,0,0,0,0,0,3])
@@ -796,14 +812,14 @@ async async def main():
 	        # BITMAP: width: 8, height: 8
 	        ship_exploded = bytearray([129,90,36,90,90,36,90,129])
 	        arrow  = bytearray([31,31,0,17,27])
-	        if raid_type == 'Air Strike':
-	            if raid_faction == 'Pirates':
-	                enemy_ship_image = raider_ship
+	        if await raid_type == 'Air Strike':
+	            if await raid_faction == 'Pirates':
+	                enemy_ship_image = await raider_ship
 	            time.sleep(0.3)
-	            raid_intro1 = True
-	            draw_text_blocks('Pirates are Firing Upon Your Ship')
-	            draw_text_blocks('You Must Choose a Pilot')
-	            pilot = stat_comparison_menu(crew, 'pilot')
+	            await await raid_intro1 = True
+	            await draw_text_blocks('Pirates are Firing Upon Your Ship')
+	            await draw_text_blocks('You Must Choose a Pilot')
+	            pilot = await stat_comparison_menu(crew, 'pilot')
 	            pilot_skill = get_character_stat(pilot, 'pilot')
 	            top_down_ship = True
 	            player_ship_axis = 20
@@ -872,27 +888,27 @@ async async def main():
 	                    fleet_board.remove(fleet_board_remove[l])
 	                if fleet == [] and fleet_board == []:
 	                    top_down_ship = False
-	                    raid_end = True
-	                    draw_text_blocks('Attackers Defeated')
-	                check_ship(ship)
-	                redraw_screen(0, 0.1)
+	                    await raid_end = True
+	                    await draw_text_blocks('Attackers Defeated')
+	                await check_ship(ship)
+	                await redraw_screen(0, 0.1)
 	    
 	    async def distress_call(crew, ship):
 	        if len(crew) < 6:
-	            draw_text_blocks('You hear a distress call from a stranded ship on your radio, the remaining crew offer to join you if rescued.')
-	            draw_text_blocks('What do you do?')
-	            yes_no = menu(['Rescue Them', 'Leave Them'])
+	            await draw_text_blocks('You hear a distress call from a stranded ship on your radio, the await remaining crew offer to join you if rescued.')
+	            await draw_text_blocks('What do you do?')
+	            yes_no = await menu(['Rescue Them', 'Leave Them'])
 	            if yes_no == 'Rescue Them':
 	                betrayl_chance = random.randint(1,5)
 	                if betrayl_chance == 1:
-	                    draw_text_blocks('The distress call seems to have been a trap set by robbers')
-	                    robbery(crew, ship)
+	                    await draw_text_blocks('The distress call seems to have been a trap set by robbers')
+	                    await robbery(crew, ship)
 	                else:
 	                    name = random.choice(['Urneveku', 'Isheveki', 'Jason', 'Laverna', 'Mason', 'Varspin', 'Alakx', 'Umeka'])
 	                    for i in range(len(crew)):
 	                        while name == crew[i][0]:
 	                            name = random.choice(['Urneveku', 'Isheveki', 'Jason', 'Laverna', 'Mason', 'Varspin', 'Alakx', 'Umeka'])
-	                    draw_text_blocks('They are grateful that you rescued them')
+	                    await draw_text_blocks('They are grateful that you rescued them')
 	                    for i in range(random.randint(2,3)):
 	                        name = random.choice(['Urneveku', 'Isheveki', 'Jason', 'Laverna', 'Mason', 'Varspin', 'Alakx', 'Umeka'])
 	                        for j in range(len(crew)):
@@ -902,19 +918,19 @@ async async def main():
 	
 	                
 	        else:
-	            draw_text_blocks('You leave them behind')
+	            await draw_text_blocks('You leave them behind')
 	            
 	        return crew, ship
 	        
 	    async def buisness_ship(crew, ship, money):
-	        draw_text_blocks('You encounter a large unarmed ship, it radios to you and says;')
+	        await draw_text_blocks('You encounter a large unarmed ship, it radios to you and says;')
 	        ship_names = ['Archon', 'Urnevekenes', 'Argo']
 	        ship_number = random.randint(1,100)
 	        ship_name = random.choice(ship_names)
 	        ship_text = str('Welcome to the trade ship ' + ship_name + ' ' + str(ship_number) + ' we are pleased to welcome you')
-	        draw_text_blocks(ship_text)
-	        draw_text_blocks('What would you like to do?')
-	        choice = menu(['Trade', 'Move On'])
+	        await draw_text_blocks(ship_text)
+	        await draw_text_blocks('What would you like to do?')
+	        choice = await menu(['Trade', 'Move On'])
 	        stock_amount = random.randint(2,4)
 	        in_stock = []
 	        items = get_all_items()
@@ -923,39 +939,39 @@ async async def main():
 	                items.remove(item)
 	                in_stock.append(item)
 	        while choice == 'Trade':
-	            draw_text_blocks('You must choose a trader')
-	            trader = stat_comparison_menu(crew, 'social')
+	            await draw_text_blocks('You must choose a trader')
+	            trader = await stat_comparison_menu(crew, 'social')
 	            trader_skill = get_character_stat(trader, 'social')
 	            if check_for_item_by_crew(crew, 'Jumpsuit') == False:
-	                draw_text_blocks('they wont let you aboard the ship naked, try to find a jumpsuit')
+	                await draw_text_blocks('they wont let you aboard the ship naked, try to find a jumpsuit')
 	            else:
-	                BuySell = menu(['Buying', 'Selling'])
+	                BuySell = await menu(['Buying', 'Selling'])
 	                if BuySell == 'Buying':
 	                    shopping = True
 	                    while shopping:
-	                        menu_text = []
+	                        await menu_text = []
 	                        for i in range(len(in_stock)):
-	                            menu_text.append(str(in_stock[i][0] + ' ' + str(in_stock[i][2])))
-	                            menu_text_back = menu_text
-	                            menu_text_back.append('Back')
-	                            item = menu(menu_text, 'Buying:')
+	                            await menu_text.append(str(in_stock[i][0] + ' ' + str(in_stock[i][2])))
+	                            await menu_text_back = menu_text
+	                            await menu_text_back.append('Back')
+	                            item = await menu(menu_text, 'Buying:')
 	                            for j in range(len(in_stock)):
 	                                if in_stock[j][0] in item:
 	                                    item_description = in_stock[j][3]
 	                                    price = in_stock[j][2]
-	                                    draw_text_blocks(item_description)
+	                                    await draw_text_blocks(item_description)
 	                                    break
 	                            if item != 'Back':
-	                                yes_no = menu(['Yes', 'No'], 'Prchse?')
+	                                yes_no = await menu(['Yes', 'No'], 'Prchse?')
 	                                if yes_no == 'Yes':
 	                                    if price > money:
-	                                        draw_text_blocks('You dont have enough money')
+	                                        await draw_text_blocks('You dont have enough money')
 	                                    else:
 	                                        money -= price
-	                                        draw_text_blocks('Thank You for your Purchase')
-	                                        draw_text_blocks('Who do u want to hold/wear this item?')
+	                                        await draw_text_blocks('Thank You for your Purchase')
+	                                        await draw_text_blocks('Who do u want to hold/wear this item?')
 	                                        names = get_crew_names(crew)
-	                                        holder_name = menu(names)
+	                                        holder_name = await menu(names)
 	                                        holder = get_crew_member_by_name(crew, holder_name)
 	                                        for l in range(len(in_stock)):
 	                                            if in_stock[l][0] in item:
@@ -964,7 +980,7 @@ async async def main():
 	                                        for k in range(len(crew)):
 	                                            if crew[k][0] == holder[0]:
 	                                                crew[k] = holder
-	                                        choice = menu(['Yes', 'No'], 'Anything Else?')
+	                                        choice = await menu(['Yes', 'No'], 'Anything Else?')
 	                                    if choice == 'Yes':
 	                                        pass
 	                                    else:
@@ -972,27 +988,27 @@ async async def main():
 	                                        choice == 'Done'
 	                                        return crew, ship, money
 	                                else:
-	                                    menu_text = []
+	                                    await menu_text = []
 	                            else:
 	                                shopping = False
 	                                choice == 'Done'
 	                                return crew, ship, money
 	                else:
-	                    draw_text_blocks('What would you like to sell?')
+	                    await draw_text_blocks('What would you like to sell?')
 	                    shopping = True
 	                    while shopping:
 	                        your_items = get_full_inventory(crew)
 	                        sellable = []
-	                        sellable_menu = []
+	                        await sellable_menu = []
 	                        prices = []
 	                        for i in range(len(your_items)):
 	                            price = int(int(your_items[i][0][2])//2) + trader_skill
 	                            sellable.append(your_items[i][0])
-	                            sellable_menu.append(str(your_items[i][0][0]) + ' ' + str(price))
+	                            await sellable_menu.append(str(your_items[i][0][0]) + ' ' + str(price))
 	                            prices.append(price)
-	                        sellable_back = sellable_menu
+	                        sellable_back = await sellable_menu
 	                        sellable_back.append('Back')
-	                        to_sell = menu(sellable_back, 'Selling')
+	                        to_sell = await menu(sellable_back, 'Selling')
 	                        if to_sell != 'Back':
 	                            for i in range(len(sellable)):
 	                                    for j in range(len(crew)):
@@ -1000,7 +1016,7 @@ async async def main():
 	                                            if check_for_item_by_crew(crew, sellable[i][0]):
 	                                                crew = remove_item(sellable[i], crew[j], crew)
 	                                                money += prices[i]
-	                                                draw_text_blocks('Item Sold')
+	                                                await draw_text_blocks('Item Sold')
 	                                        shopping = False
 	                                        choice == 'Done'
 	                                                
@@ -1020,14 +1036,14 @@ async async def main():
 	    async def planet_near(crew, ship):
 	        planet = generate_planet()
 	        if planet == 'Gidone':
-	            GidoneLandingSequence(crashed=False)
+	            await GidoneLandingSequence(crashed=False)
 	        elif planet == 'Notera':
-	            NoteraLandingSequence(crashed=False)    
+	            await NoteraLandingSequence(crashed=False)    
 	            
 	    async def award_money(money):
 	        found_amount =  random.randint(50,300)
 	        money += found_amount
-	        draw_text_blocks(str('You find ' +  str(found_amount) + ' money on the wrecked enemy ships'))
+	        await draw_text_blocks(str('You find ' +  str(found_amount) + ' money on the wrecked enemy ships'))
 	        return money
 	        
 	    async def generate_event(crew, ship, money):
@@ -1036,34 +1052,34 @@ async async def main():
 	            events = ['Raid', 'Bloatworms', 'Robbery', 'Buisness Ship', 'Distress Signal']
 	            event = random.choice(events)
 	            if event == 'Raid':
-	                raid(crew, ship)
-	                money = award_money(money)
+	                await raid(crew, ship)
+	                money = await award_money(money)
 	            elif event == 'Bloatworms':
 	                severity = random.randint(1,5)
-	                give_disease('bloatworms', random.choice(crew), severity)
+	                await give_disease('bloatworms', random.choice(crew), severity)
 	            elif event == 'Buisness Ship':
-	                crew, ship, money = buisness_ship(crew, ship, money)
+	                crew, ship, money = await buisness_ship(crew, ship, money)
 	            elif event == 'Maintnence Port':
 	                port(crew, ship, money)
 	            elif event == 'Planet Near':
-	                planet_near(crew, ship)
+	                await planet_near(crew, ship)
 	            elif event == 'Distress Signal':
-	                crew, ship = distress_call(crew, ship)
+	                crew, ship = await distress_call(crew, ship)
 	            elif event == 'Robbery':
-	                robbery(crew, ship)
-	                money = award_money(money)
+	                await robbery(crew, ship)
+	                money = await award_money(money)
 	            elif event == 'Debris':
 	                debris(crew, ship)
 	        return crew, ship, money
 	            
 	    async def warning(ship):
 	        # BITMAP: width: 10, height: 10
-	        warning_logo = bytearray([63,223,239,247,67,67,247,239,223,63,
+	        await warning_logo = bytearray([63,223,239,247,67,67,247,239,223,63,
 	       0,1,1,1,0,0,1,1,1,0])
 	        if ship[4] < 30 or ship[3] < 30:
 	            warn_page = True
 	            while warn_page:
-	                thumby.display.blit(warning_logo, 30, 10, 10, 10, 1, 0, 0)
+	                await thumby.display.blit(warning_logo, 30, 10, 10, 10, 1, 0, 0)
 	                if ship[4] >= 10:
 	                    thumby.display.drawText('Food Lvl Low', 0, 20, 0)
 	                elif ship[4] < 10:
@@ -1072,14 +1088,14 @@ async async def main():
 	                    thumby.display.drawText('Oxy Lvl Low', 0, 30, 0)
 	                elif ship[3] < 10:
 	                    thumby.display.drawText('Oxy Lvl Crtcl', 0, 20, 0)
-	                redraw_screen(1, 0.2)
+	                await redraw_screen(1, 0.2)
 	                warn_page = check_escape()
 	        return ship
 	     
 	    async def end_screen(cause):
-	        draw_text_blocks(str('Game Over, Cause Of Death ' + cause))
-	        redraw_screen(1, 10)
-	        main()
+	        await draw_text_blocks(str('Game Over, Cause Of Death ' + cause))
+	        await redraw_screen(1, 10)
+	        await main()
 	            
 	    async def change_day(day, ship, crew):
 	        day += 1
@@ -1090,9 +1106,9 @@ async async def main():
 	            progress_all_diseases(character)
 	                    
 	        if ship[4] < 0:
-	            end_screen('Starvation')
+	            await end_screen('Starvation')
 	        elif ship[3] < 0:
-	            end_screen('Lack of Oxygen')
+	            await end_screen('Lack of Oxygen')
 	        if emulator == False:
 	            save_game(crew, ship, money, day)
 	        return day, ship
@@ -1103,24 +1119,24 @@ async async def main():
 	        running = True
 	        day_since_event = 0
 	        while running:
-	            draw_stars(12)
+	            await draw_stars(12)
 	            day_text = str('Day:' + str(day))
 	            money_text = str('Mny:' + str(money))
 	            thumby.display.drawText(day_text, 1, 30, 1)
 	            thumby.display.drawText(money_text, 30, 30, 1)
 	            ship_img = bytearray([136,112,126,124,120,112,112,96,96,96])
 	            thumby.display.blit(ship_img, 20, 20, 10, 8, 0, 0, 0)
-	            redraw_screen(0, 0.2)
+	            await redraw_screen(0, 0.2)
 	            if thumby.buttonB.pressed():
-	                crew, ship, money = main_menu(crew, ship, money)
+	                crew, ship, money = await await await main_menu(crew, ship, money)
 	            elif thumby.buttonA.pressed():
-	                day, ship = change_day(day, ship, crew)
-	                warning(ship)
-	                crew, ship, money = generate_event(crew, ship, money)
+	                day, ship = await change_day(day, ship, crew)
+	                await warning(ship)
+	                crew, ship, money = await generate_event(crew, ship, money)
 	    
-	    intro()
-	    crew, ship, money, day = save_state_menu(crew, ship, money, day)
-	    playing(crew, ship, money, day)
+	    await intro()
+	    crew, ship, money, day = await save_state_menu(crew, ship, money, day)
+	    await playing(crew, ship, money, day)
 	while running == True:
-	    main()
-asyncio.run(main())
+	    await main()
+aawait syncio.run(main())
