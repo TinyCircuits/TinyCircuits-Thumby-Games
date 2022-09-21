@@ -431,7 +431,7 @@ async def main():
 	    grosNenessSpr.draw()
 	    gateFrontSpr.draw()
 	
-	def waitForButton():
+	async def waitForButton():
 	    wasPressed = False
 	    while(True):
 	        if not wasPressed and (thumby.buttonA.pressed() or thumby.buttonB.pressed()):
@@ -498,7 +498,7 @@ async def main():
 	    collideMusic = Music(collideStr, 100)
 	
 	
-	def playGenerique(text):
+	async def playGenerique(text):
 	    lines=text.split('\n')
 	    music = Music(libreDeDroitMusicStr,200)
 	    t0=time.ticks_ms()
@@ -520,7 +520,7 @@ async def main():
 	        ct=time.ticks_ms()-t0
 	    music.stop()
 	    
-	def playEndLevel(nbBottles):
+	async def playEndLevel(nbBottles):
 	    cowSpr.setX(-100)
 	    cowFaceSpr.setX(0)
 	    drawScene()
@@ -600,7 +600,7 @@ async def main():
 	    grosNenessSpr.setMirrorX(0)
 	    print("end anim end level")
 	    
-	def playEndGame():
+	async def playEndGame():
 	    # 72x40 for 1 frames
 	    screen_end = bytearray([1,252,254,254,254,254,254,254,254,254,254,254,254,254,254,226,158,62,158,226,158,110,158,254,10,254,2,254,52,82,14,254,254,254,254,254,254,254,254,254,254,254,254,254,254,0,255,255,255,127,63,63,31,63,63,31,7,3,65,177,129,99,135,63,127,255,255,255,255,255,255,255,0,255,255,255,255,255,195,189,189,173,203,255,135,191,135,255,133,255,207,183,183,7,255,135,191,135,255,133,255,251,193,187,251,193,187,255,199,171,167,127,191,255,255,255,255,0,255,255,255,159,14,132,4,0,76,132,134,4,140,60,252,25,3,0,0,4,12,32,57,131,255,255,0,255,195,191,191,195,255,135,247,143,255,199,171,167,255,255,255,135,247,142,254,207,183,183,207,255,135,191,135,255,231,159,231,255,199,171,167,255,129,255,129,255,199,171,167,0,255,255,31,128,175,13,237,244,105,109,239,79,96,123,248,252,242,209,29,41,38,112,248,255,255,255,0,255,255,255,255,255,255,255,219,213,197,255,203,211,199,255,194,255,91,213,69,255,231,219,219,231,127,195,251,199,255,255,255,231,219,193,255,227,213,211,255,255,255,255,255,12,237,91,16,1,241,177,129,161,225,96,97,240,112,112,114,119,63,31,0,192,240,13,128,137,227,19,128,63,127,127,127,127,127,127,127,127,127,127,127,127,127,127,127,96,125,127,97,127,97,125,99,127,97,127,113,106,105,127,111,127,127,127,127,127,127,127,127,127,127,127,63,128,251,120,24,128,80,0,49,56,248,200,42,134,38,150,238,231,176,224,220,136,120,208,15,12,50,239])
 	    screen_endSpr=thumby.Sprite(72,40,screen_end)
@@ -645,7 +645,7 @@ async def main():
 	            t=time.ticks_ms()
 	            count+=1
 	        
-	def playLevel(level):
+	async def playLevel(level):
 	    level.reset()
 	    thumby.display.setFont("/lib/font5x7.bin", 5, 7, 0)
 	    thumby.display.fill(0)

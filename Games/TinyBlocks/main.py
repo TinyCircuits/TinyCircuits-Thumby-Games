@@ -127,7 +127,7 @@ async def main():
 	  thumby.display.setPixel(xb*2 + int(ghost_flicker), yb*2, 1)
 	  thumby.display.setPixel(xb*2 + 1 - int(ghost_flicker), yb*2+1, 1)
 	
-	def updateScreen(showGhost = False, ghostPos = None):
+	async def updateScreen(showGhost = False, ghostPos = None):
 	  #print("update")
 	  nonlocal level
 	  clearScreen()
@@ -199,7 +199,7 @@ async def main():
 	    return next_shape()
 	  return next;
 	
-	def show_high_score():
+	async def show_high_score():
 	    
 	  for y in range(40):
 	    thumby.display.drawFilledRectangle(8,40-y,20,1,1)

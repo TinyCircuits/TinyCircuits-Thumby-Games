@@ -66,7 +66,7 @@ async def main():
 	        self.credit = False
 	        self.dirty = True
 	
-	    def update(self):
+	    async def update(self):
 	        if self.credit:
 	            if z.btn_d(z.BTN_A|z.BTN_B):
 	                self.credit = False
@@ -136,7 +136,7 @@ async def main():
 	        self.dirty = True
 	        z.play("O4S6CDEFG12", 3)
 	
-	    def update(self):
+	    async def update(self):
 	        next_state = self.ID
 	        dir = 0
 	        forward = 0.0
@@ -219,7 +219,7 @@ async def main():
 	        self.base_bottom = 0
 	        self.offset = 0
 	
-	    def update(self, forward):
+	    async def update(self, forward):
 	        self.gap = int((1.0 - math.cos(self.phase*math.pi*2.0/self.PHASE_MAX))
 	                       * self.gap_max / 2.0)
 	        self.base_bottom = self.gap // 2
@@ -294,7 +294,7 @@ async def main():
 	        self.move = 0
 	        self.dead = False
 	
-	    def update(self, cave, dir):
+	    async def update(self, cave, dir):
 	        if self.dead:
 	            return
 	        c = cave.columns[self.pos]
@@ -342,7 +342,7 @@ async def main():
 	        self.dots = []
 	        self.offset = 0
 	
-	    def update(self, cave):
+	    async def update(self, cave):
 	        scroll = 1 if self.offset != cave.offset else 0
 	        self.offset = cave.offset
 	        base = cave.base_bottom
@@ -367,7 +367,7 @@ async def main():
 	        self.b = b
 	        self.v = 0
 	
-	    def update(self, scroll, base):
+	    async def update(self, scroll, base):
 	        self.x -= scroll
 	        self.y += self.v
 	        self.v += 0.125

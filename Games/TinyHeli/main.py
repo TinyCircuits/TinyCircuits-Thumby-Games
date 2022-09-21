@@ -108,7 +108,7 @@ async def main():
 	        obstaclePos["x"] = -obstacleWidth
 	
 	
-	def showStartScreen():
+	async def showStartScreen():
 	    # Used for animating heli sprite on start screen
 	    justStarted = True
 	    
@@ -143,7 +143,7 @@ async def main():
 	        await thumby.display.update()
 	
 	
-	def showEndScreen():
+	async def showEndScreen():
 	    # Play death sound
 	    for f in range(500, 900, 1):
 	        thumby.audio.playBlocking(f, 1)

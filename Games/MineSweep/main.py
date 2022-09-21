@@ -20,7 +20,7 @@ def open(path, mode):
 os.chdir(sys.path[0])
 
 
-async def main():
+async async def main():
 	# MineSweep
 	
 	# Author: TPReal

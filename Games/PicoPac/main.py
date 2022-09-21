@@ -449,7 +449,7 @@ async def main():
 	                break
 	        x = x + 20
 	        
-	def show_level():
+	async def show_level():
 	    opening_scene()
 	    thumby.display.fill(0)
 	    display_score()
@@ -458,7 +458,7 @@ async def main():
 	    wait(2000)
 	    show_score()
 	    
-	def show_score():
+	async def show_score():
 	    nonlocal last_update
 	    last_update = time.ticks_ms()
 	    thumby.display.fill(0)
@@ -470,7 +470,7 @@ async def main():
 	    await thumby.display.update()
 	    wait(2000)
 	
-	def press_to_start():
+	async def press_to_start():
 	    thumby.display.drawText("A: Play", 19, 12, 1)
 	    thumby.display.drawText("B: Exit", 19, 22, 1)
 	    thumby.display.drawText("v1.1", 50, 32, 1)
@@ -486,7 +486,7 @@ async def main():
 	def display_score():
 	    thumby.display.drawText(f"Score:{player_score}", 1, 2, 1)
 	
-	def game_over():
+	async def game_over():
 	    last_update = time.ticks_ms()
 	    highScore = 0
 	    thumby.display.fill(0)
@@ -507,7 +507,7 @@ async def main():
 	    display_title()
 	    press_to_start()
 	
-	def get_input():
+	async def get_input():
 	    key = getcharinputNew()
 	    if key == '1':
 	        thumby.display.drawFilledRectangle(22, 13, 35, 13, 0)
@@ -574,13 +574,13 @@ async def main():
 	            power_time = p_time
 	            thumby.audio.play(349, 50)
 	
-	def display_ghost_bonus(bonus):
+	async def display_ghost_bonus(bonus):
 	    thumby.display.drawFilledRectangle(27, 13, 22, 13, 0)
 	    thumby.display.drawText(f"{bonus}", 29, 16, 1)
 	    await thumby.display.update()
 	    wait(1000)
 	    
-	def update_display():
+	async def update_display():
 	    thumby.display.blit(maze_images[maze_index], 0, 0, 72, 40,-1,0,0)
 	    display_pac()
 	
@@ -605,7 +605,7 @@ async def main():
 	    thumby.display.drawText("Pico Pac", 1, 1, 1)
 	    thumby.display.setFont("/lib/font5x7.bin", 5, 7, 1)
 	
-	def opening_scene():
+	async def opening_scene():
 	    thumby.display.fill(0)
 	    await thumby.display.update()
 	    if level == 1:
@@ -614,7 +614,7 @@ async def main():
 	        display_score()
 	    show_pac(85)
 	
-	def show_pac(ending_x):
+	async def show_pac(ending_x):
 	    last_update = time.ticks_ms()
 	    nonlocal opening_x, opening_state, last_opening_action
 	    opening_state = 1

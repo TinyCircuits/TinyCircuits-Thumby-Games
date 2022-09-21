@@ -20,7 +20,7 @@ def open(path, mode):
 os.chdir(sys.path[0])
 
 
-async def main():
+async async def main():
 	import time
 	import thumby
 	import math
@@ -39,7 +39,7 @@ async def main():
 	waitOnPressedAB()
 	
 	
-	def handleLogoScreen():
+	async def handleLogoScreen():
 	    logo = thumby.Sprite(72, 40, "/Games/Tennis/TennisLogoFrames.bin")
 	    
 	    while True:
@@ -55,7 +55,7 @@ async def main():
 	    return 1
 	
 	
-	def waitForPlayer(received):
+	async def waitForPlayer(received):
 	    nonlocal server
 	    
 	    # If receive packet with current game screen, means other Thumby ready to go
@@ -113,7 +113,7 @@ async def main():
 	lastBallRefresh = 0     # Only applies to singleplayer
 	
 	
-	def handleModeSelect():
+	async def handleModeSelect():
 	    nonlocal server
 	    nonlocal singlePlayer
 	    
@@ -282,7 +282,7 @@ async def main():
 	            resetCourt(False)
 	
 	
-	def handleGameOver(received):
+	async def handleGameOver(received):
 	    nonlocal courtSetup
 	    nonlocal leftRacketScore
 	    nonlocal rightRacketScore
@@ -336,7 +336,7 @@ async def main():
 	            return 1
 	
 	
-	def main(received):
+	async def main(received):
 	    if courtSetup == False:
 	        resetCourt()
 	    

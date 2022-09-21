@@ -25,8 +25,8 @@ async def main():
 	gc.enable()
 	box = bytearray([0,254,254,254,254,254,254,254,254,254,254,254,254,254,254,0,
 	            0,127,127,127,127,127,127,127,127,127,127,127,127,127,127,0])
-	def singleplayer_battle(char, enemy_char, config):
-	    def character_move(name, jumpheight, attack, health, speed, weight, player_type, state, x, y, direction, a_x, a_y, a_jumpheight, a_attack, a_health, a_speed, a_weight, cooldown, knockback_state, data, config):
+	async def singleplayer_battle(char, enemy_char, config):
+	    async def character_move(name, jumpheight, attack, health, speed, weight, player_type, state, x, y, direction, a_x, a_y, a_jumpheight, a_attack, a_health, a_speed, a_weight, cooldown, knockback_state, data, config):
 	        goggles_walk_sprite = bytearray([243,245,246,150,98,108,142,158,110,108,130,22,246,245,243,255,
 	               255,255,255,191,222,101,155,155,99,93,126,255,255,255,255,255])
 	        
@@ -119,7 +119,7 @@ async def main():
 	        trident_data = None
 	        
 	        #End Match Screen
-	        def match_screen(outcome):
+	        async def match_screen(outcome):
 	            match_over = True
 	            while match_over == True:   
 	                thumby.display.fill(1)
@@ -792,9 +792,9 @@ async def main():
 	        await thumby.display.update()
 	        
 	        
-	def main_menu():
+	async def main_menu():
 	    
-	     def config_menu():
+	     async def config_menu():
 	         time.sleep(0.1)
 	         #Default Config on startup, change these values here if you wish to keep them upon powering down the thumby.
 	         ai_stupidity = 0
@@ -945,7 +945,7 @@ async def main():
 	                config = [0, 0, 1, 'Block']    
 	     return config
 	         
-	def character_select(config):
+	async def character_select(config):
 	    selected_char = None
 	    select_screen = True
 	    selected = 0

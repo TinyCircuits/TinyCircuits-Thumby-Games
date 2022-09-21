@@ -68,7 +68,7 @@ async def main():
 	    gc.collect()
 	    print("Free memory after garbage collect:", gc.mem_free())
 	
-	def runSilicon8():
+	async def runSilicon8():
 	    nonlocal index, scroll
 	    # Ask user to choose a ROM
 	    while True:

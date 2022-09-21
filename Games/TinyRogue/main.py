@@ -76,7 +76,7 @@ async def main():
 	        self.elements=[]
 	    def add(self,i,c,l=None):
 	        self.elements.append(Element(i,c,l))
-	    def update(self):
+	    async def update(self):
 	        for e in self.elements:
 	            i=e.var()
 	            if i and not e.state:
@@ -102,7 +102,7 @@ async def main():
 	        self.diff=0
 	        if type(p)==list: self.elements.insert(0,p)
 	        else: self.callback=p
-	    def update(self):
+	    async def update(self):
 	        self.diff=ticks_diff(ticks_ms(),self.time)
 	        if len(self.elements)>0:
 	            if self.diff>config["timepopup"]:
@@ -115,7 +115,7 @@ async def main():
 	                self.callback=None
 	            elif self.diff>config["timetransition"]:
 	                self.active=False
-	    def draw(self):
+	    async def draw(self):
 	        l=len(self.elements)
 	        if l>0:
 	            e=self.elements[l-1]
@@ -142,7 +142,7 @@ async def main():
 	        self.elements=[]
 	    def add(self,s,c,l=None):
 	        self.elements.append(Element(s,c,l,self.show))
-	    def update(self):
+	    async def update(self):
 	        for e in self.elements:
 	            e.dy-=0.1
 	            if e.dy<-len(e.var): self.execute()
@@ -150,7 +150,7 @@ async def main():
 	        if settings["audio"]: beep()
 	        e=self.elements[self.index]
 	        e.callbacklong.execute() if long and e.callbacklong else e.callback.execute()
-	    def draw(self):
+	    async def draw(self):
 	        for e in self.elements:
 	            ey=self.y+e.dy
 	            for i,s in enumerate(e.var):
@@ -171,9 +171,9 @@ async def main():
 	        Options.choice=None
 	    
 	class Options(Text):
-	    def update(self,i):
+	    async def update(self,i):
 	        self.index=(self.index+i)%len(self.elements)
-	    def draw(self):
+	    async def draw(self):
 	        l=len(self.elements)
 	        for i in range(l):
 	            index=i+self.index
@@ -196,7 +196,7 @@ async def main():
 	        self.tile=t
 	        self.boss=b
 	        self.shift=None
-	    def update(self):
+	    async def update(self):
 	        if self.shift:
 	            self.id=self.shift["id"]
 	            self.img=self.shift["img"]
@@ -314,14 +314,14 @@ async def main():
 	        del self.items
 	    def __len__(self):
 	        return len(self.tile.monsters)
-	    def move(self):
+	    async def move(self):
 	        ttile=self.map.get_random_neighbour(self.tile.x,self.tile.y)
 	        ttile.monsters.append(self)
 	        self.tile.monsters.remove(self)
 	        self.tile=ttile
-	    def run(self,auto=False):
+	    async def run(self,auto=False):
 	        self.move()
-	    def strike(self,t):
+	    async def strike(self,t):
 	        super().attack(t,config["toblock"],randrange(self.level))
 	
 	class Player(Actor):
@@ -330,7 +330,7 @@ async def main():
 	        self.depth,self.xp,self.x,self.y,self.xlast,self.ylast=1,0,0,0,0,0
 	    def __len__(self):
 	        return -1
-	    def move(self,d):
+	    async def move(self,d):
 	        ## get coords
 	        dx,dy=d["x"],d["y"]
 	        cx,cy=self.x+dx,self.y+dy
@@ -357,7 +357,7 @@ async def main():
 	                s="fighting"
 	                for m in self.tile.monsters: s+="\n"+m.name
 	                init_message(s)
-	    def run(self,autoescape=False):
+	    async def run(self,autoescape=False):
 	        if not autoescape and self.active!="flee":
 	            self.damage(len(self.tile.monsters))
 	            if random()>config["toescape"]:
@@ -367,7 +367,7 @@ async def main():
 	        ## get random nearby moveable tile
 	        ttile=self.map.get_random_neighbour(self.x,self.y)
 	        self.move({"x":(ttile.x-self.x)//2,"y":(ttile.y-self.y)//2})
-	    def strike(self):
+	    async def strike(self):
 	        super().attack(choice(self.tile.monsters),config["tohit"],self.level)
 	        self.map.update(self)
 	    def action(self):
@@ -378,12 +378,12 @@ async def main():
 	        else:
 	            super().special(self.tile.monsters,config["tohit"])
 	            self.map.update(self)
-	    def cast(self,v):
+	    async def cast(self,v):
 	        self.hp-=1 ## damage player for casting a spell
 	        super().special(self.tile.monsters,config["tohit"],"cast",v,True)
 	        self.map.update(self)
 	        update_state()
-	    def use(self,v):
+	    async def use(self,v):
 	        #init_message(self.name+"\nuses item")
 	        if type(v)==int:
 	            s,i=spells[v],str(v)
@@ -426,7 +426,7 @@ async def main():
 	        self.w=0
 	        self.h=0
 	        self.map=None
-	    def update(self,p,moved=False):
+	    async def update(self,p,moved=False):
 	        ## update monsters
 	        if not moved and len(p.tile.monsters)>0:
 	            ## player regeneration
@@ -548,7 +548,7 @@ async def main():
 	
 	def render_cls(v=0):
 	    thumby.display.fill(int(v))
-	def render_update():
+	async def render_update():
 	    await thumby.display.update()
 	def render_text(s,x,y,c=1):
 	    for i,n in enumerate(s.split("\n")): thumby.display.drawText(n.upper(),round(x*charw),round(y*charh)+i*charh,c)
@@ -613,14 +613,14 @@ async def main():
 	    ## setup classes
 	    state,level,handler,player=States(),Level(),Handler(),Player(classes[0])
 	    options,text=Options(0,0,screenw,screenh),Text(0,0,screenw,screenh)
-	def update():
+	async def update():
 	    if handler.active:
 	        handler.update()
 	    else:
 	        state.update()
 	        text.update()
 	        if arr_update[state.current]: arr_update[state.current]()
-	def draw():
+	async def draw():
 	    render_cls()
 	    options.draw()
 	    text.draw()
@@ -835,17 +835,17 @@ async def main():
 	def init_message(s):
 	    handler.add(s.split("\n"))
 	
-	def update_title():
+	async def update_title():
 	    if time()>state.time+2:
 	        del sprites[len(sprites)-1]
 	        set_state(Const.menu)
-	def update_explore():
+	async def update_explore():
 	    if player.hp<1 or len(player.tile.monsters)>0: update_state()
-	def update_fight():
+	async def update_fight():
 	    if player.hp<1 or len(player.tile.monsters)<1: update_state()
-	def update_menuwait():
+	async def update_menuwait():
 	    if time()>state.time+2: set_transition(Const.menu)
-	def update_state():
+	async def update_state():
 	    if player.hp<1:
 	        set_transition(Const.gameover)
 	    elif player.depth<1:
@@ -866,14 +866,14 @@ async def main():
 	    elif state.current!=Const.explore:
 	        set_state(Const.explore)
 	
-	def draw_title():
+	async def draw_title():
 	    render_sprite(sprites[14],0.5,0.5,64,32)
-	def draw_menu():
+	async def draw_menu():
 	    render_sprite(sprites[13],0.5,0,64,16)
-	def draw_newinfo():
+	async def draw_newinfo():
 	    c=classes[Options.choice-1]
 	    render_text(c["name"]+"\n"+str(c["hp"])+" hp/lv\n"+(c["active"] or "none")+"\n"+c["passive"] or "none",0,0)
-	def draw_explore():
+	async def draw_explore():
 	    draw_map()
 	    info="f"+str(player.depth) if time()%4<2 else "l"+str(player.level)
 	    px,py,cw,ch,size=player.x,player.y,fontsize/charw,fontsize/charh,level.w+2
@@ -886,7 +886,7 @@ async def main():
 	            if tile.seen and not tile.wall:
 	                render_rect(6.25+x*cw,2.25+y*ch,1,1,get_color(Colors.flash) if tile.state&1>0 else Colors.black)    
 	    render_rect(6.25+px*cw,2.25+py*ch,1,1,get_color(Colors.rapidflash))
-	def draw_map():
+	async def draw_map():
 	    ## variables
 	    tile,images=level.map[player.x][player.y],settings["image"]
 	    ## health

@@ -20,7 +20,7 @@ def open(path, mode):
 os.chdir(sys.path[0])
 
 
-async def main():
+async async def main():
 	#inititalize Game
 	
 	import random, thumby, time, json
@@ -32,7 +32,7 @@ async def main():
 	except ImportError:
 	    emulator = False
 	    
-	def main():
+	async def main():
 	    crew=[]
 	    ship=[['engine', 100, 500], [100, 100], [['Condition', 100] , ['Destination', 'Unknown'], ['Autopilot', False]], 100, 100, 100]
 	    money = 500
@@ -72,19 +72,19 @@ async def main():
 	            redraw_screen(1, 1)
 	        return crew, ship, money, day
 	    
-	    def draw_stars(num):
+	    async def draw_stars(num):
 	        star_sprite = bytearray([18,33,12,12,33,18])
 	        thumby.display.fill(0)
 	        for i in range(num):
 	            thumby.display.blit(star_sprite, random.randint(0,65), random.randint(10,35), 6, 6, 0, 0 ,0)
 	        await thumby.display.update()
 	        
-	    def redraw_screen(color, update_time):
+	    async def redraw_screen(color, update_time):
 	        await thumby.display.update()
 	        time.sleep(update_time)
 	        thumby.display.fill(color)
 	        
-	    def draw_text_blocks(text, dialog_face=None):
+	    async def draw_text_blocks(text, dialog_face=None):
 	        char_width = 14
 	        chars = len(text)
 	        remaining_chars = chars
@@ -111,7 +111,7 @@ async def main():
 	    
 	    
 	                
-	    def intro():
+	    async def intro():
 	        a_visible = False
 	        a_button = bytearray([195,189,70,106,106,70,189,195])
 	        for i in range(10):
@@ -141,7 +141,7 @@ async def main():
 	        
 	    #Menu Functions                        
 	                        
-	    def menu(menu_items, header=None, display_stat=None, image=None):
+	    async def menu(menu_items, header=None, display_stat=None, image=None):
 	        #Do NOT use display_stat parameter unless menu_items is a crew object
 	        in_menu = True
 	        arrow  = bytearray([31,31,0,17,27])
@@ -206,7 +206,7 @@ async def main():
 	        crew.append(character)
 	        return character
 	    
-	    def character_screen(character):
+	    async def character_screen(character):
 	        time.sleep(0.5)
 	        # BITMAP: width: 10, height: 20
 	        human_screen_image = bytearray([255,143,119,251,251,251,119,143,255,255,
@@ -308,7 +308,7 @@ async def main():
 	        return possible_items   
 	                
 	    # event piece functions
-	    def attempt_persuasion(character, skill, difficulty):
+	    async def attempt_persuasion(character, skill, difficulty):
 	        num = random.randint(0,difficulty)
 	        items = get_character_items(character)
 	        for i in range(len(character[6])):
@@ -386,14 +386,14 @@ async def main():
 	                progress_disease(infected[disease_num], character)
 	    
 	    #the next two functions are completely useless, even for testing as of now            
-	    def casino(money, character):
+	    async def casino(money, character):
 	        casino_menu = True
 	        arrow_position = 0
 	        arrow  = bytearray([31,31,0,17,27])
 	        games = ['']
 	        menu(games)
 	            
-	    def planet_locations(planet, money):
+	    async def planet_locations(planet, money):
 	        
 	        def select_location(locations):
 	            selecting_location = menu(locations)
@@ -431,7 +431,7 @@ async def main():
 	            
 	    #Landing Sequence Functions these have no use without the planet functions being implemented other than for testing purposes
 	            
-	    def NoteraLandingSequence(crashed=False):
+	    async def NoteraLandingSequence(crashed=False):
 	        player_ship = bytearray([66,129,195,195,195,195,231,231])
 	        # BITMAP: width: 32, height: 32
 	        noteran_face = bytearray([255,255,255,223,191,127,127,159,239,247,251,253,205,181,117,117,181,205,253,251,247,239,159,127,127,191,223,255,255,255,255,255,
@@ -440,7 +440,7 @@ async def main():
 	           255,255,255,255,255,255,255,254,253,251,251,251,251,251,251,251,251,251,251,251,251,251,253,254,255,255,255,255,255,255,255,255])
 	        draw_text_blocks('Welcome to Notera', noteran_face)
 	        
-	    def GidoneLandingSequence(crashed=False):
+	    async def GidoneLandingSequence(crashed=False):
 	        # BITMAP: width: 24, height: 24
 	        # BITMAP: width: 24, height: 24
 	        
@@ -484,8 +484,8 @@ async def main():
 	        b_button = bytearray([195,189,126,2,42,70,189,195])
 	        dead = False
 	        
-	    def main_menu(crew, ship, money):
-	        def dev_code_screen(crew, ship, money):
+	    async async def main_menu(crew, ship, money):
+	        async def dev_code_screen(crew, ship, money):
 	            deving = True
 	            test_number = 0
 	            while deving:
@@ -516,7 +516,7 @@ async def main():
 	                deving = check_escape()
 	            return crew, ship, money
 	                
-	        def ship_screen(ship):
+	        async def ship_screen(ship):
 	            # BITMAP: width: 35, height: 20
 	            ship_image = bytearray([255,255,31,31,31,63,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,
 	        239,223,0,224,224,224,224,227,231,239,239,235,227,231,239,239,239,239,239,239,239,239,239,239,239,239,239,239,239,239,223,191,127,255,255,
@@ -627,7 +627,7 @@ async def main():
 	            crew, ship, money = dev_code_screen(crew, ship, money)
 	        return crew, ship, money
 	    
-	    def robbery(crew, ship):
+	    async def robbery(crew, ship):
 	        draw_text_blocks('A voice comes over your communications system, it says;')
 	        draw_text_blocks('We have weapons aimed at your ship, either give us the following or die dishonorably')   
 	        possible_items = get_full_inventory(crew)
@@ -672,7 +672,7 @@ async def main():
 	            ship[2][0][1] -= random.randint(1,25)
 	        return ship
 	        
-	    def check_ship(ship):
+	    async def check_ship(ship):
 	        if ship[0][1] <= 0:
 	            end_screen('Engine Explosion')
 	        if ship[0][2] <= 0:
@@ -680,7 +680,7 @@ async def main():
 	            draw_text_blocks('Your Fuel is Empty, Your Ship Cannot Move, The Best You Can Do Is Hope For Help')
 	        return ship
 	        
-	    def give_disease(disease, character, severity=1):
+	    async def give_disease(disease, character, severity=1):
 	        draw_text_blocks(str(character[0] + ' has contracted' + disease + '!'))
 	        draw_text_blocks('either seek a doctor, or hope they fight off the infection on their own')
 	        if disease == 'bloatworms':
@@ -695,7 +695,7 @@ async def main():
 	        if len(crew) < 2:
 	            thumby.display.drawText('The Nav Says "Someone here is actually an alien in disguise"')
 	            
-	    def boss_ship(crew, ship):
+	    async def boss_ship(crew, ship):
 	        # BITMAP: width: 8, height: 8
 	        player_ship = bytearray([189,126,60,60,60,60,24,24])
 	        # BITMAP: width: 30, height: 40
@@ -781,7 +781,7 @@ async def main():
 	                top_down_ship = False
 	            redraw_screen(0, 0.1)
 	       
-	    def raid(crew, ship):
+	    async def raid(crew, ship):
 	        raid_types = ['Air Strike']
 	        raid_factions = ['Pirates']
 	        raid_type = random.choice(raid_types)
@@ -877,7 +877,7 @@ async def main():
 	                check_ship(ship)
 	                redraw_screen(0, 0.1)
 	    
-	    def distress_call(crew, ship):
+	    async def distress_call(crew, ship):
 	        if len(crew) < 6:
 	            draw_text_blocks('You hear a distress call from a stranded ship on your radio, the remaining crew offer to join you if rescued.')
 	            draw_text_blocks('What do you do?')
@@ -906,7 +906,7 @@ async def main():
 	            
 	        return crew, ship
 	        
-	    def buisness_ship(crew, ship, money):
+	    async def buisness_ship(crew, ship, money):
 	        draw_text_blocks('You encounter a large unarmed ship, it radios to you and says;')
 	        ship_names = ['Archon', 'Urnevekenes', 'Argo']
 	        ship_number = random.randint(1,100)
@@ -1017,20 +1017,20 @@ async def main():
 	        return planet
 	        
 	        
-	    def planet_near(crew, ship):
+	    async def planet_near(crew, ship):
 	        planet = generate_planet()
 	        if planet == 'Gidone':
 	            GidoneLandingSequence(crashed=False)
 	        elif planet == 'Notera':
 	            NoteraLandingSequence(crashed=False)    
 	            
-	    def award_money(money):
+	    async def award_money(money):
 	        found_amount =  random.randint(50,300)
 	        money += found_amount
 	        draw_text_blocks(str('You find ' +  str(found_amount) + ' money on the wrecked enemy ships'))
 	        return money
 	        
-	    def generate_event(crew, ship, money):
+	    async def generate_event(crew, ship, money):
 	        is_event = random.randint(1,3)
 	        if is_event == 1:
 	            events = ['Raid', 'Bloatworms', 'Robbery', 'Buisness Ship', 'Distress Signal']
@@ -1056,7 +1056,7 @@ async def main():
 	                debris(crew, ship)
 	        return crew, ship, money
 	            
-	    def warning(ship):
+	    async def warning(ship):
 	        # BITMAP: width: 10, height: 10
 	        warning_logo = bytearray([63,223,239,247,67,67,247,239,223,63,
 	       0,1,1,1,0,0,1,1,1,0])
@@ -1076,12 +1076,12 @@ async def main():
 	                warn_page = check_escape()
 	        return ship
 	     
-	    def end_screen(cause):
+	    async def end_screen(cause):
 	        draw_text_blocks(str('Game Over, Cause Of Death ' + cause))
 	        redraw_screen(1, 10)
 	        main()
 	            
-	    def change_day(day, ship, crew):
+	    async def change_day(day, ship, crew):
 	        day += 1
 	        for i in range(len(crew)):
 	            character = crew[i]
@@ -1098,8 +1098,8 @@ async def main():
 	        return day, ship
 	         
 	            
-	    #def distress_call(crew, ship):
-	    def playing(crew, ship, money, day):
+	    #async def distress_call(crew, ship):
+	    async def playing(crew, ship, money, day):
 	        running = True
 	        day_since_event = 0
 	        while running:

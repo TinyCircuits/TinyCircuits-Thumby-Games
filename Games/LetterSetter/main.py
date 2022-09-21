@@ -30,7 +30,7 @@ async def main():
 	#set FPS to 60
 	thumby.display.setFPS(60)
 	
-	def TitleScreen():
+	async def TitleScreen():
 	    # BITMAP: width: 6, height: 27
 	#    by_xyvir = bytearray([248,169,223,174,249,254,
 	#               255,235,247,251,255,255,

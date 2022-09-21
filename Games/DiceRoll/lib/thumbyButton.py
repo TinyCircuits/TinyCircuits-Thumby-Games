@@ -8,6 +8,7 @@ class ButtonClass:
     
     # Returns True if the button is currently pressed, False if not.
     def pressed(self):
+        pygame.event.pump()
         return pygame.key.get_pressed()[self.key]
     
     # Returns True if the button was just pressed, False if not.

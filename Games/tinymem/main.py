@@ -30,7 +30,7 @@ async def main():
 	Button = collections.namedtuple("Button", "letter freq x y")
 	KEYS = [Button("", 20, 0, 0), Button("A", 7458, 52, 12), Button("B", 7902, 42, 22), Button("U", 10548, 18, 12), Button("R", 8870, 24, 17), Button("D", 7458, 18, 22), Button("L", 7902, 12, 17)]
 	
-	def show(val=0, text=["", "", "", "", ""]):
+	async def show(val=0, text=["", "", "", "", ""]):
 	    thumby.display.fill(0)
 	    for index, content in enumerate(text):
 	        thumby.display.drawText(content, 0, 8 * index, 1)
@@ -39,7 +39,7 @@ async def main():
 	    await thumby.display.update()
 	    thumby.audio.playBlocking(KEYS[val].freq, val == 0 or 1000)
 	
-	def start():
+	async def start():
 	    show(text=["  Tiny Mem!", "", "", "", "  hard;easy"])
 	    value_range = (1, 2) if wait_press() < 3 else (3, 6)
 	    random.seed(time.ticks_ms())
@@ -50,7 +50,7 @@ async def main():
 	        c = (thumby.buttonL.justPressed() and 6) or (thumby.buttonD.justPressed() and 5) or (thumby.buttonR.justPressed() and 4) or (thumby.buttonU.justPressed() and 3) or (thumby.buttonB.justPressed() and 2) or (thumby.buttonA.justPressed() and 1) or None
 	    return c
 	
-	def turn(max_pos, sequence, current_pos=0):
+	async def turn(max_pos, sequence, current_pos=0):
 	    for index, val in enumerate(sequence[:max_pos + 1]):  # show sequence
 	        show(val=val, text=[f"  key={KEYS[val].letter}", "", "", "", f"  num={index + 1}"])
 	    show(text=["  your turn", "", "", "", "  repeat"])  # ask sequence

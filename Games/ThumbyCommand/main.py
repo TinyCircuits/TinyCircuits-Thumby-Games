@@ -104,7 +104,7 @@ async def main():
 	max_explosions=5
 	
 	
-	def draw_scene():
+	async def draw_scene():
 	    thumby.display.fill(0)
 	    # Draw cities
 	    for city_x,city_type in cities:

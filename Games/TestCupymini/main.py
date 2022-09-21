@@ -115,7 +115,7 @@ async def main():
 	up = False
 	returned = False
 	
-	def game():
+	async def game():
 	    nonlocal beamatt, beam, beamagain, jumpact, fallingconfirm, attack, oncepressed, walkingconfirm, directionbeam, readybeam, staydown, backtomenu, growing, backtomenufin, x5, wait, arrived
 	    backtomenufin = False
 	    arrived = True
@@ -336,7 +336,7 @@ async def main():
 	        backtomenufin = True
 	        
 	#--------------------------------------
-	def menu():
+	async def menu():
 	    nonlocal selmenu, ppass, wait, growing, transition, up, x5, returned
 	    showtext()
 	    x5 = 16
@@ -413,7 +413,7 @@ async def main():
 	        x3 = 0
 	    thumby.display.drawSprite(cupyminimenuframes)
 	#--------------------------------------
-	def tothegame():
+	async def tothegame():
 	    nonlocal wait, x5, returned, growing, transition
 	    wait = random.randint(180,360)
 	    waitingclock()
@@ -424,7 +424,7 @@ async def main():
 	    growing = True
 	    transition = False
 	#--------------------------------------
-	def waitingclock():
+	async def waitingclock():
 	    nonlocal wait, x, x4
 	    while wait >= 0:
 	        x += 1

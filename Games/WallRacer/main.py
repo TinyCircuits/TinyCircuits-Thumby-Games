@@ -194,7 +194,7 @@ async def main():
 	
 	
 	# Main game loop
-	def playGame():
+	async def playGame():
 	    nonlocal game_mode
 	    nonlocal speed
 	    nonlocal player_x
@@ -340,7 +340,7 @@ async def main():
 	    return points
 	
 	# Display points and highscore at end of game    
-	def displayPoints(points):
+	async def displayPoints(points):
 	    nonlocal highscore
 	    nonlocal speed
 	    nonlocal game_mode
@@ -384,7 +384,7 @@ async def main():
 	            running = 0
 	            
 	            
-	def explosion(x, y):
+	async def explosion(x, y):
 	    step = 0
 	
 	    bits = []
@@ -432,7 +432,7 @@ async def main():
 	            
 	      
 	# Dsiplay logo and speed selection
-	def displayMenu():
+	async def displayMenu():
 	    nonlocal speed
 	    nonlocal game_mode
 	    nonlocal VERSION
@@ -516,7 +516,7 @@ async def main():
 	   return ", ".join(str(b) for b in ba)
 	    
 	
-	def waitForPlayer():
+	async def waitForPlayer():
 	    nonlocal sending
 	    nonlocal speed
 	    nonlocal first_player

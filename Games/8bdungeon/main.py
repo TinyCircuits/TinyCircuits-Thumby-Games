@@ -107,13 +107,13 @@ async def main():
 	                                        key=0)
 	        self.hitbox = [[0,0],[5,8]]
 	
-	    def blank_wait(self):
+	    async def blank_wait(self):
 	        t0 = time.ticks_ms()   # Get time (ms)
 	        thumby.display.fill(0) # Fill canvas to black
 	        await thumby.display.update()
 	        time.sleep(0.25)
 	        
-	    def user_move(self):
+	    async def user_move(self):
 	        if thumby.buttonL.pressed():
 	            if self.charSprite.x == 0 and \
 	                    self.charSprite.y > 13 and \
@@ -290,7 +290,7 @@ async def main():
 	        self.shopIndicatorSprite.y = 3
 	        self.position = 0
 	
-	    def shopping_loop(self, gold,lifeHave,atkHave):
+	    async def shopping_loop(self, gold,lifeHave,atkHave):
 	        pos = 0
 	        # BITMAP: width: 3, height: 3
 	        bitmap3 = bytearray([5,5,2])
@@ -476,7 +476,7 @@ async def main():
 	    else: return True
 	    
 	
-	def loading_splash():
+	async def loading_splash():
 	    t0 = time.ticks_ms()   # Get time (ms)
 	    thumby.display.fill(0) # Fill canvas to black
 	    thumby.display.setFont("/lib/font5x7.bin", 5, 7, 1)

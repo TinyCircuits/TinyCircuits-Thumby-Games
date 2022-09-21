@@ -409,7 +409,7 @@ async def main():
 	        return 0
 	    
 	    #Load all scores from the file
-	    def LoadScores(self):
+	    async def LoadScores(self):
 	        if(self.isSaved()):
 	            self.read_data = open(self.file_name, 'r').read().split(",")
 	            for i in range(0,4):

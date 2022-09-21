@@ -257,7 +257,7 @@ async def main():
 	            self._draw_cell(row + iy, col + ix, board=self.old_board, offset_x=dx * transition, offset_y=dy * transition)
 	            ix, iy = ix + dx, iy + dy
 	
-	    def draw_transition(self, direction):
+	    async def draw_transition(self, direction):
 	        old_positions = self._get_first_instance_all_lines(direction, self.old_board)
 	        new_positions = self._get_first_instance_all_lines(direction, self.board)
 	        transitions = [None if old_positions[i] is None or new_positions[i] is None else abs(

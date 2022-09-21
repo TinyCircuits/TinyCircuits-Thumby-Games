@@ -6,7 +6,7 @@ class Menu:
         self.selected = selected
         self.scroll = scroll
 
-    def choose(self, programs):
+    async def choose(self, programs):
         self.programs = programs
         self.programs.append({
             "name": "Quit Silicon8",
@@ -61,7 +61,7 @@ class Menu:
             thumby.display.drawText(string, 1, self.row, 1)
         self.row += 8
 
-    def render(self):
+    async def render(self):
         thumby.display.fill(0)
         self.row = 1
         for i in range(self.scroll, len(self.programs)):
@@ -74,7 +74,7 @@ class Confirm:
         self.scroll = 0
         self.textHeight = 0
 
-    def choose(self, program):
+    async def choose(self, program):
         # What to display about this program?
         totalText = program["name"] + '\n\n' + program["desc"]
         if "link" in program:
@@ -133,7 +133,7 @@ class Confirm:
         return result
 
     
-    def render(self):
+    async def render(self):
         disp = thumby.display
         dt = disp.drawText
         disp.fill(0)

@@ -132,10 +132,10 @@ class GraphicsClass:
         self.blit(s.bitmap, int(s.x), int(s.y), s.width, s.height, s.key, s.mirrorX, s.mirrorY)
 
     def blitWithMask(self, sprtptr, x, y, width, height, key, mirrorX, mirrorY, maskptr):
-        pass
+        self.blit(sprtptr, int(x), int(y), width, height, key, mirrorX, mirrorY)
 
     def drawSpriteWithMask(self, s, m):
-        pass
+        self.blit(s.bitmap, int(s.x), int(s.y), s.width, s.height, s.key, s.mirrorX, s.mirrorY)
         
 
 display = GraphicsClass(72, 40)

@@ -162,7 +162,7 @@ async def main():
 	
 	# runs through the history list matching the first 5 elements to the suits
 	# then update the history list on the screen
-	def update_history(history_list = ['o','o','o','o','o']):
+	async def update_history(history_list = ['o','o','o','o','o']):
 	    suit_set.setFrame(0)
 	    suit_set.y = 0
 	    
@@ -193,7 +193,7 @@ async def main():
 	
 	
 	# display the icon if the user guess is correct or incorrect. will also set end of game
-	def do_indicator(indicate):
+	async def do_indicator(indicate):
 	    indicate_Spr = thumby.Sprite(16, 13, indicate_spritemap)
 	    indicate_Spr.x = 55
 	    indicate_Spr.y = 15
@@ -223,7 +223,7 @@ async def main():
 	    return deck*stack
 	
 	
-	def do_reset(stack):
+	async def do_reset(stack):
 	    thumby.display.drawFilledRectangle(32, 27, 18, 8, 0)
 	    history_list = ['o','o','o','o','o']
 	    score = 0

@@ -270,7 +270,7 @@ async def main():
 	    kills = l1-l2
 	    return player_shots, enemies, exps, kills
 	
-	def update_explosions(exps):
+	async def update_explosions(exps):
 	    keep_exps = []
 	    for e in exps:
 	        e.update()

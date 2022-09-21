@@ -31,7 +31,7 @@ async def main():
 	from funcLib import thingAquired, battleStartAnimation, buttonInput, showOptions
 	#import micropython
 	
-	def openScreen():
+	async def openScreen():
 	    gc.collect()
 	    #micropython.mem_info()
 	    thumby.display.setFPS(40)
@@ -65,7 +65,7 @@ async def main():
 	                break 
 	
 	 
-	def optionScreen():
+	async def optionScreen():
 	    thumby.display.fill(0)
 	    curSelect = 0
 	    tempSelect = curSelect

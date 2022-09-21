@@ -22,7 +22,7 @@ dispBuffer = FrameBuffer(
 )
 
 
-def render(dispWidth, dispHeight, planeBuffer):
+async def render(dispWidth, dispHeight, planeBuffer):
     dispBuffer.blit(
         planeBuffer[0],
         (int(thumby.display.width) - dispWidth) >> 1,

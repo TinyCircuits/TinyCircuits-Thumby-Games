@@ -158,7 +158,7 @@ last_buttons = 0
 sound_on = thumby.audio.enabled
 mml_player = None
 
-def start(fps, app_code, app_version, func_table):
+async def start(fps, app_code, app_version, func_table):
     global frames, cur_buttons, last_buttons, mml_player
     thumby.display.setFPS(fps)
     thumby.display.setFont("/Games/Micro2048/obnfont.bin", 5, 6, 1)

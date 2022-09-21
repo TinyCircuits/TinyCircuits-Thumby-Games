@@ -78,7 +78,7 @@ async def main():
 	    # buzzer.value(0)
 	    # buzzer.value(1)
 	
-	def playNotHit():
+	async def playNotHit():
 	    thumby.display.fill(1) # clear screen
 	    await thumby.display.update() # clear screen
 	    thumby.display.fill(0) # clear screen

@@ -3,7 +3,11 @@
 from cgi import print_arguments
 from genericpath import isdir
 import os
+from pprint import pprint
 import shutil
+import ast
+
+
 
 # Delete the folder of previously built wasms
 shutil.rmtree("Games")
@@ -16,10 +20,44 @@ prepend_contents = prepend_file.read()
 prepend_file.close()
 
 
+def get_functions_to_await(file_str, functions_to_await, structure, game_dir):
+    
+    def recursive_find(body, structure):
+        for statement in body:
+            if "ast.FunctionDef" in str(statement):
+                next_structure = {"parent": structure, "name": statement.name, "defs": [], "calls": []}
+                structure["defs"].append(next_structure)
+                recursive_find(statement.body, next_structure)
+            elif "ast.Class" in str(statement) or "ast.While" in str(statement) or "ast.For" in str(statement) or "ast.If" in str(statement):
+                recursive_find(statement.body, structure)
+            elif "ast.Expr" in str(statement) and "ast.Call" in str(statement.value):
+                function_name = ""
+
+                if "ast.Attribute" in str(statement.value.func):
+                    function_name = statement.value.func.attr
+                elif "ast.Name" in str(statement.value.func):
+                    function_name = str(statement.value.func.id)
+                
+                structure["calls"].append(function_name)
+
+                if function_name == "update" or function_name in functions_to_await:
+                    s = structure
+                    while s != None and s["name"] != None:
+                        if s["name"] not in functions_to_await:
+                            functions_to_await.append(s["name"])
+                        s = s["parent"]
+
+    try:
+        recursive_find(ast.parse(file_str).body, structure)
+    except Exception as e:
+        print("ERROR: " + game_dir + " -> " + str(e))
+
 
 def convert_file_contents(file_contents, functions_to_await, is_main=True):
     converted_game_contents = ""
-    for line in file_contents:
+
+    for line_number in range(0, len(file_contents), 1):
+        line = file_contents[line_number]
 
         if "global" in line and is_main:
             # Replace global keywords with nonlocal since functions are now defined in function main
@@ -34,29 +72,11 @@ def convert_file_contents(file_contents, functions_to_await, is_main=True):
             line = line.replace("@micropython.viper", "")
         if ":int" in line:
             line = line.replace(":int", "")
-        # if "def" in line and "__init__" not in line:
-        #     line = line.replace("def", "async def")
-        #     functions_to_await.append(line[line.find("def ")+len("def "):line.rfind("(")])
         
         if(is_main):
             converted_game_contents += "\t" + line
         else:
             converted_game_contents += line
-
-    # file_contents = converted_game_contents.splitlines()
-
-    # converted_game_contents = ""
-    # for line in file_contents:
-    #     for func in functions_to_await:
-    #         if (func + "(" in line or func + " (" in line ) and ("async def " + func not in line) and ("await" not in line) and ("thumby.display." + func not in line):
-
-    #             # Find the index of the function in the string and traverse left until likely not related to calling the function
-    #             func_index = line.find(func) - 1
-    #             while func_index > -1 and line[func_index] != ' ' and line[func_index] != '\t' and line[func_index] != '-' and line[func_index] != '(':
-    #                 func_index = func_index - 1
-                
-    #             line = line[0:func_index+1] + "await " + line[func_index+1:]
-    #     converted_game_contents += line
     
     return converted_game_contents
 
@@ -66,6 +86,7 @@ def convert_file_contents(file_contents, functions_to_await, is_main=True):
 for game_dir in root_contents:
 
     functions_to_await = []
+    all_converted_game_file_paths = []
 
     # Avoid non-game folders and files
     if game_dir != "Games" and game_dir != "lib" and game_dir != ".github" and game_dir != ".git" and isdir(game_dir):
@@ -86,10 +107,14 @@ for game_dir in root_contents:
 
                     if ".py" in file_name:
                         f = open("Games/" + game_dir + "/" + file_name, "r")
+                        structure = {"parent": None, "name": None, "defs": [], "calls": []}
+                        get_functions_to_await(f.read(), functions_to_await, structure, file_name)
+                        f.seek(0)
                         f_contents = f.readlines()
                         f.close()
 
                         f = open("Games/" + game_dir + "/" + file_name, "w")
+                        all_converted_game_file_paths.append("Games/" + game_dir + "/" + file_name)
                         f.write(convert_file_contents(f_contents, functions_to_await, False))
                         f.close()
 
@@ -99,11 +124,17 @@ for game_dir in root_contents:
 
         # Read the game contents
         game_file = open(game_dir + "/" + game_dir + ".py", "r")
+        structure = {"parent": None, "name": None, "defs": [], "calls": []}
+        get_functions_to_await(game_file.read(), functions_to_await, structure, game_dir)
+        game_file.seek(0)
+                    
+        # print(ast.parse(game_file.read()).body[0])
         game_contents = game_file.readlines()
         game_file.close()
 
         # Make the wasm output main file as required by pygbag: https://pypi.org/project/pygbag/
         wasm_file = open("Games/" + game_dir + "/main.py", "w")
+        all_converted_game_file_paths.append("Games/" + game_dir + "/main.py")
 
         # Start building the file by adding imports
         wasm_file.write("import asyncio\n")
@@ -130,3 +161,17 @@ for game_dir in root_contents:
         wasm_file.write("\nasyncio.run(main())")
 
         wasm_file.close()
+
+
+        # Now that all functions to await are collected and all files written, do through collected Python file paths and add async and await to those functions
+        for file_path in all_converted_game_file_paths:
+            f = open(file_path, "r")
+            contents = f.read()
+            f.close()
+
+            for func in functions_to_await:
+                contents = contents.replace("def " + func, "async def " + func, -1)
+            
+            f = open(file_path, "w")
+            f.write(contents)
+            f.close()

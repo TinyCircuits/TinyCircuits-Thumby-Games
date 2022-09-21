@@ -1273,7 +1273,7 @@ async def main():
 	turnCounter = 0
 	
 	# Draw the entire gamestate with HUD
-	def drawGame():
+	async def drawGame():
 	    nonlocal display
 	    thumby.display.fill(0)
 	    currentRoom.drawRoom()

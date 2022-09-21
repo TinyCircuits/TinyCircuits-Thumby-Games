@@ -422,7 +422,7 @@ def drawLogo():
         thumby.display.drawText(c,x0+7*i,0,1)
         thumby.display.drawText(c,x0+7*i+1,0,1)
 
-def main(data):
+async def main(data):
     thumby2.display.text.font57i1()
     loadedGame=save_file.load()
     thumby.display.fill(0)

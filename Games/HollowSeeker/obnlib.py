@@ -45,7 +45,7 @@ class Menu:
         self.gap = 0
         self.dirty = True
 
-    def update(self):
+    async def update(self):
         v = btn_d(BTN_D) - btn_d(BTN_U)
         if v == 0:
             if self.gap != 0:
@@ -97,7 +97,7 @@ class MmlPlayer:
         self.mml = mml.upper()
         self.cnt = 0
 
-    def update(self):
+    async def update(self):
         if not self.playing:
             return
         self.cnt -= 1
@@ -161,7 +161,7 @@ last_buttons = 0
 sound_on = thumby.audio.enabled
 mml_player = None
 
-def check(version):
+async def check(version):
     if __VERSION__ < version:
         thumby.display.drawText("Update", 0, 0, 1)
         thumby.display.drawText("\"obnlib.py\"", 6, 8, 1)
@@ -170,7 +170,7 @@ def check(version):
         return False
     return True
 
-def start(fps, app_code, app_version, func_table):
+async def start(fps, app_code, app_version, func_table):
     global frames, cur_buttons, last_buttons, mml_player
     thumby.display.setFPS(fps)
     thumby.display.setFont("/Games/HollowSeeker/obnfont.bin", 5, 6, 1)

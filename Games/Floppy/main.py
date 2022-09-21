@@ -20,7 +20,7 @@ def open(path, mode):
 os.chdir(sys.path[0])
 
 
-async def main():
+async async def main():
 	import thumby
 	import random
 	import machine
@@ -215,7 +215,7 @@ async def main():
 	    # Return True for collision
 	    return True
 	    
-	def startScreen():
+	async def startScreen():
 	    
 	    playing = True # Keeps startScreen running until b is pressed
 	    
@@ -272,7 +272,7 @@ async def main():
 	        time.sleep(0.1)
 	
 	    
-	def gameRender(bird, pipes, score, soundQueue):
+	async def gameRender(bird, pipes, score, soundQueue):
 	    # Rerender scene
 	        
 	    thumby.display.fill(0)
@@ -295,7 +295,7 @@ async def main():
 	        del soundQueue[0]
 	    
 	
-	def game():
+	async def game():
 	    """
 	    
 	    Run the game
@@ -404,7 +404,7 @@ async def main():
 	    
 	    return highscore, newHS
 	    
-	def gameOverScreen(score):
+	async async def gameOverScreen(score):
 	    # Clear Screen
 	    thumby.display.fill(0)
 	
@@ -437,7 +437,7 @@ async def main():
 	        
 	        time.sleep(0.1)
 	        
-	def highScoreScreen(highscore):
+	async def highScoreScreen(highscore):
 	    # Clear Screen
 	    thumby.display.fill(0)
 	    
@@ -473,7 +473,7 @@ async def main():
 	                MAIN FUNCTION
 	"""
 	
-	def main():
+	async def main():
 	    
 	    startScreen()
 	    

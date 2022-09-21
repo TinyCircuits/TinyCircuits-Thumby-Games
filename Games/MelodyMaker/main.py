@@ -106,7 +106,7 @@ async def main():
 	
 	pressed = False #keeps note from flying up or down
 	
-	def playMelody(noteSpots, curNote):
+	async def playMelody(noteSpots, curNote):
 	    drawCursor(curNote, 0) #remove selection cursor
 	    s = 0
 	    for note in noteSpots:
