@@ -32,7 +32,7 @@ def addDirFilesToList(path, childDir, file_paths):
 topLevelItems = os.listdir()
 unsortedPairs = []
 for item in topLevelItems:
-    if os.path.isdir(item) and item != ".github" and item != ".git" and item != "WASMS":
+    if os.path.isdir(item) and item != ".github" and item != ".git" and item != "APKS":
         pipe = os.popen("git log -- \"" + item + "\"").read()
         # print("Loaded " + item)
         if len(pipe) == 0:
@@ -152,7 +152,10 @@ for pair in sortedPairsNewestAtLast:
         if ".py" in file_path:
             f = open("APKS/building/Games/" + file_path, "r")
             structure = {"parent": None, "name": None, "defs": [], "calls": []}
-            get_functions_to_await(f.read(), functions_to_await, structure, file_path)
+            try:
+                get_functions_to_await(f.read(), functions_to_await, structure, file_path)
+            except Exception as e:
+                print(str(e))
             f.close()
 
     # Game folder copied with just the game files and none of the arcade images/txt, convert to async
