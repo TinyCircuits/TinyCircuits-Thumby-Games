@@ -27,6 +27,8 @@ jobs:
       - name: install python packages
         run: |
           python -m pip install --upgrade pip
+          python -m pip install pygbag
+          python -m pip install pygame
 
       - name: execute py script
         run: python build_url_list.py

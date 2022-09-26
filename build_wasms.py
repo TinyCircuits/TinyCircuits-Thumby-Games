@@ -15,77 +15,6 @@ shutil.rmtree("Games")
 # Get the list of game directories
 root_contents = os.listdir()
 
-prepend_file = open("lib/buildin_overrides.py")
-prepend_contents = prepend_file.read()
-prepend_file.close()
-
-
-def get_functions_to_await(file_str, functions_to_await, structure, game_dir):
-    
-    def recursive_find(body, structure):
-        for statement in body:
-            if "ast.FunctionDef" in str(statement):
-                next_structure = {"parent": structure, "name": statement.name, "defs": [], "calls": []}
-                structure["defs"].append(next_structure)
-                recursive_find(statement.body, next_structure)
-            elif "ast.Expr" in str(statement) and "ast.Call" in str(statement.value):
-                function_name = ""
-
-                if "ast.Attribute" in str(statement.value.func):
-                    function_name = statement.value.func.attr
-                elif "ast.Name" in str(statement.value.func):
-                    function_name = str(statement.value.func.id)
-                
-                structure["calls"].append(function_name)
-
-                if function_name == "update" or function_name in functions_to_await:
-                    s = structure
-                    while s != None and s["name"] != None:
-                        if s["name"] not in functions_to_await:
-                            functions_to_await.append(s["name"])
-                        s = s["parent"]
-            # elif hasattr(statement, "body"):
-            elif "ast.Class" in str(statement) or "ast.While" in str(statement) or "ast.For" in str(statement) or "ast.If" in str(statement):
-                recursive_find(statement.body, structure)
-
-    try:
-        recursive_find(ast.parse(file_str).body, structure)
-    except Exception as e:
-        print("ERROR: " + game_dir + " -> " + str(e))
-
-
-def convert_file_contents(file_contents, functions_to_await, is_main=True):
-    converted_game_contents = ""
-
-    for line_number in range(0, len(file_contents), 1):
-        line = file_contents[line_number]
-
-        if "global" in line and is_main:
-            # Replace global keywords with nonlocal since functions are now defined in function main
-            line = line.replace("global", "nonlocal")
-        if "thumby.display.update()" in line:
-            # Async sleep is defined in update but it needs awaited using async def main():
-            line = line.replace("thumby.display.update()", "await thumby.display.update()")
-        if "@micropython.native" in line:
-            # Remove decorator (needs done for viper too but there are other things to remove, maybe look into how to define blank decorators with the same names)
-            line = line.replace("@micropython.native", "")
-        if "@micropython.viper" in line:
-            line = line.replace("@micropython.viper", "")
-        if ":int" in line:
-            line = line.replace(":int", "")
-        if ("ptr8(") in line:
-            start_index = line.find("ptr8(")
-            end_index = line.find(")", start_index)
-
-            line = line[0:start_index] + line[start_index+5:end_index] + line[end_index+1:]
-        
-        if(is_main):
-            converted_game_contents += "\t" + line
-        else:
-            converted_game_contents += line
-    
-    return converted_game_contents
-
 
 
 # One by one build the wasm directories
@@ -150,6 +79,18 @@ import pygame
 import os
 import sys
 
+
+# Re-define the open function to create a directory for a file if it doesn't already exist (mimic MicroPython)
+def open(path, mode):
+    import builtins
+    from pathlib import Path
+    
+    filename = Path(path)
+    filename.parent.mkdir(parents=True, exist_ok=True)
+
+    return builtins.open(path, mode)
+
+
 sys.path.append(\"lib\")
 
 import time
@@ -166,10 +107,6 @@ pygame.init()
 pygame.display.set_caption("Thumby game")
 
 """)
-
-        # Add overrides/re-defines
-        wasm_file.write(prepend_contents + "\n\n")
-
         # Change root directory
         wasm_file.write("os.chdir(sys.path[0])" + "\n\n\n")
         
@@ -185,7 +122,7 @@ pygame.display.set_caption("Thumby game")
         wasm_file.close()
 
 
-        # Now that all functions to await are collected and all files written, do through collected Python file paths and add async and await to those functions
+        # Now that all functions to await are collected and all files written, go through collected Python file paths and add async and await to those functions
         for file_path in all_converted_game_file_paths:
             f = open(file_path, "r")
             contents = f.read()
@@ -221,4 +158,4 @@ pygame.display.set_caption("Thumby game")
             f.close()
         
         # Make the web build and apk
-        os.system("pygbag --build Games/" + game_dir)
+        os.system("pygbag --build --ume_block 0 Games/" + game_dir)
