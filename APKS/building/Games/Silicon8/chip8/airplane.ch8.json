@@ -1,0 +1,9 @@
+{
+  "name": "Airplane",
+  "desc": "You are in a plane, dropping bombs. For each bomb that hits the ground, you get a point. For each bomb that gets intercepted by another plane, you lose a bomb. It's up to you to time your drops just right!\n\nDrop a bomb with A or B.",
+  "type": "VIP",
+  "keys": {
+    "a": 8,
+    "b": 8
+  }
+}

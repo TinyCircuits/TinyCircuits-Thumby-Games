@@ -166,16 +166,23 @@ for pair in sortedPairsNewestAtLast:
             f.close()
 
             f = open("APKS/building/Games/" + file_path, "w")
-            f.write(convert_file_contents(file_lines, functions_to_await, False))
+            if game_name in file_path:
+                f.write(convert_file_contents(file_lines, functions_to_await))
+            else:
+                f.write(convert_file_contents(file_lines, functions_to_await), False)
             f.close()
 
 
     # Now that all functions are awaited, make the main entry point file as required by pygbag: https://pypi.org/project/pygbag/
-    wasm_file = open("APKS/building/Games/" + game_name + "/main.py", "w")
+    f = open("APKS/building/Games/" + game_name + "/" + game_name + ".py", "r")
+    file_lines = f.readlines()
+    f.close()
+
+    wasm_file = open("APKS/building/Games/" + game_name + "/" + game_name + ".py", "w")
 
     wasm_file.write("""
         
-# Add common but missing functions to time module (from redefined/recreated micropython module)
+# Add common but missing functions to time module (from redefined/recreated Micropython module)
 import asyncio
 import pygame
 import os
@@ -217,31 +224,41 @@ pygame.display.set_caption("Thumby game")
     # Add main loop
     wasm_file.write("async def main():\n")
         
-    f = open("APKS/building/Games/" + game_name + "/" + game_name + ".py", "r")
-    file_lines = f.readlines()
     for line in file_lines:
-        wasm_file.write("\t" + line)
-    f.close()
+        wasm_file.write(line)
     
     wasm_file.write("\nasyncio.run(main())")
 
     wasm_file.close()
 
     # Remove the non-entry point style version of the main game file and move it to project root while still preserving /Games/mygame structure
-    os.remove("APKS/building/Games/" + game_name + "/" + game_name + ".py")
-    shutil.move("APKS/building/Games/" + game_name + "/main.py", "APKS/building/main.py")
+    # os.remove("APKS/building/Games/" + game_name + "/" + game_name + ".py")
+    # shutil.move("APKS/building/Games/" + game_name + "/main.py", "APKS/building/main.py")
 
-    # Make the web build and apk
-    os.system("pygbag --build --ume_block 0 " + "APKS/building/")
+    # # Make the web build and apk
+    # os.system("pygbag --build --ume_block 0 " + "APKS/building/")
 
-    shutil.copyfile("APKS/building/build/web/building.apk", "APKS/" + game_name + ".apk")
-
-    # Delete these after every game conversion
-    shutil.rmtree("APKS/building/Games")
-    shutil.rmtree("APKS/building/build")
-    os.remove("APKS/building/main.py")
-        
+    # shutil.copyfile("APKS/building/build/web/building.apk", "APKS/" + game_name + ".apk")
 
     url_list_file.write("\n")
 
 url_list_file.close()
+
+
+main_file = open("APKS/building/main.py", "w")
+main_file.write("""
+print(\"DUMMY MAIN RAN!\")
+"""
+)
+main_file.close()
+
+# Make the web build containing all apks
+os.system("pygbag --ume_block 0 " + "APKS/building/")
+
+# Copy APK file out of build dir
+shutil.copyfile("APKS/building/build/web/building.apk", "APKS/" + "all" + ".apk")
+
+# Delete everything used for building
+shutil.rmtree("APKS/building/Games")
+shutil.rmtree("APKS/building/build")
+os.remove("APKS/building/main.py")

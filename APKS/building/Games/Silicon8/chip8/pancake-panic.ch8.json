@@ -1,0 +1,12 @@
+{
+  "name": "Pancake Panic (Aaron Williams, 2018)",
+  "link": "https://sites.google.com/williams.edu/aaron/games#h.p_QU2i1PUkmWon",
+  "desc": "Aaron writes on his website: Jacob E. Goodman introduced the problem of pancake sorting in a 1977 paper under the pseudonym Harry Dweighter ('harried waiter'). In the same year Joseph Weisbecker created the Chip-8 virtual machine language for video games. Pancake Panic finally brings these two contemporaneous ideas together. A version was submitted to OctoJam V.\n\nSelect stack height with UP and DOWN. Flip the stack with A or B.",
+  "type": "VIP",
+  "keys": {
+    "up": 1,
+    "down": 3,
+    "a": 2,
+    "b": 2
+  }
+}
