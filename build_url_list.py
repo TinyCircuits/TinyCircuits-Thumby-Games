@@ -216,9 +216,6 @@ pygame.init()
 pygame.display.set_caption("Thumby game")
 
 """)
-
-    # Change root directory
-    wasm_file.write("os.chdir(sys.path[0])" + "\n\n\n")
     
 
     # Add main loop
@@ -230,15 +227,6 @@ pygame.display.set_caption("Thumby game")
     wasm_file.write("\nasyncio.run(main())")
 
     wasm_file.close()
-
-    # Remove the non-entry point style version of the main game file and move it to project root while still preserving /Games/mygame structure
-    # os.remove("APKS/building/Games/" + game_name + "/" + game_name + ".py")
-    # shutil.move("APKS/building/Games/" + game_name + "/main.py", "APKS/building/main.py")
-
-    # # Make the web build and apk
-    # os.system("pygbag --build --ume_block 0 " + "APKS/building/")
-
-    # shutil.copyfile("APKS/building/build/web/building.apk", "APKS/" + game_name + ".apk")
 
     url_list_file.write("\n")
 
@@ -253,10 +241,10 @@ print(\"DUMMY MAIN RAN!\")
 main_file.close()
 
 # Make the web build containing all apks
-os.system("pygbag --ume_block 0 " + "APKS/building/")
+os.system("pygbag --build --ume_block 0 " + "APKS/building/")
 
 # Copy APK file out of build dir
-shutil.copyfile("APKS/building/build/web/building.apk", "APKS/" + "all" + ".apk")
+shutil.copyfile("APKS/building/build/web/building.apk", "APKS/" + "building" + ".apk")
 
 # Delete everything used for building
 shutil.rmtree("APKS/building/Games")
