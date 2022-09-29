@@ -181,7 +181,7 @@ async def main():
 	            machine.reset()
 	
 	
-	def handleInput():
+	async def handleInput():
 	    if await thumby.buttonA.pressed() or await thumby.buttonB.pressed():
 	        nonlocal heliYVelocity
 	        
@@ -277,7 +277,7 @@ async def main():
 	        
 	        # Draw cave and then check if the helicopter bounding box touches the cave
 	        drawCave(caveX)
-	        handleInput()
+	        await handleInput()
 	        if await checkCollision() == True:
 	            break
 	        

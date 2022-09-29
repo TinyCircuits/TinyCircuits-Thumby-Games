@@ -170,7 +170,7 @@ async def main():
 	        self.hitbox = [[self.charSprite.x, self.charSprite.y],[self.charSprite.x+5, self.charSprite.y+8]]
 	  
 	                
-	    def user_attack(self):
+	    async def user_attack(self):
 	        if await thumby.buttonA.pressed() and self.attacking == 0:
 	            self.attacking = 30
 	            x = self.charSprite.x
@@ -633,7 +633,7 @@ async def main():
 	            shopCooldown -= 1
 	            
 	        p1.await user_move()
-	        attack_status, attack = p1.user_attack()
+	        attack_status, attack = p1.await user_attack()
 	        if attack_status:
 	            attacks.append(attack)
 	            

@@ -6,11 +6,19 @@ class ButtonClass:
         self.key = key
         self.lastState = False
         self.latchedPress = False
+
+        self.waitCounter = 0
     
     # Returns True if the button is currently pressed, False if not.
     async def pressed(self):
         pygame.event.pump()
-        await asyncio.sleep(0)
+
+        self.waitCounter = self.waitCounter + 1
+
+        # Don't call this all the time since that would lag (mostly for case where only checking buttons in loop and not calling thumby.display.update())
+        if self.waitCounter > 25000:
+            await asyncio.sleep(0)
+            self.waitCounter = 0
         return pygame.key.get_pressed()[self.key]
     
     # Returns True if the button was just pressed, False if not.

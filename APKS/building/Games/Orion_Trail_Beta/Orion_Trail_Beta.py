@@ -106,7 +106,7 @@ async def main():
 	        await redraw_screen(1,1)
 	        reading =  True
 	        while reading:
-	            reading = check_escape()
+	            reading = await check_escape()
 	        await redraw_screen(1,1)
 	                    
 	    
@@ -131,7 +131,7 @@ async def main():
 	            time.sleep(0.1)
 	        random.seed(time.ticks_us())
 	        
-	    def check_escape(button='b'):
+	    async def check_escape(button='b'):
 	        running = True
 	        if await thumby.buttonB.pressed() and button == 'b':
 	            running = False
@@ -166,7 +166,7 @@ async def main():
 	            elif await thumby.buttonD.pressed() and arrow_position < int(len(await menu_items)-1):
 	                arrow_position += 1
 	            await redraw_screen(1, 0.2)
-	            in_await menu = check_escape('a')
+	            in_await menu = await check_escape('a')
 	        return await menu_items[arrow_position]
 	            
 	    def stat_comparison_await menu(crew, stat):
@@ -263,7 +263,7 @@ async def main():
 	                screen_position -= 1
 	            thumby.display.blit(a_button, 8, 30, 8, 8, 1, 0, 0)
 	            thumby.display.drawText('Continue', 15, 30, 0)
-	            running = check_escape('a')
+	            running = await check_escape('a')
 	            await thumby.display.update()
 	            time.sleep(0.2)
 	            thumby.display.fill(1)
@@ -514,7 +514,7 @@ async def main():
 	                        crew, ship, money = await buisness_ship(crew, ship, money)
 	                thumby.display.drawText(str(test_number), 30,10,0)
 	                await redraw_screen(1, 0.5)
-	                deving = check_escape()
+	                deving = await check_escape()
 	            return crew, ship, money
 	                
 	        async def ship_screen(ship):
@@ -558,7 +558,7 @@ async def main():
 	                            await thumby.display.update()
 	                            time.sleep(0.2)
 	                            thumby.display.fill(1)
-	                            oxygen_view = check_escape()
+	                            oxygen_view = await check_escape()
 	                    if ship_data[selected][0] == 'Nav View':
 	                            nav_view = True
 	                            while nav_view:
@@ -567,7 +567,7 @@ async def main():
 	                                await thumby.display.update()
 	                                time.sleep(0.2)
 	                                thumby.display.fill(1)
-	                                nav_view = check_escape()
+	                                nav_view = await check_escape()
 	                    if ship_data[selected][0] == 'Wings View':
 	                            wings_view = True
 	                            while wings_view:
@@ -580,7 +580,7 @@ async def main():
 	                                await thumby.display.update()
 	                                time.sleep(0.2)
 	                                thumby.display.fill(1)
-	                                wings_view = check_escape()
+	                                wings_view = await check_escape()
 	                    if ship_data[selected][0] == 'Engine View':
 	                            engine_view = True
 	                            while engine_view:
@@ -591,13 +591,13 @@ async def main():
 	                                await thumby.display.update()
 	                                time.sleep(0.2)
 	                                thumby.display.fill(1)
-	                                engine_view = check_escape()
+	                                engine_view = await check_escape()
 	                ship_text = ship_data[selected][0]
 	                thumby.display.drawText(ship_text, 0, 30, 0)
 	                current_image = ship_data[selected][1]
 	                thumby.display.blit(current_image, 0, 0, 35, 20, 1, 0, 0)
 	                await redraw_screen(1, 0.2)
-	                ship_await menu = check_escape()
+	                ship_await menu = await check_escape()
 	                
 	        arrow  = bytearray([31,31,0,17,27])
 	        arrow_position = 0        
@@ -615,7 +615,7 @@ async def main():
 	                            thumby.display.drawText(character[6][i][0], 0, j*10, 0)
 	                            thumby.display.drawText(num, 60, j*10, 0)
 	                await redraw_screen(1, 0.2)
-	                running_inv = check_escape()
+	                running_inv = await check_escape()
 	        elif selection == 'Crew':
 	            crew_inv = get_crew_names(crew)
 	            character = await menu(crew_inv)
@@ -1074,7 +1074,7 @@ async def main():
 	                elif ship[3] < 10:
 	                    thumby.display.drawText('Oxy Lvl Crtcl', 0, 20, 0)
 	                await redraw_screen(1, 0.2)
-	                warn_page = check_escape()
+	                warn_page = await check_escape()
 	        return ship
 	     
 	    async def end_screen(cause):

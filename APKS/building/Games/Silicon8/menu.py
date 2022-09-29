@@ -17,10 +17,10 @@
 	            self.await render()
 	            self.lastInputTime = time.ticks_ms()
 	            self.lastAnimateTime = time.ticks_ms()
-	            if self.waitInput():
+	            if self.await waitInput():
 	                return self.programs[self.selected], self.selected, self.scroll
 	
-	    def waitInput(self):
+	    async def waitInput(self):
 	        # Wait for button release
 	        while await thumby.buttonU.pressed() or await thumby.buttonD.pressed() or await thumby.buttonA.pressed() or await thumby.buttonB.pressed():
 	            pass

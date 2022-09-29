@@ -56,32 +56,41 @@ for item in topLevelItems:
 
 def get_functions_to_await(file_str, functions_to_await, structure, game_dir):
     
+
+    def test_add_to_await(func, structure):
+        function_name = ""
+
+        if "ast.Attribute" in str(func):
+            function_name = func.attr
+        elif "ast.Name" in str(func):
+            function_name = str(func.id)
+        
+        structure["calls"].append(function_name)
+
+        # If this called function was update or one that called update, make sure its parents are in the to await list
+        if function_name == "update" or function_name == "pressed" or function_name in functions_to_await:
+            s = structure
+            while s["parent"] != None:
+                if s["name"] not in functions_to_await:
+                    functions_to_await.append(s["name"])
+                s = s["parent"]
+
+
     def recursive_find(body, structure):
         for statement in body:
             if "ast.FunctionDef" in str(statement):
-                if "checkCollision" in statement.name:
-                    print(statement.body)
-
                 next_structure = {"parentName": structure["name"], "parent": structure, "name": statement.name, "defs": [], "calls": []}
                 structure["defs"].append(next_structure)
                 recursive_find(statement.body, next_structure)
             elif ("ast.Expr" in str(statement) or "ast.Return" in str(statement)) and "ast.Call" in str(statement.value):
-                function_name = ""
+                test_add_to_await(statement.value.func, structure)
+            elif "ast.If" in str(statement):
+                if hasattr(statement.test, "values"):
+                    for value in statement.test.values:
+                        if "ast.Call" in str(value):
+                            test_add_to_await(value.func, structure)
+                recursive_find(statement.body, structure)
 
-                if "ast.Attribute" in str(statement.value.func):
-                    function_name = statement.value.func.attr
-                elif "ast.Name" in str(statement.value.func):
-                    function_name = str(statement.value.func.id)
-                
-                structure["calls"].append(function_name)
-
-                # If this called function was update or one that called update, make sure its parents are in the to await list
-                if function_name == "update" or function_name == "pressed" or function_name in functions_to_await:
-                    s = structure
-                    while s["parent"] != None:
-                        if s["name"] not in functions_to_await:
-                            functions_to_await.append(s["name"])
-                        s = s["parent"]
             elif hasattr(statement, "body"):
             # elif "ast.Class" in str(statement) or "ast.While" in str(statement) or "ast.For" in str(statement) or "ast.If" in str(statement):
                 recursive_find(statement.body, structure)
@@ -258,7 +267,7 @@ print(\"DUMMY MAIN RAN!\")
 main_file.close()
 
 # Make the web build containing all apks
-os.system("pygbag --ume_block 0 " + "APKS/building/")
+os.system("pygbag --build --ume_block 0 " + "APKS/building/")
 
 # Copy APK file out of build dir
 shutil.copyfile("APKS/building/build/web/building.apk", "APKS/" + "building" + ".apk")

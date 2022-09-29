@@ -338,7 +338,7 @@ async def main():
 	        thumby.display.drawLine(35, 36, self.screen_pos, 29, 1)
 	        thumby.display.drawLine(36, 36, self.screen_pos+1, 29, 1)
 	        
-	    def take_input(self):
+	    async def take_input(self):
 	        
 	        
 	        if await thumby.buttonR.pressed() and not self.pressed:
@@ -381,7 +381,7 @@ async def main():
 	        
 	        thumby.display.setPixel(int(self.x), int(self.y), 1)
 	        
-	    def take_input(self, tank, frame):
+	    async def take_input(self, tank, frame):
 	        if await thumby.buttonA.pressed() and frame - self.last_shot >= 15 and not self.pressed:
 	            self.pressed = True
 	            self.shoot(tank)
@@ -549,8 +549,8 @@ async def main():
 	                    cow_spots[new_pos] = True
 	                    moving_cow.move(new_pos)
 	                
-	            myTank.take_input()
-	            myAmmo.take_input(myTank, frame)
+	            myTank.await take_input()
+	            myAmmo.await take_input(myTank, frame)
 	                
 	            thumby.display.fill(0)
 	            

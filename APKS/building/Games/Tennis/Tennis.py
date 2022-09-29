@@ -180,7 +180,7 @@ async def main():
 	            thumby.display.drawText("^", 67, 32, 1)
 	
 	
-	def handleRacketMove(racket):
+	async def handleRacketMove(racket):
 	    if await thumby.buttonU.pressed() and racket.y - 0.75 >= 1:
 	        racket.y -= 0.75
 	    elif await thumby.buttonD.pressed() and racket.y + 0.75 <= thumby.display.height - racket.height - 1:
@@ -348,9 +348,9 @@ async def main():
 	    
 	    handleIndicatePlayer()
 	    if server:
-	        handleRacketMove(leftRacket)
+	        await handleRacketMove(leftRacket)
 	    else:
-	        handleRacketMove(rightRacket)
+	        await handleRacketMove(rightRacket)
 	    
 	    handleSend()
 	    

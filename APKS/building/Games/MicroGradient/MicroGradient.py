@@ -52,7 +52,7 @@ async def main():
 	        self.lives = 3
 	        self.flicker = 0
 	        
-	    def input(self):
+	    async def input(self):
 	        if self.cooldown > 0:
 	            self.cooldown -= 1
 	        if await thumby.buttonL.pressed() and self.sprite.x > 0:
@@ -413,7 +413,7 @@ async def main():
 	    if f == 100:
 	        f = 0
 	    thumby.display.fill(0) # Fill canvas to black
-	    p1.input()
+	    p1.await input()
 	    
 	    #print(kills, (kills+1)%10)
 	    
