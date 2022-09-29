@@ -1,10 +1,12 @@
 # https://canovasjm.netlify.app/2020/11/29/github-actions-run-a-python-script-on-schedule-and-commit-changes/
 
+from __future__ import print_function
 import os
 import shutil
 import datetime
 from posixpath import dirname
 import ast
+import pprint
 print("Starting URL list builder using Python in GH Action...")
 
 # Each game's asset is appended to the end of this, like https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/MyGame/MyGame.py
@@ -58,7 +60,8 @@ def get_functions_to_await(file_str, functions_to_await, structure, game_dir):
     def recursive_find(body, structure):
         for statement in body:
             if "ast.FunctionDef" in str(statement):
-                next_structure = {"parent": structure, "name": statement.name, "defs": [], "calls": []}
+                # next_structure = {"parent": structure, "name": statement.name, "defs": [], "calls": []}
+                next_structure = {"parentName": structure["name"], "parent": structure, "name": statement.name, "defs": [], "calls": []}
                 structure["defs"].append(next_structure)
                 recursive_find(statement.body, next_structure)
             elif "ast.Expr" in str(statement) and "ast.Call" in str(statement.value):
@@ -71,14 +74,15 @@ def get_functions_to_await(file_str, functions_to_await, structure, game_dir):
                 
                 structure["calls"].append(function_name)
 
+                # If this called function was update or one that called update, make sure its parents are in the to await list
                 if function_name == "update" or function_name in functions_to_await:
                     s = structure
-                    while s != None and s["name"] != None:
+                    while s["parent"] != None:
                         if s["name"] not in functions_to_await:
                             functions_to_await.append(s["name"])
                         s = s["parent"]
-            # elif hasattr(statement, "body"):
-            elif "ast.Class" in str(statement) or "ast.While" in str(statement) or "ast.For" in str(statement) or "ast.If" in str(statement):
+            elif hasattr(statement, "body"):
+            # elif "ast.Class" in str(statement) or "ast.While" in str(statement) or "ast.For" in str(statement) or "ast.If" in str(statement):
                 recursive_find(statement.body, structure)
 
     try:
@@ -114,7 +118,10 @@ def convert_file_contents(file_contents, functions_to_await, is_main=True):
             line = line[0:start_index] + line[start_index+5:end_index] + line[end_index+1:]
         
         for func in functions_to_await:
+            if "def " + func in line:
                 line = line.replace("def " + func, "async def " + func, -1)
+            elif func in line:
+                line.replace(func, "await " + func, -1)
 
         if(is_main):
             converted_game_contents += "\t" + line
@@ -134,7 +141,6 @@ for pair in sortedPairsNewestAtLast:
     
     game_name = pair[1]
 
-    print("")
     file_paths = []
     addDirFilesToList(game_name, False, file_paths)
     
@@ -157,6 +163,16 @@ for pair in sortedPairsNewestAtLast:
             except Exception as e:
                 print(str(e))
             f.close()
+
+    if "TinyHeli" in file_path:
+        print("")
+        print("")
+        pprint.pprint(structure)
+        print("")
+        print("")
+        print(functions_to_await)
+        print("")
+        print("")
 
     # Game folder copied with just the game files and none of the arcade images/txt, convert to async
     for file_path in file_paths:
@@ -187,18 +203,6 @@ import asyncio
 import pygame
 import os
 import sys
-
-
-# Re-define the open function to create a directory for a file if it doesn't already exist (mimic MicroPython)
-def open(path, mode):
-    import builtins
-    from pathlib import Path
-    
-    filename = Path(path)
-    filename.parent.mkdir(parents=True, exist_ok=True)
-
-    return builtins.open(path, mode)
-
 
 sys.path.append(\"lib\")
 

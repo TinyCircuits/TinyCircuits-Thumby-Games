@@ -1,4 +1,45 @@
 import os
+import copy
+
+
+
+# Redefine the open function to create a directory for a file if it doesn't already exist (mimic MicroPython)
+def new_open(path, mode):
+    if str(type(path)) == "<class 'pathlib.PosixPath'>":
+        path = path.as_posix()
+
+    # If absolute path, append CPython wasm path to building root (mimic Thumby FS)
+    if path[0] == '/':
+        path = '/data/data/building/assets' + path
+
+    from pathlib import Path
+    
+    filename = Path(path)
+    try:
+        filename.parent.mkdir(parents=True, exist_ok=True)
+    except:
+        pass
+
+    return __builtins__["old_open"](path, mode)
+
+
+def new_stat(path, follow_symlinks=True):
+    if str(type(path)) == "<class 'pathlib.PosixPath'>":
+        path = path.as_posix()
+
+    # If absolute path, append CPython wasm path to building root (mimic Thumby FS)
+    if path[0] == '/':
+        path = '/data/data/building/assets' + path
+    
+    return os.old_stat(path, follow_symlinks=follow_symlinks)
+
+
+__builtins__["old_open"] = copy.deepcopy(__builtins__["open"])
+__builtins__["open"] = new_open
+
+os.old_stat = copy.deepcopy(os.stat)
+os.stat = new_stat
+
 
 
 # Sprite class for holding pixel data 

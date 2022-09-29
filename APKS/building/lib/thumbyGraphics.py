@@ -5,6 +5,22 @@ from time import ticks_ms, ticks_diff, sleep_ms
 from thumbyButton import buttonA, buttonB, buttonU, buttonD, buttonL, buttonR
 
 
+
+def open(path, mode):
+    # If absolute path, append CPython wasm path to building root (mimic Thumby FS)
+    if path[0] == '/':
+        path = '/data/data/building/assets' + path
+
+    import builtins
+    from pathlib import Path
+    
+    filename = Path(path)
+    filename.parent.mkdir(parents=True, exist_ok=True)
+
+    return builtins.open(path, mode)
+
+
+
 class GraphicsClass:
     def __init__(self, width, height):
         self.surface = pygame.display.set_mode((72, 40), pygame.SCALED | pygame.RESIZABLE)
@@ -68,7 +84,12 @@ class GraphicsClass:
         self.surface.set_at((x, y), (color, color, color))
 
     def getPixel(self, x, y) -> int:
-        return int(self.surface.get_at((x, y)) / 255)
+        if not 0<=x<int(self.width):
+            return 0
+        if not 0<=y<int(self.height):
+            return 0
+
+        return int(self.surface.get_at((x, y))[0] / 255)
 
     def drawLine(self, x1, y1, x2, y2, color):
         color *= 255
