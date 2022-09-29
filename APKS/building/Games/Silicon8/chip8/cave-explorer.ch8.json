@@ -1,0 +1,14 @@
+{
+  "name": "Cave Explorer (John Earnest, 2014)",
+  "link": "https://github.com/JohnEarnest/chip8Archive/tree/master/src/caveexplorer",
+  "desc": "Traverse a sprawling 16-screen overworld, solve puzzles, move crates around and, with a little luck, watch an incredible ending sequence! Do you have what it takes to be a Cave Explorer?\n\nMove with UP, DOWN, LEFT and RIGHT, and in platformer levels use A to pick up/drop crates and B to reset the level.",
+  "type": "VIP",
+  "keys": {
+    "up": 5,
+    "down": 8,
+    "left": 7,
+    "right": 9,
+    "a": 6,
+    "b": 4
+  }
+}

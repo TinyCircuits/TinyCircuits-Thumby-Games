@@ -1,3 +1,4 @@
+import asyncio
 import pygame
 
 class ButtonClass:
@@ -7,8 +8,9 @@ class ButtonClass:
         self.latchedPress = False
     
     # Returns True if the button is currently pressed, False if not.
-    def pressed(self):
+    async def pressed(self):
         pygame.event.pump()
+        await asyncio.sleep(0)
         return pygame.key.get_pressed()[self.key]
     
     # Returns True if the button was just pressed, False if not.

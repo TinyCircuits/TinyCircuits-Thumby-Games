@@ -1,0 +1,10 @@
+{
+  "name": "Breakout (David Winter, 1997)",
+  "link": "https://www.pong-story.com/chip8/",
+  "desc": "This is an adaptation by David Winter of the classic game BRIX, where you use your paddle to keep a ball in the air. Steer the ball to clear the whole playfield. You get five balls. The game keeps score of how well you are doing.\n\nMove the paddle with LEFT and RIGHT.",
+  "type": "VIP",
+  "keys": {
+    "left": 4,
+    "right": 6
+  }
+}

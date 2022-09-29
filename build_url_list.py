@@ -54,17 +54,18 @@ for item in topLevelItems:
         unsortedPairs.append((date, item))
 
 
-
 def get_functions_to_await(file_str, functions_to_await, structure, game_dir):
     
     def recursive_find(body, structure):
         for statement in body:
             if "ast.FunctionDef" in str(statement):
-                # next_structure = {"parent": structure, "name": statement.name, "defs": [], "calls": []}
+                if "checkCollision" in statement.name:
+                    print(statement.body)
+
                 next_structure = {"parentName": structure["name"], "parent": structure, "name": statement.name, "defs": [], "calls": []}
                 structure["defs"].append(next_structure)
                 recursive_find(statement.body, next_structure)
-            elif "ast.Expr" in str(statement) and "ast.Call" in str(statement.value):
+            elif ("ast.Expr" in str(statement) or "ast.Return" in str(statement)) and "ast.Call" in str(statement.value):
                 function_name = ""
 
                 if "ast.Attribute" in str(statement.value.func):
@@ -75,7 +76,7 @@ def get_functions_to_await(file_str, functions_to_await, structure, game_dir):
                 structure["calls"].append(function_name)
 
                 # If this called function was update or one that called update, make sure its parents are in the to await list
-                if function_name == "update" or function_name in functions_to_await:
+                if function_name == "update" or function_name == "pressed" or function_name in functions_to_await:
                     s = structure
                     while s["parent"] != None:
                         if s["name"] not in functions_to_await:
@@ -104,6 +105,18 @@ def convert_file_contents(file_contents, functions_to_await, is_main=True):
         if "thumby.display.update()" in line:
             # Async sleep is defined in update but it needs awaited using async def main():
             line = line.replace("thumby.display.update()", "await thumby.display.update()")
+        if "thumby.buttonA.pressed()" in line:
+            line = line.replace("thumby.buttonA.pressed()", "await thumby.buttonA.pressed()")
+        if "thumby.buttonB.pressed()" in line:
+            line = line.replace("thumby.buttonB.pressed()", "await thumby.buttonB.pressed()")
+        if "thumby.buttonU.pressed()" in line:
+            line = line.replace("thumby.buttonU.pressed()", "await thumby.buttonU.pressed()")
+        if "thumby.buttonD.pressed()" in line:
+            line = line.replace("thumby.buttonD.pressed()", "await thumby.buttonD.pressed()")
+        if "thumby.buttonL.pressed()" in line:
+            line = line.replace("thumby.buttonL.pressed()", "await thumby.buttonL.pressed()")
+        if "thumby.buttonR.pressed()" in line:
+            line = line.replace("thumby.buttonR.pressed()", "await thumby.buttonR.pressed()")
         if "@micropython.native" in line:
             # Remove decorator (needs done for viper too but there are other things to remove, maybe look into how to define blank decorators with the same names)
             line = line.replace("@micropython.native", "")
@@ -121,7 +134,7 @@ def convert_file_contents(file_contents, functions_to_await, is_main=True):
             if "def " + func in line:
                 line = line.replace("def " + func, "async def " + func, -1)
             elif func in line:
-                line.replace(func, "await " + func, -1)
+                line = line.replace(func, "await " + func, -1)
 
         if(is_main):
             converted_game_contents += "\t" + line
@@ -245,7 +258,7 @@ print(\"DUMMY MAIN RAN!\")
 main_file.close()
 
 # Make the web build containing all apks
-os.system("pygbag --build --ume_block 0 " + "APKS/building/")
+os.system("pygbag --ume_block 0 " + "APKS/building/")
 
 # Copy APK file out of build dir
 shutil.copyfile("APKS/building/build/web/building.apk", "APKS/" + "building" + ".apk")
