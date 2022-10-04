@@ -25,32 +25,32 @@ import math
 import random
 import machine
 import gc
-
+from random import randrange
 ##############################################
 
 #Global Variables-------------------------#                             
 userInput=11                              # 
 num = 0                                   #
-randy=[3, 6, 10, 60, 25, 100, 120, 333,   #
+randy1=[3, 6, 10, 60, 25, 100, 120, 333,   #
     444, 605, 999 ,                       #
     17,18,19,21,28,35,36,                 #
     37,42,63,73,74,84,85,                 #
     94,101,111,119,126,131,               #    
     185,202,303,404,409]                  #
-randnum = randy[num]                      #    
-randy1=[4, 7, 10, 8, 32, 38, 44, 64,      #
+randnum = randy1[num]                      #    
+randy2=[4, 7, 10, 8, 32, 38, 44, 64,      #
     77, 86, 100, 111, 120,                #
     17,18,19,21,28,35,36,                 #
     37,42,63,73,74,84,85,                 #
     94,101,111,119,126,131,               #    
     185,102,103,104,109]                  #
-randnumber = randy1[num]                  #    
-randy2=[5,6,7,9,11,12,14,15,              #
+randnumber = randy2[num]                  #    
+randy3=[5,6,7,9,11,12,14,15,              #
     17,18,19,21,28,35,36,                 #
     37,42,63,73,74,84,85,                 #
     94,101,111,119,126,131,               #    
     185,202,303,404,409]                  #
-palindromenum= randy2[num]                #    
+palindromenum= randy3[num]                #    
 data= False                               #
 abutton = 0                               #
 pageNumber=0                              #
@@ -149,7 +149,7 @@ class Game:
         self.text = text
         self.userAnswer= userAnswer
 game1 = Game("Roman Quest", randnum, intToRoman(randnum),userInput)    
-game2 = Game("PAlindroME!", isPalindrome(isPalindrome,101), palindromenum, isPalindrome(isPalindrome,(userInput*(palindromenum)))) 
+game2 = Game("PAlindroME!", True, palindromenum, isPalindrome(isPalindrome,(userInput))) 
 game3 = Game("BinaryBeats", randnumber,bin(randnumber)[2:], userInput)
 game4 = Game("Witch's Hex",randnumber,hex(randnumber)[2:],userInput)
 
@@ -328,6 +328,13 @@ while(True):
     #The logic here is to control the input of the user and generate a Question and Answer
     
     elif pageNumber==2:
+        game1.answer = randy1[num]
+        game1.text = intToRoman(game1.answer)
+        game2.text =  randy3[num]
+        game3.answer = randy2[num]
+        game3.text = bin(game3.answer)[2:]
+        game4.answer = randy2[num]
+        game4.text = hex(game4.answer)[2:]
         if game > 3:
             game = 0
         thumby.display.fill(0)
@@ -365,13 +372,6 @@ while(True):
                 pageNumber=1
                 game+=1
                 num +=1 
-                #game1.answer = randnum
-                #game1.text = intToRoman(randnum)
-                #game2.text =  palindromenum
-                #game3.answer = randnumber
-                #game3.text = bin(randnumber)[2:]
-                #game4.answer = randnumber
-                #game4.text = hex(randnumber)[2:]
     #This logic controls the user input from 0-9 for a three digit number
             if thumby.buttonR.pressed():
                 place-=1
@@ -386,7 +386,7 @@ while(True):
                     hundreds+=1    
             if (thumby.buttonD.pressed() and ones>0 and tens>0 and hundreds>0):
                 if place ==0:
-                    ones-=1
+                    ones=ones-1
                 elif place ==1:
                     tens-=1
                 elif place ==2:
@@ -399,7 +399,7 @@ while(True):
             thumby.display.drawText(str(hundreds), 35,2, 1)
             #This logic submits the user answer 
             game1.userAnswer= ones+(tens*10)+(hundreds*100)
-            game2.userAnswer= ones+(tens*10)+(hundreds*100)
+            game2.userAnswer= isPalindrome(isPalindrome,((ones+(tens*10)+(hundreds*100)) * game2.text))
             game3.userAnswer= ones+(tens*10)+(hundreds*100)
             game4.userAnswer= ones+(tens*10)+(hundreds*100)
             #This logic gives you positive or negative points
@@ -415,7 +415,7 @@ while(True):
                     starpet.hyg =0
                     starpet.toy = 0
                     game+=1
-                    num +=2 
+                    num +=random.randrange(3) 
                     pageNumber = 1
                 elif game2.userAnswer == game2.answer:
                     starpet.happy+=1
@@ -448,13 +448,13 @@ while(True):
                     starpet.hyg =0
                     starpet.toy = 0
                     game+=1
-                    num +=1 
+                    num +=random.randrange(3) 
                     pageNumber = 1 
                 else:
                     starpet.angry+=1
                     pageNumber = 1
                     game+=1
-                    num += 2 
+                    num +=random.randrange(3) 
             thumby.display.update()
     
     #FOOD PAGE---------------------------------------------
@@ -554,4 +554,3 @@ while(True):
         thumby.display.fill(0) 
         thumby.display.update()
     #END OF WHILE LOOP ----------------------------------------------
-    
