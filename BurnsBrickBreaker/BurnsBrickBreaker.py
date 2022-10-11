@@ -115,8 +115,7 @@ class GameView(View):
         self.pad.reset()
         self.lost = False
         self.score = 0
-        # pos / score
-    
+
     @staticmethod
     def get_bricks():
         bricks = []
@@ -325,21 +324,22 @@ class BallWidget(Widget):
         
 class PadWidget(Widget):
     def __init__(self, screen):
-        # BITMAP: width: 20, height: 3
-        padMap = bytearray([2,3,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,7,3,2])
-        # BITMAP: width: 10, height: 3
-        #padMap = bytearray([2,7,5,5,5,5,5,5,7,2])
-        Widget.__init__(self, 20, 3, padMap, screen.width/2 - 5, screen.height - 4, key=0)
+        # BITMAP: width: 25, height: 3
+        padMap = bytearray([2,3,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,7,3,2])
+        Widget.__init__(self, 25, 3, padMap, screen.width/2 - 5, screen.height - 4, key=0)
         self.screen = screen
         self.speed = 5
+        self.is_rebounced = False
         
     def reset(self):
+        self.is_rebounced = False
         self.center_x = self.screen.width/2
         
     def move(self):
         x = 0
+        if not tb.buttonA.pressed(): self.is_rebounced = True
         if tb.buttonL.pressed():    x = self.speed *-1
-        elif tb.buttonR.pressed() or tb.buttonA.pressed():  x = self.speed
+        elif (tb.buttonR.pressed() or tb.buttonA.pressed()) and self.is_rebounced:  x = self.speed
         self.x = max(min(self.x + x, self.screen.width-self.width), self.screen.x)
         
         
