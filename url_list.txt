@@ -1,3 +1,17 @@
+NAME=BurnsCharade
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/BurnsCharade/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/BurnsCharade/arcade_title_image.png
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/BurnsCharade/README.md
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/BurnsCharade/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/BurnsCharade/BurnsCharade.py
+
+NAME=BurnsBrickBreaker
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/BurnsBrickBreaker/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/BurnsBrickBreaker/arcade_title_image.png
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/BurnsBrickBreaker/BurnsBrickBreaker.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/BurnsBrickBreaker/README.md
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/BurnsBrickBreaker/arcade_description.txt
+
 NAME=VirtualPet
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/VirtualPet/VirtualPet.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/VirtualPet/arcade_title_video.webm
