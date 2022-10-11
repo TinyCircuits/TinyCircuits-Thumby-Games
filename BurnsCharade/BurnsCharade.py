@@ -180,7 +180,7 @@ class InstructScreen(Screen):
             if self.game_ended and Player.pressed_L():
                 thumby.reset()
             dp.update()
-            
+
         
 class CharScreen(Screen):
     # generates screens where the char is centered
@@ -265,7 +265,8 @@ class Player():
     @staticmethod
     def pressed_A():
         return thumby.buttonA.justPressed()
-
+        
+        
 class Highscore():
     # contains highscore interactions
     @staticmethod
@@ -298,6 +299,7 @@ class Game():
                             InstructScreen(2),
                             InstructScreen(3)
                         ]
+        self.first = True
         self.reset()
         
     def game_over(self):
@@ -310,7 +312,9 @@ class Game():
         self.rs = Ruleset()
         self.instructs[0].draw(0)
         self.current = random.choice(screens)
+        self.current.draw(random.choice(self.colors))
         self.last = None
+        dp.update()
         return 1
         
         
@@ -334,16 +338,19 @@ class Game():
            is_correct = self.rs.check(1, self.current)
         else:
             return self.highscore
-        
         if is_correct:
             return self.highscore + 1
         else:
             return self.game_over()
+            
        
     def loop(self):
         # game loop / update loop
         while(True):
             new_hs = self.act()
+            if self.first:
+                new_hs = 0
+                self.first = False
             if new_hs > self.highscore:
                 self.highscore = new_hs
                 while self.current is self.last:
@@ -351,7 +358,7 @@ class Game():
                 self.last = self.current
                 self.change_mode()
                 self.current.draw(random.choice(self.colors))
-            thumby.display.update()
+            dp.update()
 
 
 dp.setFPS(FRAMES) 
