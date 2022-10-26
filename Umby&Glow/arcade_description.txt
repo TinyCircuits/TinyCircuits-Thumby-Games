@@ -1,4 +1,4 @@
-Umby & Glow: save their cave!
+Umby & Glow - Save Their Cave!
 
 Play as Umby the earthworm, or Glow the caveworm,
 as the wormy duo embark on an epic adventure to save their cave,
@@ -14,27 +14,27 @@ and the whole world!
 Meet UMBY!
 Crawl the mud, blast tunnels, jump high, launch grenades,
 and create platforms!
-Just don't hit your head too hard on the roof or low overhangs!
 Move & Climb: Left/Right
 Jump: A (hold for higher)
 Aim: Up/Down
-Charge grenade: B (release to launch)
+Charge grenade: Hold B (release to launch)
 Create platform: B (while grenade in flight)
 
 Meet GLOW!
 Cling to the roof, blast tunnels, swing with a grappling hook,
 launch rockets, and wriggle through walls!
-Just don't sink into the mud!
 Move & Climb: Left/Right
 Fall: A (hold)
 Aim: Up/Down
 Launch grappling hook: A (while falling)
 Release grappling hook: A (while grappling)
 Climb/Descend rope: Up/down (while grappling)
-Wiggle through walls: Left/Right + A (tapping)
-Charge rocket: B (release to launch)
+Wiggle through walls: Left/Right + [Tapping A]
+Charge rocket: Hold B (release to launch)
 
-TEXT option pauses game during dialog (TALK stays live).
+Story dialog options:
+TEXT: pauses game
+TALK: stays in active play
 
 Author: fuglaro (font by Auri)
-Version: beta
+Version: beta2

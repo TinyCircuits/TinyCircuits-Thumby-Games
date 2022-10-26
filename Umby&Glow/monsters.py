@@ -580,6 +580,12 @@ class Monsters:
             r1 = int(p1.rocket_on)
             r1x = int(p1.rocket_x)-tpx
             r1y = int(p1.rocket_y)
+            if not r1 and not p1.hard:
+                # For easy mode, allow player death to also kill monster,
+                # but only when player is holding their ground (no rocket).
+                r1 = 1
+                r1x = int(p1.x)-tpx
+                r1y = int(p1.y)
         if p2:
             r2 = int(p2.rocket_on)
             r2x = int(p2.rocket_x)-tpx

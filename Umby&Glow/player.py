@@ -39,7 +39,7 @@ def _draw_trail(draw_func, x, y, rdir):
         draw_func(2, i, trail, None)
 
 class Player:
-    def __init__(self, tape, mons, name, x, y, ai=False, coop=False):
+    def __init__(self, tape, mons, name, x, y, ai=False, coop=False, hard=False):
         self.mode = 0
         self.name = name # Umby, Glow, or Clip
         self._ai = ai
@@ -79,6 +79,7 @@ class Player:
         self._boom_x = self._boom_y = 0 # recent explosion
         self._trail = 0 # Currently making platform from rocket trail
         self._air = 0 # Currently in jump
+        self.hard = hard
 
     @micropython.viper
     def port_out(self, buf: ptr8):
@@ -149,7 +150,7 @@ class Player:
         if self.respawn_loc:
             respawn = self.respawn_loc*256
         if respawn == None:
-            respawn = self._x - 90000
+            respawn = self._x - (90000 if self.hard else 25600)
         self._respawn_x = respawn
         self._tp.message(0, death_message + " \n \n Continue? \n 5", 3)
         self._death_message = death_message
@@ -166,7 +167,7 @@ class Player:
         self._tp.blast(t, rx, ry)
         # DEATH: Check for death by rocket blast
         dx = rx-self.x; dy = ry-self.y
-        if dx*dx + dy*dy < 48:
+        if dx*dx + dy*dy < 48 and self.hard:
             self.die(self.name + " kissed a rocket!")
         # Get ready to end rocket
         self.rocket_on = 0
@@ -274,7 +275,14 @@ class Player:
         ch = self._tp.check_tape
         cl = int(ch(x-1, y))
         cr = int(ch(x+1, y))
-        grounded = int(ch(x, y+1)) | cl | cr
+        hard = self.hard
+        if yf >= 16384 and not hard:
+            if yf > 16384:
+                yf = 16384
+                self._y = yf <<1|1
+            grounded = 1
+        else:
+            grounded = (int(ch(x, y+1)) | cl | cr)
         self._air = (0 if grounded else 1) <<1|1
         lwall = int(ch(x-1, y-3)) | cl
         rwall = int(ch(x+1, y-3)) | cr
@@ -299,15 +307,20 @@ class Player:
         elif self._topt:
             self._topt = 0 <<1|1
         if c&32 and y > -32 and (yv < 0 or grounded or self.space):
-            if grounded: # detatch from ground grip
+            if grounded and not ch(x, y-4): # detatch from ground grip
                 self._y = (yf-256) <<1|1
                 play(worm_jump, 15)
             self._y_vel = -52428 <<1|1
         # DEATH: Check for head smacking
-        if ch(x, y-4) and c&32:
+        if ch(x, y-4) or (y < 2 and not hard):
             # Only actually die if the platform hit is largish
-            if ch(x, y-5) and ch(x, y-4) and ch(x-1, y-4) and ch(x+1, y-4):
+            if (c&32 and hard
+            and ch(x, y-5) and ch(x, y-4) and ch(x-1, y-4) and ch(x+1, y-4)):
                 self.die(self.name + " face-planted the roof!")
+            elif yv < 0:
+                self._y_vel = 0 <<1|1
+            if y < 2:
+                self._y = 512 <<1|1
 
         # Umby's rocket.
         ron = int(self.rocket_on)
@@ -378,6 +391,10 @@ class Player:
         snco = ptr8(sinco)
         x = int(self.x); y = int(self.y)
         xl = x<<8; yl = y<<8
+        if angle > 60000:
+            angle = 60000
+        elif angle < -60000:
+            angle = -60000
         self._hook_ang = angle <<1|1
         # Find hook landing position
         xs = 128-snco[((angle>>10)+200)%400]
@@ -448,8 +465,8 @@ class Player:
                 self.mode = 12 <<1|1
                 self._x_vel = self._y_vel = 0 <<1|1
             # Release grappling hook with button or within a second
-            # when not connected to solid roof.
-            elif (hold==0 and a or (hy < 0 and t%_FPS==0)):
+            # when not connected to solid roof (if in hard mode).
+            elif (hold==0 and a or (hy < 0 and t%_FPS==0 and self.hard)):
                 self.mode = 12 <<1|1
                 # Convert angular momentum to free falling momentum
                 self._x_vel = (
@@ -496,6 +513,8 @@ class Player:
                     and r and (cr | cru)==0)
                 xf += -256 if lsafe else 256 if rsafe else 0
                 yf += 256 if descend else -256 if climb else 0
+            if yf >= 16384 and not self.hard:
+                yf = 0 # abyss wraps to roof (easy mode)
             self._x = xf <<1|1; self._y = yf <<1|1
 
         # Glow's rocket.
@@ -612,18 +631,23 @@ class Player:
             elif rex - 4000 < xf <= rex:
                 tape.redraw_tape(2, (xf>>8)+5, ptrn, fill)
         else:
-            # Cancel any rocket powering
-            self._aim_pow = 256 <<1|1
-            # Hide any death message
-            tape.clear_overlay()
-            # Return to normal play modes
-            if int(self.mode) == 201:
-                self.mode = 0 <<1|1
-            else:
-                # Shoot hook straight up
-                self._x_vel = self._y_vel = 0 <<1|1
-                self._launch_hook(0)
-            tape.write(1, "DONT GIVE UP!", int(tape.midx[0])+8, 26)
+            self.revive()
+
+    @micropython.viper
+    def revive(self):
+        tape = self._tp
+        # Cancel any rocket powering
+        self._aim_pow = 256 <<1|1
+        # Hide any death message
+        tape.clear_overlay()
+        # Return to normal play modes
+        if int(self.mode) == 201:
+            self.mode = 0 <<1|1
+        else:
+            # Shoot hook straight up
+            self._x_vel = self._y_vel = 0 <<1|1
+            self._launch_hook(0)
+        tape.write(1, "DONT GIVE UP!", int(tape.midx[0])+8, 26)
 
     @micropython.native
     def _tick_testing(self):
