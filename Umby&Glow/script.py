@@ -125,7 +125,12 @@ def add_dialog(tape, dialog):
 def story_events(tape, mons, coop_px, autotxt):
     global _dialog_c, _next_event, _next_at, _active_battle, _pos, speaking
     if tape.player and tape.player.mode > 200:
-        return # Respawning
+        # Respawning
+        if speaking and not autotxt:
+            tape.clear_overlay()
+            tape.player.revive()
+        else:
+            return
     # Update current dialog queue
     if _dialog_c > 0:
         if _dialog_c == 1 and not autotxt and (bA() and bR()):

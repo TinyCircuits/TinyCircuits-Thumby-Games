@@ -317,7 +317,7 @@
 0,   "@: Ditto, Glow."
 0,   "@: I like knowing which way is down!"
 
-100, "CHAPTER~5: \n Mothership"
+100, "CHAPTER~5: \n Mothership Chip"
 
 100,  "^: Well Umby, we're in."
 0,   "@: We are indeed, Glow."
@@ -677,10 +677,14 @@
 160, "HemlockMay"
 160, "transistortester"
 160, "Play Testers: ------------------"
+160, "Adrian 2 Cool"
 160, "Andy N"
 160, "Ann VL"
 160, "Doogle"
 160, "John VL"
+160, "JohnnyArigatto"
+160, "JohnnyArway"
+160, "Laveria"
 160, "Lily VL"
 160, "Mevlan S"
 160, "Paul K"
