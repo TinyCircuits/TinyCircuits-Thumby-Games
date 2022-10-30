@@ -152,6 +152,7 @@ while 1: # simulation screen loop
 
     handleInput()
     
-    Simulate()
+    if simulate:
+        Simulate()
     
     thumby.display.update() # flush the screenbuffer
