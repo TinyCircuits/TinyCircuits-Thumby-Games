@@ -1,3 +1,4 @@
+#Created by Anthony! Hi Carson!
 import time
 import thumby
 import math
