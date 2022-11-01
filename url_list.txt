@@ -1,3 +1,8 @@
+NAME=Pico Bomb!
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Pico Bomb!/Pico Bomb!.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Pico Bomb!/arcade_title_image.png
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Pico Bomb!/arcade_description.txt
+
 NAME=Umby&Glow
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Umby&Glow/world3.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Umby&Glow/script.py
