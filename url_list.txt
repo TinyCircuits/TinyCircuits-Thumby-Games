@@ -14,6 +14,11 @@ https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Tiny_Monster_Trainer/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Tiny_Monster_Trainer/Tiny_Monster_Trainer.py
 
+NAME=Wolfram
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Wolfram/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Wolfram/Wolfram.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Wolfram/arcade_description.txt
+
 NAME=Langton
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Langton/arcade_title_video.webm
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Langton/Langton.py
