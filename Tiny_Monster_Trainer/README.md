@@ -164,6 +164,9 @@ Monster Type | Attack Name | Element Type | Damage based on Strength/Mysticism
 ------- |"Rue"           | Mind       | Mysticism  
   
   
+Updates as of 11/06/22:  
+Versus modes have been added. You can fight other players via the link cable though the Link Battle mode. After you've fought someone over a link cable their data is saved so you can fight them offline via the Ghost Battle mode.
+  
 Updates as of 04/18/22:  
 Fixed Folder Name from Curtian to Curtain. I'm a dork :D
 Restructured things, now using methods and stuff. The game will now make a list of monsters to load from for when you encounter a roaming monster. Player now roams the wilderness. (Which is just the map from the previous version, that is based on the player seed.)  
