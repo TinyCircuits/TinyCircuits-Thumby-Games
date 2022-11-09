@@ -464,6 +464,60 @@
 0,   "^: Let's find out!"
 
 500, Lung
+0,   Hold
+0,   "|Lung: Umby! Glow!"
+0,   "|Well if it isn't the wormy duo!"
+0,   "^: Lung?"
+0,   "@: Lung! What are you doing here?!"
+0,   "|Lung: Well, as you can see, I'm not a particularly welcome guest."
+0,   "^: We've been feeling the same way."
+0,   "@: What happened? How did you get here?"
+0,   "|Lung: Same reason as you, by the looks of it."
+0,   "|I hitched a ride on one of those floating skulls. They might just be heads, but they have a pretty cosy respiratory system. My plan was to see if I could hunt down the swarm's hive mind."
+0,   "^: You've been trying to take down these aliens too?!"
+0,   "|Lung: Trying, yes. Succeeding? No."
+0,   "^: We tried to take down their mainframe."
+0,   "|Lung: Well that won't work."
+0,   "|Their whole ship is a bio-computer."
+0,   "@: Did you find their hive mind?"
+0,   "|Lung: Sadly, no, and I've seen enough to know that they don't even work as a collective."
+0,   "@: What do you mean?"
+0,   "|Lung: Well, they really like to barter..."
+0,   "|In a big way."
+0,   "@: Barter???"
+0,   "|Lung: Yep! It's their main invasion strategy..."
+0,   "|Find the owners, buy them out."
+0,   "^: But nobody owns the planet!"
+0,   "|Lung: Well the aliens think they do now."
+0,   "@: Who did they buy it from?!"
+0,   "|Lung: The dolphins."
+0,   "^: The dolphins?!??!!!!"
+0,   "|Lung: Yep, the dolphins. Who else would they go to?"
+0,   "|The most intelligent species are the Worms, but they love earth, earth is like their favourite thing, they would never sell it."
+0,   "|Next up were Humans, but the aliens didn't think they were valid owners..."
+0,   "|They never took care of the place."
+0,   "@: True."
+0,   "^: Yep."
+0,   "|Lung: That left the Octopus, and the Dolphins... and the Dolphins were only too keen to sell the place."
+0,   "@: What did they sell it for?!"
+0,   "|Lung: Mock tuna."
+0,   "|Well, mock tuna and a really really giant tank."
+0,   "|They are on board this ship now..."
+0,   "@: Wait. Two things..."
+0,   "@: Firstly, they already had those things - actual tuna, and the entire ocean!"
+0,   "|Lung: Kind of... there hasn't been much tuna since the humans got to it. Here, they have synthesisers. They can have as much mock tuna as they want!"
+0,   "@: Fair enough. But secondly, are you saying there is a really really giant tank on board, with enough salty water to destroy even the largest bio-computer?"
+0,   "|Lung: That... that might actually work!"
+0,   "^: What?"
+0,   "@: We smash the tank, then flood the ship."
+0,   "^: Where is the tank?"
+0,   "|Lung: If you keep going straight ahead, you'll come up underneath it, where all the support structures are."
+0,   "@: This is amazing! We finally have a real plan!"
+0,   "^: What about you, Lung?"
+0,   "|Lung: Me? I'll have the best chance if you can disable all their systems."
+0,   "|You pull this off, and I'm sure I'll find a way out."
+0,   "@: Alright, Lung. Good luck then."
+0,   "|Lung: Same goes to the both of you!"
 
 # Vents
 500,("6","[pattern_none,w.pattern_biomechanical_lab_wall,pattern_fill,w.pattern_vents,w.pattern_alien_vent_decay]",(bytearray([Molaar, Bones]), bytearray([30,10])),0)
@@ -482,37 +536,25 @@
 
 40,  "Get ready!"
 
-80,  "@: That pillar looks load bearing..."
+70,  "@: That pillar looks load bearing..."
 0,   "^: Let's shoot it down!"
-0,   TankPillar
+
+10,  TankPillar
 0,   MiniShake
 0,   "^: Nice!"
 0,   "@: That didn't quite do it..."
 0,   "^: I see another up ahead."
+0,   "@: Let's take them all down!"
 
-50,  TankPillar
-0,   MiniShake
-0,   "@: I think this is working..."
-0,   "^: Let's take them all down!"
-
-50,  TankPillar
-0,   MiniShake
-
-50,  TankPillar
-0,   MiniShake
-
-50,  TankPillar
-0,   MiniShake
-
-50,  TankPillar
+300,  TankPillar
 0,   Shake
+
+100,  TankPillar
+0,   BigShake
 0,   "@: I think it is finally starting to give way!"
 0,   "^: Can't be much more now..."
 
-50,  TankPillar
-0,   BigShake
-
-50,  TankPillar
+300,  TankPillar
 0,   Flood
 0,   SuperShake
 # Low gravity and shake
@@ -525,11 +567,11 @@
 0,   "^: Lead the way!"
 
 # Medium shake
-800, ("6","[pattern_fill,pattern_fill,pattern_fill,w.pattern_flood,pattern_fill]",(bytearray([Bones]), bytearray([20])),5)
+700, ("6","[pattern_fill,pattern_fill,pattern_fill,w.pattern_flood,pattern_fill]",(bytearray([Bones]), bytearray([20])),5)
 0,   "^: It's getting worse!"
 0,   "@: I think we might have hit re-entry."
 
-300, ("6","[pattern_fill,pattern_fill,pattern_fill,w.pattern_flood,pattern_fill]",(bytearray([Bones,ChargingBones]), bytearray([30,20])),5)
+100, ("6","[pattern_fill,pattern_fill,pattern_fill,w.pattern_flood,pattern_fill]",(bytearray([Bones,ChargingBones]), bytearray([30,20])),5)
 
 # Large shake
 140, ("6","[pattern_fill,pattern_fill,pattern_fill,w.pattern_flood,pattern_fill]",(bytearray([ChargingBones]), bytearray([20])),7)
@@ -537,10 +579,11 @@
 0,   "^: What?! What happens if it doesn't?"
 0,   "@: Bad things. So let's keep moving!"
 
-200, SuperShake
 # Normal gravity no shake
+200, SuperShake
 0,   ("6","[pattern_fill,pattern_fill,pattern_fill,w.pattern_flood,pattern_fill]",(bytearray([]), bytearray([])),0)
-0,   "^: Have we crash landed?!"
+
+200, "^: Have we crash landed?!"
 0,   "@: I think we have..."
 0,   "@: There's something about that authentic real gravity that feels like home."
 0,   "^: Did we just save the world?"
@@ -684,7 +727,7 @@
 160, "John VL"
 160, "JohnnyArigatto"
 160, "JohnnyArway"
-160, "Laveria"
+160, "Laverina"
 160, "Lily VL"
 160, "Mevlan S"
 160, "Paul K"

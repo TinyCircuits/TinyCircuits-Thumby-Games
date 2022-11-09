@@ -37,4 +37,4 @@ TEXT: pauses game
 TALK: stays in active play
 
 Author: fuglaro (font by Auri)
-Version: beta2
+Version: v1

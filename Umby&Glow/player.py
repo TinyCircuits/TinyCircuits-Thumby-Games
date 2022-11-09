@@ -94,7 +94,7 @@ class Player:
         buf[7] = int(self.rocket_x) - px
         buf[8] = int(self.rocket_y)
         buf[9] = int(self._hx) - px
-        buf[10] = int(self._hy)
+        buf[10] = int(self._hy) + 32
         boom = 1 if self._boom_x or self._boom_y else 0
         buf[11] = (# dir, rocket_on, rdir, moving, boom (0,1,2,3,4))
             (1 if int(self.dir) > 0 else 0)
@@ -124,7 +124,7 @@ class Player:
         self.rocket_x = rx <<1|1
         self.rocket_y = ry <<1|1
         self._hx = buf[9] + px <<1|1
-        self._hy = buf[10] <<1|1
+        self._hy = buf[10] - 32 <<1|1
         self.dir = (1 if m&1 else -1) <<1|1
         self.rocket_on = (m&2) <<1|1
         rdir = 1 if m&4 else -1

@@ -158,8 +158,7 @@ def run_game():
     t = savst = coop_px = pstat = pstat2 = ptot = pfps1 = pfps2 = 0
     pw = pw2 = pfpst = ticks_ms()
     while(1):
-        story_events(tape, mons, coop_px, autotxt)
-        outbuf[14] = 1 if not script.speaking or autotxt else 0
+        story_events(tape, mons, coop_px, autotxt, outbuf, inbuf)
         play = outbuf[14] and (not coop or inbuf[14])
         # Update the game engine by a tick
         if play:
