@@ -36,6 +36,7 @@ _Shake = const(93)
 _BigShake = const(94)
 _SuperShake = const(95)
 _Flood = const(96)
+_Hold = const(99)
 Bones = _Bones
 BonesBoss = _BonesBoss
 DragonBones = _DragonBones
@@ -60,7 +61,8 @@ Shake = _Shake
 BigShake = _BigShake
 SuperShake = _SuperShake
 Flood = _Flood
-boss_types = [_BonesBoss, _DragonBones, _LeftDoor, _CPU, _Lung, _TankPillar,
+Hold = _Hold
+boss_types = [_BonesBoss, _DragonBones, _LeftDoor, _CPU, _Hold, _TankPillar,
     _MegaBones, _MiniShake, _Shake, _BigShake, _SuperShake]
 
 _data = array('l', 0 for i in range(48*5))
@@ -231,6 +233,8 @@ class Monsters:
             d[ii+4] = x//4 # Movement rate type
         elif tid == _Skittle:
             ys[i] = 64 + int(self._tp.player.y) # Target player 1
+        elif tid == _Stomper:
+            d[ii] = y*16
         elif tid == _Pillar or _DragonBones <= tid <= _Wyvern:
             # Make all the sections in the chain
             k = i
@@ -299,6 +303,8 @@ class Monsters:
                 self._tick_bones_charging(t, i)
             elif (_Skittle <= typ <= _Lazer) and t%2:
                 xs[i] -= 1 # Just fly straight left
+            elif typ == _Stomper:
+                self._tick_stomper(t, i)
             elif _Molaar <= typ <= _Pillar and t%3==0:
                 self._tick_crawler(t, i)
             elif typ == _Prober:
@@ -310,6 +316,15 @@ class Monsters:
                 tic = self.ticks.get(typ, None)
                 if tic:
                     tic(self, t, i)
+
+    @micropython.viper
+    def _tick_stomper(self, t: int, i: int):
+        data = ptr32(_data)
+        ys = ptr8(self.y)
+        ii = i*5
+        y = data[ii] = (data[ii] + 1)%440
+        ys[i] = 64 + (y if y < 50 else 50 if y < 170 else 220-y
+            if y < 220 else 0)
 
     @micropython.viper
     def _tick_bones(self, t: int, i: int):
@@ -598,8 +613,8 @@ class Monsters:
             if tids[i] == 0:
                 continue
             x = xs[i]-tpx
-            # Monsters in the distance get drawn to background layers
-            l = 1 if 36 <= x-px < 220 else 0
+            # Coop's monsters in the distance get drawn to background layers
+            l = 1 if 36 <= x-px < 174 or self.omons else 0
             if tids[i] < _Hoot:
                 draw = self._draw_monsters_a
             elif tids[i] < _TankPillar:
@@ -651,9 +666,7 @@ class Monsters:
             tape.draw(0, x+1, y+py, self._lazer_shd, 3, 0)
         elif tid == _Stomper:
             img = self._stomper; msk = self._stomper_m
-            m = (y*16+t)%440
-            my = py = (m if m < 50 else 50 if m < 170 else 220-m
-                if m < 220 else 0)+3-y
+            my = py = 3
             mw = pw = 7
         elif _Molaar <= tid <= _MolaarClimbingCharging:
             img = self._molaar_feet; msk = self._molaar_feet_m
@@ -736,12 +749,12 @@ class Monsters:
                     if xi!=3:
                         tape.draw(0, pxi, pyi, self._cpu_shd, pw, 0)
         elif tid == _Lung:
-            if self.omons:
-                img = msk = self._lung
-                mw = pw = 3
-                pf = t//120%2
-                if x-6 < int(self._tp.player.x)-int(tape.x[0]) < x+2:
-                    l = 0
+            if not self.omons: return
+            img = msk = self._lung
+            mw = pw = 3
+            pf = t//120%2
+            if x-6 < int(self._tp.player.x)-int(tape.x[0]) < x+2:
+                l = 0
         else:
             return
         tape.draw(l, x+px, y+py, img, pw, pf)
@@ -753,6 +766,7 @@ class Monsters:
         draw = tape.draw
         mask = tape.mask
         if tid == _TankPillar:
+            pf = 0
             img = msk = self._block
             for yi in range(8):
                 if yi > 2:
@@ -761,35 +775,35 @@ class Monsters:
                 draw(l, x, yi*8, img, 6, pf)
                 mask(l, x, yi*8, msk, 6, 0)
         elif tid == _MegaBones:
-            if self.omons:
-                d = ptr32(_data)
-                cpx = ptr8(self._cerebral)
-                spx = ptr8(self._cerebral_shd)
-                mpx = ptr8(self._cerebral_m)
-                wb = ptr8(self._cerebral_w)
-                xb = ptr8(self._cerebral_x)
-                tn = -1-t
-                yh = 24+(t if t//64%2 else tn)//4%16
-                y = 22+((t if t//80%2 else tn)//4%20)-yh//2
-                yt = 0
-                xr = (t if t//120%2 else tn)//12%10
-                mh = d[i*5] # data[0] must sync through bsync for coop.
-                for yi in range(5):
-                    ys = y+yt
-                    yt += (yh-yt)//(5-yi)
-                    w = wb[yi]
-                    w1 = w-xr//2
-                    w2 = w-(xr-xr//2)
-                    mhw = w1*(54-mh)//54
-                    mhw2 = w1-mhw
-                    xs = xb[yi] + x + xr//2
-                    o = 30-w2
-                    draw(l, xs, ys, cpx, w1, 0)
-                    draw(0, xs, ys, spx, mhw, 0)
-                    mask(l, xs, ys, mpx, w1, 0)
-                    draw(l, xs+w1, ys, ptr8(int(cpx)+o), w2, 0)
-                    draw(0, xs+w1+mhw2, ys, ptr8(int(spx)+o), w2-mhw2, 0)
-                    mask(l, xs+w1, ys, ptr8(int(mpx)+o), w2, 0)
+            if not self.omons: return
+            d = ptr32(_data)
+            cpx = ptr8(self._cerebral)
+            spx = ptr8(self._cerebral_shd)
+            mpx = ptr8(self._cerebral_m)
+            wb = ptr8(self._cerebral_w)
+            xb = ptr8(self._cerebral_x)
+            tn = -1-t
+            yh = 24+(t if t//64%2 else tn)//4%16
+            y = 22+((t if t//80%2 else tn)//4%20)-yh//2
+            yt = 0
+            xr = (t if t//120%2 else tn)//12%10
+            mh = d[i*5] # data[0] must sync through bsync for coop.
+            for yi in range(5):
+                ys = y+yt
+                yt += (yh-yt)//(5-yi)
+                w = wb[yi]
+                w1 = w-xr//2
+                w2 = w-(xr-xr//2)
+                mhw = w1*(54-mh)//54
+                mhw2 = w1-mhw
+                xs = xb[yi] + x + xr//2
+                o = 30-w2
+                draw(l, xs, ys, cpx, w1, 0)
+                draw(0, xs, ys, spx, mhw, 0)
+                mask(l, xs, ys, mpx, w1, 0)
+                draw(l, xs+w1, ys, ptr8(int(cpx)+o), w2, 0)
+                draw(0, xs+w1+mhw2, ys, ptr8(int(spx)+o), w2-mhw2, 0)
+                mask(l, xs+w1, ys, ptr8(int(mpx)+o), w2, 0)
 
     @micropython.viper
     def _kill(self, t: int, mon: int, player, tag):

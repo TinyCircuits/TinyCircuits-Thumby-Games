@@ -97,7 +97,7 @@ def story_jump(tape, mons, start, lobby):
 _dialog_queue = []
 _pos = _dialog_c = 0
 _active_battle = -1
-speaking = False
+_speaking = False
 
 @micropython.native
 def add_dialog(tape, dialog):
@@ -122,16 +122,20 @@ def add_dialog(tape, dialog):
         tape.message(0, dialog, 1)
 
 @micropython.native
-def story_events(tape, mons, coop_px, autotxt):
-    global _dialog_c, _next_event, _next_at, _active_battle, _pos, speaking
+def story_events(tape, mons, coop_px, autotxt, outbuf, inbuf):
+    global _dialog_c, _next_event, _next_at, _active_battle, _pos, _speaking
+    outbuf[14] = ((1 if not _speaking or autotxt else 0) |
+        (2 if _active_battle >= 0 else 0))
     if tape.player and tape.player.mode > 200:
         # Respawning
-        if speaking and not autotxt:
+        if _speaking and not autotxt:
             tape.clear_overlay()
             tape.player.revive()
         else:
             return
     # Update current dialog queue
+    if _active_battle >= 0:
+        autotxt = True
     if _dialog_c > 0:
         if _dialog_c == 1 and not autotxt and (bA() and bR()):
             ali = 10 if _pos==3 else 0
@@ -142,12 +146,14 @@ def story_events(tape, mons, coop_px, autotxt):
         _dialog_c -= 1
         if _dialog_c == 0:
             tape.clear_overlay()
-            speaking = False
+            _speaking = False
     if _dialog_queue and _dialog_c == 0:
         _pos, text = _dialog_queue.pop(0)
         tape.message(_pos%3, text, 3)
         _dialog_c = (60 + len(text)*3) // (1 if autotxt else 2)
-        speaking = True
+        _speaking = True
+        outbuf[14] = ((1 if not _speaking or autotxt else 0) |
+        (2 if _active_battle >= 0 else 0))
     if mons.reactions:
         add_dialog(tape, mons.reactions.pop(0))
     # Script event check
@@ -163,6 +169,8 @@ def story_events(tape, mons, coop_px, autotxt):
         if isinstance(event, tuple):
             _load_lvl(tape, mons, event)
         elif isinstance(event, str):
+            if inbuf[14] & 2:
+                return
             add_dialog(tape, event)
         elif event: # Monsters
             if posx < _next_at:
