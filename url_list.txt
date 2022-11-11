@@ -1,3 +1,8 @@
+NAME=PicoBomb!
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/PicoBomb!/PicoBomb!.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/PicoBomb!/arcade_title_image.png
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/PicoBomb!/arcade_description.txt
+
 NAME=Fireplace
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Fireplace/arcade_title_video.webm
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Fireplace/thumbyGrayscale.py
@@ -59,11 +64,6 @@ NAME=Wolfram
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Wolfram/arcade_title_video.webm
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Wolfram/Wolfram.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Wolfram/arcade_description.txt
-
-NAME=Pico Bomb!
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Pico Bomb!/Pico Bomb!.py
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Pico Bomb!/arcade_title_image.png
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Pico Bomb!/arcade_description.txt
 
 NAME=BurnsCharade
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/BurnsCharade/arcade_title_video.webm
