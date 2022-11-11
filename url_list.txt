@@ -1,3 +1,11 @@
+NAME=Fireplace
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Fireplace/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Fireplace/thumbyGrayscale.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Fireplace/vid.SHD.bin
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Fireplace/vid.BIT.bin
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Fireplace/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Fireplace/Fireplace.py
+
 NAME=Umby&Glow
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Umby&Glow/world3.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Umby&Glow/script.py
