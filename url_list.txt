@@ -1,3 +1,8 @@
+NAME=PicoInvaders
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/PicoInvaders/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/PicoInvaders/PicoInvaders.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/PicoInvaders/arcade_description.txt
+
 NAME=PicoBomb!
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/PicoBomb!/PicoBomb!.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/PicoBomb!/arcade_title_image.png
