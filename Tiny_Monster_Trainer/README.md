@@ -54,18 +54,26 @@ Mutate:       5 TP
 
 ############# **Items** ##############  
 Items are not usable during combat.  
+  
+**For items that increase the a stat's maximum trainable amount:**  
+  You can only do this 30 times per monster. If you give a monster more than 30 items that do this the maximum number will not go up anymore, but the monster will still recover any HP that the item is set to restore.
 
 #######  
 **Item List**  
 #######  
   
-Bandaids - Heals 8 HP  
-PushPops - Heals 20 HP  
-Stickers - Raises max trainable HP by 1 and heals for 1  
-Ribbons  - Raises max trainable HP by 2 and heals for 2  
-Crystals - Will restore all stamina for all moves that the active Monster knows.
-         - Crystals are also needed for Taming Monsters. They are consumed by the opposing monster while attempting to Tame
+**Bandaids** - Heals 8 HP  
+**PushPops** - Heals 20 HP  
+  
+**Stickers** - Raises max trainable HP by 1 and heals for 10  
+**Vitamins** - Raises max trainable Strength by 1 and heals for 9  
+**Helium** - Raises max trainable Agility by 1 and heals for 8  
+**Pillows** - Raises max trainable Endurance by 1 and heals for 7  
+**Stardust** - Raises max trainable Mysticism by 1 and heals for 6  
+**Tinfoil** - Raises max trainable Tinfoil by 1 and heals for 5  
 
+**Crystals** - Will restore all stamina for all moves that the active Monster knows.  **Crystals are also needed for Taming Monsters.** They are consumed by the opposing monster while attempting to Tame  
+  
 ############# **Types: Strengths and Weakness** ##############  
 
 Bonus damage/defense is based on the Attack's Element Type vs Defending Monster Type  
@@ -163,7 +171,13 @@ Monster Type | Attack Name | Element Type | Damage based on Strength/Mysticism
 ------- |"Obscurity"     | Darkness   | Mysticism  
 ------- |"Rue"           | Mind       | Mysticism  
   
+Updates as of 11/19/22:    
+Added the chance for monsters to receive extra training points, if they fought or not. Added an option to play again while doing versus, added titles for ghost assigned based on thier worldseed.   
   
+Updates as of 11/18/22:    
+"Various bug fixes and adjustments have been made to make your gameplay experience more enjoyable" ... Changed some screens to look better, to hopefully show information better. Lowered number of attack moves a monster can have from 6 to 5. (Five makes my life easier and is easier on memory.)  Added new items that can increase how high you can train your stats. (you can give a monster 30 different items before this stops working) all new items increase HP by a set amount. Monsters need to have unique names so that multiplayer won't bug out (I think this issue would have been really rare, but it's better to just make all monsters have different given names)    
+    
+
 Updates as of 11/06/22:  
 Versus modes have been added. You can fight other players via the link cable though the Link Battle mode. After you've fought someone over a link cable their data is saved so you can fight them offline via the Ghost Battle mode.
   

@@ -46,13 +46,11 @@ class Player:
 
 
     def movePlayer(self, currentRoom, monster, monsterMovement):
-        #moved = 0
         while(thumby.dpadJustPressed() == False and thumby.actionPressed == False):
             pass
         if(thumby.buttonU.pressed() == True):
             while(thumby.buttonU.pressed() == True): 
                 pass
-            #moved = 1
             if currentRoom.floor[self.currentPos-9].isObjectHere >= 1:
                 self.position[self.currentPos] = 0
                 self.currentPos = self.currentPos - 9
@@ -60,7 +58,6 @@ class Player:
         elif(thumby.buttonD.pressed() == True):
             while(thumby.buttonD.pressed() == True): 
                 pass
-            #moved = 1
             if currentRoom.floor[self.currentPos+9].isObjectHere >= 1:
                 self.position[self.currentPos] = 0
                 self.currentPos = self.currentPos + 9
@@ -68,7 +65,6 @@ class Player:
         elif(thumby.buttonL.pressed() == True):
             while(thumby.buttonL.pressed() == True): 
                 pass
-            #moved = 1
             if currentRoom.floor[self.currentPos-1].isObjectHere >= 1:
                 self.position[self.currentPos] = 0
                 self.currentPos = self.currentPos - 1
@@ -77,15 +73,11 @@ class Player:
         elif(thumby.buttonR.pressed() == True):
             while(thumby.buttonR.pressed() == True): 
                 pass
-            #moved = 1
             if currentRoom.floor[self.currentPos+1].isObjectHere >= 1:
                 self.position[self.currentPos] = 0
                 self.currentPos = self.currentPos + 1
                 self.position[self.currentPos] = 1
                 self.lOrR = 1
-        #if moved == 1:
-        #    monster.moveMonster(self.currentPos, world[room], monsterMovement)
-        #monster.drawMonster()
         self.drawPlayer()
 
 
@@ -199,7 +191,7 @@ class Monster:
         self.bodyBlock = {'head' : [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
                             'body' : [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
                             'legs' : [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]}
-                            
+        
         self.attackList = []
         self.mutateSeed = []
                 
@@ -397,19 +389,18 @@ class Item():
         self.name = name
         self.key = key
         self.bonus = bonus
-
+        
         
     def doAction(self, monsterInfo):
-        if self.key == 1:
+        if self.key == 1 or self.key == 2:
             monsterInfo.statBlock['currentHealth'] = monsterInfo.statBlock['currentHealth'] + 10 + self.bonus
             if monsterInfo.statBlock['currentHealth'] > monsterInfo.statBlock['Health']:
                monsterInfo.statBlock['currentHealth'] = monsterInfo.statBlock['Health']            
-        elif self.key == 2:
-            monsterInfo.statBlock['maxHealth'] = monsterInfo.statBlock['maxHealth'] + 1 + self.bonus
-            if  monsterInfo.statBlock['currentHealth'] < monsterInfo.statBlock['Health']:
-                monsterInfo.statBlock['currentHealth'] = monsterInfo.statBlock['currentHealth'] + 1 + self.bonus
-                if monsterInfo.statBlock['currentHealth'] > monsterInfo.statBlock['Health']:
-                     monsterInfo.statBlock['currentHealth'] = monsterInfo.statBlock['Health']
+        if self.key == 2:
+            if monsterInfo.bonusStats['item'] <= 30:
+                keyList=['maxHealth', 'maxStrength', 'maxAgility', 'maxEndurance', 'maxMysticism', 'maxTinfoil']
+                monsterInfo.bonusStats['item'] = monsterInfo.bonusStats['item'] + 1
+                monsterInfo.statBlock[keyList[abs(self.bonus)]] = monsterInfo.statBlock[keyList[abs(self.bonus)]] + 1
         elif self.key == 3:
             for moves in range(0, len(monsterInfo.attackList)):
                 monsterInfo.attackList[moves].currentUses = monsterInfo.attackList[moves].numUses
@@ -418,23 +409,36 @@ class Item():
 
 
     def getItem(self):
-        randoNum = random.randint(1,5)
-        if randoNum == 1:
+        randoNum = random.randint(0,11)
+        self.key = 2
+        
+        if randoNum == 0:
+            self.name = "Stickers"
+            self.bonus = randoNum
+        elif randoNum == 1:
+            self.name = "Vitamins"
+            self.bonus = -abs(randoNum)
+        elif randoNum == 2:
+            self.name = "Helium"
+            self.bonus = -abs(randoNum)
+        elif randoNum == 3:
+            self.name = "Pillows"
+            self.bonus = -abs(randoNum)
+        elif randoNum == 4:
+            self.name = "Stardust"
+            self.bonus = -abs(randoNum)
+        elif randoNum == 5:
+            self.name = "Tinfoil"
+            self.bonus = -abs(randoNum)
+        elif randoNum < 9:
             self.name = "Bandaids"
             self.key = 1
-            self.bonus = -2
-        elif randoNum == 2:
+            self.bonus = 2
+        elif randoNum < 8:
             self.name = "PushPops"
             self.key = 1
-            self.bonus = 10
-        elif randoNum == 3:
-            self.name = "Stickers"
-            self.key = 2
-        elif randoNum == 4:
-            self.name = "Ribbons"
-            self.key = 2
-            self.bonus = 1
-        elif randoNum == 5:
+            self.bonus = 12
+        else: 
             self.name = "Crystals"
             self.key = 3
             self.bonus = random.randint(0,7)        
