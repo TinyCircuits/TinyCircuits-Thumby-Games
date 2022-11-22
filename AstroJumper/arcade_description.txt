@@ -1,0 +1,10 @@
+Astro Jumper
+
+Bounce your way into the far reaches of outer space. How high can you go?
+
+Every now and then you'll get a power up which you can activate with B.
+
+Inspired by the classic mobile games Papi Jump and Doodle Jump.
+
+Author: Beric Bearnson
+Version: 1.0.0
