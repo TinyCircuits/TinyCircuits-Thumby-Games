@@ -25,7 +25,8 @@ class Player:
                             'trainerLevel' : 1,
                             'experience' : 0,
                             'friendMax' : 2,
-                            'worldSeed' : 0}
+                            'worldSeed' : 0,
+                            'inspire' : 0}
         self.lOrR = 0    
         self.friends = []
         self.inventory = []
@@ -84,7 +85,9 @@ class Player:
     def levelUpCheck(self):
         self.playerBlock['experience'] = self.playerBlock['experience'] + 1
         if self.playerBlock['experience'] >= self.playerBlock['trainerLevel'] * 2:
-            self.playerBlock['trainerLevel'] = self.playerBlock['trainerLevel'] + 1
+            if self.playerBlock['trainerLevel'] < 200:
+                self.playerBlock['trainerLevel'] = self.playerBlock['trainerLevel'] + 1
+            self.playerBlock['inspire'] = self.playerBlock['inspire'] + 1
             thingAquired(self.playerBlock['name'], "Your Trainer", "Level Is", "Now " + str(self.playerBlock['trainerLevel']), 2)
             if self.playerBlock['trainerLevel'] % 10 == 0 and self.playerBlock['friendMax'] < 5:
                 self.playerBlock['friendMax'] = self.playerBlock['friendMax'] + 1
@@ -397,10 +400,13 @@ class Item():
             if monsterInfo.statBlock['currentHealth'] > monsterInfo.statBlock['Health']:
                monsterInfo.statBlock['currentHealth'] = monsterInfo.statBlock['Health']            
         if self.key == 2:
-            if monsterInfo.bonusStats['item'] <= 30:
+            if monsterInfo.bonusStats['item'] < 30:
                 keyList=['maxHealth', 'maxStrength', 'maxAgility', 'maxEndurance', 'maxMysticism', 'maxTinfoil']
                 monsterInfo.bonusStats['item'] = monsterInfo.bonusStats['item'] + 1
-                monsterInfo.statBlock[keyList[abs(self.bonus)]] = monsterInfo.statBlock[keyList[abs(self.bonus)]] + 1
+                if self.bonus  == 0:
+                    monsterInfo.statBlock[keyList[abs(self.bonus)]] = monsterInfo.statBlock[keyList[abs(self.bonus)]] + 2
+                else:
+                    monsterInfo.statBlock[keyList[abs(self.bonus)]] = monsterInfo.statBlock[keyList[abs(self.bonus)]] + 1
         elif self.key == 3:
             for moves in range(0, len(monsterInfo.attackList)):
                 monsterInfo.attackList[moves].currentUses = monsterInfo.attackList[moves].numUses
@@ -409,7 +415,7 @@ class Item():
 
 
     def getItem(self):
-        randoNum = random.randint(0,11)
+        randoNum = random.randint(0,12)
         self.key = 2
         
         if randoNum == 0:
@@ -430,11 +436,11 @@ class Item():
         elif randoNum == 5:
             self.name = "Tinfoil"
             self.bonus = -abs(randoNum)
-        elif randoNum < 9:
+        elif randoNum < 11:
             self.name = "Bandaids"
             self.key = 1
             self.bonus = 2
-        elif randoNum < 8:
+        elif randoNum < 10:
             self.name = "PushPops"
             self.key = 1
             self.bonus = 12
