@@ -171,6 +171,15 @@ Monster Type | Attack Name | Element Type | Damage based on Strength/Mysticism
 ------- |"Obscurity"     | Darkness   | Mysticism  
 ------- |"Rue"           | Mind       | Mysticism  
   
+  
+Updates as of 11/30/22:    
+Fixed some bugs. Moved some code around to be better? probably added new bugs.
+Changed the odds of getting specific items.
+Changed the player info screen to show how many monsters you have out of how many you can have.
+Added a way for the game to keep track of how many bonus items have been used. (A monster can only receive bonuses from items up to 30 times)
+Players can now inspire their active monster every time their trainer level goes up. The option for this is found in "My Monsters" under "Inspire". If you do not have any inspiration points the option will not show up. Once you inspire your monster, depending on what you do, one of their stat's maximum values will go up, their max potential HP will go up, and they will get 2 training points. A player can only inspire a monster up to 40 times)
+  
+  
 Updates as of 11/19/22:    
 Added the chance for monsters to receive extra training points, if they fought or not. Added an option to play again while doing versus, added titles for ghost assigned based on thier worldseed.   
   
