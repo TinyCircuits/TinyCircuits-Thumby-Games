@@ -1,3 +1,8 @@
+NAME=AstroJumper
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/AstroJumper/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/AstroJumper/AstroJumper.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/AstroJumper/arcade_astrojumper_video.webm
+
 NAME=Tiny_Monster_Trainer
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Tiny_Monster_Trainer/README.md
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Tiny_Monster_Trainer/arcade_title_video.webm
@@ -14,11 +19,6 @@ https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Tiny_Monster_Trainer/Ghosts/Blake.ujson
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Tiny_Monster_Trainer/Ghosts/Ancient.ujson
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Tiny_Monster_Trainer/Tiny_Monster_Trainer.py
-
-NAME=AstroJumper
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/AstroJumper/arcade_description.txt
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/AstroJumper/AstroJumper.py
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/AstroJumper/arcade_astrojumper_video.webm
 
 NAME=PicoInvaders
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/PicoInvaders/PicoInvaders.py
