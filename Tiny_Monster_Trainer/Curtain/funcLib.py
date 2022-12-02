@@ -329,15 +329,6 @@ def showMonInfo(playerInfo, startOfgameCheck=0, combatCheck=0):
             left = 1
             right = -1
 
-
-'''
-def whatHaps(playerInfo):
-    num = 0
-    for x in range(0, len(playerInfo.friends)):
-        for y in range(-4, 0):
-            num = playerInfo.friends[x].statBlock[playerInfo.friends[x].keyList[y]] + playerInfo.friends[x].statBlock['max' + playerInfo.friends[x].keyList[y]] + num
-            print(num)'''
-
     
 def obj_to_dict(obj):
     return obj.__dict__
@@ -351,7 +342,6 @@ def save(playerInfo):
     mutateDict = {}
     itemDict = {}
     bonusDict = {}
-    #whatHaps(playerInfo)
     for x in range(0, len(playerInfo.friends)):
         tempAttackDict = {}
         for y in range (0, len(playerInfo.friends[x].attackList)):
