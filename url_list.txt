@@ -1,3 +1,9 @@
+NAME=AppleTree
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/AppleTree/AppleTree.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/AppleTree/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/AppleTree/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/AppleTree/arcade_title_image.png
+
 NAME=AstroJumper
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/AstroJumper/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/AstroJumper/AstroJumper.py
