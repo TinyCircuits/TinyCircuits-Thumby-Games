@@ -5,7 +5,6 @@ Move around, fight monsters, collect monsters, train monsters.
 
 
 
-
 ############ **Game Info** ##############
 
 **Player Info**  
@@ -172,65 +171,16 @@ Monster Type | Attack Name | Element Type | Damage based on Strength/Mysticism
 ------- |"Rue"           | Mind       | Mysticism  
   
   
-Updates as of 11/30/22:    
-Fixed some bugs. Moved some code around to be better? probably added new bugs.
-Changed the odds of getting specific items.
-Changed the player info screen to show how many monsters you have out of how many you can have.
-Added a way for the game to keep track of how many bonus items have been used. (A monster can only receive bonuses from items up to 30 times)
-Players can now inspire their active monster every time their trainer level goes up. The option for this is found in "My Monsters" under "Inspire". If you do not have any inspiration points the option will not show up. Once you inspire your monster, depending on what you do, one of their stat's maximum values will go up, their max potential HP will go up, and they will get 2 training points. A player can only inspire a monster up to 40 times)
-  
-  
-Updates as of 11/19/22:    
-Added the chance for monsters to receive extra training points, if they fought or not. Added an option to play again while doing versus, added titles for ghost assigned based on thier worldseed.   
-  
-Updates as of 11/18/22:    
-"Various bug fixes and adjustments have been made to make your gameplay experience more enjoyable" ... Changed some screens to look better, to hopefully show information better. Lowered number of attack moves a monster can have from 6 to 5. (Five makes my life easier and is easier on memory.)  Added new items that can increase how high you can train your stats. (you can give a monster 30 different items before this stops working) all new items increase HP by a set amount. Monsters need to have unique names so that multiplayer won't bug out (I think this issue would have been really rare, but it's better to just make all monsters have different given names)    
-    
-
-Updates as of 11/06/22:  
-Versus modes have been added. You can fight other players via the link cable though the Link Battle mode. After you've fought someone over a link cable their data is saved so you can fight them offline via the Ghost Battle mode.
-  
-Updates as of 04/18/22:  
-Fixed Folder Name from Curtian to Curtain. I'm a dork :D
-Restructured things, now using methods and stuff. The game will now make a list of monsters to load from for when you encounter a roaming monster. Player now roams the wilderness. (Which is just the map from the previous version, that is based on the player seed.)  
-Things are setup so that new modes can be added, multiplayer is coming "soon(TM)" (Planning on adding live multiplayer via Link Cable & Ghost Multiplayer, to load someone else's trainer you have saved to fight them that way too), A storage mode to save monsters & be able to trade them via Link Cable. We'll see how far I can get with those things.  
-  
-Updates as of 4/11/22:   
-Fixed issue where items were not being loaded correctly, it only loaded the first item that was saved.  
-Added numbers to item screen, to help show how many items the player has.   
-Added text to tell the player they used an item.   
+Updates as of 01/17/23:  
+Added battle.py so that the battle code is in once place.    
+Fixed it so you can't give a name more than 12 characters.  
+Fixed it so that the game with have the last attack used be the first selection when you go back into the attack screen.  
+Lowered the amount of times you can inspire a monster.  
+Changed the chances for taming a monster.  
+Rewrote the battle formulas so they are just better.  
+Now when an attack happens, it'll grab a random number from a range based on your Str/Myst, then compare it to a number taken from a range based on the opposing monster's Agility.  
+There is a chance for an automatic hit and an automatic miss.  
+There is now a chance for a crit. The game doesn't let you know if a crit happened yet. The odds of a crit are pretty low. There are 3 levels of severity for crits & you need to be within a small range of the target number to get one. The target number is based on your Str/Myst & your trainer's level.  
    
-Updates as of 4/10/22:  
-Rewrote the battle animation screen.    
-Attacks will pick a bolt that goes across the screen based on the element type for the attack that was selected.  
-Fixed maxFriends, so that you can't go above the max amount anymore.    
-Had to lower monster count to 22 due to memory issues that comes up when loading a game with 5 monsters on your team, from the title screen.  
-  
-Updates as of 4/9/22:  
-Changed up the combat math, trying to make it less swingy.  
-  
-Updates as of 4/8/22:  
-Fixed - now the game will let you know that active monster doesn't have enough HP to fight, if in a fight it will tell you that it switched to another monster that has HP  
-Added mutate animation ( That takes up too many lines :D )  
-
-Updates as of 4/6/22:  
-Added the ability to cycle up through select first monster/monster info/swap active screens.   
-Changed the way the options menu checks for the correct selection.  
-
-Updates as of 3/26/22:  
-Fixed issue where the worldseed wasn't assigned to the player block and the game would always load the default 0 world  
-If the world seed equals the default of '0' then the game will give you a new world seed.
-Fixed scroller speed on opening screen  
-
-Updates as of 1/19/22:  
-Fixed issue where you could go above the max amount for some skills
-
-Updates as of 1/14/22:  
-Issue where there was not enough memory to load TMT from the thumby launcher on physical thumby. Moved images and attacks to their own ujson files in an attempt to fix this.
-Fixed issue where there where two images named legs7. Changed name of Mind move to telekinesis from project rock. Added tmt.ujson save for ease of testing.
-
-Updates as of 1/5/22:  
-Changed some combat math s'more. I like it better now, but I still haven't been able to play it long enough to see what it might be like at higher trainer levels. I also added some visuals and more monster parts. I fixed some more things that I found that weren’t working as intended.
-
-Updates as of 1/3/22:  
-Changed combat math so that the potential for high agility monsters avoiding all damage, all the time, was hopefully removed. Added a couple of monster parts. Added some visuals to help with navigating the game. Rewrote some functions to be the same, they just take up less lines. Removed some errors that caused the game to break. Fixed some things that weren't working as intended.
+Older updates can be found at:  
+https://github.com/BlakeBild/Tiny_Monster_Trainer 
