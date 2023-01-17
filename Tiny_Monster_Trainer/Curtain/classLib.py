@@ -19,7 +19,16 @@ def thingAquired(word1, word2, itemName, word4 ="", setSleep=1, skipUpdate=0, sk
     time.sleep(setSleep)
     
 
-class Player:
+class NPC():
+    def __init__(self): 
+        self.playerBlock = {'name' : "Monster",
+                                'trainerLevel' : 1,
+                                'friendMax' : 2,
+                                'inspire' : 0}
+        self.friends = []
+
+
+class Player():
     def __init__(self):                                           
         self.playerBlock = {'name' : "CoolDude",
                             'trainerLevel' : 1,
@@ -93,7 +102,7 @@ class Player:
                 self.playerBlock['friendMax'] = self.playerBlock['friendMax'] + 1
                 thingAquired(self.playerBlock['name'], "can now", "have " + str(self.playerBlock['friendMax']), "monsters!", 2)
 
-                
+
 
 class RoamingMonster:
     def __init__ (self, currentPos=0, position=[]):
