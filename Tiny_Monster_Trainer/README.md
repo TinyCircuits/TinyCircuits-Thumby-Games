@@ -172,9 +172,11 @@ Monster Type | Attack Name | Element Type | Damage based on Strength/Mysticism
   
   
 Updates as of 01/17/23:  
-Added battle.py so that the battle code is in once place.    
+Added battle.py so that the battle code is in once place.      
+Added a new animation for training HP & Agility.  
+Added a new animation for training Mysticism & Tinfoil.  
 Fixed it so you can't give a name more than 12 characters.  
-Fixed it so that the game with have the last attack used be the first selection when you go back into the attack screen.  
+Fixed it so that the game will remember the previous attack you used & make it the first selection when you go back into the attack select screen.  
 Lowered the amount of times you can inspire a monster.  
 Changed the chances for taming a monster.  
 Rewrote the battle formulas so they are just better.  
