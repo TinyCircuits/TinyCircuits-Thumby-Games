@@ -172,7 +172,7 @@ Monster Type | Attack Name | Element Type | Damage based on Strength/Mysticism
   
   
 Updates as of 01/17/23:  
-Added battle.py so that the battle code is in once place.      
+Added battle.py so that the battle code is in one place.      
 Added a new animation for training HP & Agility.  
 Added a new animation for training Mysticism & Tinfoil.  
 Fixed it so you can't give a name more than 12 characters.  
