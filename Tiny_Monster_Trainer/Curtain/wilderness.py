@@ -617,7 +617,6 @@ def makeRandomStats(monToStat, trainerLevel):
     tempMon.statBlock['Health'] = genStat(0) + random.randint(0, math.floor(trainerLevel/10)) 
     if tempMon.statBlock['Health'] > tempMon.statBlock['maxHealth']:
         tempMon.statBlock['Health'] = tempMon.statBlock['maxHealth']
-    tempMon.statBlock['currentHealth'] = tempMon.statBlock['Health']
     for x in range (4,9):
         tempMon.statBlock[tempMon.keyList[x]] = genStat(0) + random.randint(0, math.floor(trainerLevel/10))
         if tempMon.statBlock[tempMon.keyList[x]] > tempMon.statBlock['max' + tempMon.keyList[x]]:
@@ -628,6 +627,7 @@ def makeRandomStats(monToStat, trainerLevel):
         tempMon.statBlock['max' + tempMon.keyList[x]] = tempMon.statBlock['max' + tempMon.keyList[x]] + 1
         tempMon.statBlock['Health'] = tempMon.statBlock['Health'] + 1
         tempMon.statBlock['maxHealth'] = tempMon.statBlock['maxHealth'] + 1
+    tempMon.statBlock['currentHealth'] = tempMon.statBlock['Health']
     return tempMon
 
     
