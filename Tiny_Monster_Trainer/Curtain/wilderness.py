@@ -613,15 +613,21 @@ def makeRandomStats(monToStat, trainerLevel):
     tempMon = monToStat
     tempMon.statBlock = tempMon.statBlock.copy()
     genStat = tempMon.makeStat
-    tempMon.bonusStats = {'trained' : 0}    
-    tempMon.statBlock['Health'] = genStat(0) + random.randint(0, trainerLevel) 
+    tempMon.bonusStats = {'trained' : math.floor(random.randint(0, math.floor(abs(trainerLevel)/2)))} 
+    tempMon.statBlock['Health'] = genStat(0) + random.randint(0, math.floor(trainerLevel/10)) 
     if tempMon.statBlock['Health'] > tempMon.statBlock['maxHealth']:
         tempMon.statBlock['Health'] = tempMon.statBlock['maxHealth']
     tempMon.statBlock['currentHealth'] = tempMon.statBlock['Health']
     for x in range (4,9):
-        tempMon.statBlock[tempMon.keyList[x]] = genStat(0) + random.randint(0, trainerLevel)
+        tempMon.statBlock[tempMon.keyList[x]] = genStat(0) + random.randint(0, math.floor(trainerLevel/10))
         if tempMon.statBlock[tempMon.keyList[x]] > tempMon.statBlock['max' + tempMon.keyList[x]]:
             tempMon.statBlock[tempMon.keyList[x]] = tempMon.statBlock['max' + tempMon.keyList[x]]
+    for y in range (tempMon.bonusStats['trained']):
+        x = random.randrange(4,9)
+        tempMon.statBlock[tempMon.keyList[x]] = tempMon.statBlock[tempMon.keyList[x]] + 1
+        tempMon.statBlock['max' + tempMon.keyList[x]] = tempMon.statBlock['max' + tempMon.keyList[x]] + 1
+        tempMon.statBlock['Health'] = tempMon.statBlock['Health'] + 1
+        tempMon.statBlock['maxHealth'] = tempMon.statBlock['maxHealth'] + 1
     return tempMon
 
     
