@@ -46,7 +46,7 @@ def battleStartAnimation(color):
     thumby.display.setFPS(40)
     
     
-def currentSelectCheckRange(optionAmount, currentSelect):
+def chkRng(optionAmount, currentSelect):
     if optionAmount > 1 and optionAmount !=2:
         if currentSelect > optionAmount - 2 :
             currentSelect = currentSelect - optionAmount
@@ -81,7 +81,7 @@ def popItOff(theListofObjs, word):
 
 def showOptions(options, currentSelect, bottomText, x=0):
     optionAmount = len(options)
-    currentSelect = currentSelectCheckRange(optionAmount, currentSelect)
+    currentSelect = chkRng(optionAmount, currentSelect)
     thumby.display.fill(0)
     thumby.display.drawFilledRectangle(0+x, 10, 72, 9, 1)
     if optionAmount > 1: 
@@ -169,7 +169,7 @@ def giveName(beingNamed):
         if c == 28:
             if len(selected_chars) == 0 or selected_chars[-1] == ' ':
                 selected_chars = selected_chars + capAlphabet[tempC]
-            else:
+            elif len(selected_chars) < 11: 
                 selected_chars = selected_chars + character_list[tempC]
         elif c == 29:
             if len(selected_chars) > 0:
@@ -180,6 +180,7 @@ def giveName(beingNamed):
                 goBack = 1
         if c >= 28:
             c = tempC
+
     return beingNamed
     
 
@@ -249,7 +250,7 @@ def showMonInfo(playerInfo, startOfgameCheck=0, combatCheck=0):
             currentSelect = 0
         if currentSelect == -1:
             currentSelect = 2
-        currentSelect = currentSelectCheckRange(10, currentSelect)
+        currentSelect = chkRng(10, currentSelect)
         tempSelect2 = tempSelect
         tempSelect = currentSelect
         thumby.display.fill(0)
@@ -354,7 +355,6 @@ def save(playerInfo):
     for x in range(0, len(playerInfo.inventory)):
         itemDict["item" + str(x)] = obj_to_dict(playerInfo.inventory[x])
     playerDict = [{"player" : playerInfo.playerBlock, "items" : [itemDict], "monsterInfo": [statDict, bodyDict, attackDict, mutateDict, bonusDict]}]
-    #print(playerDict)
     with open('/Games/Tiny_Monster_Trainer/Curtain/tmt.ujson', 'w') as f:
         ujson.dump(playerDict, f)
         f.close()
