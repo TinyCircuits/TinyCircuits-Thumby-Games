@@ -1,3 +1,8 @@
+NAME=Langton
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Langton/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Langton/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Langton/Langton.py
+
 NAME=SongOfMorus
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/SongOfMorus/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/SongOfMorus/arcade_title_video.webm
@@ -92,11 +97,6 @@ https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Umby&Glow/mons4.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Umby&Glow/world4.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Umby&Glow/script.txt
-
-NAME=Langton
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Langton/arcade_description.txt
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Langton/arcade_title_video.webm
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Langton/Langton.py
 
 NAME=Wolfram
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Wolfram/arcade_description.txt
