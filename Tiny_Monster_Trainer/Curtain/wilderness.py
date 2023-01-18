@@ -216,7 +216,7 @@ def inspireActive(playerBlock, myMonStats, monsterBonus):
                 elif inspireOpt[curSelect] == inspireOpt[2]:
                     myMonStats['maxEndurance'] = myMonStats['maxEndurance'] + 1
                 elif inspireOpt[curSelect] == inspireOpt[3]:
-                    myMonStats['maxMysticism'] = myMonStats['maxTinfoil'] + 1
+                    myMonStats['maxMysticism'] = myMonStats['maxMysticism'] + 1
                 elif inspireOpt[curSelect] == inspireOpt[4]:
                     myMonStats['maxTinfoil'] = myMonStats['maxTinfoil'] + 1    
                 else: #"Nevermind"
