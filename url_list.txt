@@ -1,3 +1,9 @@
+NAME=RocketCup
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/RocketCup/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/RocketCup/thumbyGrayscale.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/RocketCup/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/RocketCup/RocketCup.py
+
 NAME=Tiny_Monster_Trainer
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Tiny_Monster_Trainer/Curtain/battle.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Tiny_Monster_Trainer/Curtain/Other.ujson
