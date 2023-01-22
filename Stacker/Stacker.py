@@ -20,10 +20,11 @@ from thumbyButton import actionJustPressed, buttonA, buttonB, buttonD, buttonU
 from thumbyGraphics import display
 import utime
 
+VERSION = "1.0.0"
+
 EASY = 0
 MEDIUM = 1
 HARD = 2
-
 
 C4 = 261.63
 D4 = 293.66
