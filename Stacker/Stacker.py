@@ -3,7 +3,7 @@
 # Can you manage to stack all the blocks?
 
 # Written by Jason Ngo
-# Last edited 01/21/2022
+# Last edited 01/22/2022
 """
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
 License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any
@@ -15,37 +15,28 @@ program. If not, see <https://www.gnu.org/licenses/>.
 
 from machine import idle
 import math
-from thumbyAudio import audio
+import random
 from thumbyButton import actionJustPressed, buttonA, buttonB, buttonD, buttonU
 from thumbyGraphics import display
 import utime
 
-VERSION = "1.0.0"
+VERSION = "1.1.0"
 
+# Difficulty levels
 EASY = 0
+"""Easy difficulty level; widest starting line and slowest movement speed."""
 MEDIUM = 1
+"""Medium difficulty level; medium starting line and medium movement speed."""
 HARD = 2
+"""Hard difficulty level; smallest starting line and fastest movement speed."""
 
-C4 = 261.63
-D4 = 293.66
-E4 = 329.63
-F4 = 349.23
-G4 = 392.00
-A4 = 440.00
-B4 = 493.88
-C5 = 523.25
-D5 = 587.33
-E5 = 659.25
-F5 = 698.46
-G5 = 783.99
-A5 = 880.00
-B5 = 987.77
-C6 = 1046.50
-NOTES = [C4, D4, E4, F4, G4, A4, B4, C5, D5, E5, F5, G5, A5, B5, C6]
 
 class Vector2:
+    """Vectors in 2D space contain two properties: and x and a y."""
     x: float
+    """The vector's x component."""
     y: float
+    """The vector's y component."""
 
     def __init__(self, x: float, y: float):
         self.x = x
@@ -81,9 +72,13 @@ class Vector2:
 
 
 class Line:
+    """Moving line of blocks that stack on top of one another."""
     size: Vector2
+    """The size of the line in pixels."""
     speed: float
+    """The speed of the line in pixels per frame."""
     position: Vector2
+    """The current position of the line in pixels."""
 
     def __init__(self, size: Vector2, initialPos: Vector2, initialSpeed: float):
         self.size = size
@@ -92,14 +87,17 @@ class Line:
 
     @micropython.native
     def move(self):
+        """Translate the line by the amount of its speed."""
         self.position += Vector2(self.speed, 0)
 
     @micropython.native
     def bounce(self):
+        """Invert the movement direction of the line."""
         self.speed *= -1
 
     @micropython.native
     def draw(self):
+        """Draw the line of blocks itself."""
         display.drawFilledRectangle(
             int(self.position.x - self.size.x / 2),
             int(self.position.y - self.size.y),
@@ -109,6 +107,7 @@ class Line:
 
     @micropython.native
     def update(self):
+        """Draw the line and handle movement logic."""
         self.draw()
         if self.speed == 0:
             return
@@ -119,6 +118,13 @@ class Line:
 
     @micropython.native
     def trim(self, other: 'Line') -> 'Line':
+        """Snip off parts of the line that overhang the other line.
+        
+        Parameters:
+        ----------
+        other: Line
+            The line to trim against.
+        """
         newLine = Line(Vector2(0, 0), Vector2(0, 0), self.speed)
         selfLeft: float = self.position.x - self.size.x / 2
         selfRight: float = self.position.x + self.size.x / 2
@@ -135,7 +141,9 @@ class Line:
 
 
 class Scoreboard:
+    """Displays the player's score."""
     score: int
+    """The player's current score."""
 
     def __init__(self):
         self.score = 0
@@ -143,34 +151,51 @@ class Scoreboard:
 
     @micropython.native
     def addScore(self, amount: int):
+        """Add to the player's score.
+        
+        Parameters
+        ----------
+        amount : int
+            The amount to add to the score.
+        """
         self.score += amount
 
     @micropython.native
     def reset(self):
+        """Reset the player's score to 0."""
         self.score = 0
 
     @micropython.native
     def draw(self):
+        """Draw the scoreboard."""
         display.drawFilledRectangle(0, display.height - 8 , display.width, 8, 1)
         display.drawText(f"Score:{self.score}", 2, display.height - 7, 0)
 
 class Game:
-    difficulty: input
+    """The main game class."""
+    difficulty: int
+    """The game's current difficulty."""
     maxFPS: int
-    running: bool
+    """The maximum frames per second the game will run at."""
+    playing: bool
+    """Whether the player is currently in-game."""
     lines: list[Line]
+    """A list containing all the stacked lines in the active game session (including the currently moving one)."""
     scoreboard: Scoreboard
+    """The game scoreboard object."""
     wonGame: bool
+    """Whether the player has won the game."""
 
     def __init__(self):
         self.difficulty = MEDIUM
         self.maxFPS = 60
-        self.running = False
+        self.playing = False
         self.lines = []
         self.scoreboard = Scoreboard()
 
     @micropython.native
     def titleScreen(self):
+        """Display the title screen."""
         display.fill(0)
         display.setFont("/lib/font8x8.bin", 8, 8, 1)
         display.drawText("Stacker", 5, 4, 1)
@@ -184,6 +209,7 @@ class Game:
 
     @micropython.native
     def chooseDifficulty(self):
+        """Display and choose from the difficulty selection screen."""
         display.blit(bytearray([31, 14, 4]), 1, 16, 3, 5, 0, 0, 0)
         while True:
             display.fill(0)
@@ -211,6 +237,13 @@ class Game:
         
     @micropython.native
     def restart(self) -> bool:
+        """Restart the game.
+
+        Returns
+        -------
+        bool
+            True if the game was restarted, False if the game was exited.
+        """
         while True:
             display.fill(0)
             display.setFont("/lib/font8x8.bin", 8, 8, 1)
@@ -227,8 +260,11 @@ class Game:
                 return True
             elif buttonB.pressed():
                 return False
+
+
     @micropython.native
     def run(self):
+        """Run the game."""
         self.titleScreen()
         self.chooseDifficulty()
         self.startGameplay()
@@ -238,11 +274,18 @@ class Game:
 
     @micropython.native
     def startGameplay(self) -> bool:
+        """Start the gameplay loop.
+
+        Returns
+        -------
+        bool
+            True if the player won the game, False if the player lost the game.
+        """
         self.lines.clear()
         self.wonGame = False
         self.scoreboard.reset()
         t0: int = utime.ticks_us()
-        self.running = True
+        self.playing = True
         lineWidth: float
         lineSpeed: float
         if self.difficulty == EASY:
@@ -257,7 +300,8 @@ class Game:
         firstLine = Line(Vector2(lineWidth, 2), Vector2(display.width / 2, display.height - 8), lineSpeed)
         self.lines.append(firstLine)
 
-        while self.running:
+        # Main loop
+        while self.playing:
             display.fill(0)
             for line in self.lines:
                 line.update()
@@ -270,6 +314,7 @@ class Game:
 
     @micropython.native
     def place(self):
+        """Place a new line on the stack."""
         currentLine: Line = self.lines[-1]
         newSpeed: float = abs(currentLine.speed)
         if self.difficulty == EASY:
@@ -278,21 +323,25 @@ class Game:
             newSpeed += 0.035
         elif self.difficulty == HARD:
             newSpeed += 0.05
+        # Choose a random starting direction
+        newSpeed *= random.choice([-1, 1])
         currentLine.speed = 0
         newLine: Line
+        # Only trim if there are two or more stacked lines
         if len(self.lines) > 1:
             newLine = currentLine.trim(self.lines[-2])
             newLine.speed = newSpeed
         else:
             newPos: Vector2 = currentLine.position - Vector2(0, currentLine.size.y)
             newLine = Line(currentLine.size, newPos, newSpeed)
-        audio.play(int(NOTES[min(len(self.lines) - 1, len(NOTES) - 1)]), 1000)
         self.lines.append(newLine)
+        # Set win condition if the line reaches the top of the screen
         if newLine.position.y <= 0:
             self.wonGame = True
-            self.running = False
-        if newLine.size.x < 1:
-            self.running = False
+            self.playing = False
+        # Set lose condition if the line is too small
+        if newLine.size.x < 0.5:
+            self.playing = False
         else:
             score: int = 0
             if self.difficulty == EASY:
@@ -309,6 +358,7 @@ class Game:
 
 @micropython.native
 def main():
+    """Main function."""
     Game().run()
     display.setFont("/lib/font5x7.bin", 5, 7, 1)
 
