@@ -1,3 +1,12 @@
+NAME=BadApple
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/BadApple/mvf.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/BadApple/badapple.mvf
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/BadApple/audio.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/BadApple/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/BadApple/badapple.zdp
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/BadApple/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/BadApple/BadApple.py
+
 NAME=Stacker
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Stacker/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Stacker/stacker.webm
