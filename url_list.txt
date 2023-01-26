@@ -1,3 +1,10 @@
+NAME=Thoom
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Thoom/gamesprite.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Thoom/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Thoom/Thoom.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Thoom/customrender.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Thoom/arcade_title_video.webm
+
 NAME=BadApple
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/BadApple/mvf.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/BadApple/badapple.mvf
