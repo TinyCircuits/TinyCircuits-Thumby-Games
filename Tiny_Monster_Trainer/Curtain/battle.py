@@ -88,7 +88,7 @@ class Battle:
             while mon1Type != offsetList[x]:
                 x = x + 1
             if mon2Type == typeList[x]:
-                bonus = 1
+                bonus = 2 
         return bonus
     
 
@@ -103,7 +103,7 @@ class Battle:
             while mon1Type != typeList[x]:
                 x = x + 1
             if mon2Type == offsetList[x]:
-                bonus = 1
+                bonus = 2
         return bonus
         
     
@@ -111,7 +111,7 @@ class Battle:
         attackAmnt = 0
         defence = 0
         damage = 0
-        crit = 4
+        crit = 3
         crtChnc = 150
         atkTypeBonus = 1
         defTypeBonus = 1
@@ -131,18 +131,14 @@ class Battle:
         doCrt = random.randint(0,crtChnc)
         if doCrt == crtChnc:
             crit = 1
-        elif doCrt >= crtChnc - 2:
+        elif doCrt >= crtChnc - 7:
             crit = 2
-        elif doCrt >= crtChnc - 6:
-            crit = 3
-        else:
-            pass
-        
+
         for x in range(1,3):
             atkTypeBonus = self.isTypeStrong(activeAttack.moveElementType, defenceMon.statBlock[defenceMon.keyList[x]]) + atkTypeBonus
         for x in range(1,3):
             defTypeBonus = self.isTypeWeak(defenceMon.statBlock[defenceMon.keyList[x]], activeAttack.moveElementType) + defTypeBonus
-        damage = math.ceil((attackAmnt * atkTypeBonus)/crit) - math.floor((defence * defTypeBonus)/4)
+        damage = math.ceil((attackAmnt * atkTypeBonus)/crit) - math.floor((defence * defTypeBonus)/3)
         if damage <= 0:
             damage = 1
         return damage
@@ -307,19 +303,31 @@ class Battle:
     def attackAnimation(self, playerBod, nmeBod, playerAfterDmg, nmeAfterDmg, playerAtkElm, nmeAtkElm, sOr=0): 
         # BITMAP: width: 8, height: 8
         sidewaySkull = bytearray([0,42,62,119,127,107,107,62]) # ethereal
+        sidewaySkullM = bytearray([0,42,62,127,127,127,127,62])
         darkness = bytearray([0,36,66,8,16,66,36,0]) # darkness
+        darknessM = bytearray([60,126,255,255,255,255,126,60])
         maybeFireball = bytearray([20,42,62,99,69,89,99,62]) # fire
+        maybeFireballM = bytearray([20,62,62,127,127,127,127,62])
         maybeWaterball = bytearray([16,68,16,40,68,76,56,0]) # water
+        maybeWaterballM = bytearray([16,68,16,56,124,124,56,0])
         windBlow = bytearray([68,85,85,34,8,138,170,68]) # wind
+        windBlowM = bytearray([68,85,119,34,8,138,238,68])
         rock = bytearray([20,65,28,42,66,86,36,56]) # earth
+        rockM = bytearray([20,65,28,62,126,126,60,56])
         punch =  bytearray([189,165,36,116,148,180,132,120])  # physical
+        punchM = bytearray([189,189,60,124,252,252,252,120])
         spiral = bytearray([124,130,57,69,149,153,66,60]) # mind
+        spiralM = bytearray([124,254,255,127,255,255,126,60])
         fourFlowers = bytearray([32,82,37,2,64,164,74,4]) # light
+        fourFlowersM = bytearray([32,114,39,2,64,228,78,4])
         heart = bytearray([28,62,126,252,252,126,62,28]) # cute
         arrow = bytearray([4,60,39,114,90,78,120,0]) # mystic
+        arrowM = bytearray([4,60,63,126,126,126,120,0])
         basic = bytearray([56,108,130,162,138,154,130,124]) #basic
+        basicM = bytearray([56,124,254,254,254,254,254,124])
         
         BoltArray = [basic, rock, windBlow, maybeWaterball, maybeFireball, fourFlowers, darkness, heart, spiral, punch, arrow, sidewaySkull]
+        BoltArrayM = [basicM, rockM, windBlowM, maybeWaterballM, maybeFireballM, fourFlowersM, darknessM, heart, spiralM, punchM, arrowM, sidewaySkullM]
         playerAttackTypeNum = self.typeAsNum(playerAtkElm)
         nmeAttackTypeNum = self.typeAsNum(nmeAtkElm)
         playerAtked = 0
@@ -377,7 +385,7 @@ class Battle:
                     playerAtked = 1
                     playerAttacking = 1
                 elif self.battleBlock['nmeB4hp'] != nmeAfterDmg and (t0 - ct0) > 2000 and (t0 - ct0 <= 4000) and playerAtkedChk == 0 and playGo == 1 : # player hits
-                    thumby.display.blit(BoltArray[playerAttackTypeNum], (30 + animateX), math.floor(10+bobOffset), 8, 8, 0, 0, 0) #, flippy, 0)
+                    thumby.display.blitWithMask(BoltArray[playerAttackTypeNum], (30 + animateX), math.floor(10+bobOffset), 8, 8, 0, 0, 0, BoltArrayM[playerAttackTypeNum]) #, flippy, 0)
                     showNmeHP = nmeAfterDmg
                     combatText = self.battleBlock['myText']
                     playerAtked = 1
@@ -387,7 +395,7 @@ class Battle:
                     nmeAtked = 1
                     playerAttacking = 2
                 elif self.battleBlock['myB4hp'] != playerAfterDmg and (t0 - ct0) > 2000 and (t0 - ct0 <= 4000) and nmeAtkedChk == 0 and nmeGo == 1: # nme hits
-                    thumby.display.blit(BoltArray[nmeAttackTypeNum], (36 - animateX), math.floor(10+bobOffset), 8, 8, 0, 1, 0) #, flippy, 0)
+                    thumby.display.blitWithMask(BoltArray[nmeAttackTypeNum], (36 - animateX), math.floor(10+bobOffset), 8, 8, 0, 1, 0, BoltArrayM[nmeAttackTypeNum]) #, flippy, 0)
                     showPlayerHP = playerAfterDmg
                     combatText = self.battleBlock['nmeText']
                     nmeAtked = 1
