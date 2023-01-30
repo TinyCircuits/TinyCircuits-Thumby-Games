@@ -79,10 +79,13 @@ def popItOff(theListofObjs, word):
         thumby.display.update()
 
 
-def showOptions(options, currentSelect, bottomText, x=0):
+def showOptions(options, currentSelect, bottomText, x=0, skipFill=0):
     optionAmount = len(options)
     currentSelect = chkRng(optionAmount, currentSelect)
-    thumby.display.fill(0)
+    if skipFill == 0:
+        thumby.display.fill(0)
+    else:
+        thumby.display.drawFilledRectangle(0+x, 0, 72, 40, 0)
     thumby.display.drawFilledRectangle(0+x, 10, 72, 9, 1)
     if optionAmount > 1: 
         thumby.display.drawText(options[currentSelect - 1], 1+x, 2, 1) # prints top opt
@@ -184,10 +187,10 @@ def giveName(beingNamed):
     return beingNamed
     
 
-def tameMon(playerInfo, npcMon):
+def tameMon(playerInfo, npcMon, sbToCopy):
     gc.collect()
     newMon = Monster()
-    newMon.statBlock = npcMon.statBlock.copy()
+    newMon.statBlock = sbToCopy.copy()
     newMon.bodyBlock = npcMon.bodyBlock.copy()
     newMon.attackList = npcMon.attackList.copy()
     newMon.mutateSeed = npcMon.mutateSeed.copy()
@@ -231,7 +234,7 @@ def drawArrows(l, r, d, u=1): # x, y):
     thumby.display.blit(bytearray(arrowUD), 66, 9, 5, 6, u, 0, abs(u))
 
 
-def showMonInfo(playerInfo, startOfgameCheck=0, combatCheck=0):
+def showMonInfo(playerInfo, startOfgameCheck=0, combatCheck=0, campfire=0):
     thumby.display.fill(0) # Fill canvas to black
     thumby.display.update()
     left = 1
@@ -288,10 +291,24 @@ def showMonInfo(playerInfo, startOfgameCheck=0, combatCheck=0):
         thumby.display.update()
         currentSelect = buttonInput(currentSelect)
         if currentSelect == 31 and combatCheck != 1:
-            if playerInfo.friends[0] != playerInfo.friends[x] or startOfgameCheck == 1:
-                if playerInfo.friends[x].statBlock['currentHealth'] == 0:
+            if playerInfo.friends[0] != playerInfo.friends[x] or startOfgameCheck == 1 or campfire > 0:
+                if playerInfo.friends[x].statBlock['currentHealth'] == 0 and campfire == 0:
                     thingAquired(monsterListInfo[x].statBlock['given_name'], "does not", "have enough", "HP to fight!", 2)
                 switchActiveMon(playerInfo, monsterListInfo[0], monsterListInfo[x], x)
+                if campfire > 0:
+                    if campfire == 1:
+                        thingAquired("Bring", playerInfo.friends[0].statBlock['given_name'], "with you?", "A:Yes, B:No", 0, 0, 0)
+                    elif campfire == 2:
+                        thingAquired(playerInfo.friends[0].statBlock['given_name'],"will stay", "at camp?", "A:Yes, B:No", 0, 0, 0)
+                    elif campfire == 3:
+                        thingAquired(playerInfo.friends[0].statBlock['given_name'],"will be", "released?", "A:Yes, B:No", 0, 0, 0)
+                    currentSelect = 0
+                    while(1):
+                        currentSelect = buttonInput(currentSelect)
+                        if currentSelect == 31:
+                            return 1
+                        elif currentSelect == 30:
+                            return 0
                 goBack = 1
                 if combatCheck != 2: #need to when switching in battle if selected mon has HPs
                     thingAquired(monsterListInfo[0].statBlock['given_name'], "is now", "your active", "monster!", 2)
@@ -335,7 +352,7 @@ def obj_to_dict(obj):
     return obj.__dict__
 
         
-def save(playerInfo):
+def save(playerInfo, name):
     gc.collect()
     statDict = {}
     bodyDict = {}
@@ -355,7 +372,7 @@ def save(playerInfo):
     for x in range(0, len(playerInfo.inventory)):
         itemDict["item" + str(x)] = obj_to_dict(playerInfo.inventory[x])
     playerDict = [{"player" : playerInfo.playerBlock, "items" : [itemDict], "monsterInfo": [statDict, bodyDict, attackDict, mutateDict, bonusDict]}]
-    with open('/Games/Tiny_Monster_Trainer/Curtain/tmt.ujson', 'w') as f:
+    with open('/Games/Tiny_Monster_Trainer/Curtain/'+name+'.ujson', 'w') as f:
         ujson.dump(playerDict, f)
         f.close()
     del playerDict
