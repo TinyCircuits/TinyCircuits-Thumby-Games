@@ -5,11 +5,11 @@ Move around, fight monsters, collect monsters, train monsters.
 
 
 
+
 ############ **Game Info** ##############
 
 **Player Info**  
-To start you can only have up to two Monsters with you.    
-Each Monster starts with 7 training points.
+To start you can only have up to two Monsters with you.  
 If you get an additional Monster, you will be asked you to select one & let it go.  
 Every 10 Trainer Levels you can have an additional Monster with you, up to a maximum of 5.  
 Your Trainer Level also influences how well your Active Monster can fight.  
@@ -38,7 +38,7 @@ The higher your Trainer Level, you'll seek out stronger Roaming Monsters to figh
 ############ **Training** #############  
 
 Train is used to increase a stat by 1 point, up to a maximum amount.  
-Learning a new attack cost 3 Training Points, a Monster can know up to 6 attacks.  
+Learning a new attack cost 3 Training Points, a Monster can know up to 5 attacks.  
 A monster can Mutate to increase a procedurally determined stat's maximum training amount.  
 A monster can mutate up to 5 times, if you have duplicates of a monster they will mutate in the same ways.  
 Mutating can potentially Change the look of a monster.  
@@ -51,11 +51,47 @@ Learn Attack: 3 TP
 Mutate:       5 TP  
 
 
+############ **Inspire** #############  
+
+Every time your trainer levels up, they will get an Inspiration Point. Inspiration Points can be used to inspire your active monster.  
+
+When a monster is inspired, their max trainable HP goes up by one and they will receive 2 Training Points.
+
+If you inspire a monster through dancing, their max trainable agility goes up by one
+If you inspire a monster through flexing, their max trainable strength goes up by one
+If you inspire a monster through running, their max trainable endurance goes up by one
+If you inspire a monster through meditation, their max trainable mysticism goes up by one
+If you inspire a monster through origami, their max trainable tinfoil goes up by one  
+
+  
+  
+############ **Campfire** #############    
+    
+ **Leave** : Allows you to select and leave a monster at the campfire.  
+ **Bring** : Allows you to select a monster that is already at the campfire to come with you.  
+ **Let Go** : Select a Monster at the campfire to release permanently.      
+ **Bye** : Leaves the camp  
+ 
+ Only three monsters can stay at the camp at a time.
+ A camp can be found by going back to the same screen you started on.  
+ A camp can be found randomly by exploring, it is mystically connected to the camp you store your monsters at. (SpOoKy!~)
+
+############ **Bean, The Traveling Merchant** #############  
+
+**Buy** : You can purchase items for sale, everything cost 10 Tiny Coins.   
+**Sell**  : Sell your items, everything can be bought for 5 Tiny Coins.  
+**Bye** : Leave the merchant.  
+  
+The only way to get Tiny Coins is to sell items.    
+The merchant can be found by exploring.    
+  
 ############# **Items** ##############  
 Items are not usable during combat.  
   
 **For items that increase the a stat's maximum trainable amount:**  
   You can only do this 30 times per monster. If you give a monster more than 30 items that do this the maximum number will not go up anymore, but the monster will still recover any HP that the item is set to restore.
+
+
 
 #######  
 **Item List**  
@@ -71,8 +107,8 @@ Items are not usable during combat.
 **Stardust** - Raises max trainable Mysticism by 1 and heals for 6  
 **Tinfoil** - Raises max trainable Tinfoil by 1 and heals for 5  
 
-**Crystals** - Will restore all stamina for all moves that the active Monster knows.  **Crystals are also needed for Taming Monsters.** They are consumed by the opposing monster while attempting to Tame  
-  
+**Crystals** - Will restore all stamina for all moves that the active Monster knows.  **Crystals are also needed for Taming Monsters.** They are consumed by the opposing monster while attempting to Tame
+
 ############# **Types: Strengths and Weakness** ##############  
 
 Bonus damage/defense is based on the Attack's Element Type vs Defending Monster Type  
@@ -169,20 +205,16 @@ Monster Type | Attack Name | Element Type | Damage based on Strength/Mysticism
 ------- |"Superlunary"   | Ethereal   | Mysticism   
 ------- |"Obscurity"     | Darkness   | Mysticism  
 ------- |"Rue"           | Mind       | Mysticism  
+
   
-  
-Updates as of 01/17/23:  
-Added battle.py so that the battle code is in one place.      
-Added a new animation for training HP & Agility.  
-Added a new animation for training Mysticism & Tinfoil.  
-Fixed it so you can't give a name more than 12 characters.  
-Fixed it so that the game will remember the previous attack you used & make it the first selection when you go back into the attack select screen.  
-Lowered the amount of times you can inspire a monster.  
-Changed the chances for taming a monster.  
-Rewrote the battle formulas so they are just better.  
-Now when an attack happens, it'll grab a random number from a range based on your Str/Myst, then compare it to a number taken from a range based on the opposing monster's Agility.  
-There is a chance for an automatic hit and an automatic miss.  
-There is now a chance for a crit. The game doesn't let you know if a crit happened yet. The odds of a crit are pretty low. There are 3 levels of severity for crits & you need to be within a small range of the target number to get one. The target number is based on your Str/Myst & your trainer's level.  
+Updates as of 01/30/23:  
+Added a merchant - Merchant will either be selling items that can increase a stat's maximum amount, or will only be selling crystals.  
+Added a campfire - You can leave up to three monsters at the campfire. 
+Game automatically saves after interacting with the merchant or campfire.
+(I would like to store more monsters at a campfire, but I need to do more testing than I'm able to do right now. :p)  
+Changed how roaming monster's stats are generated.  
+Changed combat damage so that more damage is applied if a monster is hit with an attack it's weak against.  
+
    
 Older updates can be found at:  
 https://github.com/BlakeBild/Tiny_Monster_Trainer 
