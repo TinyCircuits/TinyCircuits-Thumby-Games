@@ -66,7 +66,7 @@ def makeMonsterList(mSeed):
         myGuy.friends[0].attackList.append(newMonAtk)
         noDupAtk(myGuy.friends[0].attackList)
         noDupAtk(myGuy.friends[0].attackList)
-        save(myGuy)
+        save(myGuy, "tmt")
 
 def makePlayer(monster1, monster2, monster3, seed):
     gc.collect()
@@ -90,7 +90,7 @@ def makePlayer(monster1, monster2, monster3, seed):
     thumby.display.update()
     newPlayer.friends.pop()
     newPlayer.friends.pop()
-    tameMon(newPlayer, newPlayer.friends[0])
+    tameMon(newPlayer, newPlayer.friends[0], newPlayer.friends[0].statBlock)
     newPlayer.friends.pop(0)
     newItem = Item("Crystals", 3, random.randint(0,7))
     newPlayer.inventory.append(newItem)
@@ -111,7 +111,3 @@ except OSError:
     random.seed(theWorldSeed)
     #print("world seed = ", theWorldSeed)
     monsterList = makeMonsterList(theWorldSeed) 
-
-
-
-    
