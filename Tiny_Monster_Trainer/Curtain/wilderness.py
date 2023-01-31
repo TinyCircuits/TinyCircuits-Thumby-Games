@@ -881,11 +881,11 @@ while(1):
         room = mapChangeCheck(myGuy, world[room], room)
         if tempRoom != room:
             if room != 13:
-                npcMonRoaming.char = random.randint(-2,10) 
+                npcMonRoaming.char = random.randint(0,12) 
                 npcMonRoaming.removeMonster()
                 npcMonRoaming.placeMonster(world[room])
             else:
-                npcMonRoaming.char = -1
+                npcMonRoaming.char = 0
                 npcMonRoaming.removeMonster()
                 npcMonRoaming.placeCamp(world[room])
             tempRoom = room
