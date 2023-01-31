@@ -9,8 +9,9 @@ import sys
 sys.path.append("/Games/Tiny_Monster_Trainer/Curtain/")
 from classLib import Player, Map, Monster, Tile, RoamingMonster, TextForScroller, Item, AttackMove, NPC
 from funcLib import thingAquired, battleStartAnimation, printMon, drawArrows, showOptions, popItOff, buttonInput, noDupAtk, giveName, tameMon, switchActiveMon, save, showMonInfo
+from battle import Battle
+import characters
 #import micropython
-
 
 def worldRangeCheck(test):
     if test >= 19:
@@ -82,8 +83,10 @@ def playerInformation(playerInfo):
         if back == 0:
             thumby.display.drawText(playerInfo.playerBlock['name'], 1, 1 ,1)
             thumby.display.blit(bytearray(playerInfo.sprite), 60, 27, 8, 8, 0, 0, 0)
-            thumby.display.drawText("Lvl: " + str(playerInfo.playerBlock['trainerLevel']), 1, 10, 1)
-            thumby.display.drawText("Exp: " + str(playerInfo.playerBlock['experience']), 1, 19, 1)
+            thumby.display.drawText("Lvl:" + str(playerInfo.playerBlock['trainerLevel']), 1, 10, 1)
+            thumby.display.drawText("T", 48, 10, 1)
+            thumby.display.drawText("C:" + str(playerInfo.playerBlock['money']), 48, 10, 1)
+            thumby.display.drawText("Exp:" + str(playerInfo.playerBlock['experience']), 1, 19, 1)
             thumby.display.drawText("Mons: " + str(len(playerInfo.friends)) + "/" + str(playerInfo.playerBlock['friendMax']), 1, 28, 1)
             thumby.display.update()
             back = buttonInput(back)
@@ -97,7 +100,6 @@ def displayItems(playerInfo):
     thumby.display.fill(0)
     curSelect = 0
     tempSelect = curSelect
-    cancelCheck = 0
     optionList = []
     i = 0
     for items in playerInfo.inventory:
@@ -122,6 +124,24 @@ def displayItems(playerInfo):
             thumby.display.update()
     else:
         pass
+
+
+def nameCheck(friendList):
+    chkDone = 0
+    allUnique = 0
+    nameChanged = 1
+    while(allUnique != 1 and chkDone < 6): # need to make sure that all given names are different for multiplayer battles
+        for x in range(len(friendList)):
+            for y in range(len(friendList)):
+                if friendList[x].statBlock['given_name'] == friendList[y].statBlock['given_name'] and x != y:
+                    thingAquired("Monsters", "need", "unique", "names", 2, 0, 0)
+                    friendList[y].statBlock['given_name'] = giveName(friendList[y].statBlock['given_name'])
+                if friendList[x].statBlock['given_name'] != friendList[y].statBlock['given_name'] and x != y:
+                    nameChanged = 1
+        if nameChanged == 1:
+            nameChanged = 0
+            allUnique = 1
+        chkDone = chkDone + 1
 
 
 def trainActiveMon(myMonStats, monsterBody):
@@ -258,6 +278,7 @@ def myMonSubMenu(playerInfo):
                     popItOff(playerInfo.friends[0].attackList, "moves! Please forget one!")
             if optionList[curSelect] == optionList[3]:
                 playerInfo.friends[0].statBlock['given_name'] = giveName(playerInfo.friends[0].statBlock['given_name'])
+                nameCheck(myGuy.friends)
             if optionList[curSelect] == optionList[4]:
                 mutateMon(playerInfo.friends[0])
             if optionList[curSelect] == optionList[5]:
@@ -300,7 +321,7 @@ def optionScreen(playerInfo):
                 if optionList[curSelect] == optionList[2]:
                     displayItems(playerInfo)
                 if optionList[curSelect] == optionList[3]:
-                    save(playerInfo)
+                    save(playerInfo, "tmt")
                     thingAquired("","Game","Saved","", 0, 1, 0)
                     thumby.display.drawRectangle(15, 7, 41, 22, 1)
                     thumby.display.update()
@@ -572,10 +593,10 @@ def trainCandles(monsterBody):
         thumby.display.update()
 
 
-def loadGame():
+def loadGame(name="tmt"):
     gc.collect()
     tempPlayer = Player()
-    f = open('/Games/Tiny_Monster_Trainer/Curtain/tmt.ujson')
+    f = open('/Games/Tiny_Monster_Trainer/Curtain/'+name+'.ujson')
     bigJson = ujson.load(f)
     tempPlayer.playerBlock = bigJson[0]['player'].copy()
     if bigJson[0]['items'] != [{}]:
@@ -613,21 +634,31 @@ def makeRandomStats(monToStat, trainerLevel):
     tempMon = monToStat
     tempMon.statBlock = tempMon.statBlock.copy()
     genStat = tempMon.makeStat
-    tempMon.bonusStats = {'trained' : math.floor(random.randint(0, math.floor(abs(trainerLevel)/2)))} 
-    tempMon.statBlock['Health'] = genStat(0) + random.randint(0, math.floor(trainerLevel/10)) 
-    if tempMon.statBlock['Health'] > tempMon.statBlock['maxHealth']:
-        tempMon.statBlock['Health'] = tempMon.statBlock['maxHealth']
-    for x in range (4,9):
-        tempMon.statBlock[tempMon.keyList[x]] = genStat(0) + random.randint(0, math.floor(trainerLevel/10))
-        if tempMon.statBlock[tempMon.keyList[x]] > tempMon.statBlock['max' + tempMon.keyList[x]]:
-            tempMon.statBlock[tempMon.keyList[x]] = tempMon.statBlock['max' + tempMon.keyList[x]]
-    for y in range (tempMon.bonusStats['trained']):
+    tempMon.bonusStats = {'trained' : math.ceil(random.randint(math.floor(abs(trainerLevel/10)), math.ceil(abs(trainerLevel)/2)))} 
+    for x in range (4,9): #reset stats
+        tempMon.statBlock[tempMon.keyList[x]] = 0
+    for y in range (tempMon.bonusStats['trained']): #simulate training to make monster equivilant in power to player
         x = random.randrange(4,9)
         tempMon.statBlock[tempMon.keyList[x]] = tempMon.statBlock[tempMon.keyList[x]] + 1
         tempMon.statBlock['max' + tempMon.keyList[x]] = tempMon.statBlock['max' + tempMon.keyList[x]] + 1
         tempMon.statBlock['Health'] = tempMon.statBlock['Health'] + 1
         tempMon.statBlock['maxHealth'] = tempMon.statBlock['maxHealth'] + 1
     tempMon.statBlock['currentHealth'] = tempMon.statBlock['Health']
+    for x in range (4,9): #get base stat and add the simluated training to it
+        tempMon.statBlock[tempMon.keyList[x]] = genStat(0) + random.randint(0, math.floor(trainerLevel/10)) + tempMon.statBlock[tempMon.keyList[x]]
+    if abs(trainerLevel) > 0: #simulates training with the automatic 7 TP a trainer starts with
+        extraTrain = 0
+        if(random.randint(0,3) == 1):
+            extraTrain = random.randint(0,math.ceil(trainerLevel/2)) + 5
+        for y in range(7 + extraTrain): 
+            x = random.randrange(4,9)
+            tempMon.statBlock[tempMon.keyList[x]] = 1 + tempMon.statBlock[tempMon.keyList[x]]
+    for x in range (4,9): #makes sure stats aren't above max
+        if tempMon.statBlock[tempMon.keyList[x]] > tempMon.statBlock['max' + tempMon.keyList[x]]:
+            tempMon.statBlock[tempMon.keyList[x]] = tempMon.statBlock['max' + tempMon.keyList[x]]
+    tempMon.statBlock['Health'] = genStat(0) + random.randint(0, math.floor(trainerLevel/10)) + tempMon.statBlock['Health']
+    if tempMon.statBlock['Health'] > tempMon.statBlock['maxHealth']:
+        tempMon.statBlock['Health'] = tempMon.statBlock['maxHealth']
     return tempMon
 
     
@@ -640,19 +671,19 @@ def makeRandomMon(roomElm):
     monsterJson = ujson.load(f)
     tempMon = Monster()
     numberOfMons = len(monsterJson[0]['monsterInfo'][0])
+    justGetOne = random.randint(0,3)
     while(1):
         randomNumber = random.randint(0,numberOfMons-1)
-        #micropython.mem_info()
         if (monsterJson[0]['monsterInfo'][0]['mon' + str(randomNumber) + 'stat']['Type1'] == spawnType[roomElm] 
             or monsterJson[0]['monsterInfo'][0]['mon' + str(randomNumber) + 'stat']['Type2'] == spawnType[roomElm] 
-            or monsterJson[0]['monsterInfo'][0]['mon' + str(randomNumber) + 'stat']['Type3'] == spawnType[roomElm]):
+            or monsterJson[0]['monsterInfo'][0]['mon' + str(randomNumber) + 'stat']['Type3'] == spawnType[roomElm]
+            or justGetOne == 1):
             tempMon = Monster()
             tempMon.statBlock = monsterJson[0]['monsterInfo'][0]['mon' + str(randomNumber) + 'stat'].copy()
             tempMon.bodyBlock = monsterJson[0]['monsterInfo'][1]['mon' + str(randomNumber) + 'body'].copy()
             tempMon.mutateSeed = monsterJson[0]['monsterInfo'][2]['mon' + str(randomNumber) + 'mutate'].copy()
             f.close()
             del monsterJson
-            tempMon = makeRandomStats(tempMon, 0)
             tempMon = makeRandomStats(tempMon, 0)
             newMonAtk = AttackMove()
             newMonAtk.getAnAttackMove(random.randint(1,3), "Default")
@@ -681,9 +712,8 @@ def loss(curMon):
     # else print that no TP left to lose
 
 
-def toBtl(myGuy, nme):
+def toBtl(myGuy, nme, mon2tame):
     gc.collect()
-    from battle import Battle 
     btl = Battle()
     battle=1
         
@@ -744,9 +774,9 @@ def toBtl(myGuy, nme):
             if len(myGuy.inventory) > 0:
                 for things in range(0, len(myGuy.inventory)):
                     if myGuy.inventory[things-1].name == "Crystals":
-                        if (random.randint(0,20) + myGuy.inventory[things-1].bonus + math.ceil(myGuy.playerBlock['trainerLevel']/10)) > 15: 
-                            thingAquired(npcMon.statBlock['name'], "was", "Tamed!", "Yay!", 3)
-                            tameMon(myGuy, npcMon)
+                        if (random.randint(0,20) + myGuy.inventory[things-1].bonus + math.floor(myGuy.playerBlock['trainerLevel']/10)) > 15: 
+                            thingAquired(mon2tame['name'], "was", "Tamed!", "Yay!", 3)
+                            tameMon(myGuy, nme.friends[0], mon2tame)
                             myGuy.friends[-1].statBlock['currentHealth'] = myGuy.friends[-1].statBlock['Health']
                             myGuy.inventory.pop(things-1)
                             battle = 0
@@ -783,8 +813,21 @@ def toBtl(myGuy, nme):
                 findAnItem(myGuy.inventory, myGuy.maxHelditems)
     else:
        battleStartAnimation(0) 
-    del sys.modules["battle"]
 
+
+def actWChar(whoChar, player):
+    gc.collect()
+    chair = characters.Character()
+    chair.getCharacter(whoChar)
+    interacting = 1
+    while(interacting == 1):
+        interacting = characters.drawCharScreen(chair, player)
+    del chair
+    battleStartAnimation(0)
+    nameCheck(player.friends)
+    save(player, "tmt")
+    
+    
 
 ## Setting up the game ##
 
@@ -817,39 +860,37 @@ for x in range(0, len(myGuy.friends)):
             pass
     except:
         myGuy.playerBlock['inspire'] = 0
-
-
+    try:
+        if myGuy.playerBlock['money'] >= 0:
+            pass
+    except:
+        myGuy.playerBlock['money'] = 0
+        
+        
 ## Pretty much the game after this point :D ##
+
 
 while(1):
     gc.collect()
     #micropython.mem_info()
     
-    chkDone = 0
     while(battle != 1):
-        allUnique = 0
-        nameChanged = 1
-        while(allUnique != 1 and chkDone < 6): # need to make sure that all given names are different for multiplayer battles
-            for x in range(len(myGuy.friends)):
-                for y in range(len(myGuy.friends)):
-                    if myGuy.friends[x].statBlock['given_name'] == myGuy.friends[y].statBlock['given_name'] and x != y:
-                        nameChanged = 1
-                        thingAquired("Monsters", "need", "unique", "names", 2, 0, 0)
-                        myGuy.friends[y].statBlock['given_name'] = giveName(myGuy.friends[y].statBlock['given_name'])
-            if nameChanged == 1:
-                nameChanged = 0
-                allUnique = 1
-            chkDone = chkDone + 1
         if len(myGuy.friends) > myGuy.playerBlock['friendMax']:
             popItOff(myGuy.friends, "monsters, please let one go!")
-
         thumby.display.fill(0)
         room = mapChangeCheck(myGuy, world[room], room)
         if tempRoom != room:
-            npcMonRoaming.removeMonster()
-            npcMonRoaming.placeMonster(world[room])
+            if room != 13:
+                npcMonRoaming.char = random.randint(-1,12) 
+                npcMonRoaming.removeMonster()
+                npcMonRoaming.placeMonster(world[room])
+            else:
+                npcMonRoaming.char = -1
+                npcMonRoaming.removeMonster()
+                npcMonRoaming.placeCamp(world[room])
             tempRoom = room
             monsterMovement = random.randint(0,2)
+                
         myGuy.movePlayer(world[room], npcMonRoaming, monsterMovement)
         if myGuy.currentPos != tempPlayerPos:
             npcMonRoaming.moveMonster(myGuy.currentPos, world[room], monsterMovement)
@@ -858,17 +899,23 @@ while(1):
         optionScreen(myGuy)
         thumby.display.update()
         
-        if myGuy.currentPos == npcMonRoaming.currentPos:
+        if myGuy.currentPos == npcMonRoaming.currentPos and npcMonRoaming.char <= 0:
+            npcMonRoaming.removeMonster()
+            battleStartAnimation(0)
+            actWChar(npcMonRoaming.char, myGuy)
+        elif myGuy.currentPos == npcMonRoaming.currentPos:
             npcMonRoaming.removeMonster()
             battle = 1
             battleStartAnimation(1)
-            
+    
     npcMon = makeRandomMon(world[room].elementType)
+    tameStats = npcMon.statBlock.copy()
     nmeNPC.playerBlock['trainerLevel'] = random.randint(myGuy.playerBlock['trainerLevel'] - 3, myGuy.playerBlock['trainerLevel'] + 3) + random.randint(-2, 2)
     if nmeNPC.playerBlock['trainerLevel'] < 0:
         nmeNPC.playerBlock['trainerLevel'] = 0
-    battleMon = makeRandomStats(npcMon, random.randint(0, nmeNPC.playerBlock['trainerLevel']))
-    nmeNPC.friends.append(battleMon)
-    toBtl(myGuy, nmeNPC)
+    npcMon = makeRandomStats(npcMon, random.randint(0, nmeNPC.playerBlock['trainerLevel']))
+    nmeNPC.friends.append(npcMon)
+    toBtl(myGuy, nmeNPC, tameStats)
     nmeNPC.friends.pop(-1)
     battle = 0
+    nameCheck(myGuy.friends)

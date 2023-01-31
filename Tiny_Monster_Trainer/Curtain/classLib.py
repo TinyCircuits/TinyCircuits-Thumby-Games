@@ -19,7 +19,7 @@ def thingAquired(word1, word2, itemName, word4 ="", setSleep=1, skipUpdate=0, sk
     time.sleep(setSleep)
     
 
-class NPC():
+class NPC:
     def __init__(self): 
         self.playerBlock = {'name' : "Monster",
                                 'trainerLevel' : 1,
@@ -28,14 +28,17 @@ class NPC():
         self.friends = []
 
 
-class Player():
+
+        
+class Player:
     def __init__(self):                                           
         self.playerBlock = {'name' : "CoolDude",
                             'trainerLevel' : 1,
                             'experience' : 0,
                             'friendMax' : 2,
                             'worldSeed' : 0,
-                            'inspire' : 0}
+                            'inspire' : 0,
+                            'money' : 0}
         self.lOrR = 0    
         self.friends = []
         self.inventory = []
@@ -97,7 +100,7 @@ class Player():
             if self.playerBlock['trainerLevel'] < 200:
                 self.playerBlock['trainerLevel'] = self.playerBlock['trainerLevel'] + 1
             self.playerBlock['inspire'] = self.playerBlock['inspire'] + 1
-            thingAquired(self.playerBlock['name'], "Your Trainer", "Level Is", "Now " + str(self.playerBlock['trainerLevel']), 2)
+            thingAquired(self.playerBlock['name'], "Your Trainer", "Level is", "now " + str(self.playerBlock['trainerLevel']), 2)
             if self.playerBlock['trainerLevel'] % 10 == 0 and self.playerBlock['friendMax'] < 5:
                 self.playerBlock['friendMax'] = self.playerBlock['friendMax'] + 1
                 thingAquired(self.playerBlock['name'], "can now", "have " + str(self.playerBlock['friendMax']), "monsters!", 2)
@@ -108,6 +111,7 @@ class RoamingMonster:
     def __init__ (self, currentPos=0, position=[]):
         self.currentPos = currentPos
         self.position = position
+        self.char = 0
         for i in range(9 * 5):
             self.position.append(0)
     
@@ -115,9 +119,12 @@ class RoamingMonster:
     def drawMonster(self):
         for x in range(0, 9):
             for y in range(0, 5):
-                if self.position[y*9+x] == 1 :
-                    thumby.display.blit(bytearray([56,124,124,54,62,116,124,56]), x*8 ,y*8 , 8, 8, -1, 0, 0)
-    
+                if self.position[y*9+x] == 1 and self.char == -1:
+                    thumby.display.blit(bytearray([128,192,76,218,213,76,192,128]), x*8 ,y*8 , 8, 8, -1, 0, 0)  #campfire
+                elif self.position[y*9+x] == 1 and self.char == 0:
+                    thumby.display.blit(bytearray([0,46,251,127,127,251,46,0]), x*8 ,y*8 , 8, 8, -1, 0, 0) #person
+                elif self.position[y*9+x] == 1:
+                    thumby.display.blit(bytearray([56,124,124,54,62,116,124,56]), x*8 ,y*8 , 8, 8, -1, 0, 0) #blob monster
     
     def placeMonster(self, map):
         random.seed(time.ticks_ms())
@@ -129,6 +136,13 @@ class RoamingMonster:
                 self.position[self.currentPos] = 1
                 findEmptySpot = 1
     
+    def placeCamp(self, map):
+        random.seed(time.ticks_ms())
+        camp = 21
+        map.floor[camp].isObjectHere = 1
+        map.floor[camp].tileType = 2
+        self.currentPos = camp
+        self.position[self.currentPos] = 1
     
     def removeMonster(self):
         self.position[self.currentPos] = 0
@@ -136,36 +150,37 @@ class RoamingMonster:
     
     
     def moveMonster(self, playerPos, currentRoom, monsterMovement=0):
-        if monsterMovement == 0:
-            if math.ceil(self.currentPos/9) > math.ceil(playerPos/9): 
-                if currentRoom.floor[self.currentPos-9].isObjectHere >= 1:  # check for blocked
+        if self.char > 0:
+            if monsterMovement == 0:
+                if math.ceil(self.currentPos/9) > math.ceil(playerPos/9): 
+                    if currentRoom.floor[self.currentPos-9].isObjectHere >= 1:  # check for blocked
+                        self.position[self.currentPos] = 0
+                        self.currentPos = self.currentPos - 9
+                        self.position[self.currentPos] = 1
+                elif math.ceil(self.currentPos/9) < math.ceil(playerPos/9): # move monster down
+                    if currentRoom.floor[self.currentPos+9].isObjectHere >= 1: # check for blocked
+                        self.position[self.currentPos] = 0
+                        self.currentPos = self.currentPos + 9
+                        self.position[self.currentPos] = 1
+                elif self.currentPos == playerPos: # if monster is on same tile as player, don't move
+                    pass
+                elif self.currentPos >= playerPos: # move monster left
+                    if currentRoom.floor[self.currentPos-1].isObjectHere >= 1: # check for blocked 
+                        self.position[self.currentPos] = 0
+                        self.currentPos = self.currentPos - 1
+                        self.position[self.currentPos] = 1
+                elif self.currentPos <= playerPos: # move monster right
+                    if currentRoom.floor[self.currentPos+1].isObjectHere >= 1: # check for blocked
+                        self.position[self.currentPos] = 0
+                        self.currentPos = self.currentPos + 1
+                        self.position[self.currentPos] = 1
+            else:
+                randomDirList = [-9, -1, 0, 1, 9]
+                x = random.randint(0,4)
+                if currentRoom.floor[self.currentPos + randomDirList[x]].isObjectHere == 1: # check for blocked
                     self.position[self.currentPos] = 0
-                    self.currentPos = self.currentPos - 9
+                    self.currentPos = self.currentPos + randomDirList[x]
                     self.position[self.currentPos] = 1
-            elif math.ceil(self.currentPos/9) < math.ceil(playerPos/9): # move monster down
-                if currentRoom.floor[self.currentPos+9].isObjectHere >= 1: # check for blocked
-                    self.position[self.currentPos] = 0
-                    self.currentPos = self.currentPos + 9
-                    self.position[self.currentPos] = 1
-            elif self.currentPos == playerPos: # if monster is on same tile as player, don't move
-                pass
-            elif self.currentPos >= playerPos: # move monster left
-                if currentRoom.floor[self.currentPos-1].isObjectHere >= 1: # check for blocked 
-                    self.position[self.currentPos] = 0
-                    self.currentPos = self.currentPos - 1
-                    self.position[self.currentPos] = 1
-            elif self.currentPos <= playerPos: # move monster right
-                if currentRoom.floor[self.currentPos+1].isObjectHere >= 1: # check for blocked
-                    self.position[self.currentPos] = 0
-                    self.currentPos = self.currentPos + 1
-                    self.position[self.currentPos] = 1
-        else:
-            randomDirList = [-9, -1, 0, 1, 9]
-            x = random.randint(0,4)
-            if currentRoom.floor[self.currentPos + randomDirList[x]].isObjectHere == 1: # check for blocked
-                self.position[self.currentPos] = 0
-                self.currentPos = self.currentPos + randomDirList[x]
-                self.position[self.currentPos] = 1
 
 
 class Monster:
@@ -423,8 +438,11 @@ class Item():
             pass
 
 
-    def getItem(self):
-        randoNum = random.randint(0,12)
+    def getItem(self, bypassRandom=0, getItem=0):
+        if bypassRandom == 0:
+            randoNum = random.randint(0,12)
+        else:
+            randoNum = getItem
         self.key = 2
         
         if randoNum == 0:
