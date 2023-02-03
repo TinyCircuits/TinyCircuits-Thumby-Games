@@ -1,7 +1,6 @@
 # Licensed under CC-BY-SA 3.0, open-source but don't claim it as your own without SIGNIFICANTLY altering it (and you must give credit)
 
 '''''''''''''''''''''''''''''''''''''''
-GITHUB: https://github.com/BeepyDev/TinyCircuits-Thumby-Games/
 Issues/requests/questions? DM me: taco_pwr#9591
 
 '''''''''''''''''''''''''''''''''''''''
