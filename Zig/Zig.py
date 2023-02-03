@@ -28,6 +28,7 @@ spikeTick = 0
 screen = "menu"
 moveSpeed = 4
 highscore = 0
+spikeSpeed = 0.6
 thumby.saveData.setName("Zig")
 if (thumby.saveData.hasItem("highscore")):
     highscore = int(thumby.saveData.getItem("highscore"))
