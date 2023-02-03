@@ -1,3 +1,9 @@
+NAME=Zig
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Zig/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Zig/Zig.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Zig/Unpotimized.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Zig/arcade_title_video.webm
+
 NAME=TarGoal
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TarGoal/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TarGoal/TarGoal_Video.webm
