@@ -1,0 +1,7 @@
+Move up and down and avoid the spikes and walls!
+Based on the Wave from Geometry Dash.
+
+Controls:
+-Start: press A/B
+-Go down: hold A/B
+-Replay (after game over): Press A and B
