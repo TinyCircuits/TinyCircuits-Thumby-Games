@@ -1,3 +1,8 @@
+NAME=Affirmations
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Affirmations/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Affirmations/Affirmations.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Affirmations/arcade_title_video.webm
+
 NAME=Zig
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Zig/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Zig/Zig.py
