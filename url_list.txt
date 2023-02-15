@@ -3,6 +3,14 @@ https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Affirmations/Affirmations.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Affirmations/arcade_title_video.webm
 
+NAME=Fireplace
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Fireplace/Fireplace.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Fireplace/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Fireplace/thumbyGrayscale.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Fireplace/vid.SHD.bin
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Fireplace/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Fireplace/vid.BIT.bin
+
 NAME=Zig
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Zig/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Zig/Zig.py
@@ -112,14 +120,6 @@ NAME=PicoBomb!
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/PicoBomb!/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/PicoBomb!/PicoBomb!.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/PicoBomb!/arcade_title_image.png
-
-NAME=Fireplace
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Fireplace/Fireplace.py
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Fireplace/arcade_description.txt
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Fireplace/thumbyGrayscale.py
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Fireplace/vid.SHD.bin
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Fireplace/arcade_title_video.webm
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Fireplace/vid.BIT.bin
 
 NAME=Umby&Glow
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Umby&Glow/audio.py
