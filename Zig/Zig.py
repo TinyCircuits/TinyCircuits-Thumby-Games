@@ -1,8 +1,8 @@
 '''
-This is the compressed version.
-To edit the code and learn what it does go here: https://github.com/BeepyDev/TinyCircuits-Thumby-Games/blob/45104da26b95d6553f5c72f9db8131b314e58191/Zig/Unpotimized.py
-
+This is the compressed version to keep storage space low.
+To edit the code and learn what it does go here: https://github.com/BeepyDev/Zig/blob/83fdb03d417876b2140d280b3c3bdbf3c40a9ad8/Unoptimized.py
 '''
+
 import thumby
 import math
 import time
@@ -35,7 +35,7 @@ if (thumby.saveData.hasItem("highscore")):
 while(1):
     thumby.display.fill(0)
     thumby.display.blit(frame, 0, 0, 72, 40, 0, 0, 0)
-    if thumby.buttonD.pressed() and thumby.buttonA.pressed(): # Press Down+A to enable developer debug mode
+    if thumby.buttonD.pressed() and thumby.buttonA.pressed():
             debug = 1
     if screen == "menu":
         thumby.display.drawSprite(logo)
@@ -75,7 +75,7 @@ while(1):
             thumby.audio.playBlocking(400, 200)
             thumby.audio.playBlocking(200, 400)
             screen = "death"
-        if (spike.y in range(int(zigY/10-4), int(zigY/10+4), 1) and spike.x < 26 and spike.x > 14) or (spike2.y in range(int(zigY/10-4), int(zigY/10+4), 1) and spike2.x < 26 and spike2.x > 14): #I really, really, really wish collision was easier
+        if (spike.y in range(int(zigY/10-4), int(zigY/10+4), 1) and spike.x < 26 and spike.x > 14) or (spike2.y in range(int(zigY/10-4), int(zigY/10+4), 1) and spike2.x < 26 and spike2.x > 14):
             zigY = 200
             spikeTick = 0
             spike.y = 100
@@ -90,7 +90,7 @@ while(1):
         if (thumby.saveData.hasItem("highscore")):
             highscore = int(thumby.saveData.getItem("highscore"))
         thumby.display.drawText("You died!", 9, 2, 1)
-        thumby.display.drawText("Scr: %d" % highscore, 3, 14, 1)
+        thumby.display.drawText("Scr: %d" % score, 3, 14, 1)
         thumby.display.drawText("Hi:  %d" % highscore, 3, 22, 1)
         thumby.display.drawText("Press A&B", 9, 30, 1)
         if score > highscore:
