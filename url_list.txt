@@ -1,3 +1,8 @@
+NAME=Zig
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Zig/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Zig/Zig.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Zig/arcade_title_video.webm
+
 NAME=Affirmations
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Affirmations/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Affirmations/Affirmations.py
@@ -38,12 +43,6 @@ https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Fireplace/vid.SHD.bin
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Fireplace/arcade_title_video.webm
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Fireplace/vid.BIT.bin
-
-NAME=Zig
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Zig/arcade_description.txt
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Zig/Zig.py
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Zig/Unpotimized.py
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Zig/arcade_title_video.webm
 
 NAME=TarGoal
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TarGoal/arcade_description.txt
