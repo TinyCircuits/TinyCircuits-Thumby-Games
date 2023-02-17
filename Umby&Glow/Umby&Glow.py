@@ -21,9 +21,23 @@ path.append("/Games/Umby&Glow")
 
 class _TITLE:
     from ssd1306 import SSD1306_SPI
-    from machine import Pin, SPI
-    display = SSD1306_SPI(72, 40,
-        SPI(0, sck=Pin(18), mosi=Pin(19)), dc=Pin(17), res=Pin(20), cs=Pin(16))
+    from machine import Pin, SPI, I2C
+    for i in [15, 14, 13, 12]:
+        p = Pin(i, Pin.IN, Pin.PULL_UP)
+        v = p.value()
+        p.init(p.PULL_DOWN)
+        if v == 0:
+            from ssd1306 import SSD1306_SPI
+            display = SSD1306_SPI(72, 40,
+                SPI(0, sck=Pin(18), mosi=Pin(19)), dc=Pin(17), res=Pin(20), cs=Pin(16))
+            break
+    else:
+        from ssd1306 import SSD1306_I2C
+        display = SSD1306_I2C(72, 40,
+            I2C(0, sda=Pin(16), scl=Pin(17), freq=1_500_000), res=Pin(18))
+        display.init_display()
+    import ssd1306
+    ssd1306.display = display
     @micropython.viper
     def ptr(buf) -> int:
         return int(ptr16(buf))

@@ -1,5 +1,5 @@
 from array import array
-from machine import Pin, SPI
+from ssd1306 import display
 from time import sleep_ms, ticks_ms
 from utils import ihash
 
@@ -17,9 +17,6 @@ _font_index = " ABCDEFGHIJKLMNOPQRSTUVWXYZ"+"0123456789"+"!?:;'\"/><[]().,+*-"
 
 # Setup basic display access
 _FPS = const(60)
-from ssd1306 import SSD1306_SPI
-display = SSD1306_SPI(72, 40,
-    SPI(0, sck=Pin(18), mosi=Pin(19)), dc=Pin(17), res=Pin(20), cs=Pin(16))
 
 # Setup emulator, if running
 EMULATED = False
@@ -43,7 +40,7 @@ def display_update():
     t = ticks_ms()
     nwait = timer - ticks_ms()
     sleep_ms(0 if nwait <= 0 else nwait if nwait < _fwait else _fwait)
-    display.show()
+    display.write_data(_display_buffer)
     timer = ticks_ms() + _fwait
 
 def _gen_bang(blast_x, blast_y, blast_size, invert):
