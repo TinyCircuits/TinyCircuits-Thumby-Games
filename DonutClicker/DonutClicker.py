@@ -11,6 +11,7 @@
 import time
 import thumby
 import math
+import machine
 
 thumby.display.setFPS(30)
 
@@ -30,7 +31,7 @@ arrow2 = thumby.Sprite(7, 5, arrow2IMG, 61, 35)
 arrowLeft = thumby.Sprite(3, 5, arrowIMG, 61, 35, -1, 1, 0)
 
 # Initializes variables
-donuts = 0
+donuts = 1000000
 clicks = 0
 perClick = 1
 pcPrice = 50
@@ -38,15 +39,15 @@ perSec = 0
 psPrice = 100
 inShop = False
 buff = 0
-gt = 0 # GT = Game Ticks (1/10th of a second)
-tgt = 0 # Total Game Ticks
+ticks = None
+
 
 # Creates the save file
 thumby.saveData.setName("DonutClicker")
 
 # Load all saved data
-if(thumby.saveData.hasItem("donuts")):
-    donuts = thumby.saveData.getItem("donuts")
+#if(thumby.saveData.hasItem("donuts")):
+#    donuts = thumby.saveData.getItem("donuts")
 if(thumby.saveData.hasItem("perClick")):
     perClick = thumby.saveData.getItem("perClick")
 if(thumby.saveData.hasItem("perSec")):
@@ -62,12 +63,15 @@ while(1):
     
     # Draw your donut count (text) and prices if in shop
     if inShop == False:
-        t0 = time.ticks_ms() # Get time
-        # Position sprite
-        donutSprite.x = int((thumby.display.width/4) - 16)
-        donutSprite.y = int(round((thumby.display.height/2) - 16 + math.sin(t0 / 300 * 2)))
+        ticks = str(time.ticks_ms())
+        
+        if int(ticks[-3]) == 0:
+            donuts += perSec
+        
+        donutSprite.x = 0
+        donutSprite.y = int(round((thumby.display.height/2) - 16 + math.sin(int(ticks) / 300 * 2)))
         thumby.display.setFont("/lib/font5x7.bin", 5, 7, 1)
-        thumby.display.drawText("%d" % donuts, 35, 3, 1)
+        thumby.display.drawText("%d" % donuts, 28, 0, 1)
         thumby.display.setFont("/lib/font3x5.bin", 3, 5, 1)
         thumby.display.drawText("Buff:", 35, 20, 1)
         thumby.display.drawText("%d" % buff + "%", 35, 26, 1)
@@ -191,14 +195,6 @@ while(1):
             inShop = "prestige"
         else:
             inShop = False
-            
-    if gt < 8: # Every 8 GTs = 1 second
-        gt += 1
-        tgt += 1
-    else:
-        gt = 0
-        tgt += 1
-        donuts += perSec + perSec*int(buff)/100
         
         # Save data
         thumby.saveData.setItem("donuts", donuts)
