@@ -4,4 +4,4 @@ Orion trail is a space survival game loosely based on the MS DOS video game Oreg
 to explore the universe and survive for as many days as possible.
 
 Author: Sandy
-Version: 7.5
+Version: 4

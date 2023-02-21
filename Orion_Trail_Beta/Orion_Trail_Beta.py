@@ -9,22 +9,92 @@ try:
 except ImportError:
     emulator = False
     
-def main():
-    crew=[]
-    ship=[['engine', 100, 500], [100, 100], [['Condition', 100] , ['Destination', 'Unknown'], ['Autopilot', False]], 100, 100, 100]
-    money = 500
-    day = 1
-    
- # Core Engine Functions    
-    def new_game(crew):
+def main(emulator):
+ # Core Engine Functions   
+ 
+    #Universal Menu Function
+    def menu(menu_items, header=None, display_stat=None, image=None):
+        #Do NOT use display_stat parameter unless menu_items is a crew object
+        in_menu = True
+        arrow  = bytearray([31,31,0,17,27])
+        arrow_position = 0
+        while in_menu:
+            offset = arrow_position//5
+            offset_remainder = offset % 5
+            if offset_remainder > 0:
+                offset = offset_remainder
+            header_space = 0
+            if header != None:
+                thumby.display.drawText(header, 10, 0, 0)
+                header_space = 1
+            for i in range(len(menu_items[offset:offset+5])):
+                j = i + header_space
+                if display_stat != None:
+                    thumby.display.drawText(menu_items[i+offset][0], 10, j*8, 0)
+                    stat = get_character_stat(menu_items[i+offset], display_stat)
+                    thumby.display.drawText(str(stat), 50, j*8, 0)
+                else:
+                    thumby.display.drawText(menu_items[i+offset], 6, j*8, 0)
+                thumby.display.blit(arrow , 0, arrow_position*8+int(header_space*8), 5, 5, 1, 0, 0)
+            if thumby.buttonU.pressed() and arrow_position > 0:
+                arrow_position -= 1
+            elif thumby.buttonD.pressed() and arrow_position < int(len(menu_items)-1):
+                arrow_position += 1
+            redraw_screen(1, 0.2)
+            in_menu = check_escape('a')
+        return menu_items[arrow_position]
+        
+    def config_menu():
+        config_options = ['Dflt Cfg']
+        chosen_option = None
+        while chosen_option == None:
+            chosen_option = menu(config_options)
+            if chosen_option == 'Dflt Cfg':
+                config = [['Start Money', 500], ['Start Food', 100], ['Start Oxygen', 100], ['Event Frequency', 3]]
+        '''elif chosen_option == 'New Config':
+                if emulator:
+                    draw_text_blocks('Sorry, you cannot save or load config files on virutal hardware')
+                    chosen_option = None
+                else:
+                def save_config(money, food, oxygen, event):
+               with open('Games/Orion_Trail_Beta/config.json',"w") as config:
+                    json.dump({"Start_Money":money,"Start Food":food, "Start Oxygen": oxygen, "Event Frequency": event},config)
+                    draw_text_blocks('WARNING: Save/Load Config is currently untested and may crash')
+                    draw_text_blocks('This message will be removed in a few days when I have access to physical hardware for further testing')
+                    placeholder_menu = menu(['Yes', 'Go Back'], 'Proceed?')
+                    if placeholder_menu == 'Yes':
+                        create_config = menu()
+                        with open('Games/Orion_Trail_Beta/config.json',"w") as config:
+                        json.dump({"Start_Money":money,"Start Food":food, "Start Oxygen": oxygen, "Event Frequency": event},config)
+            elif chosen_option == 'Load Config':
+                if emulator:
+                    draw_text_blocks('Sorry, you cannot save or load config files on virutal hardware')
+                    chosen_option = None
+                else:
+                    draw_text_blocks('WARNING: Load Config is currently untested and may crash')
+                    draw_text_blocks('This message will be removed in a few days when I have access to physical hardware for further testing')
+                    placeholder_menu = menu(['Yes', 'Go Back'], 'Proceed?')
+                    if placeholder_menu == 'Yes': '''
+        return config  
+ 
+    def initialize_core_data(crew):
+        names = []
+        crew=[]
+        config = config_menu()
         character = create_character('You', crew)
         character_screen(character)
+        day = 1
+        #Remember, Event Frequency Is Inverse, so the probability that an event will occur is 1/X.
+        money = config[0][1]
+        ship=[['engine', 100, 500], [config[1][1], config[2][1]], [['Condition', 100] , ['Destination', 'Unknown'], ['Autopilot', False]], 100, 100, 100]
+        return crew, ship, money, day
+
         
     def save_game(crew, ship, money, day):
                with open('Games/Orion_Trail_Beta/savestate.json',"w") as save_file:
                     json.dump({"crew":crew,"ship":ship,"money":money,"day":day},save_file)
               
-    def save_state_menu(crew, ship, money, day):
+    def save_state_menu(crew):
         time.sleep(1)
         menu = True
         while menu:
@@ -33,7 +103,7 @@ def main():
             if thumby.buttonA.pressed():
                 if emulator:
                     draw_text_blocks('Sorry, you cannot save or load games on virutal hardware')
-                    new_game(crew)
+                    crew, ship, money, day = initialize_core_data()
                     menu = False
                 else:
                     with open('Games/Orion/savestate.json',"r") as save_file:
@@ -44,7 +114,7 @@ def main():
                         day = data["day"]
                 menu = False
             elif thumby.buttonB.pressed():
-                new_game(crew)
+                crew, ship, money, day = initialize_core_data(crew)
                 menu = False
             redraw_screen(1, 1)
         return crew, ship, money, day
@@ -118,33 +188,6 @@ def main():
         
     #Menu Functions                        
                         
-    def menu(menu_items, header=None, display_stat=None, image=None):
-        #Do NOT use display_stat parameter unless menu_items is a crew object
-        in_menu = True
-        arrow  = bytearray([31,31,0,17,27])
-        arrow_position = 0
-        while in_menu:
-            header_space = 0
-            if header != None:
-                thumby.display.drawText(header, 10, 0, 0)
-                header_space = 1
-            for i in range(len(menu_items)):
-                j = i + header_space
-                if display_stat != None:
-                    thumby.display.drawText(menu_items[i][0], 10, j*8, 0)
-                    stat = get_character_stat(menu_items[i], display_stat)
-                    thumby.display.drawText(str(stat), 50, j*8, 0)
-                else:
-                    thumby.display.drawText(menu_items[i], 6, j*8, 0)
-                thumby.display.blit(arrow , 0, arrow_position*8+int(header_space*8), 5, 5, 1, 0, 0)
-            if thumby.buttonU.pressed() and arrow_position > 0:
-                arrow_position -= 1
-            elif thumby.buttonD.pressed() and arrow_position < int(len(menu_items)-1):
-                arrow_position += 1
-            redraw_screen(1, 0.2)
-            in_menu = check_escape('a')
-        return menu_items[arrow_position]
-            
     def stat_comparison_menu(crew, stat):
         stat_text = str(stat + ' stat')
         chosen = menu(crew, stat_text, stat)
@@ -268,7 +311,7 @@ def main():
         modifier = 0
         items = get_character_items(character)
         for i in range(len(character[6])):
-            if stat == 'pilot' and 'Plt Hlm' in character:
+            if stat == 'pilot' or 'Plt Hlm' in character:
                 modifier += 3
         for i in range(len(character[1])):
             if character[1][i][0] == stat:
@@ -1094,9 +1137,9 @@ def main():
                 day, ship = change_day(day, ship, crew)
                 warning(ship)
                 crew, ship, money = generate_event(crew, ship, money)
-    
+    crew = []
     intro()
-    crew, ship, money, day = save_state_menu(crew, ship, money, day)
+    crew, ship, money, day = save_state_menu(crew)
     playing(crew, ship, money, day)
 while running == True:
-    main()
+    main(emulator)
