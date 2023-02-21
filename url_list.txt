@@ -3,6 +3,11 @@ https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/DonutClicker/DonutClicker.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/DonutClicker/arcade_title_video.webm
 
+NAME=Orion_Trail_Beta
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Orion_Trail_Beta/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Orion_Trail_Beta/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Orion_Trail_Beta/Orion_Trail_Beta.py
+
 NAME=Zig
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Zig/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Zig/Zig.py
