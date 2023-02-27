@@ -1,0 +1,45 @@
+Keyboard (Nemo.the.fishboy style)
+
+WARNING: Read all of this before using the app.
+And keep in mind that is not a game, just a kinda usefull app.
+
+
+"- How I am able to have a keyboard just from 6 buttons?!
+- No problem!! We always find at least a solution for each one!!"
+
+
+Remember the buttons map:
+
+____|UP|____       (A)
+LEFT   RIGHT   (B)
+---|DOWN|---
+
+---OR---
+
+____|^|____      (A)
+<--    -->   (B)
+----|v|----
+
+Controls(be careful for combination, respect the order of pressing!!):
+
+After the thumbnail disappears:
+= <,>,v,^ - Navigate through the buttons
+= B - send the selected character to the other Thumby
+= A - change the keymap
+= A + ^ - pop up/ hide a small icon with the selected letter zoomed in
+= A + v - access the instructions manual
+= A + < - exit the app
+
+IT IS AN EXTENSION: It only works in combination with other applications. The application alone won't do anything anymore...
+COMPATIBLE WITH: [Targoal];
+
+"Thanks for reading!! ^w^ <3
+Have a nice day typing!! :))"
+
+"Now we can write more simply, can't we? ^u^"
+
+Author: Nemo Fishman
+
+Version: 0.2 (launched on February 24, 2023)
+
+If you want to get in contact with the creator or others , here you can go! On Discord comunity, by this link: https://discord.gg/nzZdW5VwfC
