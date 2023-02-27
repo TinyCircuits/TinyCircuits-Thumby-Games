@@ -1,3 +1,8 @@
+NAME=Keyboard
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Keyboard/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Keyboard/Keyboard_Video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Keyboard/Keyboard.py
+
 NAME=DonutClicker
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/DonutClicker/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/DonutClicker/DonutClicker.py
