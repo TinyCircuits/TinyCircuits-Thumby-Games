@@ -320,12 +320,11 @@ class Grayscale:
 
     def reset(self):
         self._res(1)
-        sleep_ms(1)
+        sleep_us(10)
         self._res(0)
-        sleep_ms(10)
+        sleep_us(10)
         self._res(1)
-        sleep_ms(10)
-
+        sleep_us(20)
 
     def init_display(self):
         self.reset()
