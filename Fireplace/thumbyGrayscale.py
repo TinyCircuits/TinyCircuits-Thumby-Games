@@ -125,7 +125,7 @@ _ST_COPY_BUFFS   = const(1)
 _ST_PENDING_CMD  = const(2)
 _ST_INVERT       = const(3)
 # Various display devices will run at naturally different clock
-# frequencies. This paramater allows for varyiance by adjusting the
+# frequencies. This paramater allows for variance by adjusting the
 # timings to match the different devices.
 _ST_CALIBRATOR   = const(4)
 # Newer models of the Thumby which started appearing in late 2022
@@ -137,7 +137,7 @@ _ST_CALIBRATOR   = const(4)
 # the row counter much more effectively, and can thus greatly reduce the
 # size of the offscreen capture area, along with the strobing.
 # 0: Basic - Standard 17 row capture area with full row capture per subframe,
-#    each subframe has it's own contrast value.
+#    each subframe has its own contrast value.
 # 1: OLED2 - Reduced row capture areas with primary row capture after subframe 2,
 #    only enough row capture after subframe 0 to cleanly change brightness,
 #    and only enough offscreen buffer (without row capture) after
