@@ -569,7 +569,7 @@ class Grayscale:
             v2 = bs[i]
             wd = v1 ^ v2
             w = v1 & wd
-            di = (i%4+i)%2
+            di = ((i&3)+i)&1
             di1 = (d1 if di else d2)
             di2 =  (d2 if di else d1)
             b1[i] = wd # white || darkGray [DIM]
@@ -745,7 +745,7 @@ class Grayscale:
                         v2 = bs[i]
                         wd = v1 ^ v2
                         w = v1 & wd
-                        di = (i%4+i)%2
+                        di = ((i&3)+i)&1
                         di1 = (d1 if di else d2)
                         di2 =  (d2 if di else d1)
                         b1[i] = wd # white || darkGray [DIM]
@@ -768,7 +768,7 @@ class Grayscale:
                     contrast[1] = contrastSrc[cmode + 1]
                     contrast[2] = contrastSrc[cmode + 2]
 
-                blitsub = ptr8(subframes[(fn+1)%3])
+                blitsub = ptr8(subframes[fn+1 if fn < 2 else 0])
                 i = 0
                 while (tmr[10] - time_pre - 24*calib) < 0: pass
                 while i < 144:
