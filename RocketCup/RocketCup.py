@@ -85,8 +85,8 @@ try:
     bmpMenuLogoCupShineB = bytearray([0,0,3,7,15,14,12,12,12,4,2,1,0,0,15,15,12,6,7,15,15,4,0,8,15,15,15,8,0,0,0,0,0])
     bmpsMenuLogoCupShineB = bytearray([0,0,0,3,7,14,8,8,8,0,0,0,0,0,0,15,12,4,4,15,15,4,0,0,8,15,15,8,0,0,0,0,0])
     # BITMAP: width: 8, height: 8
-    bmpMenuLogoCupShineMaskA = bytearray([248,199,56,192,0,7,63,255])
-    bmpMenuLogoCupShineMaskB = bytearray([15,15,14,1,14,0,0,1])
+    bmpMenuLogoCupShineMaskA = bytearray([7,56,199,63,255,248,192,0])
+    bmpMenuLogoCupShineMaskB = bytearray([240,240,241,254,241,255,255,254])
     bmpMenuLogoCupShineSliceA = bytearray(8)
     bmpsMenuLogoCupShineSliceA = bytearray(8)
     bmpMenuLogoCupShineSliceB = bytearray(8)
