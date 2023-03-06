@@ -1,9 +1,9 @@
 # MineSweep
 
 # Author: TPReal
-# Last updated: 2022-09-04
+# Last updated: 2023-03-05
 
-__version__="1.2.0"
+__version__="1.2.1"
 
 GAME_NAME="MineSweep"
 GAME_DIR="/Games/"+GAME_NAME

@@ -274,7 +274,9 @@ class Game:
             b.drawLineV(71,yScroll[0],yScroll[1],1)
         if not self.running:
             if self.win:
-                text=f"YOU WIN! ({self.mode["shortName"]})"
+                text="YOU WIN!"
+                if (shn:=self.mode["shortName"]):
+                    text+=f" ({shn})"
                 textW=len(text)*4-1
                 textX=(72-textW)//2
                 for b in gs_bs:
@@ -377,7 +379,9 @@ class Game:
             sizeB=inp.read(2)
             size=(sizeB[0],sizeB[1])
             mines=inp.read(1)[0]
-            g=Game({"size":size,"mines":mines})
+            matchModes=[m for m in MODES if m["size"]==size and m["mines"]==mines]
+            shortName=matchModes[0]["shortName"] if matchModes else None
+            g=Game({"size":size,"mines":mines,"shortName":shortName})
             g.bInited=inp.read(1)[0]
             g.pos=(inp.read(1)[0],inp.read(1)[0])
             boardVal=int.from_bytes(inp.read(),"big")
