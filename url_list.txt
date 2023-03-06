@@ -1,3 +1,12 @@
+NAME=MineSweep
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/MineSweep/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/MineSweep/Title.bin
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/MineSweep/lib/thumby2.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/MineSweep/lib/thumbyGrayscale.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/MineSweep/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/MineSweep/MineSweep.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/MineSweep/MineSweep_main.py
+
 NAME=RocketCup
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/RocketCup/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/RocketCup/thumbyGrayscale.py
@@ -222,15 +231,6 @@ NAME=PicoPac
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/PicoPac/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/PicoPac/PicoPac.webm
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/PicoPac/PicoPac.py
-
-NAME=MineSweep
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/MineSweep/arcade_description.txt
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/MineSweep/Title.bin
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/MineSweep/lib/thumby2.py
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/MineSweep/lib/thumbyGrayscale.py
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/MineSweep/arcade_title_video.webm
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/MineSweep/MineSweep.py
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/MineSweep/MineSweep_main.py
 
 NAME=Canvas
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Canvas/arcade_description.txt
