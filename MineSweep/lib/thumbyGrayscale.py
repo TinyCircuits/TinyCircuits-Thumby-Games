@@ -25,7 +25,7 @@ from thumbyButton import buttonA, buttonB, buttonU, buttonD, buttonL, buttonR
 from thumbyHardware import HWID
 from sys import modules
 
-__version__ = '4.0.0-hemlock'
+__version__ = '4.0.1-hemlock'
 
 
 emulator = None
@@ -275,13 +275,17 @@ class Grayscale:
         if not emulator:
             try:
                 with open("thumbyGS.cfg", "r") as fh:
-                    fhd = fh.read()
-                    if 'gsV3' not in fhd:
+                    vls = fh.read().split('\n')
+                    for fhd in vls:
+                        if fhd.startswith('gsV3,'):
+                            _, _, conf = fhd.partition("timing,")
+                            self._state[_ST_CALIBRATOR] = int(conf.split(',')[0])
+                            _, _, conf = fhd.partition("oled,")
+                            self._state[_ST_MODE] = int(conf.split(',')[0])
+                            break
+                    else:
                         raise ValueError()
-                    _, _, conf = fhd.partition("timing,")
-                    self._state[_ST_CALIBRATOR] = int(conf.split(',')[0])
-                    _, _, conf = fhd.partition("oled,")
-                    self._state[_ST_MODE] = int(conf.split(',')[0])
+
             except (OSError, ValueError):
                 if HWID < 2:
                     self._state[_ST_CALIBRATOR] = 87
@@ -1296,8 +1300,9 @@ class Grayscale:
         self.blitWithMask(s.bitmap, s.x, s.y, s.width, s.height, s.key, s.mirrorX, s.mirrorY, m.bitmap)
 
     def calibrate(self):
-        from thumbyButton import inputJustPressed
-        presets = [(87,0),(107,1),(107,4),(87,2),(87,3),(87,5),(111,0),(111,2)]
+        from thumbyButton import inputPressed, inputJustPressed
+        presets = [(87,0),(107,1),(80,0),(95,0),(100,1),(115,1),
+            (107,4),(87,2),(87,3),(87,5),(111,0),(111,2)]
         rec = self.drawFilledRectangle
         tex = self.drawText
         def info(*m):
@@ -1306,7 +1311,12 @@ class Grayscale:
             for i, l in enumerate(m):
                 tex(l, 0, i*8, 1)
             self.update()
+            while inputJustPressed(): pass # Clear latches
+            while inputPressed(): idle()
+            sleep_ms(200) # Debounce avoider
             while not inputJustPressed(): idle()
+            while inputPressed(): idle()
+            sleep_ms(200) # Debounce avoider
             self.enableGrayscale()
         s = [0, 0]
         def sample(title, param, offset):
@@ -1355,9 +1365,20 @@ class Grayscale:
             tex(l, 0, i*8, 1)
         self.update()
         while not inputJustPressed(): idle()
+        vls = []
+        try:
+            with open("thumbyGS.cfg", "r") as fh:
+                vls = fh.read().split('\n')
+        except OSError: pass
+        nvl = f"gsV3,timing,{str(self._state[_ST_CALIBRATOR])},oled,{str(self._state[_ST_MODE])}"
+        for i, vl in enumerate(vls):
+            if vl.startswith('gsV3,'):
+                vls[i] = nvl
+                break
+        else:
+            vls.append(nvl)
         with open("thumbyGS.cfg", "w") as fh:
-            fh.write(f"gsV3,timing,{str(self._state[_ST_CALIBRATOR])},oled,{
-                str(self._state[_ST_MODE])}")
+            fh.write('\n'.join(vls))
 
 display = Grayscale()
 display.enableGrayscale()
