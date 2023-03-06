@@ -3,9 +3,9 @@ RES = (72,40) # Video resolution
 SCROLL = 6 # Message scroll speed
 
 from sys import path
-loc = __file__[:-12]
+loc = "/Games/Fireplace/"
 path += [loc]
-from thumbyGrayscale import display, Sprite
+from thumbyGrayscale import display, Sprite, buttonA
 display.enableGrayscale()
 
 # Scroll the message
@@ -26,6 +26,8 @@ while h > -len(txt)*10:
         display.drawText(line, 0, h+10*ln, 1)
     display.update()
     display.fill(0)
+    if buttonA.justPressed():
+        display.calibrate()
 
 # Play the video
 t = 0
@@ -36,3 +38,5 @@ while True:
     display.drawSprite(video)
     display.update()
     t += 1
+    if buttonA.justPressed():
+        display.calibrate()
