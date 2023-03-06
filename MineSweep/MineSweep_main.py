@@ -5,6 +5,8 @@ import io
 import os
 import random
 import thumby
+import gc
+gc.collect()
 # import thumbyGrayscale
 thumbyGrayscale=__import__(GAME_DIR+"/lib/thumbyGrayscale")
 import time
