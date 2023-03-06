@@ -1,0 +1,8 @@
+This is a port of Flappy Bird called ThumBird!
+After the into animation press any button to start the game.
+Press any button to flap the bird through the pipes!
+
+game by: Mr.Giraffe
+Title and text art by: AyreGuitar
+V.1.0
+Questions? join the TinyCircuits Discord at Thumby.us
