@@ -25,7 +25,7 @@ from thumbyButton import buttonA, buttonB, buttonU, buttonD, buttonL, buttonR
 from thumbyHardware import HWID
 from sys import modules
 
-__version__ = '4.0.1-hemlock'
+__version__ = '4.0.2-hemlock'
 
 
 emulator = None
@@ -379,6 +379,7 @@ class Grayscale:
 
         # Start the grayscale timing thread and wait for it to initialise
         _thread.stack_size(2048)
+        self._init_grayscale()
         _thread.start_new_thread(self._display_thread, ())
         while self._state[_ST_THREAD] != _THREAD_RUNNING:
             idle()
@@ -396,6 +397,7 @@ class Grayscale:
         self._state[_ST_THREAD] = _THREAD_STOPPING
         while self._state[_ST_THREAD] != _THREAD_STOPPED:
             idle()
+        self._deinit_grayscale()
         # Draw B/W view of current frame
         self.show()
         # Resume device color inversion
@@ -609,6 +611,13 @@ class Grayscale:
         while (spi0[3] & 4) == 4: i = spi0[2]
         sio[6] = 1 << 17 # dc(0)
 
+        # Contrast preparation
+        cmode = state[_ST_MODE]*3
+        contrast[0] = contrastSrc[cmode]
+        contrast[1] = contrastSrc[cmode + 1]
+        contrast[2] = contrastSrc[cmode + 2]
+        spi0[2] = 0x81; spi0[2] = contrast[0]
+
         # Set the display offset to allow space for the captured
         # row counter, and overflow area, and then reset display state.
         spi0[2] = 0xae
@@ -618,13 +627,6 @@ class Grayscale:
         spi0[2] = 0xa8; spi0[2] = 1 # Row resets OLED2
         spi0[2] = 0xa6 # disable hardware invert
         spi0[2] = 0xaf # Row resets OLED1
-
-        # Contrast preparation
-        cmode = state[_ST_MODE]*3
-        contrast[0] = contrastSrc[cmode]
-        contrast[1] = contrastSrc[cmode + 1]
-        contrast[2] = contrastSrc[cmode + 2]
-        spi0[2] = 0x81; spi0[2] = contrast[0]
 
     # GPU (Gray Processing Unit) thread function
     @micropython.viper
@@ -690,8 +692,6 @@ class Grayscale:
         spi0 = ptr32(0x4003c000)
         tmr = ptr32(0x40054000)
 
-        self._init_grayscale()
-
         state[_ST_THREAD] = _THREAD_RUNNING
         while state[_ST_THREAD] == _THREAD_RUNNING:
             # This is the main GPU loop. We cycle through each of the 3 display
@@ -710,13 +710,16 @@ class Grayscale:
                 # Wait long enough to ensure we captured the row counter.
                 while (tmr[10] - time_pre) < 0: pass
 
+                # Brightness adjustment for sub-frame layer
+                spi0[2] = 0x81; spi0[2] = contrast[fn]
+
                 # Release Display
                 spi0[2] = 0xd3
                 spi0[2] = params[36+mfn]
                 spi0[2] = 0xa8
                 spi0[2] = params[54+mfn]
 
-                # Brightness adjustment for sub-frame layer
+                # Brightness adjustment (send twice for stability)
                 spi0[2] = 0x81; spi0[2] = contrast[fn]
 
                 # Data Mode
@@ -729,9 +732,9 @@ class Grayscale:
                 i = 144
                 while i < 360:
                     if i == 216:
-                        while (tmr[10] - time_pre - 8*calib) < 0: pass
+                        while (tmr[10] - (time_pre + 8*calib)) < 0: pass
                     if i == 288:
-                        while (tmr[10] - time_pre - 16*calib) < 0: pass
+                        while (tmr[10] - (time_pre + 16*calib)) < 0: pass
                     while (spi0[3] & 2) == 0: pass
                     spi0[2] = blitsub[i]
                     i += 1
@@ -774,10 +777,10 @@ class Grayscale:
 
                 blitsub = ptr8(subframes[fn+1 if fn < 2 else 0])
                 i = 0
-                while (tmr[10] - time_pre - 24*calib) < 0: pass
+                while (tmr[10] - (time_pre + 24*calib)) < 0: pass
                 while i < 144:
                     if i == 72:
-                        while (tmr[10] - time_pre - 32*calib) < 0: pass
+                        while (tmr[10] - (time_pre + 32*calib)) < 0: pass
                     while (spi0[3] & 2) == 0: pass
                     spi0[2] = blitsub[i]
                     i += 1
@@ -799,24 +802,21 @@ class Grayscale:
 
                 # Wait until the row counter is between the end of the drawn
                 # area and the end of the multiplex ratio range.
-                while (tmr[10] - time_pre - params[18+mfn]*calib) < 0: pass
+                while (tmr[10] - (time_pre + params[18+mfn]*calib)) < 0: pass
 
                 fn += 1
 
-        self._deinit_grayscale()
+        # Mark that we've stopped
+        state[_ST_THREAD] = _THREAD_STOPPED
 
     @micropython.viper
     def _deinit_grayscale(self):
-        state = ptr32(self._state)
         spi0 = ptr32(0x4003c000)
 
         # Reset monochrome display offset, mux rows, and page address
         spi0[2] = 0xd3; spi0[2] = 0
         spi0[2] = 0xa8; spi0[2] = 39
         spi0[2] = 0x22; spi0[2] = 0; spi0[2] = 4
-
-        # Mark that we've stopped
-        state[_ST_THREAD] = _THREAD_STOPPED
 
 
     @micropython.viper
