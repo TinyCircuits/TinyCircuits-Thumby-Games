@@ -1,3 +1,8 @@
+NAME=ThumBird
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/ThumBird/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/ThumBird/ThumBird.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/ThumBird/arcade_title_video.webm
+
 NAME=TinyGolf
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyGolf/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyGolf/levels.bin
