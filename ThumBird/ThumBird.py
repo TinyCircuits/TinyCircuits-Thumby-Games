@@ -153,7 +153,6 @@ def check_high_score():
     saveData.setItem('high score', Score)
     saveData.save()
 
-
 Score = 0
 pipe_1 = Sprite(8,60,bytearray([0,255,0,0,230,0,255,0,
            0,255,0,0,253,0,255,0,
