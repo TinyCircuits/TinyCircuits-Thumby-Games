@@ -154,8 +154,6 @@ def check_high_score():
     saveData.save()
 
 
-audio.playBlocking(2000, 1000)
-time.sleep(4)
 Score = 0
 pipe_1 = Sprite(8,60,bytearray([0,255,0,0,230,0,255,0,
            0,255,0,0,253,0,255,0,
