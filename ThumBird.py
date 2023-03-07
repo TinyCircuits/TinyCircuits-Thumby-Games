@@ -1,29 +1,29 @@
+from thumbyAudio import audio
+import time
 from thumbySprite import Sprite
 from thumbyGraphics import display
 import io
-import time
 import thumbyButton as buttons
-from thumbyAudio import audio
 from thumbySaves import saveData
 import random
 Number = int
 
-Score = None
 title_hoist_limit = None
 pipe_slide_limit = None
 lowering_limit = None
-pipe_1 = None
-pipe_2 = None
+Score = None
 Title_title = None
 Bottom_pipes = None
-pipe_3 = None
+pipe_1 = None
 top_pipes = None
-Pipe_Mask = None
+pipe_2 = None
 Bird = None
+pipe_3 = None
 Bird_Mask = None
-i = None
+Pipe_Mask = None
 bottom_pipe_mask = None
 Title_background = None
+i = None
 j = None
 ThumBirdText = None
 Bird_y = None
@@ -73,7 +73,7 @@ saveData.setName(globals().get('__file__', 'FAST_EXECUTE').replace('/Games/','')
 
 # Describe this function...
 def move_title_pipes_and_bird_down__move_background_out_the_bottom():
-  global Score, title_hoist_limit, pipe_slide_limit, lowering_limit, pipe_1, pipe_2, Title_title, Bottom_pipes, pipe_3, top_pipes, Pipe_Mask, Bird, Bird_Mask, i, bottom_pipe_mask, Title_background, j, ThumBirdText, Bird_y, Bird_acceleration, acceleration_regulator, bird_hight, bird_legth
+  global title_hoist_limit, pipe_slide_limit, lowering_limit, Score, Title_title, Bottom_pipes, pipe_1, top_pipes, pipe_2, Bird, pipe_3, Bird_Mask, Pipe_Mask, bottom_pipe_mask, Title_background, i, j, ThumBirdText, Bird_y, Bird_acceleration, acceleration_regulator, bird_hight, bird_legth
   lowering_limit = 0
   audio.playBlocking(2800, 100)
   time.sleep(0.1)
@@ -106,7 +106,7 @@ def move_title_pipes_and_bird_down__move_background_out_the_bottom():
 
 # Describe this function...
 def hoist_title():
-  global Score, title_hoist_limit, pipe_slide_limit, lowering_limit, pipe_1, pipe_2, Title_title, Bottom_pipes, pipe_3, top_pipes, Pipe_Mask, Bird, Bird_Mask, i, bottom_pipe_mask, Title_background, j, ThumBirdText, Bird_y, Bird_acceleration, acceleration_regulator, bird_hight, bird_legth
+  global title_hoist_limit, pipe_slide_limit, lowering_limit, Score, Title_title, Bottom_pipes, pipe_1, top_pipes, pipe_2, Bird, pipe_3, Bird_Mask, Pipe_Mask, bottom_pipe_mask, Title_background, i, j, ThumBirdText, Bird_y, Bird_acceleration, acceleration_regulator, bird_hight, bird_legth
   title_hoist_limit = 0
   while title_hoist_limit != 20:
     Title_title.y += -1
@@ -126,7 +126,7 @@ def hoist_title():
 
 # Describe this function...
 def slide_pipes_and_bird():
-  global Score, title_hoist_limit, pipe_slide_limit, lowering_limit, pipe_1, pipe_2, Title_title, Bottom_pipes, pipe_3, top_pipes, Pipe_Mask, Bird, Bird_Mask, i, bottom_pipe_mask, Title_background, j, ThumBirdText, Bird_y, Bird_acceleration, acceleration_regulator, bird_hight, bird_legth
+  global title_hoist_limit, pipe_slide_limit, lowering_limit, Score, Title_title, Bottom_pipes, pipe_1, top_pipes, pipe_2, Bird, pipe_3, Bird_Mask, Pipe_Mask, bottom_pipe_mask, Title_background, i, j, ThumBirdText, Bird_y, Bird_acceleration, acceleration_regulator, bird_hight, bird_legth
   pipe_slide_limit = 0
   while pipe_slide_limit != 28:
     Bottom_pipes.x += -3
@@ -148,12 +148,14 @@ def slide_pipes_and_bird():
 
 # Describe this function...
 def check_high_score():
-  global Score, title_hoist_limit, pipe_slide_limit, lowering_limit, pipe_1, pipe_2, Title_title, Bottom_pipes, pipe_3, top_pipes, Pipe_Mask, Bird, Bird_Mask, i, bottom_pipe_mask, Title_background, j, ThumBirdText, Bird_y, Bird_acceleration, acceleration_regulator, bird_hight, bird_legth
+  global title_hoist_limit, pipe_slide_limit, lowering_limit, Score, Title_title, Bottom_pipes, pipe_1, top_pipes, pipe_2, Bird, pipe_3, Bird_Mask, Pipe_Mask, bottom_pipe_mask, Title_background, i, j, ThumBirdText, Bird_y, Bird_acceleration, acceleration_regulator, bird_hight, bird_legth
   if Score > saveData.getItem('high score'):
     saveData.setItem('high score', Score)
     saveData.save()
 
 
+audio.playBlocking(2000, 1000)
+time.sleep(4)
 Score = 0
 pipe_1 = Sprite(8,60,bytearray([0,255,0,0,230,0,255,0,
            0,255,0,0,253,0,255,0,
@@ -336,7 +338,9 @@ while True:
     break
   elif bool(display.getPixel(Bird.x + bird_legth, Bird.y + 3)):
     audio.play(200, 1000)
-    print(6)
+    break
+  if Bird.y > 5:
+    audio.play(200, 1000)
     break
   if pipe_1.x == -5:
     Score = (Score if isinstance(Score, Number) else 0) + 1
