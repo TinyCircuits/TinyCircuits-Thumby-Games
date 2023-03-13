@@ -1,12 +1,12 @@
-NAME=DonutClicker
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/DonutClicker/arcade_description.txt
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/DonutClicker/DonutClicker.py
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/DonutClicker/arcade_title_video.webm
-
 NAME=ThumBird
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/ThumBird/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/ThumBird/ThumBird.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/ThumBird/arcade_title_video.webm
+
+NAME=DonutClicker
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/DonutClicker/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/DonutClicker/DonutClicker.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/DonutClicker/arcade_title_video.webm
 
 NAME=TinyGolf
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyGolf/utils.py
