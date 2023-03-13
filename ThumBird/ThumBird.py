@@ -1,30 +1,28 @@
-from thumbyAudio import audio
-import time
 from thumbySprite import Sprite
 from thumbyGraphics import display
 import io
+import time
 import thumbyButton as buttons
+from thumbyAudio import audio
 from thumbySaves import saveData
 import random
 Number = int
 
+Score = None
 title_hoist_limit = None
 pipe_slide_limit = None
 lowering_limit = None
-Score = None
+pipe_1 = None
+pipe_2 = None
 Title_title = None
 Bottom_pipes = None
-pipe_1 = None
-top_pipes = None
-pipe_2 = None
-Bird = None
 pipe_3 = None
-Bird_Mask = None
+top_pipes = None
 Pipe_Mask = None
+Bird = None
+Bird_Mask = None
 bottom_pipe_mask = None
 Title_background = None
-i = None
-j = None
 ThumBirdText = None
 Bird_y = None
 Bird_acceleration = None
@@ -43,10 +41,6 @@ Pipe_Mask = Sprite(1,1,bytearray([1]))
 Bird = Sprite(1,1,bytearray([1]))
 
 Bird_Mask = Sprite(1,1,bytearray([1]))
-
-i = Sprite(1,1,bytearray([1]))
-
-j = Sprite(1,1,bytearray([1]))
 
 bottom_pipe_mask = Sprite(1,1,bytearray([1]))
 
@@ -73,7 +67,7 @@ saveData.setName(globals().get('__file__', 'FAST_EXECUTE').replace('/Games/','')
 
 # Describe this function...
 def move_title_pipes_and_bird_down__move_background_out_the_bottom():
-  global title_hoist_limit, pipe_slide_limit, lowering_limit, Score, Title_title, Bottom_pipes, pipe_1, top_pipes, pipe_2, Bird, pipe_3, Bird_Mask, Pipe_Mask, bottom_pipe_mask, Title_background, i, j, ThumBirdText, Bird_y, Bird_acceleration, acceleration_regulator, bird_hight, bird_legth
+  global Score, title_hoist_limit, pipe_slide_limit, lowering_limit, pipe_1, pipe_2, Title_title, Bottom_pipes, pipe_3, top_pipes, Pipe_Mask, Bird, Bird_Mask, bottom_pipe_mask, Title_background, ThumBirdText, Bird_y, Bird_acceleration, acceleration_regulator, bird_hight, bird_legth
   lowering_limit = 0
   audio.playBlocking(2800, 100)
   time.sleep(0.1)
@@ -106,7 +100,7 @@ def move_title_pipes_and_bird_down__move_background_out_the_bottom():
 
 # Describe this function...
 def hoist_title():
-  global title_hoist_limit, pipe_slide_limit, lowering_limit, Score, Title_title, Bottom_pipes, pipe_1, top_pipes, pipe_2, Bird, pipe_3, Bird_Mask, Pipe_Mask, bottom_pipe_mask, Title_background, i, j, ThumBirdText, Bird_y, Bird_acceleration, acceleration_regulator, bird_hight, bird_legth
+  global Score, title_hoist_limit, pipe_slide_limit, lowering_limit, pipe_1, pipe_2, Title_title, Bottom_pipes, pipe_3, top_pipes, Pipe_Mask, Bird, Bird_Mask, bottom_pipe_mask, Title_background, ThumBirdText, Bird_y, Bird_acceleration, acceleration_regulator, bird_hight, bird_legth
   title_hoist_limit = 0
   while title_hoist_limit != 20:
     Title_title.y += -1
@@ -126,7 +120,7 @@ def hoist_title():
 
 # Describe this function...
 def slide_pipes_and_bird():
-  global title_hoist_limit, pipe_slide_limit, lowering_limit, Score, Title_title, Bottom_pipes, pipe_1, top_pipes, pipe_2, Bird, pipe_3, Bird_Mask, Pipe_Mask, bottom_pipe_mask, Title_background, i, j, ThumBirdText, Bird_y, Bird_acceleration, acceleration_regulator, bird_hight, bird_legth
+  global Score, title_hoist_limit, pipe_slide_limit, lowering_limit, pipe_1, pipe_2, Title_title, Bottom_pipes, pipe_3, top_pipes, Pipe_Mask, Bird, Bird_Mask, bottom_pipe_mask, Title_background, ThumBirdText, Bird_y, Bird_acceleration, acceleration_regulator, bird_hight, bird_legth
   pipe_slide_limit = 0
   while pipe_slide_limit != 28:
     Bottom_pipes.x += -3
@@ -148,14 +142,12 @@ def slide_pipes_and_bird():
 
 # Describe this function...
 def check_high_score():
-  global title_hoist_limit, pipe_slide_limit, lowering_limit, Score, Title_title, Bottom_pipes, pipe_1, top_pipes, pipe_2, Bird, pipe_3, Bird_Mask, Pipe_Mask, bottom_pipe_mask, Title_background, i, j, ThumBirdText, Bird_y, Bird_acceleration, acceleration_regulator, bird_hight, bird_legth
+  global Score, title_hoist_limit, pipe_slide_limit, lowering_limit, pipe_1, pipe_2, Title_title, Bottom_pipes, pipe_3, top_pipes, Pipe_Mask, Bird, Bird_Mask, bottom_pipe_mask, Title_background, ThumBirdText, Bird_y, Bird_acceleration, acceleration_regulator, bird_hight, bird_legth
   if Score > saveData.getItem('high score'):
     saveData.setItem('high score', Score)
     saveData.save()
 
 
-audio.playBlocking(2000, 1000)
-time.sleep(4)
 Score = 0
 pipe_1 = Sprite(8,60,bytearray([0,255,0,0,230,0,255,0,
            0,255,0,0,253,0,255,0,
@@ -191,18 +183,6 @@ Pipe_Mask = Sprite(8,60,bytearray([0,255,255,255,255,255,255,0,
            0,15,15,15,15,15,15,0]), Pipe_Mask.x,Pipe_Mask.y,Pipe_Mask.key,Pipe_Mask.mirrorX,Pipe_Mask.mirrorY)
 Bird = Sprite(21//3,7,bytearray([12,18,17,21,18,12,12,6,9,17,21,62,48,0,28,34,38,18,15,3,0]), Bird.x,Bird.y,Bird.key,Bird.mirrorX,Bird.mirrorY)
 Bird_Mask = Sprite(21//3,7,bytearray([12,30,31,31,30,12,12,6,15,31,31,62,48,0,28,62,62,30,15,3,0]), Bird_Mask.x,Bird_Mask.y,Bird_Mask.key,Bird_Mask.mirrorX,Bird_Mask.mirrorY)
-i = Sprite(75,45,bytearray([0,0,0,252,0,0,204,0,252,0,0,252,4,4,36,36,252,4,4,252,60,36,36,4,4,252,16,16,144,16,16,240,16,16,144,16,16,240,16,16,240,16,16,252,4,4,36,36,252,4,4,252,60,36,36,4,4,252,16,16,144,16,16,240,0,0,0,0,252,0,0,220,0,0,0,
-           0,0,0,255,0,0,125,0,255,0,0,15,8,8,15,1,15,8,8,15,8,8,9,8,8,127,64,64,121,8,8,127,64,64,121,8,136,191,36,36,36,32,32,63,8,8,15,1,15,8,8,15,8,8,9,8,8,127,64,64,121,8,8,15,0,0,0,96,127,96,96,103,96,0,0,
-           0,0,6,7,6,6,6,6,7,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,128,128,128,128,128,128,134,9,8,138,201,198,230,224,224,224,224,224,192,192,128,0,0,0,0,128,128,128,128,128,128,0,0,0,0,0,0,0,128,128,128,192,192,192,192,0,0,
-           0,172,238,174,239,15,255,255,31,223,94,6,244,80,112,0,3,255,3,3,243,3,255,3,8,238,175,111,0,190,42,190,42,190,0,123,251,3,63,191,191,191,191,191,191,191,135,55,87,240,86,6,254,170,0,255,255,135,55,247,55,54,52,54,247,48,134,254,2,120,43,123,43,0,0,
-           0,230,87,106,83,232,211,235,80,99,91,232,212,234,85,106,0,255,0,0,157,0,255,0,208,233,84,106,85,234,213,234,85,106,85,234,212,234,84,1,255,1,1,249,1,255,1,232,212,234,85,104,87,234,212,234,84,106,0,255,0,0,223,0,255,0,211,233,84,106,85,234,213,0,0,
-           0,2,0,2,1,3,1,2,0,2,1,3,1,2,0,2,0,3,0,0,3,0,3,0,1,2,0,2,1,3,1,2,0,2,1,3,1,2,0,0,3,0,0,2,0,3,0,3,1,2,0,2,1,3,1,2,0,2,0,3,0,0,1,0,3,0,1,2,0,2,1,3,1,0,0]), i.x,i.y,i.key,i.mirrorX,i.mirrorY)
-j = Sprite(75,45,bytearray([0,0,0,252,0,0,204,0,252,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,252,0,0,220,0,252,0,
-           0,0,0,255,0,0,125,0,255,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,96,127,96,96,103,96,127,96,
-           0,0,6,7,6,6,6,6,7,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-           0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,255,3,3,243,3,255,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,128,128,128,128,128,128,128,128,0,0,0,0,0,0,0,0,0,0,0,48,240,48,48,48,48,240,48,0,0,0,0,0,0,0,0,0,
-           0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,255,0,0,157,0,255,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,255,1,1,249,1,255,1,0,0,0,0,0,0,0,0,0,0,0,0,255,0,0,223,0,255,0,0,0,0,0,0,0,0,0,0,
-           0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,3,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,2,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,1,0,3,0,0,0,0,0,0,0,0,0,0]), j.x,j.y,j.key,j.mirrorX,j.mirrorY)
 bottom_pipe_mask = Sprite(75,45,bytearray([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
             0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
             0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,128,128,128,128,128,128,128,128,128,128,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -339,7 +319,7 @@ while True:
   elif bool(display.getPixel(Bird.x + bird_legth, Bird.y + 3)):
     audio.play(200, 1000)
     break
-  if Bird.y > 36:
+  if Bird.y > 35:
     audio.play(200, 1000)
     break
   if pipe_1.x == -5:
