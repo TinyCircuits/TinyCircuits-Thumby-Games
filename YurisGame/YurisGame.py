@@ -1,7 +1,7 @@
 # Yuri's Game
 #
 # Released under MIT License
-# Copyright Xu Pan 2023
+# Copyright Xu Pan (Douz) 2023
 #
 # Hold A/B button to pick up a bubble. Use directional buttons to 
 # move the bubble and merge it with other bubbles. Your goal is 
