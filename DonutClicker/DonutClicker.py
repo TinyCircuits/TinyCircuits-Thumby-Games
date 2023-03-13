@@ -31,7 +31,7 @@ arrow2 = thumby.Sprite(7, 5, arrow2IMG, 61, 35)
 arrowLeft = thumby.Sprite(3, 5, arrowIMG, 61, 35, -1, 1, 0)
 
 # Initializes variables
-donuts = 1000000
+donuts = 0
 clicks = 0
 perClick = 1
 pcPrice = 50
@@ -46,8 +46,8 @@ ticks = None
 thumby.saveData.setName("DonutClicker")
 
 # Load all saved data
-#if(thumby.saveData.hasItem("donuts")):
-#    donuts = thumby.saveData.getItem("donuts")
+if(thumby.saveData.hasItem("donuts")):
+    donuts = thumby.saveData.getItem("donuts")
 if(thumby.saveData.hasItem("perClick")):
     perClick = thumby.saveData.getItem("perClick")
 if(thumby.saveData.hasItem("perSec")):

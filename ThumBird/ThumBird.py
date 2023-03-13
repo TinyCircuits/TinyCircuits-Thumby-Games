@@ -339,7 +339,8 @@ while True:
   elif bool(display.getPixel(Bird.x + bird_legth, Bird.y + 3)):
     audio.play(200, 1000)
     break
-  if Bird.y > 5:
+    
+  if Bird.y > 36:
     audio.play(200, 1000)
     break
   if pipe_1.x == -5:
