@@ -161,7 +161,7 @@ while(1):
         
         t = time.ticks_ms()   # Get time (ms)
         # new Bubble
-        if (t-t1)>1000 and len(Bubbles)<6:
+        if (t-t1)>300 and len(Bubbles)<4:
             rand_r = 1
             rand_x = random.randint(2, 70)
             rand_y = random.randint(2, 38)
@@ -171,7 +171,7 @@ while(1):
         
         # Change size of Bubbles
         for bubble in Bubbles:
-            bubble.update_r(bubble.r+1)
+            bubble.update_r(bubble.r+0.5)
         
         # Delete large Bubbles
         for bubble in Bubbles:
@@ -242,7 +242,7 @@ while(1):
             
         # Split
         # here to set split frequency and smallist r that can be splitted
-        if bubble_selected is not None and bubble_selected.r >= 4 and random.random() < 0.01:
+        if bubble_selected is not None and bubble_selected.r >= 5 and random.random() < 0.0012:
             r = bubble_selected.r
             x = bubble_selected.x
             y = bubble_selected.y
@@ -332,7 +332,7 @@ while(1):
         t = time.ticks_ms()   # Get time (ms)
         
         # new Bubble
-        if (t-t1)>1000 and len(Bubbles)<6:
+        if (t-t1)>300 and len(Bubbles)<4:
             rand_r = 1
             rand_x = random.randint(2, 70)
             rand_y = random.randint(2, 38)
@@ -342,7 +342,7 @@ while(1):
         
         # Change size of Bubbles
         for bubble in Bubbles:
-            bubble.update_r(bubble.r+1)
+            bubble.update_r(bubble.r+0.5)
         
         # Delete large Bubbles
         for bubble in Bubbles:
