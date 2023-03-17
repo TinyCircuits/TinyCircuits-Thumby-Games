@@ -13,7 +13,7 @@ import thumby
 import math
 import machine
 
-thumby.display.setFPS(30)
+thumby.display.setFPS(10)
 
 # BITMAP: width: 32, height: 32
 donutIMG = bytearray([0,0,0,128,224,176,112,248,248,252,252,252,254,246,246,246,254,190,222,254,252,252,252,216,216,208,240,224,128,0,0,0,
@@ -60,12 +60,12 @@ if(thumby.saveData.hasItem("buff")):
     buff = thumby.saveData.getItem("buff")
 
 while(1):
+    ticks = str(time.ticks_ms())
     
     # Draw your donut count (text) and prices if in shop
     if inShop == False:
-        ticks = str(time.ticks_ms())
         
-        if int(ticks[-3]) == 0:
+        if int(ticks[-3]) == 5:
             donuts += perSec
         
         donutSprite.x = 0
