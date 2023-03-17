@@ -65,7 +65,7 @@ while(1):
     if inShop == False:
         ticks = str(time.ticks_ms())
         
-        if int(ticks[-3]) == 0:
+        if int(ticks[-3]) == 5:
             donuts += perSec
         
         donutSprite.x = 0
