@@ -301,6 +301,10 @@ while True:
   if buttons.inputJustPressed():
     Bird_acceleration = -2
     Bird.y = Bird.y - 2
+  if Bird.width == Bird_Mask.width and Bird.height == Bird_Mask.height:
+      display.drawSpriteWithMask(Bird, Bird_Mask)
+  display.update()
+  display.fill(0)
   if bool(display.getPixel(Bird.x - 1, Bird.y - 1)):
     audio.play(200, 1000)
     break
@@ -343,10 +347,6 @@ while True:
   if pipe_3.x < -8:
     pipe_3.x = pipe_2.x + 40
     pipe_3.y = random.randint(-19, -1)
-  if Bird.width == Bird_Mask.width and Bird.height == Bird_Mask.height:
-      display.drawSpriteWithMask(Bird, Bird_Mask)
-  display.update()
-  display.fill(0)
 display.fill(0)
 display.drawText(str('Game Over!'), 6, 0, 1)
 display.drawText(str('score:' + str(Score)), 0, 8, 1)
