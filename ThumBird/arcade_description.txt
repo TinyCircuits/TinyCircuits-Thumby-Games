@@ -6,5 +6,5 @@ This is The first Blocky code game! and the second program (the first is TinyCal
 
 game by: Mr.Giraffe
 Title and text art by: AyreGuitar
-V.1.1
+V.1.2
 Questions? join the TinyCircuits Discord at Thumby.us
