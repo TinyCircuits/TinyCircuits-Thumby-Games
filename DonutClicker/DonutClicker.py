@@ -65,7 +65,7 @@ while(1):
     # Draw your donut count (text) and prices if in shop
     if inShop == False:
         
-        if int(ticks[-3]) == 5
+        if int(ticks[-3]) == 5:
             donuts += perSec
         
         donutSprite.x = 0
