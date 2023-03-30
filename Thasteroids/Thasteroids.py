@@ -5,7 +5,7 @@ import math
 import random
 from sys import path
 import time
-path.append("/Games/Asteroids")
+path.append("/Games/Thasteroids")
 
 
 # Constants
@@ -20,11 +20,11 @@ SCORE_INCREMENT = 10
 FRAME_RATE = 20
 
 
-def save_high_score(high_score, filename="/Games/Asteroids/high_score.txt"):
+def save_high_score(high_score, filename="/Games/Thasteroids/high_score.txt"):
     with open(filename, "w") as f:
         f.write(str(high_score))
 
-def load_high_score(filename="/Games/Asteroids/high_score.txt"):
+def load_high_score(filename="/Games/Thasteroids/high_score.txt"):
     try:
         with open(filename, "r") as f:
             high_score = f.read()
