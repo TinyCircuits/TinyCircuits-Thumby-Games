@@ -1,3 +1,8 @@
+NAME=RockPaperScissors
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/RockPaperScissors/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/RockPaperScissors/RockPaperScissors.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/RockPaperScissors/arcade_description.txt
+
 NAME=Thasteroids
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Thasteroids/Thasteroids.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Thasteroids/arcade_title_video.webm
