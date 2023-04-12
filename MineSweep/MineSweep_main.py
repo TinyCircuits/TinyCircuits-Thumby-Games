@@ -1,17 +1,19 @@
 GAME_NAME="MineSweep"
 GAME_DIR=f"/Games/{GAME_NAME}"
 
+import gc
 import io
 import os
 import random
+import sys
 import thumby
-import gc
-gc.collect()
-# import thumbyGrayscale
-thumbyGrayscale=__import__(GAME_DIR+"/lib/thumbyGrayscale")
 import time
 
-thumby2=__import__(GAME_DIR+"/lib/thumby2")
+sys.path.insert(sys.path.index("/lib"),GAME_DIR+"/lib");
+
+gc.collect()
+import thumbyGrayscale
+import thumby2
 
 gs=thumbyGrayscale.display
 gs_b=thumby2.Buffer.screenSized(gs.buffer)

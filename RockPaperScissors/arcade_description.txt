@@ -1,0 +1,8 @@
+RockPaperScissors
+
+RockPaperScissors is a fun simple rock paper scissors game where you vs a computer.
+Pressing left, right, or up chooses which move you want.
+Play to 9 points and beat the computer!
+
+Author: Oliver2402
+Version: 0.2
