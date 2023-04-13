@@ -196,13 +196,13 @@ while(1):
         else:
             inShop = False
         
-        # Save data
-        thumby.saveData.setItem("donuts", donuts)
-        thumby.saveData.setItem("perClick", perClick)
-        thumby.saveData.setItem("perSec", perSec)
-        thumby.saveData.setItem("pcPrice", pcPrice)
-        thumby.saveData.setItem("psPrice", psPrice)
-        thumby.saveData.setItem("buff", buff)
-        thumby.saveData.save()
+    # Save data
+    thumby.saveData.setItem("donuts", donuts)
+    thumby.saveData.setItem("perClick", perClick)
+    thumby.saveData.setItem("perSec", perSec)
+    thumby.saveData.setItem("pcPrice", pcPrice)
+    thumby.saveData.setItem("psPrice", psPrice)
+    thumby.saveData.setItem("buff", buff)
+    thumby.saveData.save()
     
     thumby.display.fill(0)
