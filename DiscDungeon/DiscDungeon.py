@@ -4,6 +4,7 @@
 
 import thumby
 import math
+import time
 import random
 
 thumby.saveData.setName("Disc Dungeon")
@@ -64,13 +65,14 @@ def die():
     mode = 0
     #thumby.reset()
 
+# 0=x,1=y,2=size,3=dirx,4=diry
 def screenBurst():
     for i in range(0, 20):
         direction = math.radians(random.randint(0, 359))
         part = [random.randint(0,thumby.display.width),random.randint(0,thumby.display.height),random.randint(1,6),math.sin(direction),-math.cos(direction)]
         particles.append(part)
         
-def addParts(_x,_y, amount): # 0=x,1=y,2=size,3=dirx,4=diry
+def addParts(_x,_y, amount):
     for i in range(0, amount):
         direction = math.radians(random.randint(0, 359))
         part = [_x,_y,random.randint(1,6),math.sin(direction),-math.cos(direction)]
@@ -255,8 +257,8 @@ logoMap = bytearray([0,0,0,0,0,0,0,0,0,0,0,0,0,255,255,131,131,199,255,254,0,0,1
 # cursorMap: width: 1, height: 3
 cursorMap = bytearray([15])
 # ctrlMap: width: 25, height: 15
-#ctrlMap = bytearray([60,12,60,0,60,36,60,0,28,32,28,0,60,44,36,0,0,60,36,231,129,129,231,36,60,
-#           0,0,44,52,0,60,32,0,60,36,60,0,60,48,60,0,0,48,72,72,48,12,18,18,12])
+ctrlMap = bytearray([60,12,60,0,60,36,60,0,28,32,28,0,60,44,36,0,0,60,36,231,129,129,231,36,60,
+           0,0,44,52,0,60,32,0,60,36,60,0,60,48,60,0,0,48,72,72,48,12,18,18,12])
 # playMap: width: 15, height: 4
 playMap = bytearray([15,5,7,0,15,8,8,0,15,5,15,0,3,14,3])
 # soundMap: width: 25, height: 4
@@ -271,6 +273,7 @@ sprSound = thumby.Sprite(25,4,soundMap,3,33)
 sprPlay = thumby.Sprite(15,4,playMap,3,26)
 sprCursor = thumby.Sprite(1,4,cursorMap,1,26)
 sprScore = thumby.Sprite(21,4,scoreMap,thumby.display.width-24, 26)
+sprCtrl = thumby.Sprite(25,15,ctrlMap, thumby.display.width/2-12,thumby.display.height/2-7)
 
 cursorSel = 0
 
@@ -332,6 +335,18 @@ def processMenu():
     #thumby.display.drawSprite(sprPlus)
     
     drawParticles()
+
+while thumby.inputJustPressed() != True:
+    thumby.display.fill(0)
+    thumby.display.drawSprite(sprCtrl)
+    thumby.display.update()
+
+thumby.display.fill(0)
+thumby.display.update()
+
+time.sleep(0.5)
+
+screenBurst()
 
 while True:
     if mode == 1:
