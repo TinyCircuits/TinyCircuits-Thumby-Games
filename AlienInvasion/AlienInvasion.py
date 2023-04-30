@@ -5,9 +5,7 @@ import math
 from collections import namedtuple, deque
 
 from sys import path
-path.append("/Games/Aliens")
-
-
+path.append("/Games/AlienInvasion")
 
 from game_classes import (
     Star,
@@ -17,6 +15,8 @@ from game_classes import (
     Explosion,
     MissileHUD,
     Logo,
+    BossAlien,
+    BossState,
 )
 
 MAX_STARS = 10
@@ -49,7 +49,7 @@ def set_high_score(score):
 def get_alien(num, alien_pool):
     if num < 5:
         new_alien = alien_pool[0].pop()
-        if num == 0:
+        if num <= 0:
             new_alien.initialize(
                 x=random.randint(0, thumby.display.width - new_alien.sprite.width),
                 y=-new_alien.sprite.height,
@@ -128,6 +128,7 @@ while(1):
         alien_pool = {}
         explosion_queue = deque((), 3)
         
+        
         # Create a list of initial stars
         for _ in range(MAX_STARS):
             star_list.append(Star(
@@ -151,6 +152,8 @@ while(1):
         restart_wait = 0
         
         ship = Ship(MAX_MISSILES)
+        boss_alien = BossAlien(ship)
+        boss_alien.state = boss_alien.boss_state.enter
         setup = False
     
         # Show logo
@@ -170,13 +173,12 @@ while(1):
     
     t0 = time.ticks_ms()
     
-    # Check for collisions
+    # Check for basic alien collisions
     for alien in alien_list:
         if ship.alive and alien.collides_with(ship.sprite):
             ship.explosion_sprite.x = ship.sprite.x
             ship.explosion_sprite.y = ship.sprite.y
             ship.alive = False
-            restart_wait = time.ticks_add(t0, MIN_RESTART_TIME)
             if score > old_high_score:
                 set_high_score(score)
             if explosion_queue:
@@ -186,7 +188,31 @@ while(1):
                 alien.alive, missile.alive = False, False
                 score += alien.score()
                 if explosion_queue:
-                    explosion_list.append(explosion_queue.popleft().place(alien.sprite.x-1, alien.sprite.y-1))
+                    explosion_list.append(explosion_queue.popleft().place(alien.sprite.x-1, alien.sprite.y-1)) 
+           
+    if boss_alien.state:  # "inactive" state is 0 
+        # Check for collisions
+        if boss_alien.collides_with(ship.sprite) and not boss_alien.state >= BossAlien.boss_state.abduct:
+            ship.explosion_sprite.x = ship.sprite.x
+            ship.explosion_sprite.y = ship.sprite.y
+            ship.alive = False
+            if score > old_high_score:
+                set_high_score(score)
+            if explosion_queue:
+                explosion_list.append(explosion_queue.popleft().place(ship.sprite.x, ship.sprite.y))
+        for missile in missile_list:
+            if boss_alien.collides_with(missile.sprite):
+                missile.alive = False
+                boss_alien.health -= 1
+                if explosion_queue:
+                    explosion_list.append(explosion_queue.popleft().place(missile.sprite.x, missile.sprite.y))
+            if boss_alien.health <= 0:
+                boss_alien.state = BossAlien.boss_state.inactive
+                print(boss_alien.health, boss_alien.state)
+
+                
+        if boss_alien.beam_collides_with_ship() and boss_alien.health > 0:
+            boss_alien.state = BossAlien.boss_state.abduct
                 
     if time.ticks_diff(star_timer, t0) < 0:
     # Possibly add a star to the star list
@@ -197,17 +223,17 @@ while(1):
             star_list.append(new_star)
             star_timer = time.ticks_add(time.ticks_ms(), MIN_STAR_TIME)
         
-    if time.ticks_diff(alien_timer, t0) < 0:
+    if not boss_alien.state and time.ticks_diff(alien_timer, t0) < 0:
         # Possibly spawn an alien
         if len(alien_list) < MAX_ALIENS and random.randint(0, 50) == 0:
             alien_list.append(get_alien(random.randint(0, min(4, score//100)), alien_pool))
             # alien_list.append(get_alien(4, alien_pool))
             alien_timer = time.ticks_add(time.ticks_ms(), MIN_ALIEN_TIME)
-        
+    
     # Fill screen with black
     thumby.display.fill(0)
     
-
+    
     # Draw all stars and move them to their next position
     for star in star_list:
         thumby.display.drawSprite(star.sprite)
@@ -228,29 +254,43 @@ while(1):
         thumby.display.drawSprite(explosion.sprite)
         explosion.update(t0)
         
+    # Draw and move boss alien and it's abdution beam
+    if boss_alien.state:
+        thumby.display.drawSprite(boss_alien.sprite)
+        thumby.display.drawLine(thumby.display.width-1, thumby.display.height-7, thumby.display.width-1, thumby.display.height-7-boss_alien.health+1, 1)
+        for active_beam in filter(lambda x: x.active, boss_alien.beam_segments):
+            thumby.display.drawSprite(active_beam.sprite)
+        
+        boss_alien.move(t0)
+        
+    
     explosion_list.sort()
     
     while explosion_list and explosion_list[-1].done:
         explosion_queue.append(explosion_list.pop())
       
     if ship.alive:
-        # Move the ship 
-        ship.move(
-            thumby.buttonL.pressed(),
-            thumby.buttonR.pressed(),
-            thumby.buttonU.pressed(),
-            thumby.buttonD.pressed(),
-            t0,
-        )
+        if not boss_alien.state >= BossAlien.boss_state.abduct:
+            # Move the ship
+            ship.move(
+                thumby.buttonL.pressed(),
+                thumby.buttonR.pressed(),
+                thumby.buttonU.pressed(),
+                thumby.buttonD.pressed(),
+                t0,
+            )
+            # Fire missiles
+            if thumby.buttonA.justPressed():
+                missile_list.extend(ship.fire(Missile.fire_direction.forward))
+            if thumby.buttonB.justPressed():
+                missile_list.extend(ship.fire(Missile.fire_direction.side))
+                
         thumby.display.drawSprite(ship.sprite)
-        
-        # Fire missiles
-        if thumby.buttonA.justPressed():
-            missile_list.extend(ship.fire(Missile.fire_direction.forward))
-        if thumby.buttonB.justPressed():
-            missile_list.extend(ship.fire(Missile.fire_direction.side))
+
     elif game_over or len(explosion_list) == 0:
-        game_over = True
+        if not game_over:
+            game_over = True
+            restart_wait = time.ticks_add(t0, MIN_RESTART_TIME)
         thumby.display.setFont("/lib/font5x7.bin", 5, 7, 1)
         thumby.display.drawText("GAME", int(thumby.display.width/2) - 12, int(thumby.display.height/2) - 17, 1)
         thumby.display.drawText("OVER", int(thumby.display.width/2) - 12, int(thumby.display.height/2) - 9, 1)
@@ -287,7 +327,7 @@ while(1):
     while alien_list and (alien_list[-1].out_of_bounds() or not alien_list[-1].alive):
         # Subtract from score if alien got across screen
         if ship.alive and alien_list[-1].alive:
-            score -= alien_list[-1].score()
+            score = max(score - alien_list[-1].score(), 0)
         alien_pool[0].append(alien_list.pop())
         
     # Draw score

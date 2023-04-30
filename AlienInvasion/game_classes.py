@@ -9,20 +9,22 @@ from collections import namedtuple, deque
 ShipDirection = namedtuple("ship_direction", ("none", "left", "right", "up", "down"))
 MissileDirection = namedtuple("ship_direction", ("forward", "left", "right"))
 FireDirection = namedtuple("ship_direction", ("forward", "side"))
+BossState = namedtuple("boss_state", ("inactive", "enter", "beam_down", "wait", "beam_up", "move", "abduct", "exit"))
+
 
 # BITMAP: width: 72, height: 40
 game_logo1 = bytearray([0,0,224,240,24,24,24,240,224,0,0,248,248,0,0,0,0,0,24,24,248,248,24,24,0,0,248,248,152,152,24,24,0,0,248,248,224,192,128,248,248,0,0,0,0,176,104,216,104,176,0,0,0,0,0,0,0,0,0,0,0,16,152,92,22,222,22,92,152,16,0,0,
-            0,0,31,31,3,3,3,31,31,0,0,31,31,24,24,24,0,0,24,24,31,31,24,24,0,0,31,31,25,25,24,24,0,0,31,31,0,1,3,31,31,0,0,0,0,0,0,0,0,0,0,0,0,6,29,11,29,6,0,0,0,3,0,0,0,3,0,0,0,3,0,0,
-            0,0,3,3,255,255,3,3,0,0,255,255,28,56,112,255,255,0,0,31,127,224,128,224,127,31,0,0,252,254,99,99,99,254,252,0,0,14,31,51,51,51,227,195,0,0,3,3,255,255,3,3,0,0,252,254,135,3,3,135,254,252,0,0,255,255,28,56,112,255,255,0,
-            0,0,3,3,3,3,3,3,0,0,3,3,0,0,0,3,3,0,0,0,0,1,3,1,0,0,0,0,3,3,0,0,0,3,3,0,0,195,35,35,195,3,67,1,0,192,35,35,35,3,35,35,224,32,32,1,195,35,35,195,1,224,32,32,227,3,32,32,224,35,35,0,
-            0,0,0,127,73,73,54,0,34,0,0,127,73,73,65,0,99,20,8,20,99,0,65,65,127,65,65,0,1,1,127,1,1,0,0,0,0,15,1,1,15,0,4,0,0,8,9,9,6,0,0,0,15,0,0,0,15,1,1,15,0,15,1,1,14,0,0,0,15,0,0,0])
+           0,0,31,31,3,3,3,31,31,0,0,31,31,24,24,24,0,0,24,24,31,31,24,24,0,0,31,31,25,25,24,24,0,0,31,31,0,1,3,31,31,0,0,0,0,0,0,0,0,0,0,0,0,6,29,11,29,6,0,0,0,3,0,0,0,3,0,0,0,3,0,0,
+           0,0,3,3,255,255,3,3,0,0,255,255,28,56,112,255,255,0,0,31,127,224,128,224,127,31,0,0,252,254,99,99,99,254,252,0,0,14,31,51,51,51,227,195,0,0,3,3,255,255,3,3,0,0,252,254,135,3,3,135,254,252,0,0,255,255,28,56,112,255,255,0,
+           0,0,3,3,3,3,3,3,0,0,3,3,0,0,0,3,3,0,0,0,0,1,3,1,0,0,0,0,3,3,0,0,0,3,3,0,224,147,147,147,227,3,35,1,0,96,147,147,19,3,19,19,240,16,16,1,227,147,147,227,1,240,144,144,243,3,16,16,240,19,19,0,
+           0,0,127,73,73,73,54,0,34,0,0,127,73,73,65,0,99,20,8,20,99,0,65,65,127,65,65,0,1,1,127,1,1,0,0,0,7,0,0,0,7,0,2,0,0,4,4,4,3,0,0,0,7,0,0,0,7,0,0,7,0,7,0,1,6,0,0,0,7,0,0,0])
 
 # BITMAP: width: 72, height: 40
 game_logo2 = bytearray([0,0,224,240,24,24,24,240,224,0,0,248,248,0,0,0,0,0,24,24,248,248,24,24,0,0,248,248,152,152,24,24,0,0,248,248,224,192,128,248,248,0,0,0,0,48,232,88,232,48,0,0,0,0,0,0,0,0,0,0,0,16,24,148,94,22,94,148,24,16,0,0,
-            0,0,31,31,3,3,3,31,31,0,0,31,31,24,24,24,0,0,24,24,31,31,24,24,0,0,31,31,25,25,24,24,0,0,31,31,0,1,3,31,31,0,0,0,0,0,0,0,0,0,0,0,0,22,13,27,13,22,0,0,0,0,3,0,0,0,0,0,3,0,0,0,
-            0,0,3,3,255,255,3,3,0,0,255,255,28,56,112,255,255,0,0,31,127,224,128,224,127,31,0,0,252,254,99,99,99,254,252,0,0,14,31,51,51,51,227,195,0,0,3,3,255,255,3,3,0,0,252,254,135,3,3,135,254,252,0,0,255,255,28,56,112,255,255,0,
-            0,0,3,3,3,3,3,3,0,0,3,3,0,0,0,3,3,0,0,0,0,1,3,1,0,0,0,0,3,3,0,0,0,3,3,0,0,195,35,35,195,3,67,1,0,192,35,35,35,3,35,35,224,32,32,1,195,35,35,195,1,224,32,32,227,3,32,32,224,35,35,0,
-            0,0,0,127,73,73,54,0,34,0,0,127,73,73,65,0,99,20,8,20,99,0,65,65,127,65,65,0,1,1,127,1,1,0,0,0,0,15,1,1,15,0,4,0,0,8,9,9,6,0,0,0,15,0,0,0,15,1,1,15,0,15,1,1,14,0,0,0,15,0,0,0])
+           0,0,31,31,3,3,3,31,31,0,0,31,31,24,24,24,0,0,24,24,31,31,24,24,0,0,31,31,25,25,24,24,0,0,31,31,0,1,3,31,31,0,0,0,0,0,0,0,0,0,0,0,0,22,13,27,13,22,0,0,0,0,3,0,0,0,0,0,3,0,0,0,
+           0,0,3,3,255,255,3,3,0,0,255,255,28,56,112,255,255,0,0,31,127,224,128,224,127,31,0,0,252,254,99,99,99,254,252,0,0,14,31,51,51,51,227,195,0,0,3,3,255,255,3,3,0,0,252,254,135,3,3,135,254,252,0,0,255,255,28,56,112,255,255,0,
+           0,0,3,3,3,3,3,3,0,0,3,3,0,0,0,3,3,0,0,0,0,1,3,1,0,0,0,0,3,3,0,0,0,3,3,0,224,147,147,147,227,3,35,1,0,96,147,147,19,3,19,19,240,16,16,1,227,147,147,227,1,240,144,144,243,3,16,16,240,19,19,0,
+           0,0,127,73,73,73,54,0,34,0,0,127,73,73,65,0,99,20,8,20,99,0,65,65,127,65,65,0,1,1,127,1,1,0,0,0,7,0,0,0,7,0,2,0,0,4,4,4,3,0,0,0,7,0,0,0,7,0,0,7,0,7,0,1,6,0,0,0,7,0,0,0])
             
 # BITMAP: width: 1, height: 1
 small_star = bytearray([1])
@@ -85,16 +87,16 @@ abduction_aliena = bytearray([8,12,10,15,11,14,12,8])
 abduction_alienb = bytearray([8,12,14,11,15,10,12,8])
 
 # BITMAP: width: 8, height: 8
-beam1 = bytearray([0,0,17,34,34,17,0,0])
+beam0 = bytearray([0,0,17,34,34,17,0,0])
 
 # BITMAP: width: 8, height: 8
-beam2 = bytearray([0,16,33,34,34,33,16,0])
+beam1 = bytearray([0,16,33,34,34,33,16,0])
 
 # BITMAP: width: 8, height: 8
-beam3 = bytearray([16,33,34,34,34,34,33,16])
+beam2 = bytearray([16,33,34,34,34,34,33,16])
 
 # BITMAP: width: 8, height: 8
-beam4 = bytearray([17,34,34,34,34,34,34,17])
+beam3 = bytearray([17,34,34,34,34,34,34,17])
 
 # BITMAP: width: 8, height: 32
 full_beam = bytearray(
@@ -334,6 +336,130 @@ class BasicAlien():
             or self.sprite.x < -self.sprite.width
         )
         
+class BeamSegment():
+    
+    def __init__(self, sprite):
+        self.active = False
+        self.sprite = thumby.Sprite(8, 8, sprite, 0, 0, 0)
         
-    # self.sprite.x = self.centerx + self.amplitude*math.sin(self.sprite.y*0.05*2*math.pi)
-         
+        
+class BossAlien():
+    
+    boss_state = BossState(*range(8))
+    
+    def __init__(self, ship):
+        self.ship = ship
+        self.sprite = thumby.Sprite(8, 4, abduction_aliena+abduction_alienb, 0, -4)
+        self.beam_segments = [BeamSegment(beam) for beam in (beam0, beam1, beam2, beam3)]
+        self.state = BossAlien.boss_state.inactive
+        self.nextx = 0
+        self.nexty = 0
+        self.beam_timer = 0
+        self.move_timer = time.ticks_ms()
+        self.health = 10
+        self.speed = 100
+
+    # Place the boss alien when it spawns
+    def initialize(self):
+        self.x = random.randint(0, thumby.display.width - self.sprite.width)
+        self.y = -self.sprite.height
+        self.nextx = self.x
+        self.nexty = 4
+        self.state = boss_state.enter
+    
+    # Check for collision with another sprite
+    def collides_with(self, other):
+        return (
+            other.x - self.sprite.width <= self.sprite.x <= other.x + other.width
+            and other.y - self.sprite.height <= self.sprite.y <= other.y + other.height
+        )
+    
+    # Check for beam collision with ship
+    def beam_collides_with_ship(self):
+        for beam in filter(lambda x: x.active, self.beam_segments):
+            if (
+                self.ship.sprite.x - beam.sprite.width <= beam.sprite.x <= self.ship.sprite.x + self.ship.sprite.width
+                and self.ship.sprite.y - beam.sprite.height <= beam.sprite.y <= self.ship.sprite.y + self.ship.sprite.height
+            ):
+                return True
+        
+    def move(self, t0):
+        if time.ticks_diff(self.move_timer, t0) >= 0:
+            return
+        self.move_timer = time.ticks_add(t0, self.speed)
+        
+        if self.state == BossAlien.boss_state.enter:
+            self.speed = 100
+            # Enter the screen
+            self.sprite.y += 1
+            if self.sprite.y >= self.nexty:
+                self.speed = 200
+                self.state = BossAlien.boss_state.beam_down
+                
+        elif self.state == BossAlien.boss_state.beam_down:
+            # Extend the beam down
+            for num, segment in enumerate(self.beam_segments, start=1):
+                if not segment.active:
+                    segment.sprite.x = self.sprite.x
+                    segment.sprite.y = self.sprite.y + num * segment.sprite.height
+                    segment.active = True
+                    return
+            self.beam_timer = time.ticks_add(1000, t0)
+            self.state = BossAlien.boss_state.wait
+            
+        elif self.state == BossAlien.boss_state.wait:
+            # Wait with the beam down
+            if time.ticks_diff(self.beam_timer, t0) <= 0:
+                self.speed = 200
+                self.state = BossAlien.boss_state.beam_up
+                
+        elif self.state == BossAlien.boss_state.beam_up:
+            # Retract the beam up
+            for segment in reversed(self.beam_segments):
+                if segment.active:
+                    segment.active = False
+                    return
+            # Choose a new location, at least 20 pix away
+            while abs(self.nextx - self.sprite.x) < 15:
+                self.nextx = random.randint(0, thumby.display.width - self.sprite.width)
+            self.speed = 50
+            self.state = BossAlien.boss_state.move
+            
+        elif self.state == BossAlien.boss_state.move:
+            # Move to a new location
+            if self.sprite.x > self.nextx:
+                self.sprite.x -= 1
+            elif self.sprite.x < self.nextx:
+                self.sprite.x += 1
+            if self.sprite.x == self.nextx:
+                self.speed = 100
+                self.state = BossAlien.boss_state.beam_down
+                
+        elif self.state == BossAlien.boss_state.abduct:
+            # Abduct the ship
+            ship_moved = False
+            if self.ship.sprite.x < self.sprite.x:
+                self.ship.sprite.x += 1
+                ship_moved = True
+            elif self.ship.sprite.x > self.sprite.x:
+                self.ship.sprite.x -= 1
+                ship_moved = True
+            if self.ship.sprite.y > self.sprite.y + self.sprite.height:
+                self.ship.sprite.y -= 1
+                ship_moved = True
+            
+            if not ship_moved:
+                for beam in self.beam_segments:
+                    beam.active = False
+                self.speed = 100
+                self.state =  BossAlien.boss_state.exit    
+                
+        elif self.state == BossAlien.boss_state.exit:
+            # Move offscreen with the ship
+            self.sprite.y -= 1
+            self.ship.sprite.y -= 1
+            
+            # End the game
+            if self.ship.sprite.y < -self.ship.sprite.height:
+                self.ship.alive = False
+                self.state = BossAlien.boss_state.inactive
