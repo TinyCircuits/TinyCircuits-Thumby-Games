@@ -41,9 +41,10 @@ def get_high_score():
         high_score = int(thumby.saveData.getItem("high_score"))
     return high_score
     
-def set_high_score(score):
-    thumby.saveData.setItem("high_score", score)
-    thumby.saveData.save()
+def check_and_set_high_score(score, old_high_score):
+    if score > old_high_score:
+        thumby.saveData.setItem("high_score", score)
+        thumby.saveData.save()
     
     
 def get_alien(num, alien_pool):
@@ -153,7 +154,7 @@ while(1):
         
         ship = Ship(MAX_MISSILES)
         boss_alien = BossAlien(ship)
-        boss_alien.state = boss_alien.boss_state.enter
+        boss_alien.initialize()
         setup = False
     
         # Show logo
@@ -179,8 +180,7 @@ while(1):
             ship.explosion_sprite.x = ship.sprite.x
             ship.explosion_sprite.y = ship.sprite.y
             ship.alive = False
-            if score > old_high_score:
-                set_high_score(score)
+            check_and_set_high_score(score, old_high_score)
             if explosion_queue:
                 explosion_list.append(explosion_queue.popleft().place(ship.sprite.x, ship.sprite.y))
         for missile in missile_list:
@@ -192,23 +192,23 @@ while(1):
            
     if boss_alien.state:  # "inactive" state is 0 
         # Check for collisions
-        if boss_alien.collides_with(ship.sprite) and not boss_alien.state >= BossAlien.boss_state.abduct:
+        if boss_alien.collides_with(ship.sprite) and ship.alive and not boss_alien.state >= BossAlien.boss_state.abduct:
             ship.explosion_sprite.x = ship.sprite.x
             ship.explosion_sprite.y = ship.sprite.y
             ship.alive = False
-            if score > old_high_score:
-                set_high_score(score)
+            check_and_set_high_score(score, old_high_score)
             if explosion_queue:
                 explosion_list.append(explosion_queue.popleft().place(ship.sprite.x, ship.sprite.y))
         for missile in missile_list:
             if boss_alien.collides_with(missile.sprite):
                 missile.alive = False
                 boss_alien.health -= 1
-                if explosion_queue:
-                    explosion_list.append(explosion_queue.popleft().place(missile.sprite.x, missile.sprite.y))
+                if explosion_queue and boss_alien.health > 0:
+                    explosion_list.append(explosion_queue.popleft().place(missile.sprite.x-2, missile.sprite.y-2))
             if boss_alien.health <= 0:
+                if explosion_queue:
+                    explosion_list.append(explosion_queue.popleft().place(boss_alien.sprite.x, boss_alien.sprite.y-2))
                 boss_alien.state = BossAlien.boss_state.inactive
-                print(boss_alien.health, boss_alien.state)
 
                 
         if boss_alien.beam_collides_with_ship() and boss_alien.health > 0:
@@ -257,7 +257,7 @@ while(1):
     # Draw and move boss alien and it's abdution beam
     if boss_alien.state:
         thumby.display.drawSprite(boss_alien.sprite)
-        thumby.display.drawLine(thumby.display.width-1, thumby.display.height-7, thumby.display.width-1, thumby.display.height-7-boss_alien.health+1, 1)
+        thumby.display.drawLine(0, 0, boss_alien.health-1, 0, 1)
         for active_beam in filter(lambda x: x.active, boss_alien.beam_segments):
             thumby.display.drawSprite(active_beam.sprite)
         

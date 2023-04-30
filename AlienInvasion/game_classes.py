@@ -25,7 +25,7 @@ game_logo2 = bytearray([0,0,224,240,24,24,24,240,224,0,0,248,248,0,0,0,0,0,24,24
            0,0,3,3,255,255,3,3,0,0,255,255,28,56,112,255,255,0,0,31,127,224,128,224,127,31,0,0,252,254,99,99,99,254,252,0,0,14,31,51,51,51,227,195,0,0,3,3,255,255,3,3,0,0,252,254,135,3,3,135,254,252,0,0,255,255,28,56,112,255,255,0,
            0,0,3,3,3,3,3,3,0,0,3,3,0,0,0,3,3,0,0,0,0,1,3,1,0,0,0,0,3,3,0,0,0,3,3,0,224,147,147,147,227,3,35,1,0,96,147,147,19,3,19,19,240,16,16,1,227,147,147,227,1,240,144,144,243,3,16,16,240,19,19,0,
            0,0,127,73,73,73,54,0,34,0,0,127,73,73,65,0,99,20,8,20,99,0,65,65,127,65,65,0,1,1,127,1,1,0,0,0,7,0,0,0,7,0,2,0,0,4,4,4,3,0,0,0,7,0,0,0,7,0,0,7,0,7,0,1,6,0,0,0,7,0,0,0])
-            
+          
 # BITMAP: width: 1, height: 1
 small_star = bytearray([1])
 
@@ -81,22 +81,64 @@ missiles1 = bytearray([0,0,0,0,3])
 missiles0 = bytearray([0,0,0,0,0])
 
 # BITMAP: width: 8, height: 4
-abduction_aliena = bytearray([8,12,10,15,11,14,12,8])
+abduction_aliena = bytearray([4,14,13,5,7,15,14,4])
 
 # BITMAP: width: 8, height: 4
-abduction_alienb = bytearray([8,12,14,11,15,10,12,8])
+abduction_alienb = bytearray([4,6,15,13,5,7,14,12])
+
+# BITMAP: width: 8, height: 4
+abduction_alienc = bytearray([12,6,7,15,13,5,6,12])
+
+# BITMAP: width: 8, height: 4
+abduction_aliend = bytearray([12,14,5,7,15,13,6,4])
 
 # BITMAP: width: 8, height: 8
-beam0 = bytearray([0,0,17,34,34,17,0,0])
+beam0a = bytearray([0,0,68,136,136,68,0,0])
 
 # BITMAP: width: 8, height: 8
-beam1 = bytearray([0,16,33,34,34,33,16,0])
+beam0b = bytearray([0,0,34,68,68,34,0,0])
 
 # BITMAP: width: 8, height: 8
-beam2 = bytearray([16,33,34,34,34,34,33,16])
+beam0c = bytearray([0,0,17,34,34,17,0,0])
 
 # BITMAP: width: 8, height: 8
-beam3 = bytearray([17,34,34,34,34,34,34,17])
+beam0d = bytearray([0,0,136,17,17,136,0,0])
+
+# BITMAP: width: 8, height: 8
+beam1a = bytearray([0,64,132,136,136,132,64,0])
+
+# BITMAP: width: 8, height: 8
+beam1b = bytearray([0,32,66,68,68,66,32,0])
+
+# BITMAP: width: 8, height: 8
+beam1c = bytearray([0,16,33,34,34,33,16,0])
+
+# BITMAP: width: 8, height: 8
+beam1d = bytearray([0,136,16,17,17,16,136,0])
+
+# BITMAP: width: 8, height: 8
+beam2a = bytearray([64,132,136,136,136,136,132,64])
+
+# BITMAP: width: 8, height: 8
+beam2b = bytearray([32,66,68,68,68,68,66,32])
+
+# BITMAP: width: 8, height: 8
+beam2c = bytearray([16,33,34,34,34,34,33,16])
+
+# BITMAP: width: 8, height: 8
+beam2d = bytearray([136,16,17,17,17,17,16,136])
+
+# BITMAP: width: 8, height: 8
+beam3a = bytearray([68,136,136,136,136,136,136,68])
+
+# BITMAP: width: 8, height: 8
+beam3b = bytearray([34,68,68,68,68,68,68,34])
+
+# BITMAP: width: 8, height: 8
+beam3c = bytearray([17,34,34,34,34,34,34,17])
+
+# BITMAP: width: 8, height: 8
+beam3d = bytearray([136,17,17,17,17,17,17,136])
 
 # BITMAP: width: 8, height: 32
 full_beam = bytearray(
@@ -158,13 +200,13 @@ class Explosion():
                 self.sprite.setFrame(self.sprite.getFrame() + 1)
                 self.timer = time.ticks_add(t0, self.frame_rate)
 
-                
     def place(self, x, y):
         self.done = False
         self.timer = time.ticks_add(time.ticks_ms(), self.frame_rate)
         self.sprite.x = x
         self.sprite.y = y
         return self
+        
 
 class Star():
     
@@ -349,8 +391,15 @@ class BossAlien():
     
     def __init__(self, ship):
         self.ship = ship
-        self.sprite = thumby.Sprite(8, 4, abduction_aliena+abduction_alienb, 0, -4)
-        self.beam_segments = [BeamSegment(beam) for beam in (beam0, beam1, beam2, beam3)]
+        self.sprite = thumby.Sprite(8, 4, abduction_aliena+abduction_alienb+abduction_alienc+abduction_aliend, -4)
+        self.beam_segments = [
+            BeamSegment(beam) for beam in (
+                beam0a+beam0b+beam0c+beam0d,
+                beam1a+beam1b+beam1c+beam1d,
+                beam2a+beam2b+beam2c+beam2d,
+                beam3a+beam3b+beam3c+beam3d,
+            )
+        ]
         self.state = BossAlien.boss_state.inactive
         self.nextx = 0
         self.nexty = 0
@@ -358,14 +407,16 @@ class BossAlien():
         self.move_timer = time.ticks_ms()
         self.health = 10
         self.speed = 100
+        self.animation_speed = 100
+        self.animation_timer = 0
 
     # Place the boss alien when it spawns
     def initialize(self):
-        self.x = random.randint(0, thumby.display.width - self.sprite.width)
-        self.y = -self.sprite.height
-        self.nextx = self.x
-        self.nexty = 4
-        self.state = boss_state.enter
+        self.sprite.x = random.randint(0, thumby.display.width - self.sprite.width)
+        self.sprite.y = -self.sprite.height
+        self.nextx = self.sprite.x
+        self.nexty = 0
+        self.state = BossAlien.boss_state.enter
     
     # Check for collision with another sprite
     def collides_with(self, other):
@@ -384,6 +435,11 @@ class BossAlien():
                 return True
         
     def move(self, t0):
+        if time.ticks_diff(self.animation_timer, t0) < 0:
+            self.animation_timer = time.ticks_add(t0, self.animation_speed)
+            self.sprite.setFrame((self.sprite.getFrame() + 1) % 4)
+            for segment in self.beam_segments:
+                segment.sprite.setFrame((segment.sprite.getFrame() + 1) % 4)
         if time.ticks_diff(self.move_timer, t0) >= 0:
             return
         self.move_timer = time.ticks_add(t0, self.speed)
@@ -401,10 +457,10 @@ class BossAlien():
             for num, segment in enumerate(self.beam_segments, start=1):
                 if not segment.active:
                     segment.sprite.x = self.sprite.x
-                    segment.sprite.y = self.sprite.y + num * segment.sprite.height
+                    segment.sprite.y = self.sprite.y - 4 + num * segment.sprite.height
                     segment.active = True
                     return
-            self.beam_timer = time.ticks_add(1000, t0)
+            self.beam_timer = time.ticks_add(2000, t0)
             self.state = BossAlien.boss_state.wait
             
         elif self.state == BossAlien.boss_state.wait:
@@ -438,6 +494,7 @@ class BossAlien():
         elif self.state == BossAlien.boss_state.abduct:
             # Abduct the ship
             ship_moved = False
+            self.speed = 100
             if self.ship.sprite.x < self.sprite.x:
                 self.ship.sprite.x += 1
                 ship_moved = True
