@@ -402,20 +402,24 @@ class BossAlien():
         ]
         self.state = BossAlien.boss_state.inactive
         self.nextx = 0
-        self.nexty = 0
         self.beam_timer = 0
         self.move_timer = time.ticks_ms()
         self.health = 10
         self.speed = 100
         self.animation_speed = 100
         self.animation_timer = 0
+        self.countdown = 0
+        self.kill_count = 0
 
     # Place the boss alien when it spawns
-    def initialize(self):
+    def initialize(self, countdown):
+        for beam in self.beam_segments:
+            beam.active = False
+        self.countdown = countdown
+        self.health = 10
         self.sprite.x = random.randint(0, thumby.display.width - self.sprite.width)
         self.sprite.y = -self.sprite.height
         self.nextx = self.sprite.x
-        self.nexty = 0
         self.state = BossAlien.boss_state.enter
     
     # Check for collision with another sprite
@@ -435,6 +439,7 @@ class BossAlien():
                 return True
         
     def move(self, t0):
+        # Animation
         if time.ticks_diff(self.animation_timer, t0) < 0:
             self.animation_timer = time.ticks_add(t0, self.animation_speed)
             self.sprite.setFrame((self.sprite.getFrame() + 1) % 4)
@@ -444,13 +449,18 @@ class BossAlien():
             return
         self.move_timer = time.ticks_add(t0, self.speed)
         
+        
+        
         if self.state == BossAlien.boss_state.enter:
             self.speed = 100
             # Enter the screen
             self.sprite.y += 1
-            if self.sprite.y >= self.nexty:
-                self.speed = 200
-                self.state = BossAlien.boss_state.beam_down
+            print(self.sprite.y)
+            if self.sprite.y >= 0:
+                self.speed = 50
+                while abs(self.nextx - self.sprite.x) < 15:
+                    self.nextx = random.randint(0, thumby.display.width - self.sprite.width)
+                self.state = BossAlien.boss_state.move
                 
         elif self.state == BossAlien.boss_state.beam_down:
             # Extend the beam down
@@ -475,7 +485,7 @@ class BossAlien():
                 if segment.active:
                     segment.active = False
                     return
-            # Choose a new location, at least 20 pix away
+            # Choose a new location, at least 15 pix away
             while abs(self.nextx - self.sprite.x) < 15:
                 self.nextx = random.randint(0, thumby.display.width - self.sprite.width)
             self.speed = 50
@@ -488,7 +498,7 @@ class BossAlien():
             elif self.sprite.x < self.nextx:
                 self.sprite.x += 1
             if self.sprite.x == self.nextx:
-                self.speed = 100
+                self.speed = 200
                 self.state = BossAlien.boss_state.beam_down
                 
         elif self.state == BossAlien.boss_state.abduct:

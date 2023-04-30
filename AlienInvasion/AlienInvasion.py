@@ -22,9 +22,10 @@ from game_classes import (
 MAX_STARS = 10
 MAX_MISSILES = 3
 MAX_ALIENS = 3
-MIN_ALIEN_TIME = 500
+MIN_ALIEN_TIME = 300
 MIN_STAR_TIME = 1000
 MIN_RESTART_TIME = 4000
+BOSS_SORE_INTERVAL = 300
 
 # Set the FPS (without this call, the default fps is 30)
 thumby.display.setFPS(60)
@@ -48,70 +49,71 @@ def check_and_set_high_score(score, old_high_score):
     
     
 def get_alien(num, alien_pool):
-    if num < 5:
-        new_alien = alien_pool[0].pop()
-        if num <= 0:
+    if num < 1 or len(alien_pool) < 1:
+        return None
+    new_alien = alien_pool.pop()
+    if num == 1:
+        new_alien.initialize(
+            x=random.randint(0, thumby.display.width - new_alien.sprite.width),
+            y=-new_alien.sprite.height,
+            s=random.randint(50, 100),
+            mf=lambda x, y: (x, y+1),
+        )
+    elif num == 2:
+        if random.randint(0,1):
+            new_alien.initialize(
+                x=-new_alien.sprite.width,
+                y=random.randint(int(thumby.display.height/2), thumby.display.height - new_alien.sprite.height),
+                s=random.randint(50, 100),
+                mf=lambda x, y: (x+1, y),
+            )
+        else:
+            new_alien.initialize(
+                x=thumby.display.width,
+                y=random.randint(int(thumby.display.height/2), thumby.display.height - new_alien.sprite.height),
+                s=random.randint(50, 100),
+                mf=lambda x, y: (x-1, y),
+            )
+    elif num == 3:
+        if random.randint(0,1):
+            new_alien.initialize(
+                x=random.randint(0, int(thumby.display.width/3)),
+                y=-new_alien.sprite.height,
+                s=random.randint(50, 100),
+                mf=lambda x, y: (x+1, y+1),
+            )
+        else:
+            new_alien.initialize(
+                x=random.randint(int(thumby.display.width*(2/3)), thumby.display.width - new_alien.sprite.width),
+                y=-new_alien.sprite.height,
+                s=random.randint(50, 100),
+                mf=lambda x, y: (x-1, y+1),
+            )
+    elif num == 4:
             new_alien.initialize(
                 x=random.randint(0, thumby.display.width - new_alien.sprite.width),
                 y=-new_alien.sprite.height,
                 s=random.randint(50, 100),
-                mf=lambda x, y: (x, y+1),
+                mf=lambda x, y: (new_alien.centerx + new_alien.amplitude*math.sin(6*math.pi*(1/thumby.display.height)*y), y+1),
             )
-        elif num == 1:
-            if random.randint(0,1):
-                new_alien.initialize(
-                    x=-new_alien.sprite.width,
-                    y=random.randint(int(thumby.display.height/2), thumby.display.height - new_alien.sprite.height),
-                    s=random.randint(50, 100),
-                    mf=lambda x, y: (x+1, y),
-                )
-            else:
-                new_alien.initialize(
-                    x=thumby.display.width,
-                    y=random.randint(int(thumby.display.height/2), thumby.display.height - new_alien.sprite.height),
-                    s=random.randint(50, 100),
-                    mf=lambda x, y: (x-1, y),
-                )
-        elif num == 2:
-            if random.randint(0,1):
-                new_alien.initialize(
-                    x=random.randint(0, int(thumby.display.width/3)),
-                    y=-new_alien.sprite.height,
-                    s=random.randint(50, 100),
-                    mf=lambda x, y: (x+1, y+1),
-                )
-            else:
-                new_alien.initialize(
-                    x=random.randint(int(thumby.display.width*(2/3)), thumby.display.width - new_alien.sprite.width),
-                    y=-new_alien.sprite.height,
-                    s=random.randint(50, 100),
-                    mf=lambda x, y: (x-1, y+1),
-                )
-        elif num == 3:
-                new_alien.initialize(
-                    x=random.randint(0, thumby.display.width - new_alien.sprite.width),
-                    y=-new_alien.sprite.height,
-                    s=random.randint(50, 100),
-                    mf=lambda x, y: (new_alien.centerx + new_alien.amplitude*math.sin(6*math.pi*(1/thumby.display.height)*y), y+1),
-                )
+    else:
+        if random.randint(0,1):
+            new_alien.initialize(
+                x=-new_alien.sprite.width,
+                y=random.randint(int(thumby.display.height/2), thumby.display.height - new_alien.sprite.height),
+                s=random.randint(50, 100),
+                mf=lambda x, y: (x+1, new_alien.centery + new_alien.amplitude*math.sin(6*math.pi*(1/thumby.display.width)*x))
+            )
         else:
-            if random.randint(0,1):
-                new_alien.initialize(
-                    x=-new_alien.sprite.width,
-                    y=random.randint(int(thumby.display.height/2), thumby.display.height - new_alien.sprite.height),
-                    s=random.randint(50, 100),
-                    mf=lambda x, y: (x+1, new_alien.centery + new_alien.amplitude*math.sin(6*math.pi*(1/thumby.display.width)*x))
-                )
-            else:
-                new_alien.initialize(
-                    x=thumby.display.width,
-                    y=random.randint(int(thumby.display.height/2), thumby.display.height - new_alien.sprite.height),
-                    s=random.randint(50, 100),
-                    mf=lambda x, y: (x-1, new_alien.centery + new_alien.amplitude*math.sin(6*math.pi*(1/thumby.display.width)*x)),
-                )
-            
-        new_alien.alive = True
-        return new_alien
+            new_alien.initialize(
+                x=thumby.display.width,
+                y=random.randint(int(thumby.display.height/2), thumby.display.height - new_alien.sprite.height),
+                s=random.randint(50, 100),
+                mf=lambda x, y: (x-1, new_alien.centery + new_alien.amplitude*math.sin(6*math.pi*(1/thumby.display.width)*x)),
+            )
+        
+    new_alien.alive = True
+    return new_alien
         
         
 while(1):
@@ -126,7 +128,7 @@ while(1):
         alien_list = []
         explosion_list = []
         star_queue = deque((), MAX_STARS)
-        alien_pool = {}
+        alien_pool = []
         explosion_queue = deque((), 3)
         
         
@@ -140,10 +142,8 @@ while(1):
         )
                 
         # Create a pool of alien sprites
-        for alien_type in (0,):
-            alien_pool[alien_type] = []
-            for _ in range(MAX_ALIENS):
-                alien_pool[alien_type].append(BasicAlien())
+        for _ in range(MAX_ALIENS):
+            alien_pool.append(BasicAlien())
                 
         for _ in range(3):
             explosion_queue.append(Explosion())
@@ -154,7 +154,6 @@ while(1):
         
         ship = Ship(MAX_MISSILES)
         boss_alien = BossAlien(ship)
-        boss_alien.initialize()
         setup = False
     
         # Show logo
@@ -174,21 +173,28 @@ while(1):
     
     t0 = time.ticks_ms()
     
-    # Check for basic alien collisions
-    for alien in alien_list:
-        if ship.alive and alien.collides_with(ship.sprite):
-            ship.explosion_sprite.x = ship.sprite.x
-            ship.explosion_sprite.y = ship.sprite.y
-            ship.alive = False
-            check_and_set_high_score(score, old_high_score)
-            if explosion_queue:
-                explosion_list.append(explosion_queue.popleft().place(ship.sprite.x, ship.sprite.y))
-        for missile in missile_list:
-            if alien.collides_with(missile.sprite):
-                alien.alive, missile.alive = False, False
-                score += alien.score()
+    if boss_alien.countdown <= 0:
+        boss_alien.initialize(BOSS_SORE_INTERVAL)
+    
+   
+    if not boss_alien.state == BossAlien.boss_state.abduct:
+        # Check for basic alien collisions
+        for alien in alien_list:
+            if ship.alive and alien.collides_with(ship.sprite):
+                ship.explosion_sprite.x = ship.sprite.x
+                ship.explosion_sprite.y = ship.sprite.y
+                ship.alive = False
+                check_and_set_high_score(score, old_high_score)
                 if explosion_queue:
-                    explosion_list.append(explosion_queue.popleft().place(alien.sprite.x-1, alien.sprite.y-1)) 
+                    explosion_list.append(explosion_queue.popleft().place(ship.sprite.x, ship.sprite.y))
+            for missile in missile_list:
+                if alien.collides_with(missile.sprite):
+                    alien.alive, missile.alive = False, False
+                    if not boss_alien.state:
+                        score += alien.score()
+                        boss_alien.countdown -= alien.score()
+                    if explosion_queue:
+                        explosion_list.append(explosion_queue.popleft().place(alien.sprite.x-1, alien.sprite.y-1)) 
            
     if boss_alien.state:  # "inactive" state is 0 
         # Check for collisions
@@ -209,6 +215,9 @@ while(1):
                 if explosion_queue:
                     explosion_list.append(explosion_queue.popleft().place(boss_alien.sprite.x, boss_alien.sprite.y-2))
                 boss_alien.state = BossAlien.boss_state.inactive
+                boss_alien.kill_count += 1
+                score += 100
+                break
 
                 
         if boss_alien.beam_collides_with_ship() and boss_alien.health > 0:
@@ -223,12 +232,13 @@ while(1):
             star_list.append(new_star)
             star_timer = time.ticks_add(time.ticks_ms(), MIN_STAR_TIME)
         
-    if not boss_alien.state and time.ticks_diff(alien_timer, t0) < 0:
+    if time.ticks_diff(alien_timer, t0) < 0:
         # Possibly spawn an alien
-        if len(alien_list) < MAX_ALIENS and random.randint(0, 50) == 0:
-            alien_list.append(get_alien(random.randint(0, min(4, score//100)), alien_pool))
-            # alien_list.append(get_alien(4, alien_pool))
-            alien_timer = time.ticks_add(time.ticks_ms(), MIN_ALIEN_TIME)
+        alien_timer = time.ticks_add(time.ticks_ms(), MIN_ALIEN_TIME)
+        if boss_alien.kill_count and len(alien_list) < MAX_ALIENS and random.randint(0, 2) == 0:
+            new_alien = get_alien(random.randint(1, min(5, boss_alien.kill_count)), alien_pool)
+            if new_alien:
+                alien_list.append(new_alien)
     
     # Fill screen with black
     thumby.display.fill(0)
@@ -326,9 +336,9 @@ while(1):
     # Return all out of bounds aliens to the alien pool
     while alien_list and (alien_list[-1].out_of_bounds() or not alien_list[-1].alive):
         # Subtract from score if alien got across screen
-        if ship.alive and alien_list[-1].alive:
+        if ship.alive and alien_list[-1].alive and not boss_alien.state:
             score = max(score - alien_list[-1].score(), 0)
-        alien_pool[0].append(alien_list.pop())
+        alien_pool.append(alien_list.pop())
         
     # Draw score
     thumby.display.drawText(str(score), 0, int(thumby.display.height - 5), 1)
