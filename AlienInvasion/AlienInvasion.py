@@ -89,21 +89,6 @@ def get_alien(num, alien_pool):
     elif num == 2:
         if random.randint(0,1):
             new_alien.initialize(
-                x=-new_alien.sprite.width,
-                y=random.randint(int(thumby.display.height/2), thumby.display.height - new_alien.sprite.height),
-                s=random.randint(50, 100),
-                mf=lambda x, y: (x+1, y),
-            )
-        else:
-            new_alien.initialize(
-                x=thumby.display.width,
-                y=random.randint(int(thumby.display.height/2), thumby.display.height - new_alien.sprite.height),
-                s=random.randint(50, 100),
-                mf=lambda x, y: (x-1, y),
-            )
-    elif num == 3:
-        if random.randint(0,1):
-            new_alien.initialize(
                 x=random.randint(0, int(thumby.display.width/3)),
                 y=-new_alien.sprite.height,
                 s=random.randint(50, 100),
@@ -115,6 +100,21 @@ def get_alien(num, alien_pool):
                 y=-new_alien.sprite.height,
                 s=random.randint(50, 100),
                 mf=lambda x, y: (x-1, y+1),
+            )
+    elif num == 3:
+        if random.randint(0,1):
+            new_alien.initialize(
+                x=-new_alien.sprite.width,
+                y=random.randint(int(thumby.display.height/2), thumby.display.height - new_alien.sprite.height),
+                s=random.randint(50, 100),
+                mf=lambda x, y: (x+1, y),
+            )
+        else:
+            new_alien.initialize(
+                x=thumby.display.width,
+                y=random.randint(int(thumby.display.height/2), thumby.display.height - new_alien.sprite.height),
+                s=random.randint(50, 100),
+                mf=lambda x, y: (x-1, y),
             )
     elif num == 4:
             new_alien.initialize(
