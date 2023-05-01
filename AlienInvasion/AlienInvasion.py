@@ -22,6 +22,7 @@ from game_classes import (
 MAX_STARS = 10
 MAX_MISSILES = 3
 MAX_ALIENS = 3
+MAX_EXPLOSIONS = 4
 MIN_ALIEN_TIME = 500
 MIN_STAR_TIME = 1000
 MIN_RESTART_TIME = 3000
@@ -170,7 +171,8 @@ while(1):
         for _ in range(MAX_ALIENS):
             alien_pool.append(BasicAlien())
                 
-        for _ in range(3):
+        # Create a pool of explosion sprites
+        for _ in range(MAX_EXPLOSIONS):
             explosion_queue.append(Explosion())
         
         alien_timer = time.ticks_add(time.ticks_ms(), MIN_ALIEN_TIME)
