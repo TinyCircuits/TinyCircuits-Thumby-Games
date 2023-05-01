@@ -10,22 +10,85 @@ ShipDirection = namedtuple("ship_direction", ("none", "left", "right", "up", "do
 MissileDirection = namedtuple("ship_direction", ("forward", "left", "right"))
 FireDirection = namedtuple("ship_direction", ("forward", "side"))
 BossState = namedtuple("boss_state", ("inactive", "enter", "beam_down", "wait", "beam_up", "move", "abduct", "exit"))
+Option = namedtuple("option", ("exit", "start", "audio", "clear_hs"))
+# BITMAP: width: 72, height: 26
+game_logo = bytearray([0,0,224,240,24,24,24,240,224,0,0,248,248,0,0,0,0,0,24,24,248,248,24,24,0,0,248,248,152,152,24,24,0,0,248,248,224,192,128,248,248,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            0,0,31,31,3,3,3,31,31,0,0,31,31,24,24,24,0,0,24,24,31,31,24,24,0,0,31,31,25,25,24,24,0,0,31,31,0,1,3,31,31,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            0,0,3,3,255,255,3,3,0,0,255,255,28,56,112,255,255,0,0,31,127,224,128,224,127,31,0,0,252,254,99,99,99,254,252,0,0,14,31,51,51,51,227,195,0,0,3,3,255,255,3,3,0,0,252,254,135,3,3,135,254,252,0,0,255,255,28,56,112,255,255,0,
+            0,0,3,3,3,3,3,3,0,0,3,3,0,0,0,3,3,0,0,0,0,1,3,1,0,0,0,0,3,3,0,0,0,3,3,0,0,3,3,3,3,3,3,1,0,0,3,3,3,3,3,3,0,0,0,1,3,3,3,3,1,0,0,0,3,3,0,0,0,3,3,0])
+            
+# BITMAP: width: 16, height: 16
+decoration0a = bytearray([0,0,88,116,44,52,24,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,12,26,54,58,12,0,0])
+            
+# BITMAP: width: 16, height: 16
+decoration0b = bytearray([0,0,24,116,108,52,24,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,12,26,22,58,44,0,0])
+            
+# BITMAP: width: 16, height: 16
+decoration0c = bytearray([0,0,24,52,108,116,24,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,44,26,22,26,44,0,0])
 
+# BITMAP: width: 16, height: 16
+decoration0d = bytearray([0,0,24,52,44,116,88,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,44,58,22,26,12,0,0])
 
-# BITMAP: width: 72, height: 40
-game_logo1 = bytearray([0,0,224,240,24,24,24,240,224,0,0,248,248,0,0,0,0,0,24,24,248,248,24,24,0,0,248,248,152,152,24,24,0,0,248,248,224,192,128,248,248,0,0,0,0,176,104,216,104,176,0,0,0,0,0,0,0,0,0,0,0,16,152,92,22,222,22,92,152,16,0,0,
-           0,0,31,31,3,3,3,31,31,0,0,31,31,24,24,24,0,0,24,24,31,31,24,24,0,0,31,31,25,25,24,24,0,0,31,31,0,1,3,31,31,0,0,0,0,0,0,0,0,0,0,0,0,6,29,11,29,6,0,0,0,3,0,0,0,3,0,0,0,3,0,0,
-           0,0,3,3,255,255,3,3,0,0,255,255,28,56,112,255,255,0,0,31,127,224,128,224,127,31,0,0,252,254,99,99,99,254,252,0,0,14,31,51,51,51,227,195,0,0,3,3,255,255,3,3,0,0,252,254,135,3,3,135,254,252,0,0,255,255,28,56,112,255,255,0,
-           0,0,3,3,3,3,3,3,0,0,3,3,0,0,0,3,3,0,0,0,0,1,3,1,0,0,0,0,3,3,0,0,0,3,3,0,224,147,147,147,227,3,35,1,0,96,147,147,19,3,19,19,240,16,16,1,227,147,147,227,1,240,144,144,243,3,16,16,240,19,19,0,
-           0,0,127,73,73,73,54,0,34,0,0,127,73,73,65,0,99,20,8,20,99,0,65,65,127,65,65,0,1,1,127,1,1,0,0,0,7,0,0,0,7,0,2,0,0,4,4,4,3,0,0,0,7,0,0,0,7,0,0,7,0,7,0,1,6,0,0,0,7,0,0,0])
+# BITMAP: width: 16, height: 16
+decoration0e = bytearray([0,0,88,52,44,52,88,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,12,58,54,26,12,0,0])
+            
+# BITMAP: width: 15, height: 16
+decoration1a = bytearray([0,0,0,0,4,14,29,37,39,31,14,4,0,0,0,
+            0,0,0,0,16,33,34,34,34,34,33,16,0,0,0])
 
-# BITMAP: width: 72, height: 40
-game_logo2 = bytearray([0,0,224,240,24,24,24,240,224,0,0,248,248,0,0,0,0,0,24,24,248,248,24,24,0,0,248,248,152,152,24,24,0,0,248,248,224,192,128,248,248,0,0,0,0,48,232,88,232,48,0,0,0,0,0,0,0,0,0,0,0,16,24,148,94,22,94,148,24,16,0,0,
-           0,0,31,31,3,3,3,31,31,0,0,31,31,24,24,24,0,0,24,24,31,31,24,24,0,0,31,31,25,25,24,24,0,0,31,31,0,1,3,31,31,0,0,0,0,0,0,0,0,0,0,0,0,22,13,27,13,22,0,0,0,0,3,0,0,0,0,0,3,0,0,0,
-           0,0,3,3,255,255,3,3,0,0,255,255,28,56,112,255,255,0,0,31,127,224,128,224,127,31,0,0,252,254,99,99,99,254,252,0,0,14,31,51,51,51,227,195,0,0,3,3,255,255,3,3,0,0,252,254,135,3,3,135,254,252,0,0,255,255,28,56,112,255,255,0,
-           0,0,3,3,3,3,3,3,0,0,3,3,0,0,0,3,3,0,0,0,0,1,3,1,0,0,0,0,3,3,0,0,0,3,3,0,224,147,147,147,227,3,35,1,0,96,147,147,19,3,19,19,240,16,16,1,227,147,147,227,1,240,144,144,243,3,16,16,240,19,19,0,
-           0,0,127,73,73,73,54,0,34,0,0,127,73,73,65,0,99,20,8,20,99,0,65,65,127,65,65,0,1,1,127,1,1,0,0,0,7,0,0,0,7,0,2,0,0,4,4,4,3,0,0,0,7,0,0,0,7,0,0,7,0,7,0,1,6,0,0,0,7,0,0,0])
-          
+# BITMAP: width: 15, height: 16
+decoration1b = bytearray([0,0,0,0,4,6,143,29,21,135,14,12,0,0,0,
+            0,0,0,0,128,8,16,17,17,16,8,128,0,0,0])
+            
+# BITMAP: width: 15, height: 16
+decoration1c = bytearray([0,0,0,0,12,6,71,143,141,69,6,12,0,0,0,
+            0,0,0,0,64,132,136,136,136,136,132,64,0,0,0])
+            
+# BITMAP: width: 15, height: 16
+decoration1d = bytearray([0,0,0,0,12,14,37,71,79,45,6,4,0,0,0,
+            0,0,0,0,32,66,68,68,68,68,66,32,0,0,0])
+
+# BITMAP: width: 56, height: 10
+start = bytearray([0,0,0,0,0,0,0,0,0,0,0,24,36,36,36,196,0,0,4,4,252,4,4,0,0,248,36,36,36,36,248,0,0,252,36,100,164,24,0,0,4,4,252,4,4,0,0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,1,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0])
+ 
+# BITMAP: width: 56, height: 10
+exit = bytearray([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,252,36,36,4,4,0,0,140,80,32,80,140,0,0,4,4,252,4,4,0,0,4,4,252,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,0,0,1,0,0,0,1,0,0,1,1,1,1,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0])
+
+# BITMAP: width: 56, height: 10
+audio_on = bytearray([0,248,36,36,36,248,0,0,252,0,0,0,252,0,0,252,4,4,248,0,0,4,4,252,4,4,0,0,248,4,4,4,248,0,0,0,0,0,248,4,4,4,248,0,0,252,16,32,64,252,0,0,0,0,0,0,
+            0,1,0,0,0,1,0,0,0,1,1,1,0,0,0,1,1,1,0,0,0,1,1,1,1,1,0,0,0,1,1,1,0,0,0,0,0,0,0,1,1,1,0,0,0,1,0,0,0,1,0,0,0,0,0,0])
+ 
+# BITMAP: width: 56, height: 10
+audio_off = bytearray([0,248,36,36,36,248,0,0,252,0,0,0,252,0,0,252,4,4,248,0,0,4,4,252,4,4,0,0,248,4,4,4,248,0,0,0,0,0,248,4,4,4,248,0,0,252,36,36,4,0,0,252,36,36,4,0,
+            0,1,0,0,0,1,0,0,0,1,1,1,0,0,0,1,1,1,0,0,0,1,1,1,1,1,0,0,0,1,1,1,0,0,0,0,0,0,0,1,1,1,0,0,0,1,0,0,0,0,0,1,0,0,0,0])
+            
+# BITMAP: width: 56, height: 10
+clear_hs = bytearray([0,0,0,0,112,136,4,4,4,0,0,252,0,0,0,0,0,252,36,36,4,4,0,0,248,36,36,36,248,0,0,252,36,100,164,24,0,0,0,0,0,252,32,32,32,252,0,0,24,36,36,196,0,0,0,0,
+            0,0,0,0,0,0,1,1,1,0,0,1,1,1,1,0,0,1,1,1,1,1,0,0,1,0,0,0,1,0,0,1,0,0,0,1,0,0,0,0,0,1,0,0,0,1,0,0,1,1,1,0,0,0,0,0])   
+
+# BITMAP: width: 56, height: 10
+cleared = bytearray([0,0,0,0,112,136,4,4,4,0,0,252,0,0,0,0,0,252,36,36,4,4,0,0,248,36,36,36,248,0,0,252,36,100,164,24,0,0,252,36,36,4,4,0,252,4,4,4,248,0,0,124,0,0,0,0,
+            0,0,0,0,0,0,1,1,1,0,0,1,1,1,1,0,0,1,1,1,1,1,0,0,1,0,0,0,1,0,0,1,0,0,0,1,0,0,1,1,1,1,1,0,1,1,1,1,0,0,0,1,0,0,0,0])
+            
+# BITMAP: width: 8, height: 10
+left_arrow1 = bytearray([0,0,48,120,204,134,3,1,
+            0,0,0,0,0,1,3,2])
+            
+# BITMAP: width: 8, height: 10
+left_arrow2 = bytearray([0,48,120,204,134,3,1,0,
+            0,0,0,0,1,3,2,0])
+            
+# BITMAP: width: 8, height: 10
+left_arrow3 = bytearray([48,120,204,134,3,1,0,0,
+            0,0,0,1,3,2,0,0])           
+            
 # BITMAP: width: 1, height: 1
 small_star = bytearray([1])
 
@@ -60,13 +123,19 @@ missile_left = bytearray([2,7,5])
 missile_right = bytearray([5,7,2])
 
 # BITMAP: width: 5, height: 5
-alien1a = bytearray([22,13,27,13,22])
+alien0 = bytearray([6,13,11,29,22])
 
 # BITMAP: width: 5, height: 5
-alien1b = bytearray([6,29,11,29,6])
+alien1 = bytearray([22,13,11,13,22])
 
 # BITMAP: width: 5, height: 5
-alien2 = bytearray([19,13,7,13,19])
+alien2 = bytearray([22,29,11,13,6])
+
+# BITMAP: width: 5, height: 5
+alien3 = bytearray([6,29,27,13,6])
+
+# BITMAP: width: 5, height: 5
+alien4 = bytearray([6,13,27,29,6])
 
 # BITMAP: width: 5, height: 2
 missiles3 = bytearray([3,0,3,0,3])
@@ -167,15 +236,54 @@ explosion5 = bytearray([70,129,0,128,1,0,129,69])
 
 class Logo():
     
+    option = Option(*range(4))
+    
     def __init__(self):
-        self.sprite = thumby.Sprite(72, 40, game_logo1+game_logo2, 0, 0, 0)
-        self.frame_rate = 250
+        self.name_sprite = thumby.Sprite(72, 26, game_logo, 0, 0, 0)
+        self.decoration_spritea = thumby.Sprite(16, 16, decoration0a+decoration0b+decoration0c+decoration0d+decoration0e, thumby.display.width - 29, 0, 0)
+        self.decoration_spriteb = thumby.Sprite(15, 16, decoration1a+decoration1b+decoration1c+decoration1d, thumby.display.width - 15, 0, 0)
+        self.left_arrow_sprite = thumby.Sprite(8, 10, left_arrow1+left_arrow2+left_arrow3, 0, self.name_sprite.height+2, 0)
+        self.option_sprite = thumby.Sprite(56, 10, exit+start+audio_on+clear_hs+audio_off+cleared, self.left_arrow_sprite.width, self.name_sprite.height+2, 0)
+        self.right_arrow_sprite = thumby.Sprite(8, 10, left_arrow1+left_arrow2+left_arrow3, self.left_arrow_sprite.width+self.option_sprite.width, self.name_sprite.height+2, 0, 1, 0)
+        self.current_option = Logo.option.start
+        self.audio = True
+        self.cleared_hs = False
+        self.frame_rate = 100
         self.timer = time.ticks_ms()
             
     def update(self, t0):
+        
+        if thumby.buttonL.justPressed() and self.current_option > Logo.option.exit:
+            self.current_option -= 1
+        if thumby.buttonR.justPressed() and self.current_option < Logo.option.clear_hs:
+            self.current_option += 1
+        if self.current_option == Logo.option.exit or self.current_option == Logo.option.start:
+            self.option_sprite.setFrame(self.current_option)
+        elif self.current_option == Logo.option.audio:
+            self.option_sprite.setFrame(Logo.option.audio if self.audio else Logo.option.audio+2)
+        else:
+            self.option_sprite.setFrame(Logo.option.clear_hs if not self.cleared_hs else Logo.option.clear_hs+2)
+        
         if time.ticks_diff(self.timer, t0) <= 0:
-            self.sprite.setFrame((self.sprite.getFrame() + 1) % 2)
+            self.decoration_spritea.setFrame((self.decoration_spritea.getFrame() + 1) % 5)
+            self.decoration_spriteb.setFrame((self.decoration_spriteb.getFrame() + 1) % 4)
+            self.left_arrow_sprite.setFrame((self.left_arrow_sprite.getFrame() + 1) % 3)
+            self.right_arrow_sprite.setFrame((self.right_arrow_sprite.getFrame() + 1) % 3)
             self.timer = time.ticks_add(t0, self.frame_rate)
+        
+        thumby.display.fill(0)
+        
+        thumby.display.drawSprite(self.name_sprite)
+        thumby.display.drawSprite(self.decoration_spritea)
+        thumby.display.drawSprite(self.decoration_spriteb)
+        if self.current_option > Logo.option.exit:
+            thumby.display.drawSprite(self.left_arrow_sprite)
+        thumby.display.drawSprite(self.option_sprite)
+        if self.current_option < Logo.option.clear_hs:
+            thumby.display.drawSprite(self.right_arrow_sprite)
+        
+        thumby.display.update()
+        
 
 class Explosion():
     
@@ -336,7 +444,7 @@ class Ship():
 class BasicAlien():
     
     def __init__(self):
-        self.sprite = thumby.Sprite(5, 5, alien1a+alien1b, 0, 0)
+        self.sprite = thumby.Sprite(5, 5, alien0+alien1+alien2+alien3+alien4, 0, 0)
         self.amplitude = random.randint(3, 7)
         self.centerx = 0
         self.centery = 0
@@ -361,7 +469,7 @@ class BasicAlien():
         if time.ticks_diff(self.move_timer, t0) >= 0:
             return
         self.move_timer = time.ticks_add(t0, self.speed)
-        self.sprite.setFrame((self.sprite.getFrame() + 1) % 2)
+        self.sprite.setFrame((self.sprite.getFrame() + 1) % 5)
         self.sprite.x, self.sprite.y = self.move_function(self.sprite.x, self.sprite.y)
 
     # Check for collision with another sprite
@@ -455,7 +563,6 @@ class BossAlien():
             self.speed = 100
             # Enter the screen
             self.sprite.y += 1
-            print(self.sprite.y)
             if self.sprite.y >= 0:
                 self.speed = 50
                 while abs(self.nextx - self.sprite.x) < 15:

@@ -25,7 +25,7 @@ MAX_ALIENS = 3
 MIN_ALIEN_TIME = 300
 MIN_STAR_TIME = 1000
 MIN_RESTART_TIME = 4000
-BOSS_SORE_INTERVAL = 300
+BOSS_SORE_INTERVAL = 200
 
 # Set the FPS (without this call, the default fps is 30)
 thumby.display.setFPS(60)
@@ -35,6 +35,26 @@ missile_hud = MissileHUD()
 logo = Logo()
 
 setup = True
+
+def show_logo():
+    # clear input buffers
+    thumby.buttonL.justPressed()
+    thumby.buttonR.justPressed()
+    
+    # Show logo
+    while (1):
+        logo.update(time.ticks_ms())
+        if thumby.actionJustPressed():
+            if logo.current_option == Logo.option.exit:
+                thumby.reset()
+            elif logo.current_option == Logo.option.start:
+                break
+            elif logo.current_option == Logo.option.audio:
+                logo.audio = not logo.audio
+            elif logo.current_option == Logo.option.clear_hs and not logo.cleared_hs:
+                thumby.saveData.setItem("high_score", 0)
+                thumby.saveData.save()
+                logo.cleared_hs = True
 
 def get_high_score():
     high_score = 0
@@ -46,7 +66,7 @@ def check_and_set_high_score(score, old_high_score):
     if score > old_high_score:
         thumby.saveData.setItem("high_score", score)
         thumby.saveData.save()
-    
+        logo.cleared_hs = False
     
 def get_alien(num, alien_pool):
     if num < 1 or len(alien_pool) < 1:
@@ -121,7 +141,6 @@ while(1):
     if setup:
         game_over = False
         score = 0
-        old_high_score = get_high_score()
         thumby.display.setFont("/lib/font3x5.bin", 3, 5, 1)
         star_list = []
         missile_list = []
@@ -154,23 +173,13 @@ while(1):
         
         ship = Ship(MAX_MISSILES)
         boss_alien = BossAlien(ship)
-        setup = False
-    
-        # Show logo
-        while(1):
-            logo.update(time.ticks_ms())
-            thumby.display.fill(0)
-            thumby.display.drawSprite(logo.sprite)
-            thumby.display.update()
-            if thumby.buttonA.pressed():
-                thumby.display.fill(0)
-                # Flush justPressed to prevent firing missile at start of game
-                thumby.buttonA.justPressed()
-                break
-            if thumby.buttonB.pressed():
-                thumby.reset()
         
-    
+        show_logo()
+        
+        old_high_score = get_high_score()
+        setup = False
+
+
     t0 = time.ticks_ms()
     
     if boss_alien.countdown <= 0:
@@ -196,7 +205,7 @@ while(1):
                     if explosion_queue:
                         explosion_list.append(explosion_queue.popleft().place(alien.sprite.x-1, alien.sprite.y-1)) 
            
-    if boss_alien.state:  # "inactive" state is 0 
+    if boss_alien.state:  # "inactive" state is 0
         # Check for collisions
         if boss_alien.collides_with(ship.sprite) and ship.alive and not boss_alien.state >= BossAlien.boss_state.abduct:
             ship.explosion_sprite.x = ship.sprite.x
@@ -267,7 +276,7 @@ while(1):
     # Draw and move boss alien and it's abdution beam
     if boss_alien.state:
         thumby.display.drawSprite(boss_alien.sprite)
-        thumby.display.drawLine(0, 0, boss_alien.health-1, 0, 1)
+        thumby.display.drawLine(0, 0, 0, (boss_alien.health-1)*2+1, 1)
         for active_beam in filter(lambda x: x.active, boss_alien.beam_segments):
             thumby.display.drawSprite(active_beam.sprite)
         
