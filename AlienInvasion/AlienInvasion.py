@@ -196,7 +196,6 @@ while(1):
         for alien in alien_list:
             if ship.alive and alien.collides_with(ship.sprite):
                 ship.alive = False
-                check_and_set_high_score(score, old_high_score)
                 if explosion_queue:
                     explosion_list.append(explosion_queue.popleft().place(ship.sprite.x, ship.sprite.y))
             for missile in missile_list:
@@ -212,7 +211,6 @@ while(1):
         # Check for collisions
         if boss_alien.collides_with(ship.sprite) and ship.alive and not boss_alien.state >= BossAlien.boss_state.abduct:
             ship.alive = False
-            check_and_set_high_score(score, old_high_score)
             if explosion_queue:
                 explosion_list.append(explosion_queue.popleft().place(ship.sprite.x, ship.sprite.y))
         for missile in missile_list:
@@ -323,6 +321,7 @@ while(1):
     elif game_over or len(explosion_list) == 0:
         if not game_over:
             game_over = True
+            check_and_set_high_score(score, old_high_score)
             restart_wait = time.ticks_add(t0, MIN_RESTART_TIME)
         thumby.display.setFont("/lib/font5x7.bin", 5, 7, 1)
         thumby.display.drawText("GAME", int(thumby.display.width/2) - 12, int(thumby.display.height/2) - 17, 1)
