@@ -191,7 +191,7 @@ while(1):
     if boss_alien.countdown <= 0:
         boss_alien.initialize(BOSS_SCORE_INTERVAL)
     
-    if boss_alien.state <= BossAlien.boss_state.abduct:
+    if boss_alien.state < BossAlien.boss_state.abduct:
         # Check for basic alien collisions
         for alien in alien_list:
             if ship.alive and alien.collides_with(ship.sprite):
