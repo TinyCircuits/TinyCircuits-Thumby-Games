@@ -22,10 +22,11 @@ from game_classes import (
 MAX_STARS = 10
 MAX_MISSILES = 3
 MAX_ALIENS = 3
-MIN_ALIEN_TIME = 300
+MIN_ALIEN_TIME = 500
 MIN_STAR_TIME = 1000
-MIN_RESTART_TIME = 4000
-BOSS_SORE_INTERVAL = 200
+MIN_RESTART_TIME = 3000
+BOSS_SCORE_INTERVAL = 200
+ABDUCTED_FIRE_DELAY = 4
 
 # Set the FPS (without this call, the default fps is 30)
 thumby.display.setFPS(60)
@@ -37,11 +38,13 @@ logo = Logo()
 setup = True
 
 def show_logo():
+    """Show the logo until the game is started or thumby reset"""
     # clear input buffers
     thumby.buttonL.justPressed()
     thumby.buttonR.justPressed()
+    thumby.buttonA.justPressed()
+    thumby.buttonB.justPressed()
     
-    # Show logo
     while (1):
         logo.update(time.ticks_ms())
         if thumby.actionJustPressed():
@@ -49,8 +52,9 @@ def show_logo():
                 thumby.reset()
             elif logo.current_option == Logo.option.start:
                 break
-            elif logo.current_option == Logo.option.audio:
-                logo.audio = not logo.audio
+            # TODO: add audio after experimenting with polysynth
+            # elif logo.current_option == Logo.option.audio:
+            #     logo.audio = not logo.audio
             elif logo.current_option == Logo.option.clear_hs and not logo.cleared_hs:
                 thumby.saveData.setItem("high_score", 0)
                 thumby.saveData.save()
@@ -69,6 +73,8 @@ def check_and_set_high_score(score, old_high_score):
         logo.cleared_hs = False
     
 def get_alien(num, alien_pool):
+    """Get and initialize an alien from the pool"""
+    
     if num < 1 or len(alien_pool) < 1:
         return None
     new_alien = alien_pool.pop()
@@ -171,27 +177,24 @@ while(1):
         star_timer = time.ticks_add(time.ticks_ms(), MIN_STAR_TIME)
         restart_wait = 0
         
-        ship = Ship(MAX_MISSILES)
+        ship = Ship(MAX_MISSILES, ABDUCTED_FIRE_DELAY)
         boss_alien = BossAlien(ship)
         
         show_logo()
-        
         old_high_score = get_high_score()
+        
         setup = False
 
 
     t0 = time.ticks_ms()
     
     if boss_alien.countdown <= 0:
-        boss_alien.initialize(BOSS_SORE_INTERVAL)
+        boss_alien.initialize(BOSS_SCORE_INTERVAL)
     
-   
-    if not boss_alien.state == BossAlien.boss_state.abduct:
+    if boss_alien.state <= BossAlien.boss_state.abduct:
         # Check for basic alien collisions
         for alien in alien_list:
             if ship.alive and alien.collides_with(ship.sprite):
-                ship.explosion_sprite.x = ship.sprite.x
-                ship.explosion_sprite.y = ship.sprite.y
                 ship.alive = False
                 check_and_set_high_score(score, old_high_score)
                 if explosion_queue:
@@ -208,8 +211,6 @@ while(1):
     if boss_alien.state:  # "inactive" state is 0
         # Check for collisions
         if boss_alien.collides_with(ship.sprite) and ship.alive and not boss_alien.state >= BossAlien.boss_state.abduct:
-            ship.explosion_sprite.x = ship.sprite.x
-            ship.explosion_sprite.y = ship.sprite.y
             ship.alive = False
             check_and_set_high_score(score, old_high_score)
             if explosion_queue:
@@ -226,9 +227,10 @@ while(1):
                 boss_alien.state = BossAlien.boss_state.inactive
                 boss_alien.kill_count += 1
                 score += 100
+                ship.abducted_fire_delay = ABDUCTED_FIRE_DELAY
                 break
 
-                
+        # Abduct the ship!        
         if boss_alien.beam_collides_with_ship() and boss_alien.health > 0:
             boss_alien.state = BossAlien.boss_state.abduct
                 
@@ -244,14 +246,13 @@ while(1):
     if time.ticks_diff(alien_timer, t0) < 0:
         # Possibly spawn an alien
         alien_timer = time.ticks_add(time.ticks_ms(), MIN_ALIEN_TIME)
-        if boss_alien.kill_count and len(alien_list) < MAX_ALIENS and random.randint(0, 2) == 0:
+        if boss_alien.kill_count and len(alien_list) < MAX_ALIENS and random.randint(0, 1) == 0:
             new_alien = get_alien(random.randint(1, min(5, boss_alien.kill_count)), alien_pool)
             if new_alien:
                 alien_list.append(new_alien)
     
     # Fill screen with black
     thumby.display.fill(0)
-    
     
     # Draw all stars and move them to their next position
     for star in star_list:
@@ -281,12 +282,6 @@ while(1):
             thumby.display.drawSprite(active_beam.sprite)
         
         boss_alien.move(t0)
-        
-    
-    explosion_list.sort()
-    
-    while explosion_list and explosion_list[-1].done:
-        explosion_queue.append(explosion_list.pop())
       
     if ship.alive:
         if not boss_alien.state >= BossAlien.boss_state.abduct:
@@ -304,8 +299,27 @@ while(1):
             if thumby.buttonB.justPressed():
                 missile_list.extend(ship.fire(Missile.fire_direction.side))
                 
+        if boss_alien.state == BossAlien.boss_state.abduct:
+            # Fire one missile for every ABDUCTED_FIRE_DELAY+1 button presses
+            if thumby.buttonA.justPressed():
+                if ship.abducted_fire_delay:
+                    ship.abducted_fire_delay -= 1
+                else:
+                    missile_list.extend(ship.fire(Missile.fire_direction.forward))
+                    ship.abducted_fire_delay = ABDUCTED_FIRE_DELAY
+            
+            # Bar representing missile delay
+            thumby.display.drawLine(
+                thumby.display.width-1,
+                thumby.display.height - missile_hud.sprite.height - 2,
+                thumby.display.width-1,
+                thumby.display.height - missile_hud.sprite.height - 2*ship.abducted_fire_delay - 4,
+                1,
+            )   
+                
         thumby.display.drawSprite(ship.sprite)
 
+    
     elif game_over or len(explosion_list) == 0:
         if not game_over:
             game_over = True
@@ -321,6 +335,13 @@ while(1):
             
         if time.ticks_diff(restart_wait, t0) <= 0:
             setup = True
+            
+    # Sort the list of explosions by done status
+    explosion_list.sort()
+    
+    # Put all finished explosions back in the queue
+    while explosion_list and explosion_list[-1].done:
+        explosion_queue.append(explosion_list.pop())
 
     # Sort the list of stars by vertical position
     star_list.sort()

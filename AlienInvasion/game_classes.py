@@ -4,13 +4,15 @@ import math
 import time
 from collections import namedtuple, deque
 
-
 # use namedtuples to simulate enums
 ShipDirection = namedtuple("ship_direction", ("none", "left", "right", "up", "down"))
 MissileDirection = namedtuple("ship_direction", ("forward", "left", "right"))
 FireDirection = namedtuple("ship_direction", ("forward", "side"))
 BossState = namedtuple("boss_state", ("inactive", "enter", "beam_down", "wait", "beam_up", "move", "abduct", "exit"))
-Option = namedtuple("option", ("exit", "start", "audio", "clear_hs"))
+# TODO: add audio after experimenting with polysynth
+# Option = namedtuple("option", ("exit", "start", "audio", "clear_hs"))
+Option = namedtuple("option", ("exit", "start", "clear_hs"))
+
 # BITMAP: width: 72, height: 26
 game_logo = bytearray([0,0,224,240,24,24,24,240,224,0,0,248,248,0,0,0,0,0,24,24,248,248,24,24,0,0,248,248,152,152,24,24,0,0,248,248,224,192,128,248,248,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
             0,0,31,31,3,3,3,31,31,0,0,31,31,24,24,24,0,0,24,24,31,31,24,24,0,0,31,31,25,25,24,24,0,0,31,31,0,1,3,31,31,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -106,12 +108,6 @@ ship_forward = bytearray([28,30,15,7,15,30,28])
 
 # BITMAP: width: 7, height: 6
 ship_back = bytearray([56,28,12,6,12,28,56])
-
-# BITMAP: width: 7, height: 7
-ship_explosion1 = bytearray([73,42,28,127,28,42,73])
-
-# BITMAP: width: 7, height: 7
-ship_explosion2 = bytearray([54,85,99,0,99,85,54])
 
 # BITMAP: width: 3, height: 3
 missile_forward = bytearray([6,3,6])
@@ -209,16 +205,6 @@ beam3c = bytearray([17,34,34,34,34,34,34,17])
 # BITMAP: width: 8, height: 8
 beam3d = bytearray([136,17,17,17,17,17,17,136])
 
-# BITMAP: width: 8, height: 32
-full_beam = bytearray(
-    [
-        0,0,17,34,34,17,0,0,
-        0,16,33,34,34,33,16,0,
-        16,33,34,34,34,34,33,16,
-        17,34,34,34,34,34,34,17
-    ]
-)
-
 # BITMAP: width: 8, height: 8
 explosion1 = bytearray([0,0,36,24,24,36,0,0])
 
@@ -236,14 +222,14 @@ explosion5 = bytearray([70,129,0,128,1,0,129,69])
 
 class Logo():
     
-    option = Option(*range(4))
+    option = Option(*range(3))
     
     def __init__(self):
         self.name_sprite = thumby.Sprite(72, 26, game_logo, 0, 0, 0)
         self.decoration_spritea = thumby.Sprite(16, 16, decoration0a+decoration0b+decoration0c+decoration0d+decoration0e, thumby.display.width - 29, 0, 0)
         self.decoration_spriteb = thumby.Sprite(15, 16, decoration1a+decoration1b+decoration1c+decoration1d, thumby.display.width - 15, 0, 0)
         self.left_arrow_sprite = thumby.Sprite(8, 10, left_arrow1+left_arrow2+left_arrow3, 0, self.name_sprite.height+2, 0)
-        self.option_sprite = thumby.Sprite(56, 10, exit+start+audio_on+clear_hs+audio_off+cleared, self.left_arrow_sprite.width, self.name_sprite.height+2, 0)
+        self.option_sprite = thumby.Sprite(56, 10, exit+start+clear_hs+audio_on+cleared+audio_off, self.left_arrow_sprite.width, self.name_sprite.height+2, 0)
         self.right_arrow_sprite = thumby.Sprite(8, 10, left_arrow1+left_arrow2+left_arrow3, self.left_arrow_sprite.width+self.option_sprite.width, self.name_sprite.height+2, 0, 1, 0)
         self.current_option = Logo.option.start
         self.audio = True
@@ -259,8 +245,8 @@ class Logo():
             self.current_option += 1
         if self.current_option == Logo.option.exit or self.current_option == Logo.option.start:
             self.option_sprite.setFrame(self.current_option)
-        elif self.current_option == Logo.option.audio:
-            self.option_sprite.setFrame(Logo.option.audio if self.audio else Logo.option.audio+2)
+        # elif self.current_option == Logo.option.audio:
+        #     self.option_sprite.setFrame(Logo.option.audio if self.audio else Logo.option.audio+2)
         else:
             self.option_sprite.setFrame(Logo.option.clear_hs if not self.cleared_hs else Logo.option.clear_hs+2)
         
@@ -383,9 +369,8 @@ class Ship():
     
     ship_direction = ShipDirection(*range(5))
     
-    def __init__(self, max_missiles):
+    def __init__(self, max_missiles, abducted_fire_delay):
         self.sprite = thumby.Sprite(7, 6, ship_none+ship_left+ship_right+ship_forward+ship_back, thumby.display.width/2, thumby.display.height/2, 0)
-        self.explosion_sprite = thumby.Sprite(7, 6, ship_explosion1+ship_explosion1+ship_explosion2+ship_explosion2, 0, 0)
         self.alive = True
         self.explosion_frames = 10
         self.xvelocity = 0
@@ -395,6 +380,7 @@ class Ship():
             self.missile_queue.append(Missile())
         self.move_timer = time.ticks_ms()
         self.frame_rate = 25
+        self.abducted_fire_delay = abducted_fire_delay
         
         
     def move(self, l, r, u, d, t0):
@@ -556,8 +542,6 @@ class BossAlien():
         if time.ticks_diff(self.move_timer, t0) >= 0:
             return
         self.move_timer = time.ticks_add(t0, self.speed)
-        
-        
         
         if self.state == BossAlien.boss_state.enter:
             self.speed = 100
