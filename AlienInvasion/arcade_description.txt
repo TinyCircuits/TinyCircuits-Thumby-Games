@@ -3,7 +3,7 @@ Avoid being abducted or destroyed for as long as possible!
 
 Controls:
 D-PAD: Move
-A: Fire a single missle forward
+A: Fire a single missile forward
 B: Fire two missiles to the left and right
 
 Tips:
@@ -17,5 +17,6 @@ Tips:
 ~ Normal aliens gain a new movement type after each boss is defeated.
 ~ The high score can be cleared on the logo screen.
 
-Licence: MIT
+Author: jpritcha3-14, find me on GitHub :)
+License: MIT
 Version: 1.0
