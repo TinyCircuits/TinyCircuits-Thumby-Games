@@ -10,7 +10,7 @@ Tips:
 ~ Score points by destroying aliens and bosses.
 ~ Aliens that make it all the way across the screen subtract from your score.
 ~ Only 3 missiles can be on screen at a time, aim carefully!
-~ Remaining missiles are shown at the bottom left of the screen.
+~ Remaining missiles are shown at the bottom right of the screen.
 ~ During a boss encounter normal aliens do not add or subtract from your score, focus on the boss!
 ~ Boss health appears in the top left of the screen.
 ~ While being abducted, the ship can't move but can still fire missiles forward at a delayed rate (a bar appears above the missile count).  Keep mashing and stay alive!
