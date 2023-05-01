@@ -1,0 +1,2 @@
+This is a simple game for trying out different things. It is not fully finished but it’s just kind of a test game. 
+Use D-Pad to move left and right, and A or B for jumping.
