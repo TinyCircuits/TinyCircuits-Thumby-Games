@@ -4,6 +4,12 @@ https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TreeTasker/TreeTasker.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TreeTasker/TreeTasker_Video.webm
 
+NAME=AlienInvasion
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/AlienInvasion/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/AlienInvasion/game_classes.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/AlienInvasion/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/AlienInvasion/AlienInvasion.py
+
 NAME=HelicopterRun
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/HelicopterRun/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/HelicopterRun/HelicopterRun.py
