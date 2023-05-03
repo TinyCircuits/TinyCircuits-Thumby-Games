@@ -10,6 +10,12 @@ https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/AlienInvasion/arcade_title_video.webm
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/AlienInvasion/AlienInvasion.py
 
+NAME=DiscDungeon
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/DiscDungeon/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/DiscDungeon/DiscDungeon.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/DiscDungeon/arcade_DiscDungeon_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/DiscDungeon/numberFont.bin
+
 NAME=HelicopterRun
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/HelicopterRun/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/HelicopterRun/HelicopterRun.py
