@@ -4,6 +4,19 @@ import math
 import time
 from collections import namedtuple, deque
 
+MAX_NOTES = 30
+
+Note = namedtuple("note", ("freq", "duration"))
+
+FIRE_MISSILE_SOUND = tuple(Note(freq, 10) for freq in range(6000,8000,200))
+TRACTOR_BEAM_SOUND = tuple(Note(1500 + int(500*math.cos(math.pi*2/30*val)), 15) for val in range(30))
+GAME_OVER_SOUND = tuple(Note(1000 + val*50 + int(1000*math.sin(math.pi*2/15*val)), 15) for val in range(50))
+CLICK_SOUND = tuple([Note(1000, 20)] )
+
+def explosion_sound():
+    return tuple(Note(random.randint(100, 1500), 10) for _ in range(20))
+
+
 # use namedtuples to simulate enums
 ShipDirection = namedtuple("ship_direction", ("none", "left", "right", "up", "down"))
 MissileDirection = namedtuple("ship_direction", ("forward", "left", "right"))
@@ -238,10 +251,12 @@ class Logo():
         self.timer = time.ticks_ms()
             
     def update(self, t0):
-        
+        click = False
         if thumby.buttonL.justPressed() and self.current_option > Logo.option.exit:
+            click = True
             self.current_option -= 1
         if thumby.buttonR.justPressed() and self.current_option < Logo.option.clear_hs:
+            click = True
             self.current_option += 1
         if self.current_option == Logo.option.exit or self.current_option == Logo.option.start:
             self.option_sprite.setFrame(self.current_option)
@@ -269,6 +284,7 @@ class Logo():
             thumby.display.drawSprite(self.right_arrow_sprite)
         
         thumby.display.update()
+        return click
         
 
 class Explosion():
@@ -621,3 +637,63 @@ class BossAlien():
             if self.ship.sprite.y < -self.ship.sprite.height:
                 self.ship.alive = False
                 self.state = BossAlien.boss_state.inactive
+
+
+class Channel():
+    
+    def __init__(self):
+        self.queue = []
+        self.timer = time.ticks_ms()
+        
+    def __lt__(self, other):
+        return len(self.queue) < len(other.queue)
+    
+    def update(self, t0):
+        if time.ticks_diff(self.timer, t0) > 0:
+            return
+        if self.queue:
+            cur_note = self.queue.pop()
+            self.timer = time.ticks_add(t0, cur_note.duration)
+            thumby.audio.play(cur_note.freq, cur_note.duration)
+            print("playing", cur_note.freq, "for", cur_note.duration)
+    
+
+class AudioMixer():
+    
+    def __init__(self, channels):
+        self.channels = [Channel() for _ in range(channels)]
+        self.static_channel = Channel()
+        self.static_sound = None
+        
+    def play_sound(self, sound):
+        print("adding", sound)
+        self.channels.sort()
+        self.channels[0].queue = list(sound)
+        self.channels[0].timer = time.ticks_ms()
+        
+    def play_static_sound(self, sound):
+        self.static_sound = sound
+        
+    def stop_static_sound(self):
+        self.static_channel.queue = []
+        self.static_sound = None
+    
+    def update(self, t0):
+        if self.static_sound and not self.static_channel.queue:
+            self.static_channel.queue = list(self.static_sound)
+        self.static_channel.update(t0)
+        for channel in filter(lambda x: len(x.queue), self.channels):
+            channel.update(t0)
+
+            
+        
+    
+    
+        
+        
+
+        
+        
+        
+        
+        

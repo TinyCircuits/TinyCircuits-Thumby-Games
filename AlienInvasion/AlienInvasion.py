@@ -17,7 +17,14 @@ from game_classes import (
     Logo,
     BossAlien,
     BossState,
+    AudioMixer,
+    CLICK_SOUND,
+    FIRE_MISSILE_SOUND,
+    TRACTOR_BEAM_SOUND,
+    GAME_OVER_SOUND,
+    explosion_sound,
 )
+
 
 MAX_STARS = 10
 MAX_MISSILES = 3
@@ -35,6 +42,7 @@ thumby.saveData.setName("alieninvaders")
 
 missile_hud = MissileHUD()
 logo = Logo()
+mixer = AudioMixer(MAX_EXPLOSIONS + MAX_MISSILES)
 
 setup = True
 
@@ -47,8 +55,11 @@ def show_logo():
     thumby.buttonB.justPressed()
     
     while (1):
-        logo.update(time.ticks_ms())
+        t0 = time.ticks_ms()
+        if logo.update(t0):
+            mixer.play_sound(CLICK_SOUND)
         if thumby.actionJustPressed():
+            mixer.play_sound(CLICK_SOUND)
             if logo.current_option == Logo.option.exit:
                 thumby.reset()
             elif logo.current_option == Logo.option.start:
@@ -60,6 +71,8 @@ def show_logo():
                 thumby.saveData.setItem("high_score", 0)
                 thumby.saveData.save()
                 logo.cleared_hs = True
+        mixer.update(t0)
+            
 
 def get_high_score():
     high_score = 0
@@ -198,30 +211,41 @@ while(1):
         for alien in alien_list:
             if ship.alive and alien.collides_with(ship.sprite):
                 ship.alive = False
+                mixer.play_sound(explosion_sound())
                 if explosion_queue:
                     explosion_list.append(explosion_queue.popleft().place(ship.sprite.x, ship.sprite.y))
             for missile in missile_list:
                 if alien.collides_with(missile.sprite):
                     alien.alive, missile.alive = False, False
+                    mixer.play_sound(explosion_sound())
                     if not boss_alien.state:
                         score += alien.score()
                         boss_alien.countdown -= alien.score()
                     if explosion_queue:
-                        explosion_list.append(explosion_queue.popleft().place(alien.sprite.x-1, alien.sprite.y-1)) 
+                        explosion_list.append(explosion_queue.popleft().place(alien.sprite.x-1, alien.sprite.y-1))
+                        
+    if boss_alien.state == BossAlien.boss_state.beam_down and not mixer.static_sound and not game_over:
+        mixer.play_static_sound(TRACTOR_BEAM_SOUND)
+        
+    if mixer.static_sound and boss_alien.state in (BossAlien.boss_state.inactive, BossAlien.boss_state.move, boss_alien.boss_state.exit):
+        mixer.stop_static_sound()
            
     if boss_alien.state:  # "inactive" state is 0
         # Check for collisions
         if boss_alien.collides_with(ship.sprite) and ship.alive and not boss_alien.state >= BossAlien.boss_state.abduct:
             ship.alive = False
+            mixer.play_sound(explosion_sound())
             if explosion_queue:
                 explosion_list.append(explosion_queue.popleft().place(ship.sprite.x, ship.sprite.y))
         for missile in missile_list:
             if boss_alien.collides_with(missile.sprite):
                 missile.alive = False
                 boss_alien.health -= 1
+                mixer.play_sound(explosion_sound())
                 if explosion_queue and boss_alien.health > 0:
                     explosion_list.append(explosion_queue.popleft().place(missile.sprite.x-2, missile.sprite.y-2))
             if boss_alien.health <= 0:
+                mixer.play_sound(explosion_sound())
                 if explosion_queue:
                     explosion_list.append(explosion_queue.popleft().place(boss_alien.sprite.x, boss_alien.sprite.y-2))
                 boss_alien.state = BossAlien.boss_state.inactive
@@ -295,9 +319,13 @@ while(1):
             )
             # Fire missiles
             if thumby.buttonA.justPressed():
-                missile_list.extend(ship.fire(Missile.fire_direction.forward))
+                if new_missile := ship.fire(Missile.fire_direction.forward):
+                    mixer.play_sound(FIRE_MISSILE_SOUND)
+                    missile_list.extend(new_missile)
             if thumby.buttonB.justPressed():
-                missile_list.extend(ship.fire(Missile.fire_direction.side))
+                if new_missiles := ship.fire(Missile.fire_direction.side):
+                    mixer.play_sound(FIRE_MISSILE_SOUND)
+                    missile_list.extend(new_missiles)
                 
         if boss_alien.state == BossAlien.boss_state.abduct:
             # Fire one missile for every ABDUCTED_FIRE_DELAY+1 button presses
@@ -323,6 +351,8 @@ while(1):
     elif game_over or len(explosion_list) == 0:
         if not game_over:
             game_over = True
+            mixer.stop_static_sound()
+            mixer.play_sound(GAME_OVER_SOUND)
             check_and_set_high_score(score, old_high_score)
             restart_wait = time.ticks_add(t0, MIN_RESTART_TIME)
         thumby.display.setFont("/lib/font5x7.bin", 5, 7, 1)
@@ -373,6 +403,9 @@ while(1):
         
     # Draw score
     thumby.display.drawText(str(score), 0, int(thumby.display.height - 5), 1)
+    
+    # Play
+    mixer.update(t0)
         
     # Draw frame
     thumby.display.update()
