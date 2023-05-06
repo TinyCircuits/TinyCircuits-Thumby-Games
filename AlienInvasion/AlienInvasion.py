@@ -18,7 +18,7 @@ from game_classes import (
     BossAlien,
     BossState,
     AudioMixer,
-    CLICK_SOUND,
+    BEEP_SOUND,
     FIRE_MISSILE_SOUND,
     TRACTOR_BEAM_SOUND,
     GAME_OVER_SOUND,
@@ -57,17 +57,19 @@ def show_logo():
     while (1):
         t0 = time.ticks_ms()
         if logo.update(t0):
-            mixer.play_sound(CLICK_SOUND)
+            mixer.play_sound(BEEP_SOUND)
         if thumby.actionJustPressed():
-            mixer.play_sound(CLICK_SOUND)
             if logo.current_option == Logo.option.exit:
                 thumby.reset()
             elif logo.current_option == Logo.option.start:
+                mixer.play_sound(BEEP_SOUND)
                 break
-            # TODO: add audio after experimenting with polysynth
-            # elif logo.current_option == Logo.option.audio:
-            #     logo.audio = not logo.audio
+            elif logo.current_option == Logo.option.audio:
+                logo.audio = not logo.audio
+                thumby.audio.setEnabled(logo.audio)
+                mixer.play_sound(BEEP_SOUND)
             elif logo.current_option == Logo.option.clear_hs and not logo.cleared_hs:
+                mixer.play_sound(BEEP_SOUND)
                 thumby.saveData.setItem("high_score", 0)
                 thumby.saveData.save()
                 logo.cleared_hs = True
@@ -409,4 +411,4 @@ while(1):
         
     # Draw frame
     thumby.display.update()
-        
+

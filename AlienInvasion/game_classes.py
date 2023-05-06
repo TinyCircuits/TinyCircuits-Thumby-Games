@@ -8,10 +8,10 @@ MAX_NOTES = 30
 
 Note = namedtuple("note", ("freq", "duration"))
 
-FIRE_MISSILE_SOUND = tuple(Note(freq, 10) for freq in range(6000,8000,200))
+FIRE_MISSILE_SOUND = tuple(Note(freq, 15) for freq in range(5000,7000,200))
 TRACTOR_BEAM_SOUND = tuple(Note(1500 + int(500*math.cos(math.pi*2/30*val)), 15) for val in range(30))
 GAME_OVER_SOUND = tuple(Note(1000 + val*50 + int(1000*math.sin(math.pi*2/15*val)), 15) for val in range(50))
-CLICK_SOUND = tuple([Note(1000, 20)] )
+BEEP_SOUND = tuple([Note(1500, 30)])
 
 def explosion_sound():
     return tuple(Note(random.randint(100, 1500), 10) for _ in range(20))
@@ -22,9 +22,7 @@ ShipDirection = namedtuple("ship_direction", ("none", "left", "right", "up", "do
 MissileDirection = namedtuple("ship_direction", ("forward", "left", "right"))
 FireDirection = namedtuple("ship_direction", ("forward", "side"))
 BossState = namedtuple("boss_state", ("inactive", "enter", "beam_down", "wait", "beam_up", "move", "abduct", "exit"))
-# TODO: add audio after experimenting with polysynth
-# Option = namedtuple("option", ("exit", "start", "audio", "clear_hs"))
-Option = namedtuple("option", ("exit", "start", "clear_hs"))
+Option = namedtuple("option", ("exit", "start", "audio", "clear_hs"))
 
 # BITMAP: width: 72, height: 26
 game_logo = bytearray([0,0,224,240,24,24,24,240,224,0,0,248,248,0,0,0,0,0,24,24,248,248,24,24,0,0,248,248,152,152,24,24,0,0,248,248,224,192,128,248,248,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -69,8 +67,8 @@ decoration1d = bytearray([0,0,0,0,12,14,37,71,79,45,6,4,0,0,0,
             0,0,0,0,32,66,68,68,68,68,66,32,0,0,0])
 
 # BITMAP: width: 56, height: 10
-start = bytearray([0,0,0,0,0,0,0,0,0,0,0,24,36,36,36,196,0,0,4,4,252,4,4,0,0,248,36,36,36,36,248,0,0,252,36,100,164,24,0,0,4,4,252,4,4,0,0,0,0,0,0,0,0,0,0,0,
-            0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,1,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0])
+start = bytearray([0,0,0,0,0,0,0,0,0,0,0,24,36,36,36,196,0,0,4,4,252,4,4,0,0,248,36,36,36,248,0,0,252,36,100,164,24,0,0,4,4,252,4,4,0,0,0,0,0,0,0,0,0,0,0,0,
+           0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,1,0,0,0,0,1,0,0,0,1,0,0,1,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0])
  
 # BITMAP: width: 56, height: 10
 exit = bytearray([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,252,36,36,4,4,0,0,140,80,32,80,140,0,0,4,4,252,4,4,0,0,4,4,252,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -235,14 +233,14 @@ explosion5 = bytearray([70,129,0,128,1,0,129,69])
 
 class Logo():
     
-    option = Option(*range(3))
+    option = Option(*range(4))
     
     def __init__(self):
         self.name_sprite = thumby.Sprite(72, 26, game_logo, 0, 0, 0)
         self.decoration_spritea = thumby.Sprite(16, 16, decoration0a+decoration0b+decoration0c+decoration0d+decoration0e, thumby.display.width - 29, 0, 0)
         self.decoration_spriteb = thumby.Sprite(15, 16, decoration1a+decoration1b+decoration1c+decoration1d, thumby.display.width - 15, 0, 0)
         self.left_arrow_sprite = thumby.Sprite(8, 10, left_arrow1+left_arrow2+left_arrow3, 0, self.name_sprite.height+2, 0)
-        self.option_sprite = thumby.Sprite(56, 10, exit+start+clear_hs+audio_on+cleared+audio_off, self.left_arrow_sprite.width, self.name_sprite.height+2, 0)
+        self.option_sprite = thumby.Sprite(56, 10, exit+start+audio_on+clear_hs+audio_off+cleared, self.left_arrow_sprite.width, self.name_sprite.height+2, 0)
         self.right_arrow_sprite = thumby.Sprite(8, 10, left_arrow1+left_arrow2+left_arrow3, self.left_arrow_sprite.width+self.option_sprite.width, self.name_sprite.height+2, 0, 1, 0)
         self.current_option = Logo.option.start
         self.audio = True
@@ -251,17 +249,17 @@ class Logo():
         self.timer = time.ticks_ms()
             
     def update(self, t0):
-        click = False
+        beep = False
         if thumby.buttonL.justPressed() and self.current_option > Logo.option.exit:
-            click = True
+            beep = True
             self.current_option -= 1
         if thumby.buttonR.justPressed() and self.current_option < Logo.option.clear_hs:
-            click = True
+            beep = True
             self.current_option += 1
         if self.current_option == Logo.option.exit or self.current_option == Logo.option.start:
             self.option_sprite.setFrame(self.current_option)
-        # elif self.current_option == Logo.option.audio:
-        #     self.option_sprite.setFrame(Logo.option.audio if self.audio else Logo.option.audio+2)
+        elif self.current_option == Logo.option.audio:
+            self.option_sprite.setFrame(Logo.option.audio if self.audio else Logo.option.audio+2)
         else:
             self.option_sprite.setFrame(Logo.option.clear_hs if not self.cleared_hs else Logo.option.clear_hs+2)
         
@@ -284,7 +282,8 @@ class Logo():
             thumby.display.drawSprite(self.right_arrow_sprite)
         
         thumby.display.update()
-        return click
+
+        return beep
         
 
 class Explosion():
@@ -655,7 +654,6 @@ class Channel():
             cur_note = self.queue.pop()
             self.timer = time.ticks_add(t0, cur_note.duration)
             thumby.audio.play(cur_note.freq, cur_note.duration)
-            print("playing", cur_note.freq, "for", cur_note.duration)
     
 
 class AudioMixer():
@@ -666,7 +664,6 @@ class AudioMixer():
         self.static_sound = None
         
     def play_sound(self, sound):
-        print("adding", sound)
         self.channels.sort()
         self.channels[0].queue = list(sound)
         self.channels[0].timer = time.ticks_ms()
@@ -685,15 +682,3 @@ class AudioMixer():
         for channel in filter(lambda x: len(x.queue), self.channels):
             channel.update(t0)
 
-            
-        
-    
-    
-        
-        
-
-        
-        
-        
-        
-        
