@@ -65,8 +65,7 @@ def show_logo():
                 mixer.play_sound(BEEP_SOUND)
                 break
             elif logo.current_option == Logo.option.audio:
-                logo.audio = not logo.audio
-                thumby.audio.setEnabled(logo.audio)
+                thumby.audio.setEnabled(not thumby.audio.enabled)
                 mixer.play_sound(BEEP_SOUND)
             elif logo.current_option == Logo.option.clear_hs and not logo.cleared_hs:
                 mixer.play_sound(BEEP_SOUND)

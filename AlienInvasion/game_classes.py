@@ -243,7 +243,6 @@ class Logo():
         self.option_sprite = thumby.Sprite(56, 10, exit+start+audio_on+clear_hs+audio_off+cleared, self.left_arrow_sprite.width, self.name_sprite.height+2, 0)
         self.right_arrow_sprite = thumby.Sprite(8, 10, left_arrow1+left_arrow2+left_arrow3, self.left_arrow_sprite.width+self.option_sprite.width, self.name_sprite.height+2, 0, 1, 0)
         self.current_option = Logo.option.start
-        self.audio = True
         self.cleared_hs = False
         self.frame_rate = 100
         self.timer = time.ticks_ms()
@@ -259,7 +258,7 @@ class Logo():
         if self.current_option == Logo.option.exit or self.current_option == Logo.option.start:
             self.option_sprite.setFrame(self.current_option)
         elif self.current_option == Logo.option.audio:
-            self.option_sprite.setFrame(Logo.option.audio if self.audio else Logo.option.audio+2)
+            self.option_sprite.setFrame(Logo.option.audio if thumby.audio.enabled else Logo.option.audio+2)
         else:
             self.option_sprite.setFrame(Logo.option.clear_hs if not self.cleared_hs else Logo.option.clear_hs+2)
         
