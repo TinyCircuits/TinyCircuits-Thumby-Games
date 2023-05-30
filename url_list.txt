@@ -1,3 +1,9 @@
+NAME=TinyTimbers
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyTimbers/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyTimbers/TinyTimbers.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyTimbers/TinyTimbers.blocks
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyTimbers/arcade_title_video.webm
+
 NAME=AlienInvasion
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/AlienInvasion/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/AlienInvasion/AlienInvasion.py
