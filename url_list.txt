@@ -1,3 +1,9 @@
+NAME=Simon
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Simon/emulator_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Simon/numberFont.bin
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Simon/Simon.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Simon/arcade_description.txt
+
 NAME=TinyTimbers
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyTimbers/TinyTimbers.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyTimbers/TinyTimbers.blocks
