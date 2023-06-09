@@ -10,6 +10,11 @@ https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyTimbers/arcade_title_video.webm
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyTimbers/arcade_description.txt
 
+NAME=ThumbMat
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/ThumbMat/ThumbMat.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/ThumbMat/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/ThumbMat/arcade_description.txt
+
 NAME=AlienInvasion
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/AlienInvasion/AlienInvasion.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/AlienInvasion/arcade_title_video.webm
