@@ -1,0 +1,7 @@
+TinyTunes
+
+A music editor: write tunes on your Thumby.
+
+If you can't read music, don't worry, just experiment. You can write a tune!
+
+v1.0
