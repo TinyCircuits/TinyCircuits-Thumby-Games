@@ -8,6 +8,16 @@ import uos
 import random
 import machine
 
+try:
+    # put thumbyGrayscale.py into /lib
+    # https://github.com/Timendus/thumby-grayscale/blob/main/lib/thumbyGrayscale.py
+    import thumbyGrayscale as grayscale
+    display = grayscale.display
+    GRAYSCALE = True
+except ImportError:
+    from thumby import display
+    GRAYSCALE = False
+
 machine.freq(48000000)
 
 TinyBlocksSplash = bytearray([170,85,170,85,170,85,170,85,170,85,170,85,170,21,10,5,2,1,0,1,0,1,0,1,0,1,0,1,0,1,8,121,8,1,120,1,120,16,33,120,1,24,97,24,1,0,1,0,1,0,1,0,1,0,1,2,5,10,85,170,85,170,85,170,85,170,85,170,85,170,85,170,
@@ -21,10 +31,11 @@ B_SIZE =(B_ROWS * B_COLS)
 
 KEY_LEFT   =0
 KEY_RIGHT  =1
+KEY_ROT    =5
 KEY_ROT_L  =2
 KEY_ROT_R  =3
 KEY_DROP   =4
-KEY_PAUSE  =5
+#KEY_PAUSE  =5
 KEY_QUIT   =6
 
 keys = 'LR21DUS'
@@ -88,21 +99,23 @@ shape = [0,0,0,0]
 ghost_flicker = False
 
 def clearScreen():
-      
-  thumby.display.drawFilledRectangle(34,2,36,12-1 ,0)
-  thumby.display.drawFilledRectangle(39-5,18,14,12-1,0)
-  thumby.display.drawFilledRectangle(52,18,18,12-1,0)
+  display.drawFilledRectangle(34,2,36,12-1 ,0)
+  display.drawFilledRectangle(39-5,18,14,12-1,0)
+  display.drawFilledRectangle(52,18,18,12-1,0)
   
-  thumby.display.drawRectangle(34-1,2-1,36+2,12+2-1,1)
-  thumby.display.drawRectangle(39-1-5,18-1,14+2,12+2-1,1)
-  thumby.display.drawRectangle(52-1,18-1,18+2,12+2-1,1)
+  display.drawRectangle(34-1,2-1,36+2,12+2-1,1)
+  display.drawRectangle(39-1-5,18-1,14+2,12+2-1,1)
+  display.drawRectangle(52-1,18-1,18+2,12+2-1,1)
 
 def setBlock(xb, yb, val):
-  thumby.display.drawFilledRectangle(xb*2, yb*2, 2, 2, 1 if val else 0)
+  display.drawFilledRectangle(xb*2, yb*2, 2, 2, 1 if val else 0)
 
 def setGhostBlock(xb, yb):
-  thumby.display.setPixel(xb*2 + int(ghost_flicker), yb*2, 1)
-  thumby.display.setPixel(xb*2 + 1 - int(ghost_flicker), yb*2+1, 1)
+  if GRAYSCALE:
+    display.drawFilledRectangle(xb*2, yb*2, 2, 2, display.DARKGRAY)
+  else:
+    display.setPixel(xb*2 + int(ghost_flicker), yb*2, 1)
+    display.setPixel(xb*2 + 1 - int(ghost_flicker), yb*2+1, 1)
 
 def updateScreen(showGhost = False, ghostPos = None):
   #print("update")
@@ -112,7 +125,7 @@ def updateScreen(showGhost = False, ghostPos = None):
   preview = []
   for i in range(B_COLS * 10):
     preview.append(0)
-  # thumby.display piece preview
+  # display piece preview
   #memset (preview, 0, sizeof(preview));
   preview[2 * B_COLS + 1] = 7
   preview[2 * B_COLS + 1 + peek_shape[1]] = 7
@@ -123,7 +136,7 @@ def updateScreen(showGhost = False, ghostPos = None):
     for x in range(4):
       setBlock(x + 22-3, y + 10, preview[y * B_COLS + x])
 
-  # thumby.display board.
+  # display board.
   for y in range(1, B_ROWS-1):
     for x in range(B_COLS):
       setBlock(x + 2, y-1, board[y * B_COLS + x])
@@ -131,22 +144,24 @@ def updateScreen(showGhost = False, ghostPos = None):
   if showGhost:
       x = ghostPos % B_COLS
       y = ghostPos // B_COLS
-      setGhostBlock(x + 2, y-1)
+      if board[y * B_COLS + x] == 0:
+        setGhostBlock(x + 2, y-1)
       for i in shape[1:]:
           p = i + ghostPos
           x = p % B_COLS
           y = p // B_COLS
-          setGhostBlock(x + 2, y-1)
+          if board[y * B_COLS + x] == 0:
+            setGhostBlock(x + 2, y-1)
 
   # Update points and level*/
   #while (lines_cleared >= 10):
     #lines_cleared -= 10
     #level+=1
   
-  thumby.display.drawText('%05d' % (points), 36+2, 4,1)
-  thumby.display.drawText('%02d' % lines_cleared, 36+18+2, 20,1)
+  display.drawText('%05d' % (points), 36+2, 4,1)
+  display.drawText('%02d' % lines_cleared, 36+18+2, 20,1)
   # level
-  thumby.display.update()
+  display.update()
 
 def fits_in(shape, pos):
   try:
@@ -179,46 +194,49 @@ def next_shape():
 def show_high_score():
     
   for y in range(40):
-    thumby.display.drawFilledRectangle(8,40-y,20,1,1)
+    display.drawFilledRectangle(8,40-y,20,1,1)
     time.sleep_ms(15)
-    thumby.display.update()
+    display.update()
     thumby.audio.play(100+(40-y)*20, 50)
   
   for i in range(41):
-    thumby.display.drawFilledRectangle(8,0,20,i,0)
-    thumby.display.drawText("G", 11, -2+5+0,1)
-    thumby.display.drawText("A", 11, -2+5+8,1)
-    thumby.display.drawText("M", 11, -2+5+16,1)
-    thumby.display.drawText("E", 11, -2+5+24,1)
-    thumby.display.drawText("O", 20, 2+5+0,1)
-    thumby.display.drawText("V", 20, 2+5+8,1)
-    thumby.display.drawText("E", 20, 2+5+16,1)
-    thumby.display.drawText("R", 20, 2+5+24,1)
+    display.drawFilledRectangle(8,0,20,i,0)
+    display.drawText("G", 11, -2+5+0,1)
+    display.drawText("A", 11, -2+5+8,1)
+    display.drawText("M", 11, -2+5+16,1)
+    display.drawText("E", 11, -2+5+24,1)
+    display.drawText("O", 20, 2+5+0,1)
+    display.drawText("V", 20, 2+5+8,1)
+    display.drawText("E", 20, 2+5+16,1)
+    display.drawText("R", 20, 2+5+24,1)
     time.sleep_ms(10)
-    thumby.display.update()
+    display.update()
   
   lastUpdate=time.ticks_ms()
   while(getcharinputNew()==' '):
     color = 1
     if (((time.ticks_ms()-lastUpdate)//500) & 1):
       color = 0
-    thumby.display.drawText("G", 11, -2+5+0, color)
-    thumby.display.drawText("A", 11, -2+5+8, color)
-    thumby.display.drawText("M", 11, -2+5+16, color)
-    thumby.display.drawText("E", 11, -2+5+24, color)
-    thumby.display.drawText("O", 20, 2+5+0, color)
-    thumby.display.drawText("V", 20, 2+5+8, color)
-    thumby.display.drawText("E", 20, 2+5+16, color)
-    thumby.display.drawText("R", 20, 2+5+24, color)
+    display.drawText("G", 11, -2+5+0, color)
+    display.drawText("A", 11, -2+5+8, color)
+    display.drawText("M", 11, -2+5+16, color)
+    display.drawText("E", 11, -2+5+24, color)
+    display.drawText("O", 20, 2+5+0, color)
+    display.drawText("V", 20, 2+5+8, color)
+    display.drawText("E", 20, 2+5+16, color)
+    display.drawText("R", 20, 2+5+24, color)
     if(i<=42):
-      thumby.display.drawFilledRectangle(8,i,20,42-i,0)
+      display.drawFilledRectangle(8,i,20,42-i,0)
       i+=1
     time.sleep_ms(10)
-    thumby.display.update()
+    display.update()
 
 fastDropDelay=50
 dropDelay=500
 leftRightUpdateDelay=100
+
+if GRAYSCALE:
+  print("enabled grayscale")
 
 while(True):
   print("start")
@@ -230,26 +248,26 @@ while(True):
   backup = []
   movingLeftOrRight = 0
   
-  thumby.display.fill(0)
-  thumby.display.blit(TinyBlocksSplash, 0,0, 72, 40,0,0,0)
-  #thumby.display.update()
+  display.fill(0)
+  display.blit(TinyBlocksSplash, 0,0, 72, 40,0,0,0)
+  #display.update()
   #while(1):
   #    a=1
-  #thumby.display.fillRect(10,24,72-20,16,0)
+  #display.fillRect(10,24,72-20,16,0)
   isdisplayed=0;
-  thumby.display.update()
+  display.update()
   
   while(getcharinputNew()==' '):
     if((time.ticks_ms()//1000)&1):
       if isdisplayed == 0 :
-        thumby.display.drawText("START", 72//2-14, 26,1)
-        thumby.display.update()
+        display.drawText("START", 72//2-14, 26,1)
+        display.update()
         isdisplayed = 1
     else:
       if isdisplayed == 1 :
-        #thumby.display.fillRect(10,24,72-20,16,0)
-        thumby.display.drawText("START", 72//2-14, 26,0)
-        thumby.display.update()
+        #display.fillRect(10,24,72-20,16,0)
+        display.drawText("START", 72//2-14, 26,0)
+        display.update()
         isdisplayed = 0
 
 
@@ -267,10 +285,13 @@ while(True):
   lastUpdate=time.ticks_ms()
   lastDrop=time.ticks_ms()
   
-  thumby.display.fill(0)
+  display.fill(0)
   for x in range(72/2):
     for y in range(5):
-      thumby.display.blit(bytearray([0x55,0xAA]), x*2, y*8, 2, 8,0,0,0)
+      texture = bytearray([0x55,0xAA])
+      if GRAYSCALE:
+        texture = [bytearray([0x00,0x00]), texture]
+      display.blit(texture, x*2, y*8, 2, 8,0,0,0)
       
   while (1):
     ghost_flicker = not ghost_flicker
@@ -346,7 +367,7 @@ while(True):
       # Check if it fits, if not restore shape from backup 
       if (fits_in (shape, pos)==0):
         shape = backup
-    if (c == keys[KEY_ROT_R]):
+    if (c == keys[KEY_ROT_R] or c == keys[KEY_ROT]):
       backup = shape
       shape = shapes[4*shape[0]:4*shape[0]+4]
       shape = shapes[4*shape[0]:4*shape[0]+4]
