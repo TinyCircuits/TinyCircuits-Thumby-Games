@@ -16,11 +16,19 @@ bitmap2 = bytearray([31,255,255,255,255,241,241,31,
            0,255,255,255,255,255,255,0,
            0,255,255,255,255,255,255,0,
            0,255,255,255,255,255,255,0])
+# BITMAP: width: 60, height: 30
+bitmap3 = bytearray([0,0,12,12,12,12,12,252,252,12,12,12,236,236,0,0,0,0,0,224,224,0,0,252,252,0,0,0,0,0,0,0,0,0,0,192,224,112,56,28,12,12,12,28,56,112,224,192,0,0,248,248,24,24,24,24,248,248,0,0,
+           0,0,0,0,0,0,0,255,255,0,0,0,255,255,128,128,128,128,128,255,255,0,0,255,255,0,0,0,0,0,0,0,0,0,0,255,255,48,48,48,48,48,48,48,48,48,255,255,0,0,255,255,6,6,6,6,7,7,0,0,
+           0,0,0,0,0,0,0,255,255,0,0,0,255,255,1,1,1,1,1,255,255,0,0,255,255,128,128,128,128,128,128,128,128,0,0,255,255,0,0,0,0,0,0,0,0,0,255,255,0,0,255,255,0,0,0,0,0,0,0,0,
+           0,0,0,0,0,0,0,1,1,0,0,0,1,1,0,0,0,0,0,1,1,0,0,1,1,1,1,1,1,1,1,1,1,0,0,1,1,0,0,0,0,0,0,0,0,0,1,1,0,0,1,1,0,0,0,0,0,0,0,0])
 
 bird = thumby.Sprite(7,6,bitmap0)
 bird.x = 3
 gamestate = "menu"
 bird.y = 10
+menuScreen = thumby.Sprite(60,30,bitmap3)
+menuScreen.x = 7
+menuScreen.y = 2
 yVel = 0
 pipe1X = 72
 pipe1Y = random.randint(-37,-20)
@@ -92,18 +100,28 @@ while True:
                 pipe2X = 116
                 pipe2Y = random.randint(-37,-20)
                 bird.y=10
+                pipe1PT = False
+                pipe2PT = False
                 init = True
     pipe2UP.x = pipe2X
     pipe2DN.x = pipe2X
     pipe1UP.x = pipe1X
     pipe1DN.x = pipe1X
     thumby.display.fill(0)
-    thumby.display.drawSprite(bird)
+    if gamestate == "play":
+        thumby.display.drawSprite(bird)
     thumby.display.drawSprite(pipe1UP)
     thumby.display.drawSprite(pipe1DN)
     thumby.display.drawSprite(pipe2UP)
     thumby.display.drawSprite(pipe2DN)
-    thumby.display.drawText(str(score),60,10,1)
+    thumby.display.drawLine(0,39,71,39,1)
+    if gamestate == "menu":
+        thumby.display.drawSprite(menuScreen)
+        thumby.display.setFont("/lib/font3x5.bin",3,5,1)
+        thumby.display.drawText("PRESS ANY BUTTON",5,30,1)
+        thumby.display.setFont("/lib/font5x7.bin", 5, 7, 1)
+    if gamestate == "play":
+        thumby.display.drawText(str(score),60,10,1)
     # thumby.display.fill(0)
     # thumby.display.setFont("/lib/font8x8.bin",8,8,1)
     # thumby.display.drawText("GAME",2,10,1)
