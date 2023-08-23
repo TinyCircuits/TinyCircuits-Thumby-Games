@@ -3,12 +3,45 @@ https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Thlap/Thlap.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Thlap/arcade_description.txt
 
+NAME=Thoom
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Thoom/customrender.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Thoom/gamesprite.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Thoom/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Thoom/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Thoom/Thoom.py
+
+NAME=YurisGame
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/YurisGame/YurisGame.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/YurisGame/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/YurisGame/YurisGame_video.webm
+
+NAME=Wolfram
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Wolfram/Wolfram.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Wolfram/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Wolfram/arcade_title_video.webm
+
 NAME=TinyTunes
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyTunes/TinyTunes.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyTunes/emulator_video.webm
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyTunes/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyTunes/buttons.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyTunes/keyboard.py
+
+NAME=yatzy
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/yatzy/yatzy.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/yatzy/fs_images.bin
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/yatzy/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/yatzy/yatzy.webm
+
+NAME=Thumgeon
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Thumgeon/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Thumgeon/Thumgeon.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Thumgeon/arcade_title_video.webm
+
+NAME=TinyBlocks
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyBlocks/TinyBlocks.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyBlocks/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyBlocks/arcade_title_video.webm
 
 NAME=Simon
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Simon/Simon.py
@@ -83,11 +116,6 @@ NAME=DonutClicker
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/DonutClicker/DonutClicker.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/DonutClicker/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/DonutClicker/arcade_title_video.webm
-
-NAME=YurisGame
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/YurisGame/YurisGame.py
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/YurisGame/arcade_description.txt
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/YurisGame/YurisGame_video.webm
 
 NAME=TinyGolf
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyGolf/levels.bin
@@ -193,13 +221,6 @@ https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Tiny_Monster_Trainer/Ghosts/MateiL.ujson
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Tiny_Monster_Trainer/arcade_title_video.webm
 
-NAME=Thoom
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Thoom/customrender.py
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Thoom/gamesprite.py
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Thoom/arcade_description.txt
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Thoom/arcade_title_video.webm
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Thoom/Thoom.py
-
 NAME=BadApple
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/BadApple/mvf.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/BadApple/BadApple.py
@@ -213,11 +234,6 @@ NAME=Stacker
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Stacker/Stacker.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Stacker/stacker.webm
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Stacker/arcade_description.txt
-
-NAME=Wolfram
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Wolfram/Wolfram.py
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Wolfram/arcade_description.txt
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Wolfram/arcade_title_video.webm
 
 NAME=Langton
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Langton/arcade_description.txt
@@ -448,12 +464,6 @@ https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/HollowSeeker/arcade_title_video.webm
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/HollowSeeker/HollowSeeker.py
 
-NAME=yatzy
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/yatzy/yatzy.py
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/yatzy/fs_images.bin
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/yatzy/arcade_description.txt
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/yatzy/yatzy.webm
-
 NAME=Silicon8
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Silicon8/thumbyinterface.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Silicon8/arcade_title_image.png
@@ -536,11 +546,6 @@ https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Simple-Cookie-Clicker/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Simple-Cookie-Clicker/arcade_title_video.webm
 
-NAME=TinyBlocks
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyBlocks/TinyBlocks.py
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyBlocks/arcade_description.txt
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyBlocks/arcade_title_video.webm
-
 NAME=vpoker
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/vpoker/vpoker.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/vpoker/arcade_description.txt
@@ -588,11 +593,6 @@ NAME=SpaceDebris
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/SpaceDebris/SpaceDebris.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/SpaceDebris/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/SpaceDebris/arcade_title_video.webm
-
-NAME=Thumgeon
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Thumgeon/arcade_description.txt
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Thumgeon/Thumgeon.py
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Thumgeon/arcade_title_video.webm
 
 NAME=Annelid
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Annelid/arcade_description.txt
