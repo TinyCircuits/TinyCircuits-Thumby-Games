@@ -21,21 +21,15 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '''
 
-import ssd1306
-import machine
+import thumby
 import time
-import uos
 import random
 import gc
-import utime
-import thumby
-import os
+from machine import freq
 
-machine.freq(125000000)
+freq(125_000_000)
 
 gc.enable() # This line helps make sure we don't run out of memory
-
-from framebuf import FrameBuffer, MONO_VLSB # Graphics stuff
 
 # Sensitive game parameters
 
@@ -55,7 +49,7 @@ JumpSoundTimer = 0
 
 PlayerSpr = bytearray([0x04 ^ 0xFF, 0x08 ^ 0xFF, 0xC8 ^ 0xFF, 0xBC ^ 0xFF, 0x1C ^ 0xFF, 0x0E ^ 0xFF, 0x1A ^ 0xFF, 0x2C ^ 0xFF])
 PlayerRunFrame1 = bytearray([0xFF, 0xFF, 0xFF, 0xFD, 0xF9, 0xBB, 0xBB, 0xD3, 0xE1, 0xF1, 0xC1, 0xB3, 0x61, 0xD5, 0xF3, 0xFF])
-PlayerRunFrame2 = bytearray([0xFF, 0xFF, 0xF7, 0xFB, 0xFB, 0xFB, 0x3B, 0x93, 0xE3, 0x71, 0x03, 0xE7, 0xC3, 0xAB, 0xE7, 0xFF]) 
+PlayerRunFrame2 = bytearray([0xFF, 0xFF, 0xF7, 0xFB, 0xFB, 0xFB, 0x3B, 0x93, 0xE3, 0x71, 0x03, 0xE7, 0xC3, 0xAB, 0xE7, 0xFF])
 CactusSpr1 = bytearray([0x00 ^ 0xFF, 0xFC ^ 0xFF, 0x86 ^ 0xFF, 0x92 ^ 0xFF, 0xC2 ^ 0xFF, 0xFC ^ 0xFF, 0x00 ^ 0xFF, 0x00 ^ 0xFF])
 CactusSpr2 = bytearray([0x00 ^ 0xFF, 0x1E ^ 0xFF, 0x10 ^ 0xFF, 0xFE ^ 0xFF, 0xE4 ^ 0xFF, 0x20 ^ 0xFF, 0x78 ^ 0xFF, 0x00 ^ 0xFF])
 CloudSpr = bytearray([0x9F, 0x4F, 0x63, 0x59, 0xBD, 0x73, 0x73, 0x65, 0x5C, 0x7E, 0x7E, 0x51, 0x57, 0x4F, 0x1F, 0xBF])
@@ -68,6 +62,8 @@ thumby.display.drawText("  Run", 15, 9, 1)
 thumby.display.update()
 
 thumby.display.setFPS(60)
+
+thumby.saveData.setName("SaurRun")
 
 while(thumby.buttonA.pressed() == True or thumby.buttonB.pressed() == True):
     if(time.ticks_ms() % 1000 < 500):
@@ -98,7 +94,7 @@ while(thumby.buttonA.pressed() == True or thumby.buttonB.pressed() == True):
     pass
 
 while(GameRunning):
-    t0 = utime.ticks_us() # Check the time
+    t0 = time.ticks_us() # Check the time
 
     # Is the player on the ground and trying to jump?
     if(JumpSoundTimer < 0):
@@ -113,7 +109,7 @@ while(GameRunning):
     YVel += Gravity
     Distance += XVel
     JumpSoundTimer -= 15
-    
+
     if(JumpSoundTimer > 0):
         thumby.audio.set(500-JumpSoundTimer)
     else:
@@ -134,9 +130,16 @@ while(GameRunning):
         thumby.display.fill(1)
         thumby.audio.stop()
         thumby.display.drawText("Oh no!", 18, 1, 0)
-        thumby.display.drawText(str(int(Distance))+"m", 26, 13, 0)
-        thumby.display.drawText("Again?", 19, 24, 0)
-        thumby.display.drawText("A:N B:Y", 16, 32, 0) 
+        thumby.display.drawText(str(int(Distance))+"m", 26, 9, 0)
+        high = -1
+        if(thumby.saveData.hasItem("highscore")):
+            high = int(thumby.saveData.getItem("highscore"))
+            thumby.display.drawText("High: " + str(high)+"m", 8, 17, 0)
+        if(Distance > high):
+            thumby.saveData.setItem("highscore", Distance)
+            thumby.saveData.save()
+        thumby.display.drawText("Again?", 19, 25, 0)
+        thumby.display.drawText("A:N B:Y", 16, 33, 0)
         thumby.display.update()
         thumby.audio.playBlocking(300, 250)
         thumby.audio.play(260, 250)
@@ -158,7 +161,7 @@ while(GameRunning):
 
             elif(thumby.buttonA.pressed() == True):
                 # Quit
-                machine.reset()
+                thumby.reset() # Exit game to main menu
 
     # Is the cactus out of view?
     if(CactusPos < -24):
@@ -200,5 +203,5 @@ while(GameRunning):
     thumby.display.update()
 
     # Spin wheels until we've used up one frame's worth of time
-    while(utime.ticks_us() - t0 < 1000000.0 / MaxFPS):
+    while(time.ticks_us() - t0 < 1000000.0 / MaxFPS):
         pass

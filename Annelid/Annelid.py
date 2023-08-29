@@ -27,7 +27,6 @@
 import thumby
 import random
 import time
-import machine
 
 # Draw the game splash
 thumby.display.fill(0)
@@ -67,22 +66,22 @@ def drawWorm():
     # Updates the state of the worm
 def updateWorm():
     global food
-    
+
         # Is the worm's head at some food?
     if(worm[0][0] == food[0] and worm[0][1] == food[1]):
             # Ate food, extend worm
         thumby.audio.play(440, 150)
         food = [random.randint(0, maxXcoordinate-1), random.randint(0, maxYcoordinate-1)]
         worm.append(worm[len(worm)-1])
-    
+
         # Update each segment
     for k in range(len(worm)-1, 0, -1):
             worm[k] = list(worm[k-1])
-            
+
         # Update worm head
     worm[0][0] += dx
     worm[0][1] += dy
-    
+
     global gameRunning
         # Check collisions with walls and segments
     if((worm[0][0] < 0) or (worm[0][0] >= maxXcoordinate) or (worm[0][1] < 0) or (worm[0][1] >= maxYcoordinate)):
@@ -108,7 +107,7 @@ while(gameRunning == True):
     if(thumby.buttonD.justPressed() and (dy != -1)):
         dx = 0
         dy = 1
-    
+
     # Update logic
     updateWorm()
     if(gameRunning == False):
@@ -120,7 +119,7 @@ while(gameRunning == True):
         while(thumby.actionPressed() == False):
             pass # Wait for the user to give us something
         if(thumby.buttonA.pressed() == True):
-            machine.reset()
+            thumby.reset() # Exit game to main menu
         elif(thumby.buttonB.pressed() == True):
             gameRunning = True
             worm = [[random.randint(int(thumby.DISPLAY_W*0.0625), int(thumby.DISPLAY_W*0.1875)), random.randint(int(thumby.DISPLAY_H*0.0625), int(thumby.DISPLAY_H*0.1875))]]
@@ -128,7 +127,7 @@ while(gameRunning == True):
             dx = 0
             dy = 0
             startTime=time.ticks_ms()
-        
+
     # Draw
     thumby.display.fill(0)
     thumby.display.drawRectangle(0, 0, 72, 40, 1)
@@ -137,6 +136,6 @@ while(gameRunning == True):
         thumby.display.drawFilledRectangle(food[0]*4, food[1]*4, 4, 4, 1)
     else:
         thumby.display.drawFilledRectangle(food[0]*4+1, food[1]*4+1, 2, 2, 1)
-    
+
     thumby.display.setFPS(startFPS + (time.ticks_ms()-startTime)/10000) # increase FPS by 1 every 10 seconds
     thumby.display.update()
