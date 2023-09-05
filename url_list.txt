@@ -1,3 +1,15 @@
+NAME=TinyFrog
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyFrog/arcade_title_image.png
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyFrog/TinyFrog.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyFrog/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyFrog/arcade_title_video.webm
+
+NAME=AppleTree
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/AppleTree/arcade_title_image.png
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/AppleTree/AppleTree.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/AppleTree/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/AppleTree/arcade_title_video.webm
+
 NAME=BurnsCharade
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/BurnsCharade/arcade_title_image.png
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/BurnsCharade/BurnsCharade.py
@@ -337,12 +349,6 @@ NAME=TinyCalc
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyCalc/TinyCalc.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyCalc/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyCalc/arcade_title_video.webm
-
-NAME=AppleTree
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/AppleTree/arcade_title_image.png
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/AppleTree/AppleTree.py
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/AppleTree/arcade_description.txt
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/AppleTree/arcade_title_video.webm
 
 NAME=AstroJumper
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/AstroJumper/arcade_astrojumper_video.webm
