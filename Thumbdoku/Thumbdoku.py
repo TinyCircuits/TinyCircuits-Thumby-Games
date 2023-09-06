@@ -2,7 +2,7 @@ import time
 import thumby
 import math
 
-GAME_NAME = "Sudoku"
+GAME_NAME = "Thumbdoku"
 GAME_DIR = "/Games/" + GAME_NAME
 
 import gc
