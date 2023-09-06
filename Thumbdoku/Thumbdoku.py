@@ -47,7 +47,6 @@ icons = [bytearray([31,17,18,18,30]), bytearray([17,10,4,10,17])]
 import random
 from time import sleep
 
-#A backtracking/recursive function to check all possible combinations of numbers until a solution is found
 def fillGrid(locks, grid, depth):
     global counter
     numberList=[1,2,3,4,5,6,7,8,9]
