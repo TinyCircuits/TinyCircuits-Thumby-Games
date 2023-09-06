@@ -5,7 +5,7 @@
 # with aforementioned loot -- and stay alive!
 
 # Written by Mason Watmough for TinyCircuits.
-# Last edited 10/14/2021
+# Last edited 6-Sep-2023
 
 '''
     This program is free software: you can redistribute it and/or modify
@@ -26,15 +26,9 @@ import thumby
 import time
 import random
 import gc
-from machine import freq
+from machine import freq, Pin
 
 freq(48_000_000)
-
-# Thumgeon
-# Enter a pseudorandom dungeon in search of riches and goodies.
-
-# Written by Mason Watmough for TinyCircuits
-# Last edited 9/2/2021
 
 gc.enable()
 
@@ -107,12 +101,12 @@ SW_U = 4
 SW_D = 6
 SW_A = 24
 SW_B = 27
-swL = machine.Pin(SW_L, machine.Pin.IN, machine.Pin.PULL_UP)
-swR = machine.Pin(SW_R, machine.Pin.IN, machine.Pin.PULL_UP)
-swU = machine.Pin(SW_U, machine.Pin.IN, machine.Pin.PULL_UP)
-swD = machine.Pin(SW_D, machine.Pin.IN, machine.Pin.PULL_UP)
-swA = machine.Pin(SW_A, machine.Pin.IN, machine.Pin.PULL_UP)
-swB = machine.Pin(SW_B, machine.Pin.IN, machine.Pin.PULL_UP)
+swL = Pin(SW_L, Pin.IN, Pin.PULL_UP)
+swR = Pin(SW_R, Pin.IN, Pin.PULL_UP)
+swU = Pin(SW_U, Pin.IN, Pin.PULL_UP)
+swD = Pin(SW_D, Pin.IN, Pin.PULL_UP)
+swA = Pin(SW_A, Pin.IN, Pin.PULL_UP)
+swB = Pin(SW_B, Pin.IN, Pin.PULL_UP)
 
 swLstate=1
 swRstate=1
