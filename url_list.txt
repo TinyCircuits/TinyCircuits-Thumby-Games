@@ -1,3 +1,9 @@
+NAME=Thumbdoku
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Thumbdoku/Thumbdoku.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Thumbdoku/thumbyGrayscale.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Thumbdoku/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Thumbdoku/arcade_title_video.webm
+
 NAME=TinyFrog
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyFrog/arcade_title_image.png
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyFrog/TinyFrog.py
