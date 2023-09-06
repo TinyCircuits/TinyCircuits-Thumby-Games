@@ -5,6 +5,8 @@ import math
 GAME_NAME = "Thumbdoku"
 GAME_DIR = "/Games/" + GAME_NAME
 
+thumby.saveData.setName("Thumbdoku")
+
 import gc
 
 free_min = gc.mem_free()
@@ -30,12 +32,16 @@ graphics.display.setFPS(30)
 graphics.display.fill(0)
 graphics.display.drawText(" Loading... ", 0, 15, 1)
 graphics.display.update()
+
 gc_poke()
 
 numbers = [bytearray([0,0,0]), bytearray([0,7,0]), bytearray([1,7,4]), bytearray([5,7,7]), bytearray([3,2,7]), bytearray([4,7,1]), bytearray([7,6,0]), bytearray([0,1,7]), bytearray([3,7,6]), bytearray([0,3,7])]
 playing = False
+newGame = False
 diff = 0
-cursor = 2
+cursor = 0
+
+icons = [bytearray([31,17,18,18,30]), bytearray([17,10,4,10,17])]
 
 
 import random
@@ -93,7 +99,12 @@ def genBoard(diff):
     depth = (diff + 10) * 4
     return fillGrid(locks, board, depth)
     
+def saveGame(board, locks):
+    thumby.saveData.setItem("save", [board, locks])
+    thumby.saveData.save()
 
+def clamp(lo, hi, x):
+    return min(hi, max(lo, x))
 
 ptrX = 0
 ptrY = 0
@@ -105,22 +116,31 @@ boardY = 1
 while(True):
     if playing:
         if thumby.buttonU.justPressed():
-            ptrY = int((ptrY - 1) % 9)
+            ptrY = clamp(0, 8 if ptrX<9 else 1, ptrY-1)
         if thumby.buttonD.justPressed():
-            ptrY = int((ptrY + 1) % 9)
+            ptrY = clamp(0, 8 if ptrX<9 else 1, ptrY+1)
         if thumby.buttonL.justPressed():
-            ptrX = int((ptrX - 1) % 9)
+            ptrX = clamp(0, 9, ptrX-1)
+            ptrY = clamp(0, 8 if ptrX<9 else 1, ptrY)
         if thumby.buttonR.justPressed():
-            ptrX = int((ptrX + 1) % 9)
-        
+            ptrX = clamp(0, 9, ptrX+1)
+            ptrY = clamp(0, 8 if ptrX<9 else 1, ptrY)
         if thumby.buttonA.justPressed():
-            if locks[ptrY][ptrX] == 0:
-                g = board[ptrY][ptrX]
-                board[ptrY][ptrX] = int((g+1) % 10)
+            if ptrX < 9:
+                if locks[ptrY][ptrX] == 0:
+                    g = board[ptrY][ptrX]
+                    board[ptrY][ptrX] = int((g+1) % 10)
+            else:
+                if ptrY == 1:
+                    saveGame(board, locks)
+                playing = False
+                cursor = 0
+                continue
         if thumby.buttonB.justPressed():
-            if locks[ptrY][ptrX] == 0:
-                g = board[ptrY][ptrX]
-                board[ptrY][ptrX] = int((g-1) % 10)
+            if ptrX < 9:
+                if locks[ptrY][ptrX] == 0:
+                    g = board[ptrY][ptrX]
+                    board[ptrY][ptrX] = int((g-1) % 10)
         
         
         graphics.display.fill(0)
@@ -133,26 +153,61 @@ while(True):
         for i in range(9):
             for j in range(9):
                 graphics.display.blit(numbers[board[i][j]], boardX + 1 + j * 4, boardY + 1 + i * 4, 3, 3, -1, 0, 0)
-        graphics.display.drawRectangle(ptrX * 4 + boardX - 1, ptrY * 4 + boardY - 1, 7, 7, 1)
+        if ptrX < 9:
+            graphics.display.drawRectangle(ptrX * 4 + boardX - 1, ptrY * 4 + boardY - 1, 7, 7, 1)
+        else:
+            graphics.display.drawRectangle(boardX + 39, boardY - 1 + (ptrY * 7), 7, 7, 3)
+        graphics.display.blit(icons[0], boardX + 40, boardY + 7, 5, 5, -1, 0, 0)
+        graphics.display.blit(icons[1], boardX + 40, boardY, 5, 5, -1, 0, 0)
         graphics.display.update()
-    else:
+    elif newGame:
         if thumby.buttonD.justPressed():
-            cursor = int((cursor - 1) % 3)
-        if thumby.buttonU.justPressed():
             cursor = int((cursor + 1) % 3)
+        if thumby.buttonU.justPressed():
+            cursor = int((cursor - 1) % 3)
         if thumby.buttonA.justPressed():
-            diff = cursor
-            gen = genBoard(diff)
-            board = gen[0]
-            locks = gen[1]
+            diff = (cursor * -1) + 2
+            g = genBoard(diff)
+            board = g[0]
+            locks = g[1]
+            newGame = False
             playing = True
         
         graphics.display.fill(0)
         graphics.display.setFont("/lib/font5x7.bin", 5, 7, 1)
-        graphics.display.drawText("SUDOKU", 18, 2, 1)
+        graphics.display.drawText("Easy", 23, 7, 1 if cursor == 0 else 3)
+        graphics.display.drawText("Medium", 17, 16, 1 if cursor == 1 else 3)
+        graphics.display.drawText("Hard", 23, 25, 1 if cursor == 2 else 3)
+        graphics.display.update()
+        
+    else:
+        if thumby.buttonD.justPressed():
+            cursor = int((cursor + 1) % 3)
+        if thumby.buttonU.justPressed():
+            cursor = int((cursor - 1) % 3)
+        if thumby.buttonA.justPressed():
+            if cursor == 0:
+                newGame = True
+            if cursor == 1:
+                if thumby.saveData.hasItem("save"):
+                    s = thumby.saveData.getItem("save")
+                    board = s[0]
+                    locks = s[1]
+                    playing = True
+            if cursor == 2:
+                graphics.display.fill(0)
+                graphics.display.setFont("/lib/font5x7.bin", 5, 7, 1)
+                graphics.display.drawText(" Exiting... ", 0, 15, 1)
+                graphics.display.update()
+                time.sleep(2) # delay game for a few seconds so player can read closing message
+                thumby.reset() # exit game to main menu
+                
+        
+        graphics.display.fill(0)
+        graphics.display.setFont("/lib/font5x7.bin", 5, 7, 1)
+        graphics.display.drawText("SUDOKU", 18, 1, 1)
         graphics.display.setFont("/lib/font3x5.bin", 3, 5, 1)
-        graphics.display.drawText("Difficulty:", 15, 12, 1)
-        graphics.display.drawText("Easy", 27, 19, 1 if cursor == 2 else 3)
-        graphics.display.drawText("Medium", 23, 25, 1 if cursor == 1 else 3)
-        graphics.display.drawText("Hard", 27, 31, 1 if cursor == 0 else 3)
+        graphics.display.drawText("New Game", 20, 12, 1 if cursor == 0 else 3)
+        graphics.display.drawText("Load Save", 18, 20, 1 if cursor == 1 else 3)
+        graphics.display.drawText("Quit Game", 18, 28, 1 if cursor == 2 else 3)
         graphics.display.update()
