@@ -207,6 +207,7 @@ class dungeonTile:
             #print(str(gc.mem_free()) + " bytes free after collection")
             currentRoom = dungeonRoom()
             generateRoom(currentRoom)
+            ensureExit(currentRoom)
             while(currentRoom.getTile(player.tilex, player.tiley).tiletype != 0):
                 player.tilex = random.randint(1, 7)
                 player.tiley = random.randint(1, 3)
@@ -978,7 +979,7 @@ def getRandomFreePosition(room):
     py = random.randint(1, 3)
 
     # Check that tile is empty and there are no doors this could block
-    while(room.getTile(px, py).tiletype != 0 and room.getTile(px-1, py).tiletype != 2 and room.getTile(px+1, py).tiletype != 2 and room.getTile(px, py-1).tiletype != 2 and room.getTile(px, py+1).tiletype != 2):
+    while(room.getTile(px, py).tiletype != 0 or ((px==4 and py==1) or (px==4 and py==3) or (px==1 and py==2) or (px==7 and py==2))):
         px = random.randint(1, 7)
         py = random.randint(1, 3)
     return [px, py]
@@ -1239,6 +1240,13 @@ def generateRoom(room):
             room.getTile(pos[0], pos[1]).tiledata.append(1)
 turnCounter = 0
 
+def ensureExit(room):
+    global exitSpawned
+    if not exitSpawned:
+        pos = getRandomFreePosition(room)
+        room.getTile(pos[0], pos[1]).tiletype = 3
+        exitSpawned = True
+
 # Draw the entire gamestate with HUD
 def drawGame():
     global display
@@ -1368,6 +1376,7 @@ while(True):
     currentRoom.tiles[2*9+2].tiledata.append("A for inv")
     currentRoom.tiles[2*9+2].tiledata.append("have fun!")
     generateRoom(currentRoom)
+    ensureExit(currentRoom)
     #print("generated " + str(roomno) + " rooms")
 
     # Make the player
