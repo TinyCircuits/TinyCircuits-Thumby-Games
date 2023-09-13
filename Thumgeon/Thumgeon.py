@@ -1,11 +1,11 @@
-# Thumgeon.
+# Thumgeon
 
 # Explore an endless, tough-as-nails pseudorandom dungeon
 # crawler. Collect items, potions, and weapons, kill monsters
 # with aforementioned loot -- and stay alive!
 
 # Written by Mason Watmough for TinyCircuits.
-# Last edited 6-Sep-2023
+# Last edited XX-Sep-2023
 
 '''
     This program is free software: you can redistribute it and/or modify
@@ -1104,8 +1104,8 @@ def generateRoom(room):
                 room.getTile(4, 2).tiletype = 4
                 room.getTile(4, 2).tiledata = signMessages[random.randint(0, len(signMessages) - 1)]
 
-        # Each room has a 33% chance of having a broken or basic-tier peice of loot in it
         if(random.randint(0, 2) == 0):
+        # Each room has a 33% chance of having a broken or basic-tier piece of loot in it
             pos = getRandomFreePosition(room)
             item = dungeonTile(0)
             sel = random.randint(0, 5)
@@ -1193,8 +1193,8 @@ def generateRoom(room):
             room.getTile(pos[0], pos[1]).tiletype = item.tiletype
             room.getTile(pos[0], pos[1]).tiledata = item.tiledata.copy()
 
-        # Each room has a 1% chance of having an epic or ultra-tier peice of loot in it
         if(random.randint(0, 99) == 0):
+        # Each room has a 1% chance of having an epic or ultra-tier piece of loot in it
             pos = getRandomFreePosition(room)
             item = dungeonTile(0)
             sel = random.randint(0, 2)
@@ -1253,14 +1253,19 @@ def drawGame():
     thumby.display.fill(0)
     currentRoom.drawRoom()
     if(curMsg != ""):
+        thumby.display.drawFilledRectangle(56, 32, 32, 8, 1)
+        thumby.display.drawText(str(floorNo)+"f", 56, 33, 0)
+
         thumby.display.drawFilledRectangle(0, 32, len(curMsg)*8, 8, 1)
-        thumby.display.drawText(curMsg, 0, 32, 0)
+        thumby.display.drawText(curMsg, 0, 33, 0)
+
     thumby.display.drawFilledRectangle(0, 0, 32, 8, 1)
     thumby.display.drawText(str(player.hp), 0, 0, 0)
     thumby.display.drawText("HP", 16, 0, 0)
     thumby.display.drawFilledRectangle(40, 0, 32, 8, 1)
     thumby.display.drawText(str(player.mp), 40, 0, 0)
     thumby.display.drawText("MP", 56, 0, 0)
+
     thumby.display.update()
 
 def updateMonsters():
@@ -1377,7 +1382,6 @@ while(True):
     currentRoom.tiles[2*9+2].tiledata.append("have fun!")
     generateRoom(currentRoom)
     ensureExit(currentRoom)
-    #print("generated " + str(roomno) + " rooms")
 
     # Make the player
     player = playerobj("testname")
