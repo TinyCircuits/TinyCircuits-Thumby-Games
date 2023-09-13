@@ -211,6 +211,7 @@ class dungeonTile:
             while(currentRoom.getTile(player.tilex, player.tiley).tiletype != 0):
                 player.tilex = random.randint(1, 7)
                 player.tiley = random.randint(1, 3)
+
         elif(self.tiletype == 4):
             # Tile is a sign
             if(len(self.tiledata) == 0):
@@ -231,7 +232,11 @@ class dungeonTile:
 
         elif(self.tiletype == 6):
             # Tile is a chest
-            curMsg = "a chest!"
+            chestGold = random.randint(1, 15)
+            player.gp += chestGold
+            curMsg = "got "+str(chestGold)+"g!"
+            self.tiledata.clear()
+            self.tiletype = 0
 
         elif(self.tiletype == 7):
             # Tile is an item
@@ -246,6 +251,7 @@ class dungeonTile:
             else:
                 # Explain why we can't pick it up.
                 curMsg = "no room!"
+
         elif(self.tiletype == 8):
             # Tile is a monster
             if(player.helditem == -1):
@@ -307,6 +313,7 @@ class dungeonTile:
                         self.tiledata.clear()
                         self.tiletype = 0
                         player.gp = player.gp + random.randint(1, 5) + floorNo
+
         elif(self.tiletype == 9):
             # Shop tile, open shop inventory
             actpos = 0
@@ -888,7 +895,7 @@ def itemwt(itemName):
     return switcher.get(itemName, 0)
 
 class dungeonRoom:
-    '''Each dungeon room is exactly 9*5=45 tiles'''
+    # Each dungeon room is exactly 9*5=45 tiles
     def __init__(self):
         self.tiles = []
         self.shopInv = []
@@ -1066,16 +1073,16 @@ def generateRoom(room):
                         room.getTile(8, 2).tiledata[0].getTile(0, 2).tiledata.append(7)
                         room.getTile(8, 2).tiledata[0].getTile(0, 2).tiledata.append(2)
                         generateRoom(room.getTile(8, 2).tiledata[0])
-        '''
-        #Each room has a 20% chance of having a chest in it
-        if(random.randint(0, 4) == 0):
+
+        #Each room has a 10% chance of having a chest in it
+        if(random.randint(0, 9) == 0):
             px = random.randint(2,6)
             py = random.randint(1,3)
             while(room.getTile(px, py).tiletype != 0):
                 px = random.randint(2,6)
                 py = random.randint(1,3)
             room.getTile(px, py).tiletype = 6
-        '''
+
         # Each room has (roomno) / maxrooms chance to have the exit in it
         if(random.randint(roomno, maxrooms) == roomno and not exitSpawned):
             pos = getRandomFreePosition(room)
