@@ -1,0 +1,4 @@
+You know how Sudoku works! 3 Difficulties. D-Pad to move cursor, A to increment, B to decrement. Have fun!
+
+Author: Adan
+V1.1
