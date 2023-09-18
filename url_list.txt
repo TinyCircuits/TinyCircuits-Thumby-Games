@@ -1,3 +1,9 @@
+NAME=MicroSquareRootCalc
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/MicroSquareRootCalc/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/MicroSquareRootCalc/thumby_emulator_screenshot.png
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/MicroSquareRootCalc/MicroSquareRootCalc.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/MicroSquareRootCalc/arcade_description.txt
+
 NAME=Thumbdoku
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Thumbdoku/arcade_title_video.webm
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Thumbdoku/thumbyGrayscale.py
