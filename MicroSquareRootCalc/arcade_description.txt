@@ -1,0 +1,14 @@
+Micro Square root Calculator
+
+Just a mini (in beta) square root calculator!
+Hope you like it! It currently dosen't support decimals but possibly in the future it may...
+Version 1.0.0 Beta Changelog:
+- Added the calculator
+- Removed decimals from sqrt calc version 0.0.9
+- tweaked square moving functionality
+
+Please Report any Issues or recomendations to @BBfiChe on Discord!
+Author:
+   @BBfiChe
+   Youtube:
+   https://youtube.com/@bbfiche
