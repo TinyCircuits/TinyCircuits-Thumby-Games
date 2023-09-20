@@ -7,11 +7,10 @@ import time
 # BITMAP: width: 22, height: 17
 microsqrtcalc_logo = bytearray([255,35,189,243,61,163,63,237,225,45,191,33,237,191,161,53,169,191,225,109,225,255,
            255,13,108,111,252,29,172,171,31,252,14,125,127,255,15,108,111,255,221,127,128,255,
-           1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1])         
+           1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1])        
 # BITMAP: width: 7, height: 9
 selected = bytearray([255,1,1,1,1,1,255,1,1,1,1,1,1,1])
 
-# BITMAP: width: 60, height: 40
 # BITMAP: width: 60, height: 40
 BBfiChe_logo = bytearray([0,254,254,6,250,250,250,6,250,250,250,6,254,250,250,2,250,250,254,2,250,250,250,254,2,234,234,18,254,2,250,250,250,250,250,2,254,254,254,254,2,254,254,194,190,190,194,254,254,2,254,2,186,186,186,186,186,70,254,0,
            0,255,255,252,255,255,135,180,183,183,183,52,255,253,5,244,245,245,247,4,253,253,5,183,180,183,71,252,255,244,245,245,5,245,245,244,255,255,255,255,0,255,255,255,185,128,191,255,255,0,255,8,107,107,107,107,107,108,255,0,
@@ -22,7 +21,7 @@ BBfiChe_logo = bytearray([0,254,254,6,250,250,250,6,250,250,250,6,254,250,250,2,
 sel_side = bytearray([255,1,1,1,1,1,1,1,1,1,1,1,1,255,
            1,1,1,1,1,1,1,1,1,1,1,1,1,1])
 
-thumby.display.setFont("/lib/font3x5.bin", 3, 6, 1)
+thumby.display.setFont("/lib/font3x5.bin", 3, 5, 1)
 selx = 0
 sely = 0
 result = []
@@ -96,22 +95,32 @@ def xyplacmntchk():
         result.append(int(val + str(num)))
     else:
         pass
-        
-thumby.display.fill(0)   
+       
+thumby.display.fill(0)  
 thumby.display.blit(BBfiChe_logo,6,0,60,40,0,0,0)
 thumby.display.update()
 time.sleep(5)
 
 thumby.display.fill(0)
-thumby.display.drawText("Keybinds",3,1,1)
+thumby.display.drawText("Keybinds:",3,1,1)
 thumby.display.drawText("----------------",5,6,1)
-thumby.display.drawText("Exit: Hold A+B",2,11,1)
-thumby.display.drawText("Select: A",2,17,1)
-thumby.display.drawText("Move around:",2,23,1)
-thumby.display.drawText("Left,Right,Down,UP",1,29,1)
-thumby.display.drawText("Buttons",2,35,1)
+thumby.display.setFont("/lib/font5x7.bin", 5, 7, 1)
+thumby.display.drawText("To Exit:",2,13,1)
+thumby.display.drawText("Hold A+B",2,22,1)
 thumby.display.update()
-time.sleep(7)
+thumby.display.setFont("/lib/font3x5.bin", 3, 5, 1)
+time.sleep(5)
+thumby.display.fill(0)
+thumby.display.drawText("Keybinds:",3,1,1)
+thumby.display.drawText("----------------",5,6,1)
+thumby.display.setFont("/lib/font5x7.bin", 5, 7, 1)
+thumby.display.drawText("Move around:",2,9,1)
+thumby.display.drawText("Left,Right,",1,17,1)
+thumby.display.drawText("Up,Down",1,25,1)
+thumby.display.drawText("Buttons",2,33,1)
+thumby.display.update()
+thumby.display.setFont("/lib/font3x5.bin", 3, 5, 1)
+time.sleep(5)
 #Main Code to run:
 while True:
     thumby.display.blit(microsqrtcalc_logo,47 ,1 ,22 ,17 ,-1 ,0 ,0)
@@ -166,7 +175,7 @@ while True:
                     if sels_x == 13:
                         thumby.reset()
             thumby.display.update()
-            
+           
         time.sleep(0.2)
     if sely == -8:
         sely += 8
