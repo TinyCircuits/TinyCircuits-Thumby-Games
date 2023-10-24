@@ -1,0 +1,29 @@
+Tiny Freddy: 90% complete version
+
+Ready for the smallest scares you've ever seen?
+
+Tiny Freddy is an accurate recreation of fnaf 1's gameplay, with a few changes to create a more fair and more threatening gameplay experience (as well as to accomodate the smaller screen size and lack of control options).
+
+How To Play:
+-press down on the title screen, not A, in order to continue to the other menu options
+-if you're selecting custom night, press left while selecting freddy to change golden freddy's AI values
+-when in the office...
+   -press left and right to look around
+   -press B to use your door lights
+   -press A to use your doors
+-when in the cameras...
+   -press left and right to scroll to different cameras
+   -press a to use the map
+   -press all directional keys while the map is open to switch cameras faster
+   -some cameras may hide characters better than others, freddy and bonnie have a few cameras where they aren't easy to spot, so keep your eyes peeled!
+
+Freddy and golden freddy's AI have been tweaked to nerf freddy at higher AI levels and turn golden freddy into more of a threat. Specifically:
+-Freddy's camera stall duration decreases significantly less as his AI gets higher
+-Golden freddy has around a 40% chance to appear at AI level 20 anytime the camera is lowered, a chance that decreases the lower his AI level is proportionally
+
+Note that this game contains audio, and the advantages it provides can be helpful when the screen is barely visible. For physical play, try playing it in a quite room to help clue you in on the location of various animatronics.
+
+Try not to get spooked!
+
+Also my youtube channel is Silly Arcade, not that many will care :)
+
