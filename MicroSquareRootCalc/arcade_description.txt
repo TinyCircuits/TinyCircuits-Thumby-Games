@@ -1,0 +1,19 @@
+Just a mini (in beta) square root calculator!
+Hope you like it! It currently doesn't support decimals but possibly in the future it may...
+Please Report any Issues or recommendations to @BBfiChe on Discord!
+Author:
+   @BBfiChe
+   Youtube:
+   https://youtube.com/@bbfiche
+-------------------------------
+Changelog archive:
+Version 1.0.0 Beta:
+- Added the calculator
+- Removed decimals from sqrt calc version 0.0.9
+- tweaked square moving functionality
+Version 1.0.10 Beta:
+-Added a Exit screen accessed with the calculator
+Version 1.0.11 Beta:
+Tweaked the keybinds loading screen to have a easier to read 5x7 Thumby font
+Version 1.0.20 Beta:
+-Tweaked an issue where the selected box when trying to exit the game would overlap the "YES" Button.
