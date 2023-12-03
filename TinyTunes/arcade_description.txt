@@ -4,4 +4,12 @@ A music editor: write tunes on your Thumby.
 
 If you can't read music, don't worry, just experiment. You can write a tune!
 
-v1.0
+v1.2
+ Better scrolling through tunes and menu
+ Wrap around keyboard
+ Added "Exit" menu item
+v1.1
+ Instructions optional
+ "New tune" menu option
+ Better slurring
+ "Save As" fix
