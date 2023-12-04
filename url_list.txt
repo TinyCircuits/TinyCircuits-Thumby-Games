@@ -1,3 +1,10 @@
+NAME=TinyTunes
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyTunes/buttons.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyTunes/keyboard.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyTunes/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyTunes/emulator_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyTunes/TinyTunes.py
+
 NAME=DonutClicker
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/DonutClicker/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/DonutClicker/DonutClicker.py
@@ -141,13 +148,6 @@ NAME=YurisGame
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/YurisGame/YurisGame_video.webm
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/YurisGame/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/YurisGame/YurisGame.py
-
-NAME=TinyTunes
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyTunes/buttons.py
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyTunes/keyboard.py
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyTunes/arcade_description.txt
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyTunes/emulator_video.webm
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyTunes/TinyTunes.py
 
 NAME=Wolfram
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Wolfram/Wolfram.py
