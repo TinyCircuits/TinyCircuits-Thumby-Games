@@ -1,0 +1,11 @@
+TinyEdit - a text editor.
+
+I wanted to edit a file on my Thumby, but to do that I had to connect it to my computer. "What I need is a text editor that runs on the Thumby!"
+
+So I made one.
+
+Warning! Don't edit anything unless you have a backup.
+
+More info at http://codeberg.org/JBanana/TinyEdit
+
+v1.0
