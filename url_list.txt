@@ -1,3 +1,9 @@
+NAME=TinyEdit
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyEdit/TinyEdit.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyEdit/btn.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyEdit/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyEdit/arcade_title_video.webm
+
 NAME=TinyTunes
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyTunes/buttons.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyTunes/keyboard.py
