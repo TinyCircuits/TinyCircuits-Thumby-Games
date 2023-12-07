@@ -5,7 +5,8 @@ from monsters import Monsters, Bones
 gc.collect()
 from player import Player, bU, bD, bL, bR, bB, bA
 gc.collect()
-from tape import Tape, display_update, EMULATED
+from display import display_update
+from tape import Tape
 gc.collect()
 from os import mkdir
 from time import ticks_ms
@@ -37,10 +38,6 @@ def _run_menu():
         tape.auto_camera(mons.x[0], mons.y[0]-64, 1, t)
         tape.comp()
         display_update()
-        if not EMULATED:
-            # Greyscale half-frame
-            tape.comp()
-            display_update()
         tape.clear_stage()
 
     def sel(i): # Menu arrows
@@ -177,18 +174,6 @@ def run_game():
                 # Send player 1 data (and also monsters)
                 p1.port_out(outbuf)
                 mons.port_out(outbuf)
-
-        # Half frame greyscale render
-        if not EMULATED:
-            if not prof:
-                tape.comp()
-                display_update()
-            else:
-                tape.comp()
-                pw2 = ticks_ms()
-                display_update()
-                pstat2 += ticks_ms() - pw2
-                pfps2 += 1
 
         # Drawing and collisions
         tape.clear_stage()

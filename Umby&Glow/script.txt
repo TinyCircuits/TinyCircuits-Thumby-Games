@@ -295,10 +295,10 @@
 0,   "^: Straight ahead to the mothership."
 
 # Gap between planets and mothership
-600, ("5","[w.pattern_nebula,w.pattern_orbitals,w.pattern_orbitals_fill,pattern_none,pattern_fill]",(bytearray([]), bytearray([])),1)
+615, ("5","[w.pattern_nebula,w.pattern_orbitals,w.pattern_orbitals_fill,pattern_none,pattern_fill]",(bytearray([]), bytearray([])),1)
 
 # Mothership hull
-140, ("5","[w.pattern_nebula,w.pattern_orbitals,w.pattern_orbitals_fill,pattern_fill,w.pattern_hull]",(bytearray([]), bytearray([])),1)
+125, ("5","[w.pattern_nebula,w.pattern_orbitals,w.pattern_orbitals_fill,pattern_fill,w.pattern_hull]",(bytearray([]), bytearray([])),1)
 0,   "^: Umby, we finally made it!"
 0,   "@: We are on fire, Glow!"
 0,   "^: How do we get onboard?"
@@ -646,7 +646,7 @@
 
 #0, "CHAPTER~X: \n TEST"
 
-400, freq(250000000)
+400, freq(180000000)
 0,   MegaBones
 0,   freq(133000000)
 0,   SuperShake
@@ -710,8 +710,12 @@
 160, "Font by Auri"
 160, "John VL"
 160, "Lily VL"
-160, "Doogle"
+160, "Grayscale By: ------------------"
+160, "The Grayscale Brain Titans"
 160, "Timendus"
+160, "Doogle"
+160, "HemlockMay"
+160, "dan5sch"
 160, "Story and Writing: ------------------"
 160, "FugLaro"
 160, "DarkGizmo"
