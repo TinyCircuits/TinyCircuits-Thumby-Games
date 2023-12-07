@@ -1,7 +1,6 @@
 from array import array
-from ssd1306 import display
-from time import sleep_ms, ticks_ms
 from utils import ihash
+from display import display_buffer
 
 # Font by Auri (@Auri#8401)
 _font = (
@@ -14,34 +13,6 @@ _font = (
     bytearray([184,0,184,16,136,48,216,216,0,152,216,0,0,24,0,24,0,24,128,96,24,136,80,32,32,80,136,240,136,0,0,136,120,112,136,0,0,136,112,192,192,0,128,192,0,32,112,32,80,32,80,32,32,32])
     )
 _font_index = " ABCDEFGHIJKLMNOPQRSTUVWXYZ"+"0123456789"+"!?:;'\"/><[]().,+*-"
-
-# Setup basic display access
-_FPS = const(60)
-
-# Setup emulator, if running
-EMULATED = False
-@micropython.viper
-def ptr(buf) -> int:
-    return int(ptr16(buf))
-try:
-    import emulator
-    emulator.screen_breakpoint(ptr(display.buffer))
-    EMULATED = True
-except ImportError:
-    pass
-
-# Setup the display
-_display_buffer = display.buffer
-timer = ticks_ms()
-_fwait = 1000//(_FPS if EMULATED else _FPS*2)
-@micropython.native
-def display_update():
-    global timer
-    t = ticks_ms()
-    nwait = timer - ticks_ms()
-    sleep_ms(0 if nwait <= 0 else nwait if nwait < _fwait else _fwait)
-    display.write_data(_display_buffer)
-    timer = ticks_ms() + _fwait
 
 def _gen_bang(blast_x, blast_y, blast_size, invert):
     @micropython.viper
@@ -141,7 +112,7 @@ class Tape:
         tape = ptr32(self._tape)
         scroll = ptr32(self._tape_scroll)
         stg = ptr32(self._stage)
-        frame = ptr8(_display_buffer)
+        frame = ptr8(display_buffer)
         scroll[2] += 1 # Counter (increment)
         y_pos = scroll[4]
         # Loop through each column of pixels
@@ -150,55 +121,56 @@ class Tape:
             p0 = (x+scroll[0])%216*2
             p1 = (x+scroll[1])%216*2
             p3 = (x+scroll[3])%216*2
-            dimshift = (scroll[2]+x+y_pos+p1)%2 # alternating dimmer modifier
-            dim = int(1431655765) << dimshift
-            xdimshift = (scroll[2]+x+y_pos+p1)%8 # darker dither modifier
-            xdim = (int(-2004318072) if xdimshift == 0 else
-                int(1145324612) if xdimshift == 4 else
-                int(572662306) if xdimshift == 2 else
-                int(286331153) if xdimshift == 6 else 0)
+            dim = int(1431655765) << ((scroll[2]+x+y_pos+p1)%2)
             x2 = x*2
-            overlay_mask = uint(tape[x2+2160] << y_pos)
-            a = uint(((
-                        # Back/mid layer (with monster mask and fill)
-                        ((tape[p0] | tape[p1+432]) & stg[x2]
-                            & stg[x2+144] & tape[p1+864] & tape[p3+1728])
-                        # Background (non-interactive) monsters
-                        | stg[x2+288])
-                    # Dim all mid and background layers
-                    & dim & overlay_mask
-                    # Foreground monsters (and players)
-                    | stg[x2+492]
-                    # Foreground (with monster mask and fill)
-                    | (tape[p3+1296] & stg[x2+144] & tape[p3+1728]))
-                # Now apply the overlay mask and draw layers.
-                & (overlay_mask | xdim)
-                | (tape[x2+2304] << y_pos))
-            # Now compose the second 32 bits vertically.
-            overlay_mask = uint((uint(tape[x2+2160]) >> 32-y_pos)
-                    | (tape[x2+2161] << y_pos))
-            b = uint(((
-                        # Back/mid layer (with monster mask and fill)
-                        ((tape[p0+1] | tape[p1+433]) & stg[x2+1]
-                        & stg[x2+145] & tape[p1+865] & tape[p3+1729])
-                        # Background (non-interactive) monsters
-                        | stg[x2+289])
-                    # Dim all mid and background layers
-                    & dim & overlay_mask
-                    # Foreground monsters (and players)
-                    | stg[x2+493]
-                    # Foreground (with monster mask and fill)
-                    | (tape[p3+1297] & stg[x2+145] & tape[p3+1729]))
-                # Now apply the overlay mask and draw layers.
-                & (overlay_mask | xdim)
-                | (uint(tape[x2+2304]) >> 32-y_pos) | (tape[x2+2305] << y_pos))
+            # Composite onto layers
+            overlay_mask = tape[x2+2160] << y_pos
+            overlay_draw = tape[x2+2304] << y_pos
+            for i in range(2):
+                actrs = stg[x2+492]
+                tlnd = tape[p3+1296]
+                ntlnd = -1^tlnd
+                glare = stg[x2]
+                tlndfll = tape[p3+1728]
+                tlndshd = tlnd & (-1^(ntlnd ^ (
+                    -1^(tlnd<<5 | int(uint(tape[p3+1297])>>27) if i else tlnd>>5))
+                    ) | dim | -1^glare) | -1^tlndfll
+                back = ((# Back/mid layer (etching glare and fill)
+                            ((tape[p0] & dim | tape[p1+432]) & glare
+                                & tape[p1+864] & tlndfll)
+                            # Background (non-interactive) monsters
+                            | stg[x2+288]
+                        )  & ntlnd & overlay_mask
+                    | tlndshd
+                    # Aliased land
+                    | ((tlnd<<1 | tlnd>>1) & ntlnd)
+                    | actrs)
+                # Convert to grayscale layers
+                b = uint(((tlnd & tlndfll & stg[x2+144] | actrs) & overlay_mask) | overlay_draw)
+                bg = uint(back ^ (back & (actrs & overlay_mask | overlay_draw)))
+                if i == 0:
+                    a, ag = b, bg
+                    # The second pass should compose the second 32 bits vertically.
+                    overlay_mask = int(uint(tape[x2+2160]) >> 32-y_pos) | (tape[x2+2161] << y_pos)
+                    overlay_draw = int(uint(tape[x2+2304]) >> 32-y_pos) | (tape[x2+2305] << y_pos)
+                    p0 += 1
+                    p1 += 1
+                    p3 += 1
+                    x2 += 1
             # Apply the relevant pixels to next vertical column of the display
             # buffer, while also accounting for the vertical offset.
-            frame[x] = a >> y_pos
-            frame[72+x] = (a >> 8 >> y_pos) | (b << (32 - y_pos) >> 8)
-            frame[144+x] = (a >> 16 >> y_pos) | (b << (32 - y_pos) >> 16)
-            frame[216+x] = (a >> 24 >> y_pos) | (b << (32 - y_pos) >> 24)
-            frame[288+x] = b >> y_pos
+            ry = 32 - y_pos
+            for _ in range(2):
+                bry = b << ry
+                frame[x] = a >> y_pos
+                frame[72+x] = (a >> 8 >> y_pos) | (bry >> 8)
+                frame[144+x] = (a >> 16 >> y_pos) | (bry >> 16)
+                frame[216+x] = (a >> 24 >> y_pos) | (bry >> 24)
+                frame[288+x] = b >> y_pos
+                # Switch to grayscale for second pass
+                x += 360
+                a = ag
+                b = bg
 
     @micropython.viper
     def clear_stage(self):
