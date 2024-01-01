@@ -11,3 +11,6 @@ Note: Only discard bombs!
 
 You have 60 seconds to get the highest score you can get :D
 But be careful because items start appearing faster each time!
+
+Version: 1.0
+Author: Natalia Salgado
