@@ -1,3 +1,14 @@
+NAME=TinySort
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinySort/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinySort/arcade_TinySort_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinySort/TinySort.py
+
+NAME=Coinflip
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Coinflip/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Coinflip/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Coinflip/Coinflip.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Coinflip/coin.bin
+
 NAME=TinyTraffic
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyTraffic/arcade_title_video.webm
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyTraffic/TinyTraffic.py
