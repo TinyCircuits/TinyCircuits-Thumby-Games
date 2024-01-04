@@ -1,4 +1,4 @@
-Tiny Freddy: 90% complete version
+Tiny Freddy: 100% complete version
 
 Ready for the smallest scares you've ever seen?
 
@@ -13,7 +13,7 @@ How To Play:
    -press A to use your doors
 -when in the cameras...
    -press left and right to scroll to different cameras
-   -press a to use the map
+   -hold a to use the map
    -press all directional keys while the map is open to switch cameras faster
    -some cameras may hide characters better than others, freddy and bonnie have a few cameras where they aren't easy to spot, so keep your eyes peeled!
 
@@ -23,7 +23,22 @@ Freddy and golden freddy's AI have been tweaked to nerf freddy at higher AI leve
 
 Note that this game contains audio, and the advantages it provides can be helpful when the screen is barely visible. For physical play, try playing it in a quite room to help clue you in on the location of various animatronics.
 
+UPDATE LOG:
+
+Update 1.0:
+  -Added phonecalls
+  -AFK is no longer a viable strategy
+  -Added plush toys to the loading screen
+  -Added rare screens on the cameras
+  -Improved the camera static
+  -Added options menu (currently minimal)
+  -Added save data
+  -Added dual channel sound (polysynth)
+  -Removed TFbitwav (old sound engine)
+  -Removed purple guy
+
+Credit to TransitorTestor for polysynth (and for helping me learn how to use it)
+
 Try not to get spooked!
 
 Also my youtube channel is Silly Arcade, not that many will care :)
-
