@@ -1,3 +1,15 @@
+NAME=Clucker
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Clucker/Clucker.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Clucker/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Clucker/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Clucker/fonthandler.py
+
+NAME=LyteBykes
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/LyteBykes/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/LyteBykes/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/LyteBykes/LyteBykes.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/LyteBykes/thumbyGrayscale.py
+
 NAME=TinyBuzzer
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyBuzzer/Buzzer.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyBuzzer/arcade_description.txt
