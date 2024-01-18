@@ -13,7 +13,7 @@ You have one minute to score the highest you can! Score increases per snake.
 Hitting empty holes or not hitting all snakes will not cause you to lose. 
 Yes, you can treat it like a clicker but accuracy is also measured!
 
-Use the trackpad to whack! 
+Use the DPAD to whack! 
 
 Feel free to tweak anything your heart desires :D
 
