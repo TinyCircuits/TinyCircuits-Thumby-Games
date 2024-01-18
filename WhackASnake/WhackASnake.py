@@ -182,9 +182,9 @@ while(True):
             thumby.display.drawLine(0, 8, 72, 8, 1)
             thumby.display.setFont("/lib/font3x5.bin",3,5,1)
             thumby.display.drawText("Whack the snakes!",0,12,1)
-            thumby.display.drawText("Use the trackpad", 0, 19, 1)
-            thumby.display.drawText("and do not hit", 0, 26, 1)
-            thumby.display.drawText("empty holes!!", 0, 33, 1)
+            thumby.display.drawText("Use the DPAD and", 0, 19, 1)
+            thumby.display.drawText("do not hit empty", 0, 26, 1)
+            thumby.display.drawText("holes!!", 0, 33, 1)
             thumby.display.update()
             time.sleep(3)
             
