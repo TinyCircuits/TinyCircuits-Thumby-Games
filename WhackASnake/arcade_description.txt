@@ -1,0 +1,21 @@
+Welcome to Whack-A-Snake!
+
+There are two game modes here:
+1. Hit or Lose:
+Whack the snakes that pop up and be quick because you only have three seconds. 
+As your score increases, your time to whack decreases (min time is around 1.5s). 
+Score only increases (by 1) when all snakes are whacked.
+Do not whack empty holes and whack all snakes!
+
+2. Quick Whacks: 
+Just whack every snake in sight as fast as your fingers allow you. 
+You have one minute to score the highest you can! Score increases per snake. 
+Hitting empty holes or not hitting all snakes will not cause you to lose. 
+Yes, you can treat it like a clicker but accuracy is also measured!
+
+Use the trackpad to whack! 
+
+Feel free to tweak anything your heart desires :D
+
+Version: 1.0
+Author: Nats Salgado
