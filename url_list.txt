@@ -1,3 +1,8 @@
+NAME=WhackASnake
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/WhackASnake/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/WhackASnake/arcade_WhackASnake_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/WhackASnake/WhackASnake.py
+
 NAME=Clucker
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Clucker/Clucker.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Clucker/arcade_title_video.webm
