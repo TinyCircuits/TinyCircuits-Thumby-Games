@@ -146,7 +146,7 @@ while(True):
     
     frameCtr = 0
     loopCtr = 0
-    while(not thumby.buttonA.pressed() and not thumby.buttonB.pressed()):
+    while(not thumby.buttonA.justPressed() and not thumby.buttonB.justPressed()):
         thumby.display.setFont("/lib/font3x5.bin",3,5,1)
         thumby.display.drawText("A:Play  B:Quit",9,35,1)
         titleSnake.setFrame(frameCtr)
@@ -155,15 +155,15 @@ while(True):
             frameCtr += 1
             loopCtr = 0
         thumby.display.update()
-        if thumby.buttonB.pressed():
+        if thumby.buttonB.justPressed():
             thumby.reset() # QUIT GAME
-        if thumby.buttonA.pressed():
+        if thumby.buttonA.justPressed():
             break # PLAY
         loopCtr += 1
         
     # GAME MENU
     time.sleep(0.1)
-    while(not thumby.buttonA.pressed() and not thumby.buttonB.pressed()):
+    while(not thumby.buttonA.justPressed() and not thumby.buttonB.justPressed()):
         thumby.display.fill(0)
         thumby.display.setFont("/lib/font5x7.bin",5,7,1)
         thumby.display.drawText("GAME MENU:",0,0,1)
@@ -174,7 +174,7 @@ while(True):
         thumby.display.update()
         
 # *************************** GAME ONE *************************** 
-        if thumby.buttonA.pressed(): 
+        if thumby.buttonA.justPressed(): 
             # INSTRUCTIONS 
             thumby.display.fill(0)
             thumby.display.setFont("/lib/font5x7.bin",5,7,1)
@@ -282,7 +282,7 @@ while(True):
                 
             
 # *************************** GAME TWO *************************** 
-        if thumby.buttonB.pressed(): 
+        if thumby.buttonB.justPressed(): 
             # INSTRUCTIONS 
             thumby.display.fill(0)
             thumby.display.setFont("/lib/font5x7.bin",5,7,1)
@@ -385,5 +385,4 @@ while(True):
                 print("Breaking out of loop")
                 time.sleep(0.4)
                 break
-            
             
