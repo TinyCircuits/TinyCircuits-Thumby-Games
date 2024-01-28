@@ -1,16 +1,16 @@
 # Thumby BASIC
 
-Thumby BASIC is a simple programming language designed to run on the Thumby, a compact and portable gaming console. Thumby BASIC allows you to create text-based programs and games on the Thumby device. This README.md provides an introduction to the syntax, compatibility, limitations, and details about various language components.
+Thumby BASIC is a simple programming language designed to run on the [Thumby](https://thumby.us/), a compact and portable gaming console. Thumby BASIC allows you to create text-based programs and games on the Thumby device. This README.md provides an introduction to the syntax, compatibility, limitations, and details about various language components.
 
 ## Syntax Overview
 
-Thumby BASIC uses a straightforward syntax with line-numbered statements. Each line consists of a line number followed by a space and a statement. Statements are separated by newlines. Here's an overview of the language components:
+Thumby BASIC uses a straightforward syntax with line-numbered statements that is meant to closely mirror other BASIC implementations for compatability. Each line consists of a line number followed by a space and a statement. Statements are separated by newlines. Here's an overview of the language components:
 
 ### Input and Output
 
 - `PRINT`: Used to display text on the screen.
   ```
-  10 PRINT "Hello, Thumby!"
+  10 PRINT "Hello Thumby"
   ```
 
 - `INPUT`: Accepts user input and stores it in a variable.
@@ -26,7 +26,7 @@ Thumby BASIC uses a straightforward syntax with line-numbered statements. Each l
   40 B = "Thumby"
   ```
 
-- Variable names are limited to single uppercase letters (A to Z).
+- Variable names are limited to letters (A to Z).
 
 ### Logic
 
@@ -53,7 +53,7 @@ The `PRINT` statement is used to display text on the screen. It can display both
 Example:
 ```basic
 10 PRINT "Welcome to Thumby BASIC"
-20 PRINT "The value of A is: " + A
+20 PRINT "The value of A " + A
 ```
 
 ### `INPUT` Statement
@@ -63,7 +63,7 @@ The `INPUT` statement is used to accept user input and store it in a variable. I
 Example:
 ```basic
 30 INPUT A
-40 PRINT "You entered: " + A
+40 PRINT "You entered " + A
 ```
 
 ## Variables

@@ -284,17 +284,6 @@ def statementoperation(tokens):
         "action":tokens[0].strip(),
         "args": list(map(lambda x: unwrap_singleton_list(x)[0] if(isinstance(x, list)) else x ,tokens[1:]))
     }
-# def prefixoperation(tokens):
-#     if(isinstance(tokens[0], str)):
-#         return {
-#             "op":tokens[0],
-#             "args":[
-#                 unwrap_singleton_list(tokens[0])[0] if(isinstance(tokens[0], list)) else tokens[0],
-#                 unwrap_singleton_list(tokens[2])[0] if(isinstance(tokens[2], list)) else tokens[2]
-#             ]
-#         }
-#     else:
-#         return unwrap_singleton_list(tokens)
 
 def if_parser(tokens):
     """
@@ -347,34 +336,6 @@ def parse_terminals_many(allowed_characters):
             return None
         return ([parsed_characters], input_str)
     return inner
-
-
-def temp_parsed(tokens):
-    # if tokens==[['1']]:
-    #     breakpoint()
-  
-    if len(tokens)==1:
-        return float(tokens[0])
-    else:
-        return float("".join(map(str,tokens)))
-    return (lambda tokens: float(unwrap_singleton_list(tokens)) if len(tokens)==1 else ["".join(list(map(lambda x:x[0], tokens)))])(tokens)
-
-def temp_parser(tokens):
-    return int(tokens[0])
-
-    
-
-def temp_fn_parser(tokens):
-    if len(tokens)>1:
-        return {
-            "op":tokens[0].strip(),
-            "args":[
-                unwrap_singleton_list(tokens[2])
-            ]
-        }
-        
-    
-    return unwrap_singleton_list(tokens)
 
 # Grammar library definition for Parse Tree
 GRAMMAR = {
@@ -444,69 +405,48 @@ GRAMMAR = {
         [Terminal("8")],
         [Terminal("9")],
     ]),
-
     "SUBVARIABLE": NonTerminal([
         ["LETTER", "VARIABLE"],
         ["LETTER"],
     ], fn=(lambda tokens: tokens[0] if len(tokens)==1 else ["".join(list(map(lambda x:x[0], tokens)))]), parse_fn=parse_terminals_many(["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"])),
-    
     "VARIABLE": NonTerminal([
         ["SUBVARIABLE"]
     ], fn=lambda tokens:dict({"type":"variable", "value":tokens[0]})),
-
-
     "SUBSTRING": NonTerminal([
         ["LETTER", "SUBSTRING"],
         ["LETTER"],
-    ], fn=(lambda tokens: ["".join(tokens)]), parse_fn=parse_terminals_many(["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","0","1","2","3","4","5","6","7","8","9"," "])),
-    
+    ], fn=(lambda tokens: ["".join(tokens)]), parse_fn=parse_terminals_many(["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","0","1","2","3","4","5","6","7","8","9"," ","!","@","#","$","%","^","&","*",":"])),
     "STRING": NonTerminal([
         [Terminal('"'), Terminal('"')],
         [Terminal('"'), "SUBSTRING", Terminal('"')],
     # ],(lambda x: unwrap_singleton_list(x[1]))),
     ],(lambda tokens: [unwrap_singleton_list(dict({"type":"string", "value":tokens[1][0]}))])),
-    
-    
-    
     "INTEGER": NonTerminal([
         ["DIGIT", "INTEGER"],
         ["DIGIT"],
-    ], fn=temp_parser, parse_fn=parse_terminals_many(["0","1","2","3","4","5","6","7","8","9"])),
+    ], fn=(lambda tokens: int(tokens[0])), parse_fn=parse_terminals_many(["0","1","2","3","4","5","6","7","8","9"])),
     "FLOAT": NonTerminal([
         ["INTEGER", Terminal(".") ,"INTEGER"],
         ["INTEGER"],
-    ], temp_parsed),
+    ], (lambda tokens: float(tokens[0]) if len(tokens)==1 else float("".join(map(str,tokens))))),
     "BOOLEAN": NonTerminal([
         [Terminal("TRUE")],
         [Terminal("FALSE")],
     ]),
-
     'CONSTANT': NonTerminal([
         ["VARIABLE"],
         ["STRING"],
         ["FLOAT"],
     ]),
-
-
     "FUNC_NAME":NonTerminal([
         [Terminal("STR")],
         [Terminal("INT")],
-        [Terminal("SIN")],
-        [Terminal("COS")],
-        [Terminal("TAN")],
-        [Terminal("ASIN")],
-        [Terminal("ACOS")],
-        [Terminal("ATAN")],        
-        [Terminal("CEIL")],
-        [Terminal("FLOOR")],
-        [Terminal("ROUND")],
     ]),
-
     "FUNCTION": NonTerminal([
         ["FUNC_NAME", Terminal("("), "EXPRESSION", Terminal(")")],
         [Terminal("("), "EXPRESSION", Terminal(")")],
         ["CONSTANT"],
-    ], temp_fn_parser),    
+    ], (lambda tokens: dict({"op":tokens[0].strip(), "args":[unwrap_singleton_list(tokens[2])]}) if len(tokens)>1 else unwrap_singleton_list(tokens))),    
     "FACTOR": NonTerminal([
         ["FUNCTION", Terminal("^"), "FACTOR"],
         ["FUNCTION"],
@@ -556,10 +496,6 @@ GRAMMAR = {
     "INPUTSTATEMENT": NonTerminal([
         [Terminal("INPUT "), "VARIABLE"],
     ], statementoperation),
-    # "PRINTEXPRESSION": NonTerminal([
-    #     ["EXPRESSION", Terminal(", "), "PRINTEXPRESSION"], # Allows print multiple comma separateed expression
-    #     ["EXPRESSION"]
-    # ], temp_parser),
     "PRINTSTATEMENT": NonTerminal([
         [Terminal("PRINT "), "EXPRESSION"],
     ], statementoperation),
