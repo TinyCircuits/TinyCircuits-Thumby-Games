@@ -8,7 +8,7 @@ def refresh_display():
     """
     Refresh the display by updating the content shown on the screen. (Patched for PC)
     """
-    print("THUMBY BASIC")
+    pass
 
 def input_select(options):
     """
@@ -682,7 +682,7 @@ def evaluate(node, state):
     
     if "op" in node:
         if node["op"] == "=":
-            return str(evaluate(node["args"][0], state)) == str(evaluate(node["args"][1], state))
+            return evaluate(node["args"][0], state) == evaluate(node["args"][1], state)
         if node["op"] == "+":
             return evaluate(node["args"][0], state) + evaluate(node["args"][1], state)
         if node["op"] == "-":
@@ -706,7 +706,10 @@ def evaluate(node, state):
                     return evaluate(node["args"][2], state)
             
         if node["op"] == "STR":
-            return str(parse_numbers_variables(evaluate(node["args"][0], state), state))
+            value = parse_numbers_variables(evaluate(node["args"][0], state), state)
+            if isinstance(value, float) and value.is_integer():
+                value = round(value)
+            return str(value)
         if node["op"] == "INT":
             return int(evaluate(node["args"][0], state))
             
