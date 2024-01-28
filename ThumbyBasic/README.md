@@ -96,25 +96,17 @@ Control flow in Thumby BASIC is primarily managed using line numbers and the `GO
 Example:
 ```basic
 120 IF B = "Thumby" THEN GOTO 140
-130 PRINT "B is not equal to 'Thumby'"
-140 PRINT "B is equal to 'Thumby'"
-150 GOTO 170
-160 GOTO 120  # This creates a loop
-170 PRINT "End of program"
 ```
 
 ## Compatibility
 
-Thumby BASIC is designed specifically for the Thumby gaming console. It may not be compatible with other systems or devices.
+Thumby BASIC is designed specifically for the Thumby gaming console. It may not be compatible with other systems or devices, although it does support running programs on a PC with Python.
 
 ## Limitations
 
 Thumby BASIC has several limitations:
-
-- Limited variable naming options (single uppercase letters).
-- Line numbers must be unique and sequential.
-- Basic conditional logic with `IF` statements.
-- No support for functions or complex data structures.
+- Thumby has severe RAM memory limitations. We recommend reducing nested expressions so the parser doesn't crach from OOM errors
 - Designed for simple text-based games and programs.
+- No support for functions or complex data structures.
 
-Please refer to the Thumby documentation for more information on the capabilities and limitations of the Thumby device and Thumby BASIC.
+Please refer to the Thumby documentation and examples for more information on the capabilities and limitations of the Thumby device and Thumby BASIC.
