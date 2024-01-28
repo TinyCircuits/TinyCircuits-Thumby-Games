@@ -5,12 +5,33 @@ import gc
 PATH = "."
 
 def refresh_display():
+    """
+    Refresh the display by updating the content shown on the screen. (Patched for PC)
+    """
     print("THUMBY BASIC")
 
 def input_select(options):
+    """
+    Allow the user to select an option from a list. (Patched for PC)
+
+    Args:
+        options (list): A list of options to choose from.
+
+    Returns:
+        str: The selected option.
+    """
     return input("Filename:")
 
 def find_basic_files(path):
+    """
+    Find Basic files in the specified directory. (Patched for PC)
+
+    Args:
+        path (str): The path to the directory to search for Basic files.
+
+    Returns:
+        list: A list of Basic files found in the directory.
+    """
     return ["run_local"]
 
 print_values = ["THUMBY BASIC","LOADING...","",""]
@@ -27,6 +48,15 @@ try: # Running on Thumby
     input_values = [10]
 
     def find_basic_files(path):
+        """
+        Find Basic files in the specified directory for Thumby.
+
+        Args:
+            path (str): The path to the directory to search for Basic files.
+
+        Returns:
+            list: A list of Basic files found in the directory.
+        """
         output = []
         try:
             for x in os.listdir(path):
@@ -37,6 +67,15 @@ try: # Running on Thumby
             
         return output
     def input_select(options):
+        """
+        Allow the user to select an option from a list for Thumby.
+
+        Args:
+            options (list): A list of options to choose from.
+
+        Returns:
+            str: The selected option.
+        """
         print("THUMBY BASIC")
         print("SELECT PRGM")
         print("")
@@ -67,6 +106,9 @@ try: # Running on Thumby
         return options[input_cursor]
 
     def refresh_display():
+        """
+        Refresh the display on Thumby by updating the content shown on the screen.
+        """
         thumby.display.fill(0)
         thumby.display.drawText(print_values[0], 0, 0, 1)
         thumby.display.drawText(print_values[1], 0, 8, 1)
@@ -77,6 +119,12 @@ try: # Running on Thumby
         
 
     def print(txt=""):
+        """
+        Print a message to the Thumby screen.
+
+        Args:
+            txt (str): The message to print.
+        """
         print_values[0] = print_values[1]
         print_values[1] = print_values[2]
         print_values[2] = print_values[3]
@@ -85,6 +133,15 @@ try: # Running on Thumby
         
 
     def input(txt=""):
+        """
+        Allow the user to input text on Thumby.
+
+        Args:
+            txt (str): The input prompt.
+
+        Returns:
+            str: The user's input text.
+        """
         global input_values
         input_cursor = 0
         while not thumby.buttonA.pressed():
@@ -117,11 +174,22 @@ except:
 
 
 class Terminal:
+    """
+    Terminal class to define terminals for parsing
+    """
     def __init__(self, token):
         self.token = token
 
 def unwrap_singleton_list(input_list):
+    """
+    Unwrap a singleton list to its single element.
 
+    Args:
+        input_list (list): The input list.
+
+    Returns:
+        list: The unwrapped list.
+    """
     while isinstance(input_list, list) and len(input_list) == 1:
         input_list = input_list[0]
 
@@ -135,13 +203,29 @@ def unwrap_singleton_list(input_list):
         return [input_list]
 
 class NonTerminal:
+    """
+    Class representing a non-terminal symbol in the grammar.
+
+    Args:
+        rules (list of lists): List of rules to OR match.
+        fn (function, optional): A function to apply to the matched tokens. Defaults to unwrap_singleton_list.
+        parse_fn (function, optional): A parsing function to use for this non-terminal. Defaults to None.
+    """
     def __init__(self, rules, fn=unwrap_singleton_list, parse_fn=None):
         self.rules = rules  # List of Rules to OR Match
         self.fn = fn
         self.parse_fn = parse_fn
 
 def infixoperation(tokens):
+    """
+    Parse infix operations in the grammar.
 
+    Args:
+        tokens (list): List of tokens to parse.
+
+    Returns:
+        dict or list: Parsed infix operation result.
+    """
     if(len(tokens)==3 and isinstance(tokens[1], str)):
         return {
             "op":tokens[1].strip(),
@@ -154,6 +238,15 @@ def infixoperation(tokens):
         return unwrap_singleton_list(tokens)
     
 def infixstatement(tokens):
+    """
+    Parse infix statements in the grammar.
+
+    Args:
+        tokens (list): List of tokens to parse.
+
+    Returns:
+        dict or list: Parsed infix statement result.
+    """
     if(len(tokens)==3 and isinstance(tokens[1], str)):
         return {
             "action":tokens[1].strip(),
@@ -167,6 +260,15 @@ def infixstatement(tokens):
 
 
 def statementoperation(tokens):
+    """
+    Parse statement operations in the grammar.
+
+    Args:
+        tokens (list): List of tokens to parse.
+
+    Returns:
+        dict or list: Parsed statement operation result.
+    """
     if tokens[0] == "GOTO ":
         return {
         "action":tokens[0].strip(),
@@ -182,8 +284,28 @@ def statementoperation(tokens):
         "action":tokens[0].strip(),
         "args": list(map(lambda x: unwrap_singleton_list(x)[0] if(isinstance(x, list)) else x ,tokens[1:]))
     }
+# def prefixoperation(tokens):
+#     if(isinstance(tokens[0], str)):
+#         return {
+#             "op":tokens[0],
+#             "args":[
+#                 unwrap_singleton_list(tokens[0])[0] if(isinstance(tokens[0], list)) else tokens[0],
+#                 unwrap_singleton_list(tokens[2])[0] if(isinstance(tokens[2], list)) else tokens[2]
+#             ]
+#         }
+#     else:
+#         return unwrap_singleton_list(tokens)
 
 def if_parser(tokens):
+    """
+    Parse IF statements in the grammar.
+
+    Args:
+        tokens (list): List of tokens to parse.
+
+    Returns:
+        dict or list: Parsed IF statement result.
+    """
     if len(tokens)==4:
         return {
             "op":"IF",
@@ -205,6 +327,15 @@ def if_parser(tokens):
     return unwrap_singleton_list(tokens)
 
 def parse_terminals_many(allowed_characters):
+    """
+    Parse terminals with allowed characters.
+
+    Args:
+        allowed_characters (list): List of allowed characters.
+
+    Returns:
+        function: Parsing function.
+    """
     def inner(input_str):
         parsed_characters = ""
         
@@ -245,6 +376,7 @@ def temp_fn_parser(tokens):
     
     return unwrap_singleton_list(tokens)
 
+# Grammar library definition for Parse Tree
 GRAMMAR = {
     "LETTER": NonTerminal([
         [Terminal("A")],
@@ -457,7 +589,30 @@ GRAMMAR = {
 
 
 def parse(input_str, rule, depth=0):
+    """
+    Parses an input string according to the given rule.
+
+    Args:
+    input_str (str): The input string to be parsed.
+    rule: The rule to be applied for parsing.
+    depth (int, optional): The depth of recursion (used internally for debugging).
+
+    Returns:
+    tuple or None: A tuple containing the parsed result and the remaining input string,
+                   or None if parsing fails.
+    """
     def parse_terminal(input_str, token):
+        """
+        Parses a terminal token from the beginning of the input string.
+
+        Args:
+        input_str (str): The input string to be parsed.
+        token (str): The terminal token to match at the beginning of the input string.
+
+        Returns:
+        tuple or None: A tuple containing the matched token and the remaining input string,
+                       or None if the token is not found at the beginning of the input string.
+        """
         if input_str.startswith(token):
             
             return (token, input_str[len(token):])
@@ -499,6 +654,15 @@ def parse(input_str, rule, depth=0):
 
 
 def parse_statement(statement):
+    """
+    Parses a statement using the LINESTATEMENT grammar rule.
+
+    Args:
+    statement (str): The statement to be parsed.
+
+    Returns:
+    str or None: The parsed result, or None if parsing fails.
+    """
     result = parse(statement, GRAMMAR["LINESTATEMENT"])
     if result is not None:
         matched_tokens, remaining_input = result
@@ -516,6 +680,15 @@ def parse_statement(statement):
 
 
 def parse_numbers_variables(x, state):
+    """
+    Parses numbers or variables from the given input.
+
+    Args:
+    x: The input to be parsed, which can be a number, variable, or a dictionary.
+
+    Returns:
+    float, int, or str: The parsed result.
+    """
     if isinstance(x,dict): 
         # breakpoint()
         if x.get('type')=="variable":
@@ -532,6 +705,16 @@ def parse_numbers_variables(x, state):
 
 
 def evaluate(node, state):
+    """
+    Evaluates a node in the program's abstract syntax tree.
+
+    Args:
+    node: The node to be evaluated.
+    state (dict): The current state of the program.
+
+    Returns:
+    float, int, or str: The result of the evaluation.
+    """
     if isinstance(node, float):
         return node
     if isinstance(node, str):
@@ -601,6 +784,12 @@ DEFAULT_PRGM="""0 PRINT "HELLO WORLD"
 
 
 def run_prgm(prgm_txt):
+    """
+    Runs the THUMBY BASIC program with the provided program text.
+
+    Args:
+    prgm_txt (str): The program text to be executed.
+    """
     print("THUMBY BASIC")
     print("LOADING...")
     print("")
