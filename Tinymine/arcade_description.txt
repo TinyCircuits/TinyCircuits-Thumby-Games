@@ -1,0 +1,9 @@
+Tinymine
+
+Search for gold in an ASCII art underground world.
+
+Hazards await, but riches too!
+
+v1.0
+
+(Tech note: music written with TinyTunes)
