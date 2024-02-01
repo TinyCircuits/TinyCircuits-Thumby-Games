@@ -2,6 +2,11 @@
 
 Thumby BASIC is a simple programming language designed to run on the [Thumby](https://thumby.us/), a compact and portable gaming console. Thumby BASIC allows you to create text-based programs and games on the Thumby device. This README.md provides an introduction to the syntax, compatibility, limitations, and details about various language components.
 
+## Installation
+- Download Thumby Basic from the Thumby Arcade
+- Launch the ThumbyBasic and select a .bas file
+- Adding any .bas file into the ThumbyBasic directory automatically loads into the interpreter
+
 ## Syntax Overview
 
 Thumby BASIC uses a straightforward syntax with line-numbered statements that is meant to closely mirror other BASIC implementations for compatability. Each line consists of a line number followed by a space and a statement. Statements are separated by newlines. Here's an overview of the language components:
@@ -105,7 +110,7 @@ Thumby BASIC is designed specifically for the Thumby gaming console. It may not 
 ## Limitations
 
 Thumby BASIC has several limitations:
-- Thumby has severe RAM memory limitations. We recommend reducing nested expressions so the parser doesn't crach from OOM errors
+- Thumby has severe RAM memory limitations. We recommend reducing nested expressions so the parser doesn't crash from OOM errors
 - Designed for simple text-based games and programs.
 - No support for functions or complex data structures.
 
