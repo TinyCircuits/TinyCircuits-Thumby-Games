@@ -10,7 +10,7 @@ Thumby BASIC is a simple programming language designed to run on the [Thumby](ht
 
 ## FAQ
 - ThumbyBasic contains a custom recursive descent parser & interpreter written in <1k line of native Python
-- ThumbyB
+- ThumbyBasic has compatability with many simple BASIC implementations
 
 ## Demos
 ![Hello](hello.gif)
