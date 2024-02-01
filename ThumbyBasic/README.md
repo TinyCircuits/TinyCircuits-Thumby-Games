@@ -13,10 +13,10 @@ Thumby BASIC is a simple programming language designed to run on the [Thumby](ht
 - ThumbyBasic has compatability with many simple BASIC implementations
 
 ## Demos
-![Hello](hello.gif)
-![Factorial](factorial.gif)
-![TicTacToe](tictactoe.gif)
-![Wumpus](wumpus.gif)
+![Hello](https://zclarke.dev/assets/hello.gif)
+![Factorial](https://zclarke.dev/assets/factorial.gif)
+![TicTacToe](https://zclarke.dev/assets/tictactoe.gif)
+![Wumpus](https://zclarke.dev/assets/wumpus.gif)
 
 
 ## Syntax Overview
