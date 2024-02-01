@@ -275,9 +275,13 @@ def statementoperation(tokens):
             "args": str(tokens[1])
         }
     if tokens[0] == "PRINT ":
+        print_args = unwrap_singleton_list(tokens[1])
+        
+        if print_args.get('value') == '"':
+            print_args['value'] = ""
         return {
         "action":tokens[0].strip(),
-            "args": [unwrap_singleton_list(tokens[1])]
+            "args": [print_args]
         }
     
     return {
