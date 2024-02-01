@@ -6,6 +6,7 @@ Thumby BASIC is a simple programming language designed to run on the [Thumby](ht
 - Download Thumby Basic from the Thumby Arcade
 - Launch the ThumbyBasic and select a .bas file
 - Adding any .bas file into the ThumbyBasic directory automatically loads into the interpreter
+- (Note) ThumbyBasic.py can also be run without depdendencies on any PC for debugging
 
 ## Syntax Overview
 

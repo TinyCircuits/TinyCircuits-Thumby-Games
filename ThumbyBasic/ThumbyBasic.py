@@ -1,3 +1,11 @@
+"""
+# Thumby BASIC
+
+Thumby BASIC is a simple programming language designed to run on the [Thumby](https://thumby.us/), a compact and portable gaming console. Thumby BASIC allows you to create text-based programs and games on the Thumby device. This README.md provides an introduction to the syntax, compatibility, limitations, and details about various language components.
+
+Author: zakerytclarke
+"""
+
 import time
 import os
 import gc 
