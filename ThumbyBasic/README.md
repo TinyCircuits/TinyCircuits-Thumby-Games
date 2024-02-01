@@ -8,6 +8,17 @@ Thumby BASIC is a simple programming language designed to run on the [Thumby](ht
 - Adding any .bas file into the ThumbyBasic directory automatically loads into the interpreter
 - (Note) ThumbyBasic.py can also be run without depdendencies on any PC for debugging
 
+## FAQ
+- ThumbyBasic contains a custom recursive descent parser & interpreter written in <1k line of native Python
+- ThumbyB
+
+## Demos
+![Hello](hello.gif)
+![Factorial](factorial.gif)
+![TicTacToe](tictactoe.gif)
+![Wumpus](wumpus.gif)
+
+
 ## Syntax Overview
 
 Thumby BASIC uses a straightforward syntax with line-numbered statements that is meant to closely mirror other BASIC implementations for compatability. Each line consists of a line number followed by a space and a statement. Statements are separated by newlines. Here's an overview of the language components:

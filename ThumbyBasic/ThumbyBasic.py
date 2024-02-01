@@ -719,7 +719,7 @@ def evaluate(node, state):
             
         if node["op"] == "STR":
             value = parse_numbers_variables(evaluate(node["args"][0], state), state)
-            if isinstance(value, float) and value.is_integer():
+            if isinstance(value, float) and value == int(value):
                 value = round(value)
             return str(value)
         if node["op"] == "INT":
