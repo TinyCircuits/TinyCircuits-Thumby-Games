@@ -101,7 +101,7 @@ try: # Running on Thumby
                 update()
                                 
             refresh_display()
-            time.sleep(0.1)
+            time.sleep(0.2)
                     
         return options[input_cursor]
 
@@ -159,7 +159,7 @@ try: # Running on Thumby
                     input_values.append(10)
                     input_cursor += 1
             refresh_display()
-            time.sleep(0.1)
+            time.sleep(0.2)
         
         input_txt = "".join(map(lambda x:INPUT_STRING[x], input_values))
         input_values = [10]
