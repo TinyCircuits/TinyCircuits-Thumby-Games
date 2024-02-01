@@ -61,7 +61,8 @@ while True:
             game = True
             lineSprite.y = random.randint(-500, -100)
             lineSprite2.y = random.randint(-500, -100)
-            highScore = int(thumby.saveData.getItem("highscore"))
+            if (thumby.saveData.hasItem("highscore")):
+                highScore = int(thumby.saveData.getItem("highscore"))
             thumby.audio.play(200, 3)
     else:
         if close == True:
@@ -86,14 +87,12 @@ while True:
                 thumby.audio.play(2000, 1)
                 newScore = newScore + 1
                 speed = speed+(newScore//10+1)*0.01
-                print(speed)
             elif thumby.buttonB.justPressed() == True and lineSprite.y > -30 and lineSprite.y < 40:
                 thumby.display.drawSprite(dancer2Sprite)
                 lineSprite.y = random.randint(-500, -100)
                 thumby.audio.play(2000, 1)
                 newScore = newScore + 1
                 speed = speed+(newScore//10+1)*0.01
-                print(speed)
             elif thumby.buttonA.pressed() == True:
                 thumby.display.drawSprite(dancer3Sprite)
             elif thumby.buttonB.pressed() == True:
