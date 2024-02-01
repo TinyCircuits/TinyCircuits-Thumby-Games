@@ -2,7 +2,7 @@ import time
 import os
 import gc 
 
-PATH = "./programs"
+PATH = "."
 
 def refresh_display():
     """
@@ -39,7 +39,7 @@ print_values = ["THUMBY BASIC","LOADING...","",""]
 try: # Running on Thumby
     import thumby
 
-    PATH = "./Games/ThumbyBasic/programs"
+    PATH = "./Games/ThumbyBasic"
     thumby.display.setFont("/lib/font5x7.bin", 5, 7, 1)
 
     
