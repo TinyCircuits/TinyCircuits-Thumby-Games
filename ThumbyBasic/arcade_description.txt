@@ -1,0 +1,6 @@
+ThumbyBASIC
+
+ThumbyBASIC is an implementation of a simple BASIC interpreter built specifically for the THUMBY. It can run a variety of BASIC programs- see README and programs for examples.
+
+Author: zakerytclarke
+Version: 1.0
