@@ -330,8 +330,8 @@ class Note:
             width = width + 1
         return width
 
-    def play( self ):
-        totalMillis = 15.625 * self.length + 0.5
+    def play( self, tempo ):
+        totalMillis = ( 3750.0 / tempo ) * self.length
         if '.' in self.flags:
             totalMillis = totalMillis * 1.5
         if not 'r' in self.flags:
@@ -409,14 +409,20 @@ class Tune:
     def __init__( self, initString = None ):
         self.notes = []
         if initString:
-            for noteStr in initString.split( ',' ):
+            parts = initString.split( ':' )
+            if len( parts ) == 1:
+                self.tempo = 240
+            else:
+                self.tempo = int( parts[ 0 ] )
+            for noteStr in parts[ -1 ].split( ',' ):
                 self.notes.append( Note.parse( noteStr ) )
         else:
             self.notes.append( Note() )
+            self.tempo = 120
         self.note = 0
 
     def __repr__( self ):
-        return ','.join( map( repr, self.notes ) )
+        return str( self.tempo ) + ':' + ','.join( map( repr, self.notes ) )
 
     def play( self ):
         self.note = 0
@@ -427,7 +433,7 @@ class Tune:
         for note in self.notes[ self.note : ]:
             self.display();
             self.note = self.note + 1
-            note.play()
+            note.play( self.tempo )
         self.note = self.note - 1
         global baseFPS
         thumby.display.setFPS( baseFPS )
@@ -588,6 +594,7 @@ class Editor:
                 ( 'Shorten',     lambda: self.tune.shorten()  ),
                 ( 'Lengthen',    lambda: self.tune.lengthen() ),
                 ( 'Note...',     lambda: self.menuNote()      ),
+                ( 'Tempo...',    lambda: self.setTempo()      ),
                 ( 'To start',    lambda: self.tune.toStart()  ),
                 ( 'To end',      lambda: self.tune.toEnd()    ),
                 ( 'Play here',   lambda: self.tune.playHere() ),
@@ -623,6 +630,53 @@ class Editor:
     def loadSampleTune( self, dir, name, tuneString ):
         thumby.saveData.setItem( name, tuneString )
         dir.append ( name )
+
+    def setTempo( self ):
+        tempo = self.tune.tempo
+        thumby.display.setFPS( 18 )
+        while True:
+            thumby.display.fill( 0 )
+            thumby.display.drawText( 'Tune tempo', 6, 0, 1 )
+
+            arrow = sprites[ 'cursor' ]
+            oldX = arrow.x
+            oldY = arrow.y
+            arrow.x = 12
+            arrow.y = 14
+            thumby.display.drawSprite( arrow )
+            arrow.x = oldX
+            arrow.y = oldY
+
+            arrow = sprites[ 'cursor_rot' ]
+            oldX = arrow.x
+            oldY = arrow.y
+            arrow.x = 12
+            arrow.y = 30
+            thumby.display.drawSprite( arrow )
+            arrow.x = oldX
+            arrow.y = oldY
+
+            thumby.display.drawText( str( tempo ), 6, 20, 1 )
+            thumby.display.drawText( 'A: OK', 36, 20, 1 )
+            thumby.display.drawText( 'B: cncl', 30, 28, 1 )
+            thumby.display.update()
+
+            b = buttons.whichButton()
+            if b:
+                if b == 'A':
+                    self.tune.tempo = tempo
+                    break
+                elif b == 'B':
+                    break
+                elif b in 'Uu':
+                    tempo = tempo + 1
+                    if tempo > 600:
+                        tempo = 600
+                elif b in 'Dd':
+                    tempo = tempo - 1
+                    if tempo < 15:
+                        tempo = 15
+        thumby.display.setFPS( baseFPS )
 
     def menuNote( self ):
         self.noteMenu.display()
@@ -664,7 +718,9 @@ class Editor:
                 self.directory.append( self.fileName )
                 self.writeDir()
             print( 'Writing tune for ' + self.fileName )
-            thumby.saveData.setItem( self.fileName, str( self.tune ) )
+            tune = str( self.tune )
+            print( tune )
+            thumby.saveData.setItem( self.fileName, tune )
             thumby.saveData.save()
 
     def saveWithName( self, fileName ):
@@ -678,7 +734,9 @@ class Editor:
             self.directory.append( self.fileName )
             self.writeDir()
         print( 'Writing tune for ' + self.fileName )
-        thumby.saveData.setItem( self.fileName, str( self.tune ) )
+        tune = str( self.tune )
+        print( tune )
+        thumby.saveData.setItem( self.fileName, tune )
         thumby.saveData.save()
 
     def writeDir( self ):
