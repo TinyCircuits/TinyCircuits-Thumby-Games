@@ -1,3 +1,10 @@
+NAME=TinyTunes
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyTunes/TinyTunes.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyTunes/keyboard.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyTunes/emulator_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyTunes/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyTunes/buttons.py
+
 NAME=TinyTraffic
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyTraffic/arcade_title_video.webm
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyTraffic/TinyTraffic.py
@@ -125,13 +132,6 @@ https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyEdit/arcade_title_video.webm
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyEdit/btn.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyEdit/arcade_description.txt
-
-NAME=TinyTunes
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyTunes/TinyTunes.py
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyTunes/keyboard.py
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyTunes/emulator_video.webm
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyTunes/arcade_description.txt
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyTunes/buttons.py
 
 NAME=DonutClicker
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/DonutClicker/arcade_title_video.webm
