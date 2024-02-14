@@ -1,3 +1,8 @@
+NAME=Dance!
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Dance!/Dance!.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Dance!/arcade_title_image.png
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Dance!/arcade_description.txt
+
 NAME=TinyTunes
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyTunes/TinyTunes.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyTunes/keyboard.py
@@ -9,11 +14,6 @@ NAME=TinyTraffic
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyTraffic/arcade_title_video.webm
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyTraffic/TinyTraffic.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyTraffic/arcade_description.txt
-
-NAME=Dance!
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Dance!/Dance!.py
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Dance!/arcade_title_image.png
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Dance!/arcade_description.txt
 
 NAME=ThumbyBasic
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/ThumbyBasic/README.md
