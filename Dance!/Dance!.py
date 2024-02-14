@@ -57,6 +57,7 @@ while True:
     if game == False:
         if thumby.inputJustPressed():
             newScore = 0
+            speed = 3
             close = True
             game = True
             lineSprite.y = random.randint(-500, -100)
