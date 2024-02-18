@@ -460,9 +460,9 @@ class Keyboard:
 				return output
 
 class Line:
-	def __init__(s,text):
-		s.text=text
-		s.size=len(text)
+	def __init__(s,t):
+		s.text=t[0:-1] if t.endswith('\n') else t
+		s.size=len(s.text)
 
 	def getText(s,position):
 		if position>s.size:
@@ -489,7 +489,7 @@ class File:
 		s.lines=[]
 		if fileName:
 			with open(fileName,encoding="utf-8") as f:
-				for line in f.read().splitlines():
+				for line in f:
 					s.lines.append(Line(line))
 		if len(s.lines)==0:
 			s.lines.append(Line(""))
