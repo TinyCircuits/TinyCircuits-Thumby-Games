@@ -1,6 +1,6 @@
 RockPaperScissors
 
-Rock Pape rScissors is a fun simple rock paper scissors game where you vs a computer.
+Rock Paper Scissors is a fun simple rock paper scissors game where you vs a computer.
 Pressing left, right, or up chooses which move you want.
 Play to 9 points and beat the computer!
 For some "spice" press down on the dpad!
