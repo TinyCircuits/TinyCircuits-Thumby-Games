@@ -1,3 +1,14 @@
+NAME=RockPaperScissors
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/RockPaperScissors/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/RockPaperScissors/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/RockPaperScissors/RockPaperScissors.py
+
+NAME=TinyEdit
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyEdit/TinyEdit.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyEdit/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyEdit/btn.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyEdit/arcade_description.txt
+
 NAME=Dance!
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Dance!/Dance!.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Dance!/arcade_title_image.png
@@ -126,12 +137,6 @@ https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Umby&Glow/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Umby&Glow/audio.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Umby&Glow/world4.py
-
-NAME=TinyEdit
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyEdit/TinyEdit.py
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyEdit/arcade_title_video.webm
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyEdit/btn.py
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyEdit/arcade_description.txt
 
 NAME=DonutClicker
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/DonutClicker/arcade_title_video.webm
@@ -342,11 +347,6 @@ NAME=HelicopterRun
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/HelicopterRun/HelicopterRun.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/HelicopterRun/arcade_title_video.webm
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/HelicopterRun/arcade_description.txt
-
-NAME=RockPaperScissors
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/RockPaperScissors/arcade_title_video.webm
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/RockPaperScissors/arcade_description.txt
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/RockPaperScissors/RockPaperScissors.py
 
 NAME=ThumBird
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/ThumBird/arcade_title_video.webm
