@@ -11,6 +11,7 @@ car_1_x = None
 car_1_y = None
 car_2_x = None
 car_2_y = None
+player_car_mask = None
 player_car = None
 Main_menu = None
 truck_x = None
@@ -33,9 +34,11 @@ truck = Sprite(1,1,bytearray([1]))
 
 player_car = Sprite(1,1,bytearray([1]))
 
+player_car_mask = Sprite(1,1,bytearray([1]))
+
 # Describe this function...
 def Game():
-  global car_1_x, car_1_y, car_2_x, car_2_y, player_car, Main_menu, truck_x, score, road_lines_y, car_1, car_2, odd_or_even, truck_y, player_car_x, truck
+  global car_1_x, car_1_y, car_2_x, car_2_y, player_car_mask, player_car, Main_menu, truck_x, score, road_lines_y, car_1, car_2, odd_or_even, truck_y, player_car_x, truck
   player_car.setFrame(0)
   odd_or_even = 0
   score = 0
@@ -61,7 +64,7 @@ def Game():
 
 # Describe this function...
 def spawn_car_1():
-  global car_1_x, car_1_y, car_2_x, car_2_y, player_car, Main_menu, truck_x, score, road_lines_y, car_1, car_2, odd_or_even, truck_y, player_car_x, truck
+  global car_1_x, car_1_y, car_2_x, car_2_y, player_car_mask, player_car, Main_menu, truck_x, score, road_lines_y, car_1, car_2, odd_or_even, truck_y, player_car_x, truck
   car_1_x = random.choice([28, 44, 12])
   car_1_y = -48
   car_1.x = car_1_x
@@ -69,7 +72,7 @@ def spawn_car_1():
 
 # Describe this function...
 def main_game_loop():
-  global car_1_x, car_1_y, car_2_x, car_2_y, player_car, Main_menu, truck_x, score, road_lines_y, car_1, car_2, odd_or_even, truck_y, player_car_x, truck
+  global car_1_x, car_1_y, car_2_x, car_2_y, player_car_mask, player_car, Main_menu, truck_x, score, road_lines_y, car_1, car_2, odd_or_even, truck_y, player_car_x, truck
   if car_1_y > 112:
     score = (score if isinstance(score, Number) else 0) + 1
     respawn_car_1()
@@ -90,7 +93,9 @@ def main_game_loop():
       draw_car_2()
       draw_truck()
       player_car.setFrame(2)
-      display.drawSprite(player_car)
+      player_car_mask.setFrame(2)
+      if player_car.width == player_car_mask.width and player_car.height == player_car_mask.height:
+          display.drawSpriteWithMask(player_car, player_car_mask)
       display.update()
       if car_1_y > 8:
         car_1_collision_check()
@@ -102,6 +107,7 @@ def main_game_loop():
       player_car_x = (player_car_x if isinstance(player_car_x, Number) else 0) + -1
       player_car.x = player_car_x
     player_car.setFrame(0)
+    player_car_mask.setFrame(0)
   if buttons.buttonR.justPressed() and player_car_x < 44:
     audio.play(1000, 50)
     for count2 in range(16):
@@ -111,7 +117,9 @@ def main_game_loop():
       draw_car_2()
       draw_truck()
       player_car.setFrame(1)
-      display.drawSprite(player_car)
+      player_car_mask.setFrame(1)
+      if player_car.width == player_car_mask.width and player_car.height == player_car_mask.height:
+          display.drawSpriteWithMask(player_car, player_car_mask)
       display.update()
       if car_1_y > 8:
         car_1_collision_check()
@@ -123,11 +131,13 @@ def main_game_loop():
       player_car_x = (player_car_x if isinstance(player_car_x, Number) else 0) + 1
       player_car.x = player_car_x
     player_car.setFrame(0)
+    player_car_mask.setFrame(0)
   roads()
   draw_car_1()
   draw_car_2()
   draw_truck()
-  display.drawSprite(player_car)
+  if player_car.width == player_car_mask.width and player_car.height == player_car_mask.height:
+      display.drawSpriteWithMask(player_car, player_car_mask)
   score2()
   display.update()
   if car_1_y > 8:
@@ -140,7 +150,7 @@ def main_game_loop():
 
 # Describe this function...
 def spawn_car_2():
-  global car_1_x, car_1_y, car_2_x, car_2_y, player_car, Main_menu, truck_x, score, road_lines_y, car_1, car_2, odd_or_even, truck_y, player_car_x, truck
+  global car_1_x, car_1_y, car_2_x, car_2_y, player_car_mask, player_car, Main_menu, truck_x, score, road_lines_y, car_1, car_2, odd_or_even, truck_y, player_car_x, truck
   car_2_x = random.choice([28, 44, 12])
   car_2_y = -80
   car_2.x = car_2_x
@@ -148,7 +158,7 @@ def spawn_car_2():
 
 # Describe this function...
 def respawn_car_1():
-  global car_1_x, car_1_y, car_2_x, car_2_y, player_car, Main_menu, truck_x, score, road_lines_y, car_1, car_2, odd_or_even, truck_y, player_car_x, truck
+  global car_1_x, car_1_y, car_2_x, car_2_y, player_car_mask, player_car, Main_menu, truck_x, score, road_lines_y, car_1, car_2, odd_or_even, truck_y, player_car_x, truck
   car_1_x = random.choice([44, 28, 12])
   car_1_y = -48
   car_1.x = car_1_x
@@ -156,7 +166,7 @@ def respawn_car_1():
 
 # Describe this function...
 def respawn_car_2():
-  global car_1_x, car_1_y, car_2_x, car_2_y, player_car, Main_menu, truck_x, score, road_lines_y, car_1, car_2, odd_or_even, truck_y, player_car_x, truck
+  global car_1_x, car_1_y, car_2_x, car_2_y, player_car_mask, player_car, Main_menu, truck_x, score, road_lines_y, car_1, car_2, odd_or_even, truck_y, player_car_x, truck
   car_2_x = random.choice([44, 28, 12])
   car_2_y = -80
   car_2.x = car_2_x
@@ -164,7 +174,7 @@ def respawn_car_2():
 
 # Describe this function...
 def spawn_truck():
-  global car_1_x, car_1_y, car_2_x, car_2_y, player_car, Main_menu, truck_x, score, road_lines_y, car_1, car_2, odd_or_even, truck_y, player_car_x, truck
+  global car_1_x, car_1_y, car_2_x, car_2_y, player_car_mask, player_car, Main_menu, truck_x, score, road_lines_y, car_1, car_2, odd_or_even, truck_y, player_car_x, truck
   if car_1_x != 12 and car_2_x != 12:
     truck_x = 12
     truck_y = -32
@@ -183,7 +193,7 @@ def spawn_truck():
 
 # Describe this function...
 def respawn_truck():
-  global car_1_x, car_1_y, car_2_x, car_2_y, player_car, Main_menu, truck_x, score, road_lines_y, car_1, car_2, odd_or_even, truck_y, player_car_x, truck
+  global car_1_x, car_1_y, car_2_x, car_2_y, player_car_mask, player_car, Main_menu, truck_x, score, road_lines_y, car_1, car_2, odd_or_even, truck_y, player_car_x, truck
   truck_x = 28
   truck_y = -32
   if car_1_x != 12 and car_2_x != 12:
@@ -204,7 +214,7 @@ def respawn_truck():
 
 # Describe this function...
 def roads():
-  global car_1_x, car_1_y, car_2_x, car_2_y, player_car, Main_menu, truck_x, score, road_lines_y, car_1, car_2, odd_or_even, truck_y, player_car_x, truck
+  global car_1_x, car_1_y, car_2_x, car_2_y, player_car_mask, player_car, Main_menu, truck_x, score, road_lines_y, car_1, car_2, odd_or_even, truck_y, player_car_x, truck
   if road_lines_y > 40:
     road_lines_y = -40
   road_lines_y = (road_lines_y if isinstance(road_lines_y, Number) else 0) + 4
@@ -215,7 +225,7 @@ def roads():
 
 # Describe this function...
 def left_road_lines():
-  global car_1_x, car_1_y, car_2_x, car_2_y, player_car, Main_menu, truck_x, score, road_lines_y, car_1, car_2, odd_or_even, truck_y, player_car_x, truck
+  global car_1_x, car_1_y, car_2_x, car_2_y, player_car_mask, player_car, Main_menu, truck_x, score, road_lines_y, car_1, car_2, odd_or_even, truck_y, player_car_x, truck
   display.drawRectangle(28, road_lines_y + -40, 1, 5, 1)
   display.drawRectangle(28, road_lines_y + -20, 1, 5, 1)
   display.drawRectangle(28, road_lines_y + 0, 1, 5, 1)
@@ -226,7 +236,7 @@ def left_road_lines():
 
 # Describe this function...
 def right_road_lines():
-  global car_1_x, car_1_y, car_2_x, car_2_y, player_car, Main_menu, truck_x, score, road_lines_y, car_1, car_2, odd_or_even, truck_y, player_car_x, truck
+  global car_1_x, car_1_y, car_2_x, car_2_y, player_car_mask, player_car, Main_menu, truck_x, score, road_lines_y, car_1, car_2, odd_or_even, truck_y, player_car_x, truck
   display.drawRectangle(44, road_lines_y + -40, 1, 5, 1)
   display.drawRectangle(44, road_lines_y + -20, 1, 5, 1)
   display.drawRectangle(44, road_lines_y + 0, 1, 5, 1)
@@ -237,14 +247,14 @@ def right_road_lines():
 
 # Describe this function...
 def draw_car_2():
-  global car_1_x, car_1_y, car_2_x, car_2_y, player_car, Main_menu, truck_x, score, road_lines_y, car_1, car_2, odd_or_even, truck_y, player_car_x, truck
+  global car_1_x, car_1_y, car_2_x, car_2_y, player_car_mask, player_car, Main_menu, truck_x, score, road_lines_y, car_1, car_2, odd_or_even, truck_y, player_car_x, truck
   car_2_y = (car_2_y if isinstance(car_2_y, Number) else 0) + 1
   car_2.y = car_2_y
   display.drawSprite(car_2)
 
 # Describe this function...
 def draw_truck():
-  global car_1_x, car_1_y, car_2_x, car_2_y, player_car, Main_menu, truck_x, score, road_lines_y, car_1, car_2, odd_or_even, truck_y, player_car_x, truck
+  global car_1_x, car_1_y, car_2_x, car_2_y, player_car_mask, player_car, Main_menu, truck_x, score, road_lines_y, car_1, car_2, odd_or_even, truck_y, player_car_x, truck
   if truck_x == 12:
     if odd_or_even % 2 == 0:
       truck_y = (truck_y if isinstance(truck_y, Number) else 0) + 1
@@ -266,19 +276,19 @@ def draw_truck():
 
 # Describe this function...
 def draw_car_1():
-  global car_1_x, car_1_y, car_2_x, car_2_y, player_car, Main_menu, truck_x, score, road_lines_y, car_1, car_2, odd_or_even, truck_y, player_car_x, truck
+  global car_1_x, car_1_y, car_2_x, car_2_y, player_car_mask, player_car, Main_menu, truck_x, score, road_lines_y, car_1, car_2, odd_or_even, truck_y, player_car_x, truck
   car_1_y = (car_1_y if isinstance(car_1_y, Number) else 0) + 1
   car_1.y = car_1_y
   display.drawSprite(car_1)
 
 # Describe this function...
 def score2():
-  global car_1_x, car_1_y, car_2_x, car_2_y, player_car, Main_menu, truck_x, score, road_lines_y, car_1, car_2, odd_or_even, truck_y, player_car_x, truck
+  global car_1_x, car_1_y, car_2_x, car_2_y, player_car_mask, player_car, Main_menu, truck_x, score, road_lines_y, car_1, car_2, odd_or_even, truck_y, player_car_x, truck
   display.drawText(str(score), 0, 0, 1)
 
 # Describe this function...
 def car_1_collision_check():
-  global car_1_x, car_1_y, car_2_x, car_2_y, player_car, Main_menu, truck_x, score, road_lines_y, car_1, car_2, odd_or_even, truck_y, player_car_x, truck
+  global car_1_x, car_1_y, car_2_x, car_2_y, player_car_mask, player_car, Main_menu, truck_x, score, road_lines_y, car_1, car_2, odd_or_even, truck_y, player_car_x, truck
   if bool(display.getPixel(car_1_x + 4, car_1_y + 5)) == True or bool(display.getPixel(car_1_x + 12, car_1_y + 5)) == True:
     Game_over()
   if bool(display.getPixel(car_1_x + 4, car_1_y + 15)) == True or bool(display.getPixel(car_1_x + 12, car_1_y + 15)) == True:
@@ -286,7 +296,7 @@ def car_1_collision_check():
 
 # Describe this function...
 def car_2_collision_check():
-  global car_1_x, car_1_y, car_2_x, car_2_y, player_car, Main_menu, truck_x, score, road_lines_y, car_1, car_2, odd_or_even, truck_y, player_car_x, truck
+  global car_1_x, car_1_y, car_2_x, car_2_y, player_car_mask, player_car, Main_menu, truck_x, score, road_lines_y, car_1, car_2, odd_or_even, truck_y, player_car_x, truck
   if bool(display.getPixel(car_2_x + 4, car_2_y + 15)) == True or bool(display.getPixel(car_2_x + 12, car_2_y + 15)) == True:
     Game_over()
   if bool(display.getPixel(car_2_x + 4, car_2_y + 5)) == True or bool(display.getPixel(car_2_x + 12, car_2_y + 5)) == True:
@@ -294,14 +304,14 @@ def car_2_collision_check():
 
 # Describe this function...
 def truck_collision_check():
-  global car_1_x, car_1_y, car_2_x, car_2_y, player_car, Main_menu, truck_x, score, road_lines_y, car_1, car_2, odd_or_even, truck_y, player_car_x, truck
+  global car_1_x, car_1_y, car_2_x, car_2_y, player_car_mask, player_car, Main_menu, truck_x, score, road_lines_y, car_1, car_2, odd_or_even, truck_y, player_car_x, truck
   if bool(display.getPixel(truck_x + 4, truck_y + 32)) == True or bool(display.getPixel(truck_x + 12, truck_y + 32)) == True:
     Game_over()
   truck_side_collision_check()
 
 # Describe this function...
 def truck_side_collision_check():
-  global car_1_x, car_1_y, car_2_x, car_2_y, player_car, Main_menu, truck_x, score, road_lines_y, car_1, car_2, odd_or_even, truck_y, player_car_x, truck
+  global car_1_x, car_1_y, car_2_x, car_2_y, player_car_mask, player_car, Main_menu, truck_x, score, road_lines_y, car_1, car_2, odd_or_even, truck_y, player_car_x, truck
   if bool(display.getPixel(truck_x + 4, truck_y + 8)) == True or bool(display.getPixel(truck_x + 12, truck_y + 8)) == True:
     Game_over()
   if bool(display.getPixel(truck_x + 3, truck_y + 16)) == True or bool(display.getPixel(truck_x + 13, truck_y + 16)) == True:
@@ -313,7 +323,8 @@ saveData.setName(globals().get('__file__', 'FAST_EXECUTE').replace('/Games/','')
 
 # Describe this function...
 def Game_over():
-  global car_1_x, car_1_y, car_2_x, car_2_y, player_car, Main_menu, truck_x, score, road_lines_y, car_1, car_2, odd_or_even, truck_y, player_car_x, truck
+  global car_1_x, car_1_y, car_2_x, car_2_y, player_car_mask, player_car, Main_menu, truck_x, score, road_lines_y, car_1, car_2, odd_or_even, truck_y, player_car_x, truck
+  player_car_mask.setFrame(0)
   audio.play(800, 1000)
   if saveData.getItem('high score') == None:
     saveData.setItem('high score', 0)
@@ -352,8 +363,11 @@ truck = Sprite(16,32,bytearray([0,24,230,1,17,25,25,25,25,25,25,17,1,230,24,0,
             0,127,64,64,64,64,64,64,64,64,64,64,64,64,127,0]), truck.x,truck.y,truck.key,truck.mirrorX,truck.mirrorY)
 player_car = Sprite(48,16,bytearray([0,0,0,48,252,222,206,206,206,206,222,252,48,0,0,0,0,0,0,192,192,224,240,252,236,206,158,62,252,248,112,0,0,112,248,252,62,158,206,236,252,240,224,192,192,0,0,0,
             0,0,0,24,63,59,51,51,51,51,59,63,24,0,0,0,0,0,7,15,30,60,57,51,31,31,7,3,1,1,0,0,0,0,1,1,3,7,31,31,51,57,60,30,15,7,0,0]), player_car.x,player_car.y,player_car.key,player_car.mirrorX,player_car.mirrorY)
+player_car_mask = Sprite(48,16,bytearray([0,0,0,48,252,254,254,254,254,254,254,252,48,0,0,0,0,0,0,192,192,224,240,252,252,254,254,254,252,248,112,0,0,112,248,252,254,254,254,252,252,240,224,192,192,0,0,0,
+           0,0,0,24,63,63,63,63,63,63,63,63,24,0,0,0,0,0,7,15,31,63,63,63,31,31,7,3,1,1,0,0,0,0,1,1,3,7,31,31,63,63,63,31,15,7,0,0]), player_car_mask.x,player_car_mask.y,player_car_mask.key,player_car_mask.mirrorX,player_car_mask.mirrorY)
+player_car_mask = Sprite(16,16,bytearray([0,0,0,48,252,254,254,254,254,254,254,252,48,0,0,0,0,0,0,24,63,63,63,63,63,63,63,63,24,0,0,0,0,0,0,192,192,224,240,252,252,254,254,254,252,248,112,0,0,0,7,15,31,63,63,63,31,31,7,3,1,1,0,0,0,112,248,252,254,254,254,252,252,240,224,192,192,0,0,0,0,0,1,1,3,7,31,31,63,63,63,31,15,7,0,0]),player_car_mask.x,player_car_mask.y,player_car_mask.key,player_car_mask.mirrorX,player_car_mask.mirrorY)
 player_car = Sprite(16,16,bytearray([0,0,0,48,252,222,206,206,206,206,222,252,48,0,0,0,0,0,0,24,63,59,51,51,51,51,59,63,24,0,0,0,0,0,0,192,192,224,240,252,236,206,158,62,252,248,112,0,0,0,7,15,30,60,57,51,31,31,7,3,1,1,0,0,0,112,248,252,62,158,206,236,252,240,224,192,192,0,0,0,0,0,1,1,3,7,31,31,51,57,60,30,15,7,0,0]),player_car.x,player_car.y,player_car.key,player_car.mirrorX,player_car.mirrorY)
-player_car.key = 0
+player_car.key = -1
 car_1.key = 0
 car_2.key = 0
 truck.key = 0
