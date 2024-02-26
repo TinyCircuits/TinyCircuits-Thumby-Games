@@ -8,4 +8,5 @@ Warning! Don't edit anything unless you have a backup.
 
 More info at http://codeberg.org/JBanana/TinyEdit
 
-v1.0
+v1.1
+Can load slightly larger files
