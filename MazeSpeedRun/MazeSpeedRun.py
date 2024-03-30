@@ -69,17 +69,109 @@ def draw_maze(grid):
             if y == 0: thumby.display.drawLine(px, py, px + cell_size - 1, py, 1)
             if x == 0: thumby.display.drawLine(px, py, px, py + cell_size - 1, 1)
 
-# Updates the player's position based on button presses, ensuring movement is allowed by the maze's paths.
+# Add a new variable to track the last 10 inputs
+input_sequence = []
+
+# This function updates the player's position based on input from the game's directional buttons.
+# It also tracks the sequence of button presses for detecting special input patterns (e.g., the Konami code).
+# Additionally, it ensures that the player's movement is constrained within the boundaries of the maze and
+# valid according to the maze's layout.
 def update_player(player_pos, grid):
-    x, y = player_pos
-    cell = grid[y][x]  # Get the current cell's direction flags.
-    # Check for button presses and ensure movement is possible in the desired direction.
-    if thumby.buttonR.pressed() and (cell & E): player_pos[0] += 1
-    if thumby.buttonL.pressed() and (cell & W): player_pos[0] -= 1
-    if thumby.buttonD.pressed() and (cell & S): player_pos[1] += 1
-    if thumby.buttonU.pressed() and (cell & N): player_pos[1] -= 1
-    # Ensure the player's position remains within the bounds of the maze.
-    player_pos[0], player_pos[1] = min(max(player_pos[0], 0), maze_width - 1), min(max(player_pos[1], 0), maze_height - 1)
+    global input_sequence, maze_width, maze_height
+    # Map each directional button to a tuple containing the direction name, 
+    # change in x, change in y, and the corresponding flag from the maze grid indicating a valid movement direction.
+    directions = {
+        thumby.buttonU: ('up', 0, -1, N),   # Up movement
+        thumby.buttonD: ('down', 0, 1, S),  # Down movement
+        thumby.buttonL: ('left', -1, 0, W), # Left movement
+        thumby.buttonR: ('right', 1, 0, E), # Right movement
+    }
+    input_detected = False  # Flag to track if any input was detected during the current update cycle.
+
+    # Iterate over the mapped directions to handle player movement. If a button is pressed
+    # and the movement is valid (according to the maze grid), update the player's position.
+    for button, (direction, dx, dy, dir_flag) in directions.items():
+        if button.pressed() and (grid[player_pos[1]][player_pos[0]] & dir_flag):
+            # Update player position based on the direction of movement.
+            player_pos[0] += dx
+            player_pos[1] += dy
+            # Append the direction of movement to the input sequence for later analysis.
+            input_sequence.append(direction)
+            input_detected = True
+
+    # Check for the A and B buttons, which are part of the Konami code but do not affect player movement.
+    # If pressed, they are simply added to the input sequence.
+    for button, direction in [(thumby.buttonA, 'a'), (thumby.buttonB, 'b')]:
+        if button.pressed():
+            input_sequence.append(direction)
+            input_detected = True
+
+    # If any input was detected, truncate the input_sequence to the last 10 inputs.
+    if input_detected:
+        input_sequence = input_sequence[-10:]
+        # Check if the input sequence matches the Konami code. If it does, execute the special action.
+        if check_konami_code():
+            input_sequence = []  # Clear the input sequence to prevent immediate re-triggering.
+            flash_path(player_pos, grid, maze_width, maze_height)  # Visualize the path to the exit as an Easter egg.
+
+    # Constrain the player's position to ensure it remains within the maze boundaries.
+    player_pos[0] = min(max(player_pos[0], 0), maze_width - 1)
+    player_pos[1] = min(max(player_pos[1], 0), maze_height - 1)
+
+konami_code = ['up', 'up', 'down', 'down', 'left', 'right', 'left', 'right', 'b', 'a']
+def check_konami_code():
+    # Define the Konami code sequence
+    return input_sequence == konami_code
+
+def find_path_to_exit(start_x, start_y, grid, maze_width, maze_height):
+    # Initialize stack with starting position; (x, y, path taken to reach this cell).
+    stack = [(start_x, start_y, [])]
+    visited = set()  # Keep track of visited cells to avoid cycles.
+    
+    while stack:
+        cx, cy, path = stack.pop()  # Current position and path taken to reach this cell.
+        
+        # If we've reached the exit, return the path.
+        if cx == maze_width - 1 and cy == maze_height - 1:
+            return path
+        
+        # Mark the current cell as visited.
+        visited.add((cx, cy))
+        
+        # Explore all possible directions from the current cell.
+        for direction, dx, dy in [(N, 0, -1), (S, 0, 1), (E, 1, 0), (W, -1, 0)]:
+            nx, ny = cx + dx, cy + dy  # Calculate new position based on direction deltas.
+            
+            # Check if the new position is valid (within bounds, has a connecting path, and not visited).
+            if 0 <= nx < maze_width and 0 <= ny < maze_height and not (nx, ny) in visited:
+                if grid[cy][cx] & direction and grid[ny][nx] & OPPOSITE[direction]:
+                    # Continue the path with the new cell included.
+                    new_path = path + [(nx, ny)]
+                    stack.append((nx, ny, new_path))
+    
+    # Return an empty path if exit is not found (shouldn't happen in a proper maze).
+    return []
+
+def flash_path(start_pos, maze, maze_width, maze_height):
+    # Find the path from the current position to the exit.
+    path = find_path_to_exit(start_pos[0], start_pos[1], maze, maze_width, maze_height)
+    
+    # Temporarily display the path.
+    for x, y in path:
+        px, py = x * effective_cell_step + 1, y * effective_cell_step + 1
+        draw_player(px, py, cell_size - 2, 1)  # Reuse draw_player function to highlight the path.
+        thumby.display.update()
+        time.sleep(0.01)  # Adjust timing based on desired flash rate.
+    
+    # Optionally clear the path highlight after showing it.
+    time.sleep(1)  # Show the path for a moment.
+    # Redraw the maze and player to "clear" the path highlight.
+    thumby.display.fill(0)
+    draw_maze(maze)
+    px, py = start_pos[0] * effective_cell_step + 1, start_pos[1] * effective_cell_step + 1
+    draw_player(px, py, cell_size - 2, 1)
+    thumby.display.update()
+
 
 # Renders the player's avatar on the display as a blinking square.
 def draw_player(x, y, size, brightness):
