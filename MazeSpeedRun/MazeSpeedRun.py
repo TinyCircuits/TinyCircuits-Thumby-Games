@@ -20,7 +20,7 @@ button_states = {'up': False, 'down': False, 'left': False, 'right': False, 'a':
 button_press_times = {'up': 0, 'down': 0, 'left': 0, 'right': 0, 'a': 0, 'b': 0}
 
 # Duration threshold in milliseconds for a button hold to count as continuous press
-hold_duration_threshold = 100  # Adjust this value as needed for your game
+hold_duration_threshold = 150  # Adjust this value as needed for your game
 
 
 # Numeric representations for each cardinal direction within the maze.
