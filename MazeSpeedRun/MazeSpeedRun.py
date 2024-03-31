@@ -7,11 +7,21 @@ import time
 # Initialize the random seed with the current time in milliseconds to ensure 
 # the maze generated is different every time the game starts.
 random.seed(time.ticks_ms())
-thumby.display.setFPS(15)
+thumby.display.setFPS(60)
 # Game settings that dictate the gameplay experience.
 flash_rate = 0.03  # Controls the blinking speed of the player's avatar.
 branching_factor = 0.2  # Determines the starting frequency of path splits within the maze.
 direction_change_factor = 0.6  # Adjusts the starting likelihood of the path changing direction.
+
+# Initial button states - False indicates that the button is not pressed
+button_states = {'up': False, 'down': False, 'left': False, 'right': False, 'a': False, 'b': False}
+
+# Timestamps for when buttons were first pressed, initialized to 0
+button_press_times = {'up': 0, 'down': 0, 'left': 0, 'right': 0, 'a': 0, 'b': 0}
+
+# Duration threshold in milliseconds for a button hold to count as continuous press
+hold_duration_threshold = 100  # Adjust this value as needed for your game
+
 
 # Numeric representations for each cardinal direction within the maze.
 N, S, E, W = 1, 2, 4, 8  # North, South, East, West, respectively.
@@ -77,50 +87,65 @@ input_sequence = []
 # Additionally, it ensures that the player's movement is constrained within the boundaries of the maze and
 # valid according to the maze's layout.
 def update_player(player_pos, grid):
-    global input_sequence, maze_width, maze_height
-    # Map each directional button to a tuple containing the direction name, 
-    # change in x, change in y, and the corresponding flag from the maze grid indicating a valid movement direction.
+    global input_sequence, maze_width, maze_height, last_move_time, button_press_times, hold_duration_threshold
+    import time  # Ensure time is imported if not already
+    current_time = time.ticks_ms()
+    input_detected = False
+
     directions = {
-        thumby.buttonU: ('up', 0, -1, N),   # Up movement
-        thumby.buttonD: ('down', 0, 1, S),  # Down movement
-        thumby.buttonL: ('left', -1, 0, W), # Left movement
-        thumby.buttonR: ('right', 1, 0, E), # Right movement
+        thumby.buttonU: ('up', 0, -1, N), 
+        thumby.buttonD: ('down', 0, 1, S),
+        thumby.buttonL: ('left', -1, 0, W),
+        thumby.buttonR: ('right', 1, 0, E),
     }
-    input_detected = False  # Flag to track if any input was detected during the current update cycle.
 
-    # Iterate over the mapped directions to handle player movement. If a button is pressed
-    # and the movement is valid (according to the maze grid), update the player's position.
     for button, (direction, dx, dy, dir_flag) in directions.items():
-        if button.pressed() and (grid[player_pos[1]][player_pos[0]] & dir_flag):
-            # Update player position based on the direction of movement.
-            player_pos[0] += dx
-            player_pos[1] += dy
-            # Append the direction of movement to the input sequence for later analysis.
-            input_sequence.append(direction)
+        if button.pressed():
             input_detected = True
+            if not button_states[direction]:  # Button was not pressed before
+                button_states[direction] = True
+                button_press_times[direction] = current_time
+                # Initial movement
+                if grid[player_pos[1]][player_pos[0]] & dir_flag:
+                    player_pos[0] += dx
+                    player_pos[1] += dy
+                    input_sequence.append(direction)
+            else:
+                # Check for continuous movement if button is held
+                if current_time - button_press_times[direction] >= hold_duration_threshold:
+                    button_press_times[direction] = current_time  # Reset timer for repeat action
+                    if grid[player_pos[1]][player_pos[0]] & dir_flag:
+                        player_pos[0] += dx
+                        player_pos[1] += dy
+                        input_sequence.append(direction)
+        else:
+            button_states[direction] = False  # Reset state when button is released
 
-    # Check for the A and B buttons, which are part of the Konami code but do not affect player movement.
-    # If pressed, they are simply added to the input sequence.
+    # Handling A and B buttons
     for button, direction in [(thumby.buttonA, 'a'), (thumby.buttonB, 'b')]:
         if button.pressed():
-            input_sequence.append(direction)
-            input_detected = True
+            if not input_detected:  # Only mark input_detected if no other buttons were pressed
+                input_detected = True
+            if not button_states[direction]:  # This check ensures we only add once per press
+                button_states[direction] = True
+                button_press_times[direction] = current_time
+                input_sequence.append(direction)
+        else:
+            button_states[direction] = False
 
-    # If any input was detected, truncate the input_sequence to the last 10 inputs.
     if input_detected:
         input_sequence = input_sequence[-10:]
-        # Check if the input sequence matches the Konami code. If it does, execute the special action.
         if check_konami_code():
-            input_sequence = []  # Clear the input sequence to prevent immediate re-triggering.
-            flash_path(player_pos, grid, maze_width, maze_height)  # Visualize the path to the exit as an Easter egg.
+            input_sequence = []
+            flash_path(player_pos, grid, maze_width, maze_height)
 
-    # Constrain the player's position to ensure it remains within the maze boundaries.
     player_pos[0] = min(max(player_pos[0], 0), maze_width - 1)
     player_pos[1] = min(max(player_pos[1], 0), maze_height - 1)
 
 konami_code = ['up', 'up', 'down', 'down', 'left', 'right', 'left', 'right', 'b', 'a']
 def check_konami_code():
     # Define the Konami code sequence
+    print(input_sequence)
     return input_sequence == konami_code
 
 def find_path_to_exit(start_x, start_y, grid, maze_width, maze_height):
@@ -252,7 +277,7 @@ for cell_size in range(8, 2, -1):  # Each iteration represents a new level with 
         if player_pos == [maze_width - 1, maze_height - 1]:# Check if the player has reached the end of the maze.
             level_times.append(timer_duration_base - remaining_time)  # Record completion time
             break 
-        time.sleep(0.1)  # Brief pause to control game speed.
+        #time.sleep(0.01)  # Brief pause to control game speed.
     
     if remaining_time == 0: break  # Stop game loop if time ran out
     timer_duration_base += 15  # Increase base timer duration for the next level
