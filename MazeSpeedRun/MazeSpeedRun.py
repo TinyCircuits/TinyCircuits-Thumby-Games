@@ -124,33 +124,50 @@ def check_konami_code():
     return input_sequence == konami_code
 
 def find_path_to_exit(start_x, start_y, grid, maze_width, maze_height):
-    # Initialize stack with starting position; (x, y, path taken to reach this cell).
-    stack = [(start_x, start_y, [])]
-    visited = set()  # Keep track of visited cells to avoid cycles.
+    # Directions (N, S, E, W) and their corresponding deltas in (dx, dy) format.
+    directions = [(N, 0, -1), (S, 0, 1), (E, 1, 0), (W, -1, 0)]
+    
+    # Stack for DFS, starting with the initial position and no predecessor.
+    stack = [(start_x, start_y)]
+    
+    # Visited set to keep track of visited cells, initialized with the start cell.
+    visited = set([(start_x, start_y)])
+    
+    # Predecessor map, mapping each cell to the cell from which it was visited.
+    predecessor = {(start_x, start_y): None}
     
     while stack:
-        cx, cy, path = stack.pop()  # Current position and path taken to reach this cell.
+        # Current position
+        cx, cy = stack.pop()
         
-        # If we've reached the exit, return the path.
+        # Check if we've reached the exit
         if cx == maze_width - 1 and cy == maze_height - 1:
+            # Prepare to reconstruct and return the path from exit to start
+            path = []
+            current_cell = (cx, cy)
+            while current_cell is not None:
+                path.append(current_cell)
+                current_cell = predecessor.get(current_cell)  # Use get() to avoid KeyError
+            path.reverse()  # The path is reconstructed from exit to start, so we need to reverse it.
             return path
         
-        # Mark the current cell as visited.
-        visited.add((cx, cy))
-        
-        # Explore all possible directions from the current cell.
-        for direction, dx, dy in [(N, 0, -1), (S, 0, 1), (E, 1, 0), (W, -1, 0)]:
-            nx, ny = cx + dx, cy + dy  # Calculate new position based on direction deltas.
+        # Explore neighboring cells
+        for direction, dx, dy in directions:
+            nx, ny = cx + dx, cy + dy
             
-            # Check if the new position is valid (within bounds, has a connecting path, and not visited).
-            if 0 <= nx < maze_width and 0 <= ny < maze_height and not (nx, ny) in visited:
+            # Check if the neighbor is within bounds and not visited
+            if 0 <= nx < maze_width and 0 <= ny < maze_height and (nx, ny) not in visited:
+                # Check if there's a direct path between the current cell and the neighbor
                 if grid[cy][cx] & direction and grid[ny][nx] & OPPOSITE[direction]:
-                    # Continue the path with the new cell included.
-                    new_path = path + [(nx, ny)]
-                    stack.append((nx, ny, new_path))
+                    stack.append((nx, ny))
+                    visited.add((nx, ny))
+                    predecessor[(nx, ny)] = (cx, cy)
     
-    # Return an empty path if exit is not found (shouldn't happen in a proper maze).
+    # If the exit was not found, which should not happen in a proper maze, return an empty path.
     return []
+
+
+
 
 def flash_path(start_pos, maze, maze_width, maze_height):
     # Find the path from the current position to the exit.
