@@ -9,24 +9,33 @@ class GameEnvironment:
         self.projectiles = []
         self.player = Player(36, 20, 0.3,shipSprite, 100)
         self.lastFireTime = 0
-        self.fireRate = 1000  # milliseconds
-        self.spawn_enemy()  # Initial enemy spawn
+        self.spawnThreshold = 60  # Initial spawn threshold
+        self.minimumSpawnThreshold = 20  # Minimum spawn threshold
+        self.spawnRateIncrease = 1
         self.gameOver = False
         self.lastCollisionCheckTime = 0
         self.collisionCheckInterval = 200  # milliseconds
+        self.levelUpTarget = 100
+        global startTime
+        startTime = time.ticks_ms()  # Game start time, assuming this is defined globally
+
 
     def spawn_enemy(self):
         currentTime = time.ticks_ms()
-        global startTime
-        elapsedTime = (currentTime - startTime) // 60000  # Convert milliseconds to minutes
-    
-        # Increase spawn rates for LittleShips and MotherShips over time
-        if random.randint(0, max(2, 50 - elapsedTime)) == 0:  # Adjust the denominator to increase difficulty faster or slower
-            self.enemies.append(MotherShip(random.randint(10, 71), random.choice([-8, 40]), 0.03 + random.uniform(0, 0.01)))
-        elif random.randint(0, max(1, 5 - elapsedTime)) == 0:  # Adjust for LittleShips similarly
-            self.enemies.append(LittleShip(random.randint(10, 71), random.choice([-8, 40]), 0.03 + random.uniform(0, 0.01)))
-        else:
-            self.enemies.append(TinyShip(random.randint(10, 71), random.choice([-8, 40]), 0.03 + random.uniform(0, 0.01)))
+        elapsedTime = currentTime - startTime
+        # Decrease spawn threshold over time to increase spawn rate
+        self.spawnThreshold = max(self.minimumSpawnThreshold, 
+                                  self.spawnThreshold - (elapsedTime // 60000) * self.spawnRateIncrease)
+        
+        # Spawn logic based on adjusted spawn threshold
+        if random.randint(0, self.spawnThreshold) == 0:
+            # Decide the type of enemy to spawn based on the game's progression
+            if random.randint(0, max(2, 50 - elapsedTime // 60000)) == 0:
+                self.enemies.append(MotherShip(random.randint(10, 71), random.choice([-8, 40]), 0.03 + random.uniform(0, 0.01)))
+            elif random.randint(0, max(1, 5 - elapsedTime // 60000)) == 0:
+                self.enemies.append(LittleShip(random.randint(10, 71), random.choice([-8, 40]), 0.03 + random.uniform(0, 0.01)))
+            else:
+                self.enemies.append(TinyShip(random.randint(10, 71), random.choice([-8, 40]), 0.03 + random.uniform(0, 0.01)))
 
 
     def update(self, currentTime):
@@ -51,9 +60,8 @@ class GameEnvironment:
             enemy.update(self.player.x, self.player.y)
             enemy.render()
 
-        # Randomly spawn new enemies
-        if random.randint(0, 60) == 0:
-            self.spawn_enemy()
+        # Randomly spawn new enemies, adjusted by time
+        self.spawn_enemy()
             
     def check_collisions(self):
         # Move your collision check logic here, from the update method
@@ -81,8 +89,8 @@ class Player:
         # Initialize the player with a list of weapons
         self.weapons = [Laser(0,0,'up')]  # Example: Starting with just the Laser weapon
         self.enemiesKilled = 0
-        self.multi_projectile_level  = 0
-        self.chain_reaction_enabled  = False
+        self.multi_projectile_level = 2
+        self.chain_reaction_level = 0
         
     def fire_weapons(self, currentTime):
         projectiles = []
@@ -107,7 +115,10 @@ class Player:
         if thumby.buttonR.pressed():
             self.x += self.speed
             self.lastHorizontalDirection = 'right'
-        self.x = max(self.x, 10)  # Prevent player from entering the toolbar area
+        self.x = max(self.x, 10)  
+        self.x = min(self.x, 72 - self.size/2)  
+        self.y = max(self.y, 0 - self.size/2)  
+        self.y = min(self.y, 40 - self.size/2)
 
     def render(self):
         thumby.display.blit(self.bitmap, int(self.x), int(self.y), self.size, self.size, 0, self.lastHorizontalDirection == 'left', 0)
@@ -252,12 +263,12 @@ class Projectile:
         
     def destroy(self, target, x, y):
         global game_env
-        if game_env.player.multi_projectile_level > 0 and (self.generation == 0 or game_env.player.chain_reaction_enabled):
+        if game_env.player.multi_projectile_level > 0 and (self.generation == 0 or game_env.player.chain_reaction_level >= self.generation - 1  ):
             split_count = 1 + game_env.player.multi_projectile_level  # Determine how many projectiles to split into
             angle_increment = 360 / split_count  # Calculate the angle increment
     
             for i in range(split_count):
-                angle = math.radians(i * angle_increment)  # Convert angle increment to radians for each projectile
+                angle = math.radians(i * angle_increment + (split_count==2) * 90)  # Convert angle increment to radians for each projectile
                 dx = math.cos(angle) * 0.5  # Calculate dx based on the angle, 0.5 is the speed factor
                 dy = math.sin(angle) * 0.5  # Calculate dy based on the angle, 0.5 is the speed factor
     
@@ -322,7 +333,7 @@ class ChainReaction(PowerUp):
         super().__init__("Chain Reaction", 3)
     
     def activate(self, player):
-        player.chain_reaction_enabled = True
+        player.chain_reaction_level += 1
         
 class AddWeapon(PowerUp):
     def __init__(self):
@@ -402,7 +413,7 @@ def updateToolbarDynamic():
     # Draw health bar line
     healthBarLength = int(10 * (game_env.player.health / 100))  # Scale health to length of the bar
     thumby.display.drawFilledRectangle(4, 37-healthBarLength, 2, healthBarLength, 1)
-    experienceBarLenth = int(10 * ((game_env.player.experience % 100) / 100) +1)  # Scale health to length of the bar
+    experienceBarLenth = int(10 * ((game_env.player.experience % game_env.levelUpTarget) / game_env.levelUpTarget) +1)  # Scale health to length of the bar
     thumby.display.drawFilledRectangle(3, 37-experienceBarLenth, 1, experienceBarLenth, 1)
 
 
@@ -412,7 +423,6 @@ def displayGameOverScreen(player):
     thumby.display.drawText("Game Over!", 20, 10, 1)
     thumby.display.drawText("Time: " + str(getGameTime()), 10, 20, 1)
     thumby.display.drawText("Enemies: " + str(player.enemiesKilled), 10, 30, 1)
-    thumby.display.drawText("EXP: " + str(player.experience), 10, 40, 1)
     thumby.display.update()
     while True:
         if thumby.buttonA.pressed():
@@ -456,14 +466,17 @@ lastToolbarUpdateTime = time.ticks_ms()
 thumby.display.blit(toolbar, 0, 0, 10, 40, 0, 0, 0)
 updateToolbarDynamic()
 
+
+
 while True:
     currentTime = time.ticks_ms()
     
     # Check for power-up selection
-    if game_env.player.experience >= 100:
+    if game_env.player.experience >= game_env.levelUpTarget:
         selected_power_up = display_and_select_power_ups()  # Pause game and select power-up
         apply_power_up(selected_power_up)  # Apply selected power-up
         game_env.player.experience = 0  # Reset experience after selecting power-up
+        game_env.levelUpTarget += 50
 
     
     thumby.display.drawFilledRectangle(10, 0, 62, 40, 0)  # Clear game area
