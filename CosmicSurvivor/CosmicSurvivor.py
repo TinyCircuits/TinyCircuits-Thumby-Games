@@ -16,17 +16,18 @@ class GameEnvironment:
         self.collisionCheckInterval = 200  # milliseconds
 
     def spawn_enemy(self):
-        if random.randint(0, 1) == 0:  # Top or bottom
-            x = random.randint(10, 71)  # Adjusted to start after the toolbar
-            y = -8 if random.randint(0, 1) == 0 else 40
-        else:  # Left or right
-            x = -8 if random.randint(0, 1) == 0 else 72
-            y = random.randint(0, 39)
-        
-        if random.randint(0, 3) == 0:
-            self.enemies.append(LittleShip(x, y, 0.03 + random.uniform(0, 0.01)))
+        currentTime = time.ticks_ms()
+        global startTime
+        elapsedTime = (currentTime - startTime) // 60000  # Convert milliseconds to minutes
+    
+        # Increase spawn rates for LittleShips and MotherShips over time
+        if random.randint(0, max(2, 50 - elapsedTime)) == 0:  # Adjust the denominator to increase difficulty faster or slower
+            self.enemies.append(MotherShip(random.randint(10, 71), random.choice([-8, 40]), 0.03 + random.uniform(0, 0.01)))
+        elif random.randint(0, max(1, 5 - elapsedTime)) == 0:  # Adjust for LittleShips similarly
+            self.enemies.append(LittleShip(random.randint(10, 71), random.choice([-8, 40]), 0.03 + random.uniform(0, 0.01)))
         else:
-            self.enemies.append(TinyShip(x, y, 0.03 + random.uniform(0, 0.01)))
+            self.enemies.append(TinyShip(random.randint(10, 71), random.choice([-8, 40]), 0.03 + random.uniform(0, 0.01)))
+
 
     def update(self, currentTime):
         # Player movement and firing
@@ -161,6 +162,29 @@ class TinyShip(Enemy):
 class LittleShip(Enemy):
     def __init__(self, x, y, speed):
         super().__init__(x, y, speed, bitmap=bytearray([18,51,63,51,18,18]), damage=10, toughness=2, experience=20, name='LittleShip')
+
+class MotherShip(Enemy):
+    def __init__(self, x, y, speed):
+        super().__init__(x, y, speed, bitmap=bytearray([136,214,162,73,73,162,214,136]), damage=20, toughness=4, experience=50, name='MotherShip')
+    
+    def update(self, playerX, playerY):
+        super().update(playerX, playerY)  # Call the base class update
+        
+        # Randomly decide to spawn a TeenieShip, adjust the probability as needed
+        if random.randint(0, 150) == 0:  # For example, a 1 in 21 chance each update call
+            self.spawn_teenie_ship()
+
+    def spawn_teenie_ship(self):
+        # Spawn a TeenieShip at the MotherShip's current location
+        teenie_ship = TeenieShip(self.x, self.y, 0.1)  # Adjust speed as needed
+        global game_env
+        game_env.enemies.append(teenie_ship)
+        
+class TeenieShip(Enemy):
+    def __init__(self, x, y, speed):
+        super().__init__(x, y, speed, bitmap=bytearray([7,2,2]), damage=1, toughness=1, experience=1, name='TeenieShip')
+
+
 
 
 class Weapon:
