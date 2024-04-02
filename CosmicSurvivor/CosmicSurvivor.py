@@ -89,7 +89,7 @@ class Player:
         # Initialize the player with a list of weapons
         self.weapons = [Laser(0,0,'up')]  # Example: Starting with just the Laser weapon
         self.enemiesKilled = 0
-        self.multi_projectile_level = 2
+        self.multi_projectile_level = 0
         self.chain_reaction_level = 0
         
     def fire_weapons(self, currentTime):
