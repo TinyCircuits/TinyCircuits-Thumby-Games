@@ -1,0 +1,25 @@
+
+
+
+
+
+
+#ideas
+    number of projectiles
+    damage amount
+    toughness of projectiles
+    rate of fire
+    angle of projectiles
+    speed of projectiles
+    ship speed
+    shield
+    pulse defence
+    rotating projectiles
+    bouncing projectiles
+
+    bombs
+    enemy explosion projectiles
+    bolt gun projectiles
+
+    more health
+    enemies
