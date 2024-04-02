@@ -1,6 +1,7 @@
 import thumby
 import random
 import time
+import math
 
 class GameEnvironment:
     def __init__(self):
@@ -79,6 +80,8 @@ class Player:
         # Initialize the player with a list of weapons
         self.weapons = [Laser(0,0,'up')]  # Example: Starting with just the Laser weapon
         self.enemiesKilled = 0
+        self.multi_projectile_level  = 0
+        self.chain_reaction_enabled  = False
         
     def fire_weapons(self, currentTime):
         projectiles = []
@@ -136,7 +139,10 @@ class Enemy:
             if (self.x < projectile.x + 1) and (self.x + self.size > projectile.x) and \
                (self.y < projectile.y + 1) and (self.y + self.size > projectile.y):
                 self.toughness -= projectile.damage  # Subtract projectile damage from enemy toughness
-                projectiles.remove(projectile)
+                projectile.toughness -= 1
+                if projectile.toughness <= 0:
+                    projectile.destroy(self, projectile.x, projectile.y)
+                    projectiles.remove(projectile)
                 if self.toughness <= 0:
                     return True  # Return True to indicate the enemy should be removed
         return False  # Enemy survives if toughness > 0
@@ -158,9 +164,10 @@ class LittleShip(Enemy):
 
 
 class Weapon:
-    def __init__(self, fireRate, projectileDamage):
+    def __init__(self, fireRate, projectileDamage,projectileToughness):
         self.fireRate = fireRate
         self.projectileDamage = projectileDamage
+        self.projectileToughness = projectileToughness
         self.lastFireTime = 0
 
     def fire(self, currentTime, x, y, direction):
@@ -169,7 +176,7 @@ class Weapon:
 
 class Laser(Weapon):
     def __init__(self, offsetx, offsety, shotDirection):
-        super().__init__(1000, 1)
+        super().__init__(1000, 1, 1)
         self.offsety = offsety  # Negative for left, positive for right
         self.offsetx = offsetx
         self.shotDirection = shotDirection
@@ -198,16 +205,18 @@ class Laser(Weapon):
             projectile_x = x + self.offsetx
             projectile_y = y + self.offsety
             
-            return Projectile(projectile_x, projectile_y, dx, dy, self.projectileDamage)
+            return Projectile(projectile_x, projectile_y, dx, dy, self.projectileDamage, self.projectileToughness)
         return None
 
 class Projectile:
-    def __init__(self, x, y, dx, dy, damage):
+    def __init__(self, x, y, dx, dy, damage, toughness, generation=0):
         self.x = x
         self.y = y
         self.dx = dx
         self.dy = dy
         self.damage = damage
+        self.toughness = toughness
+        self.generation = generation
 
     def update(self):
         self.x += self.dx
@@ -215,7 +224,21 @@ class Projectile:
         return not (self.x < 10 or self.x > 72 or self.y < 0 or self.y > 40)
 
     def render(self):
-        thumby.display.drawLine(int(self.x), int(self.y), int(self.x+2), int(self.y), 1)
+        thumby.display.drawLine(int(self.x), int(self.y), int(self.x + max(1, 2 - self.generation)), int(self.y), 1)
+        
+    def destroy(self, target, x, y):
+        global game_env
+        if game_env.player.multi_projectile_level > 0 and (self.generation == 0 or game_env.player.chain_reaction_enabled):
+            split_count = 1 + game_env.player.multi_projectile_level  # Determine how many projectiles to split into
+            angle_increment = 360 / split_count  # Calculate the angle increment
+    
+            for i in range(split_count):
+                angle = math.radians(i * angle_increment)  # Convert angle increment to radians for each projectile
+                dx = math.cos(angle) * 0.5  # Calculate dx based on the angle, 0.5 is the speed factor
+                dy = math.sin(angle) * 0.5  # Calculate dy based on the angle, 0.5 is the speed factor
+    
+                # Append the new projectile with calculated direction and increment the generation
+                game_env.projectiles.append(Projectile(x, y, dx, dy, self.damage, self.toughness, self.generation + 1))
 
 class PowerUp:
     def __init__(self, name, rarity):
@@ -239,6 +262,21 @@ class IncreaseDamage(PowerUp):
     def activate(self, player):
         for weapon in player.weapons:
             weapon.projectileDamage += 1
+            
+class ArmorPiercing(PowerUp):
+    def __init__(self):
+        super().__init__("Armour Piercing", 2)
+    
+    def activate(self, player):
+        for weapon in player.weapons:
+            weapon.projectileToughness += 1
+            
+class HullRepairs(PowerUp):
+    def __init__(self):
+        super().__init__("Hull Repair", 2)
+    
+    def activate(self, player):
+        player.health = 100
 
 class FasterFireRate(PowerUp):
     def __init__(self):
@@ -247,21 +285,49 @@ class FasterFireRate(PowerUp):
     def activate(self, player):
         for weapon in player.weapons:
             weapon.fireRate = max(100, weapon.fireRate - 100)
+            
+class MultiProjectile(PowerUp):
+    def __init__(self):
+        super().__init__("Multi-Projectile", 3)
+    
+    def activate(self, player):
+        player.multi_projectile_level += 1  # Increase the level each time this power-up is activated
 
+class ChainReaction(PowerUp):
+    def __init__(self):
+        super().__init__("Chain Reaction", 3)
+    
+    def activate(self, player):
+        player.chain_reaction_enabled = True
+        
 class AddWeapon(PowerUp):
     def __init__(self):
         super().__init__("Add Weapon", 4)
     
     def activate(self, player):
-        player.weapons=([Laser(0,-3,'up'),Laser(0,2,'up')])
-        
-#Laser(0,0,'left'),Laser(0,0,'right'),Laser(0,0,'down')
+        weapon_configurations = {
+            1: [Laser(0, -3, 'up'), Laser(0, 2, 'up')],  # When the player has 1 weapon
+            2: [Laser(0, -3, 'up'), Laser(0, 2, 'up'), Laser(0, 0, 'left')],  # When the player has 2 weapons
+            3: [Laser(0, -3, 'up'), Laser(0, 2, 'up'), Laser(0, 0, 'left'), Laser(0, 0, 'right')],  # When the player has 3 weapons
+            4: [Laser(0, -3, 'up'), Laser(0, 2, 'up'), Laser(0, 0, 'left'), Laser(0, 0, 'right'), Laser(0, 0, 'down')],  # When the player has 4 weapons
+        }
+        count = len(player.weapons)
+        if count <= 4 : 
+            player.weapons = weapon_configurations[count]
 
+import random
+def shuffle(lst):
+    for i in range(len(lst) - 1, 0, -1):
+        j = random.randint(0, i)
+        lst[i], lst[j] = lst[j], lst[i]
 
 # Function to display and select power-ups
 def display_and_select_power_ups():
-    power_ups = [MoreSpeed(), IncreaseDamage(), FasterFireRate(), AddWeapon()]
-    selected_index = 0  # Default to first power-up
+    all_power_ups = [MoreSpeed(), IncreaseDamage(), FasterFireRate(), AddWeapon(), ArmorPiercing(), MultiProjectile(), HullRepairs(), ChainReaction()]
+    shuffle(all_power_ups)  # Use the custom shuffle function
+    power_ups = all_power_ups[:3]  # Select the first three power-ups after shuffling
+
+    selected_index = 0  # Default to first power-up in the randomized list
 
     # Display power-up selection menu
     while True:
@@ -288,6 +354,7 @@ def display_and_select_power_ups():
         time.sleep(0.1)  # Debounce buttons
 
     return power_ups[selected_index]
+
 
 # Function to apply the selected power-up
 def apply_power_up(power_up):

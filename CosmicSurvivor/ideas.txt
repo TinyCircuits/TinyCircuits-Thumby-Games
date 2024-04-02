@@ -5,13 +5,13 @@
 
 
 #ideas
-    number of projectiles
-    damage amount
-    toughness of projectiles
-    rate of fire
-    angle of projectiles
+    number of projectiles x
+    damage amount x
+    toughness of projectiles x
+    rate of fire x
+    angle of projectiles x
     speed of projectiles
-    ship speed
+    ship speed x
     shield
     pulse defence
     rotating projectiles
