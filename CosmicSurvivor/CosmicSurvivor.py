@@ -10,6 +10,9 @@ class GameEnvironment:
         self.lastFireTime = 0
         self.fireRate = 1000  # milliseconds
         self.spawn_enemy()  # Initial enemy spawn
+        self.gameOver = False
+        self.lastCollisionCheckTime = 0
+        self.collisionCheckInterval = 200  # milliseconds
 
     def spawn_enemy(self):
         if random.randint(0, 1) == 0:  # Top or bottom
@@ -19,7 +22,7 @@ class GameEnvironment:
             x = -8 if random.randint(0, 1) == 0 else 72
             y = random.randint(0, 39)
         
-        if random.randint(0, 1) == 0:
+        if random.randint(0, 3) == 0:
             self.enemies.append(LittleShip(x, y, 0.03 + random.uniform(0, 0.01)))
         else:
             self.enemies.append(TinyShip(x, y, 0.03 + random.uniform(0, 0.01)))
@@ -37,27 +40,31 @@ class GameEnvironment:
                 self.projectiles.remove(projectile)
             else:
                 projectile.render()
+                
+        if currentTime - self.lastCollisionCheckTime > self.collisionCheckInterval:
+            self.check_collisions()  # A new method to handle all collision checks
+            self.lastCollisionCheckTime = currentTime
 
         for enemy in self.enemies[:]:
             enemy.update(self.player.x, self.player.y)
             enemy.render()
-            # Check collision with projectiles
-            if enemy.check_collision_with_projectiles(self.projectiles):
-                self.enemies.remove(enemy)
-                self.player.gain_experience(enemy.experience)
-                continue  # Enemy has been destroyed, no need to check further collision
-            # Check collision with player
-            if enemy.check_collision_with_player(self.player):
-                self.player.health -= enemy.damage  # Directly reduce player health on collision
-                if self.player.health <= 0:
-                    # Handle game over scenario
-                    print("Game Over!")  # Placeholder for actual game over handling
-                #self.enemies.remove(enemy)  # Optionally remove the enemy on collision
-
 
         # Randomly spawn new enemies
         if random.randint(0, 60) == 0:
             self.spawn_enemy()
+            
+    def check_collisions(self):
+        # Move your collision check logic here, from the update method
+        for enemy in self.enemies[:]:
+            if enemy.check_collision_with_projectiles(self.projectiles):
+                self.enemies.remove(enemy)
+                self.player.gain_experience(enemy.experience)
+                continue  # Enemy has been destroyed, no need to check further collision
+            if enemy.check_collision_with_player(self.player):
+                self.player.health -= enemy.damage
+                if self.player.health <= 0:
+                    # Handle game over scenario
+                    displayGameOverScreen(self.player)  # Display the game over screen
 
 class Player:
     def __init__(self, x, y, speed, bitmap, health):
@@ -70,7 +77,8 @@ class Player:
         self.lastHorizontalDirection = 'right'
         self.experience = 0
         # Initialize the player with a list of weapons
-        self.weapons = [Laser()]  # Example: Starting with just the Laser weapon
+        self.weapons = [Laser(0,0,'up')]  # Example: Starting with just the Laser weapon
+        self.enemiesKilled = 0
         
     def fire_weapons(self, currentTime):
         projectiles = []
@@ -82,6 +90,7 @@ class Player:
     
     def gain_experience(self, amount):
         self.experience += amount
+        self.enemiesKilled += 1
 
     def update(self):
         if thumby.buttonU.pressed():
@@ -133,8 +142,6 @@ class Enemy:
         return False  # Enemy survives if toughness > 0
 
     def check_collision_with_player(self, player):
-        # Assuming player's sprite can be approximated as a square for collision detection
-        player_size = 8  # This assumes the player sprite is 8x8 pixels
         # Updated collision detection between enemy and player
         if (self.x < player.x + player.size) and (self.x + self.size > player.x) and \
            (self.y < player.y + player.size) and (self.y + self.size > player.y):
@@ -143,29 +150,56 @@ class Enemy:
 
 class TinyShip(Enemy):
     def __init__(self, x, y, speed):
-        super().__init__(x, y, speed, bitmap=bytearray([0,18,63,18,18,0]), damage=1, toughness=1, experience=10, name='TinyShip')
+        super().__init__(x, y, speed, bitmap=bytearray([0,18,63,18,18,0]), damage=5, toughness=1, experience=10, name='TinyShip')
 
 class LittleShip(Enemy):
     def __init__(self, x, y, speed):
-        super().__init__(x, y, speed, bitmap=bytearray([18,51,63,51,18,18]), damage=4, toughness=2, experience=20, name='LittleShip')
+        super().__init__(x, y, speed, bitmap=bytearray([18,51,63,51,18,18]), damage=10, toughness=2, experience=20, name='LittleShip')
 
 
 class Weapon:
     def __init__(self, fireRate, projectileDamage):
-        self.fireRate = fireRate  # Time between shots in milliseconds
+        self.fireRate = fireRate
         self.projectileDamage = projectileDamage
         self.lastFireTime = 0
 
     def fire(self, currentTime, x, y, direction):
-        if currentTime - self.lastFireTime >= self.fireRate:
-            projVel = -0.5 if direction == 'left' else 0.5
-            self.lastFireTime = currentTime
-            return Projectile(x, y, projVel, 0, self.projectileDamage)
-        return None
+        # Base fire method to be overridden by subclasses
+        raise NotImplementedError("Subclass must implement abstract method")
 
 class Laser(Weapon):
-    def __init__(self):
-        super().__init__(1000, 1)  # Example: Laser fires every 0.5 seconds with 1 damage
+    def __init__(self, offsetx, offsety, shotDirection):
+        super().__init__(1000, 1)
+        self.offsety = offsety  # Negative for left, positive for right
+        self.offsetx = offsetx
+        self.shotDirection = shotDirection
+        # Direction mappings for when the ship is facing left or right
+        self.direction_mappings = {
+            'left': {'up': 'left', 'down': 'right', 'left': 'down', 'right': 'up'},
+            'right': {'up': 'right', 'down': 'left', 'left': 'up', 'right': 'down'}
+        }
+
+    def fire(self, currentTime, x, y, shipDirection):
+        if currentTime - self.lastFireTime >= self.fireRate:
+            self.lastFireTime = currentTime
+            # Adjust the shot direction based on the ship's direction
+            final_direction = self.direction_mappings[shipDirection][self.shotDirection]
+            # Calculate projectile velocity and offset based on final direction
+            if final_direction == 'up':
+                dx, dy = 0, -0.5
+            elif final_direction == 'down':
+                dx, dy = 0, 0.5
+            elif final_direction == 'left':
+                dx, dy = -0.5, 0
+            elif final_direction == 'right':
+                dx, dy = 0.5, 0
+            
+            # Adjust starting position of the projectile based on the offset
+            projectile_x = x + self.offsetx
+            projectile_y = y + self.offsety
+            
+            return Projectile(projectile_x, projectile_y, dx, dy, self.projectileDamage)
+        return None
 
 class Projectile:
     def __init__(self, x, y, dx, dy, damage):
@@ -197,7 +231,6 @@ class MoreSpeed(PowerUp):
     
     def activate(self, player):
         player.speed += 0.3
-        print(f"{self.name} activated!")
 
 class IncreaseDamage(PowerUp):
     def __init__(self):
@@ -206,7 +239,6 @@ class IncreaseDamage(PowerUp):
     def activate(self, player):
         for weapon in player.weapons:
             weapon.projectileDamage += 1
-        print(f"{self.name} activated!")
 
 class FasterFireRate(PowerUp):
     def __init__(self):
@@ -215,12 +247,20 @@ class FasterFireRate(PowerUp):
     def activate(self, player):
         for weapon in player.weapons:
             weapon.fireRate = max(100, weapon.fireRate - 100)
-        print(f"{self.name} activated!")
+
+class AddWeapon(PowerUp):
+    def __init__(self):
+        super().__init__("Add Weapon", 4)
+    
+    def activate(self, player):
+        player.weapons=([Laser(0,-3,'up'),Laser(0,2,'up')])
+        
+#Laser(0,0,'left'),Laser(0,0,'right'),Laser(0,0,'down')
 
 
 # Function to display and select power-ups
 def display_and_select_power_ups():
-    power_ups = [MoreSpeed(), IncreaseDamage(), FasterFireRate()]
+    power_ups = [MoreSpeed(), IncreaseDamage(), FasterFireRate(), AddWeapon()]
     selected_index = 0  # Default to first power-up
 
     # Display power-up selection menu
@@ -242,6 +282,7 @@ def display_and_select_power_ups():
         elif thumby.buttonD.pressed():
             selected_index = (selected_index + 1) % len(power_ups)
         elif thumby.buttonA.pressed():
+            thumby.display.fill(0)
             break  # Confirm selection
 
         time.sleep(0.1)  # Debounce buttons
@@ -273,6 +314,29 @@ def updateToolbarDynamic():
     experienceBarLenth = int(10 * ((game_env.player.experience % 100) / 100) +1)  # Scale health to length of the bar
     thumby.display.drawFilledRectangle(3, 37-experienceBarLenth, 1, experienceBarLenth, 1)
 
+
+def displayGameOverScreen(player):
+    thumby.display.fill(0)  # Clear the display
+    # Display game over text and stats
+    thumby.display.drawText("Game Over!", 20, 10, 1)
+    thumby.display.drawText("Time: " + str(getGameTime()), 10, 20, 1)
+    thumby.display.drawText("Enemies: " + str(player.enemiesKilled), 10, 30, 1)
+    thumby.display.drawText("EXP: " + str(player.experience), 10, 40, 1)
+    thumby.display.update()
+    while True:
+        if thumby.buttonA.pressed():
+                restartGame()
+                break
+
+def restartGame():
+    global game_env, startTime
+    startTime = time.ticks_ms()  # Reset the start time
+    game_env = GameEnvironment()  # Reinitialize the game environment
+
+# Helper function to calculate game time
+def getGameTime():
+    elapsedSeconds = (time.ticks_ms() - startTime) // 1000
+    return f"{elapsedSeconds // 60:02}:{elapsedSeconds % 60:02}"
 
 # Game start time
 startTime = time.ticks_ms()
