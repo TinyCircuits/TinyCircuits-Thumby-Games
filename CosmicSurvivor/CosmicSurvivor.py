@@ -19,27 +19,30 @@ class GameEnvironment:
         self.powerUp = None
         global startTime
         startTime = time.ticks_ms()  # Game start time, assuming this is defined globally
+        
+        self.enemy_types = {
+            'TinyShip': {'class': TinyShip, 'min_time': 0, 'rarity': 50},
+            'LittleShip': {'class': LittleShip, 'min_time': 0, 'rarity': 30},
+            'MotherShip': {'class': MotherShip, 'min_time': 2, 'rarity': 10}
+        }
 
 
     def spawn_enemy(self):
         currentTime = time.ticks_ms()
         elapsedTime = currentTime - startTime
-        # Decrease spawn threshold over time to increase spawn rate
         self.spawnThreshold = max(self.minimumSpawnThreshold, 
                                   self.spawnThreshold - (elapsedTime // 60000) * self.spawnRateIncrease)
-        
-        # Spawn logic based on adjusted spawn threshold
+    
         if random.randint(0, self.spawnThreshold) == 0:
-            # Decide the type of enemy to spawn based on the game's progression
-            if random.randint(0, max(2, 50 - elapsedTime // 60000)) == 0:
-                self.enemies.append(MotherShip(random.randint(10, 71), random.choice([-8, 40]), 0.03 + random.uniform(0, 0.01)))
-            elif random.randint(0, max(1, 5 - elapsedTime // 60000)) == 0:
-                self.enemies.append(LittleShip(random.randint(10, 71), random.choice([-8, 40]), 0.03 + random.uniform(0, 0.01)))
-            else:
-                self.enemies.append(TinyShip(random.randint(10, 71), random.choice([-8, 40]), 0.03 + random.uniform(0, 0.01)))
+            possible_enemies = [(data['class'], 1.0 / data['rarity']) for name, data in self.enemy_types.items() 
+                                if elapsedTime >= data['min_time'] * 60000]
+            if possible_enemies:
+                enemy_class = weighted_random_choice(possible_enemies)
+                self.enemies.append(enemy_class(random.randint(10, 71), random.choice([-8, 40])))
+
 
     def spawn_power_up(self):
-        if not self.powerUp and random.randint(0, 500) == 0:
+        if not self.powerUp and random.randint(0, 2000) == 0:
             speed = 0.2
             y, dy = (0, speed) if random.choice([True, False]) else (40, -speed)
             dx = math.cos(random.uniform(-math.pi / 4, math.pi / 4)) * speed
@@ -156,9 +159,12 @@ class Player:
         thumby.display.blit(self.bitmap, int(self.x), int(self.y), self.size, self.size, 0, self.lastHorizontalDirection == 'left', 0)
 
 class Enemy:
-    def __init__(self, x, y, speed, bitmap, damage, toughness, experience, name='Enemy'):
+    base_speed = 0.03  # Default base speed for all enemies
+    
+    def __init__(self, x, y, bitmap, damage, toughness, experience, name='Enemy'):
         self.x = x
         self.y = y
+        speed = self.base_speed + random.uniform(0, 0.01)  # Add random speed variation here
         self.speed = speed
         self.bitmap = bitmap
         self.damage = damage
@@ -208,17 +214,19 @@ class Enemy:
         return False
 
 class TinyShip(Enemy):
-    def __init__(self, x, y, speed):
-        super().__init__(x, y, speed, bitmap=bytearray([0,18,63,18,18,0]), damage=5, toughness=1, experience=10, name='TinyShip')
+    def __init__(self, x, y):
+        super().__init__(x, y, bitmap=bytearray([0,18,63,18,18,0]), damage=5, toughness=1, experience=10, name='TinyShip')
 
 class LittleShip(Enemy):
-    def __init__(self, x, y, speed):
-        super().__init__(x, y, speed, bitmap=bytearray([18,51,63,51,18,18]), damage=10, toughness=2, experience=20, name='LittleShip')
+    def __init__(self, x, y):
+        super().__init__(x, y, bitmap=bytearray([18,51,63,51,18,18]), damage=10, toughness=2, experience=20, name='LittleShip')
 
 class MotherShip(Enemy):
-    def __init__(self, x, y, speed):
-        super().__init__(x, y, speed, bitmap=bytearray([136,214,162,73,73,162,214,136]), damage=20, toughness=4, experience=50, name='MotherShip')
-    
+    base_speed = 0.01  # Override base speed for MotherShip
+
+    def __init__(self, x, y):
+        super().__init__(x, y, bitmap=bytearray([136,214,162,73,73,162,214,136]), damage=20, toughness=4, experience=50, name='MotherShip')
+        
     def update(self, playerX, playerY):
         super().update(playerX, playerY)  # Call the base class update
         
@@ -228,13 +236,14 @@ class MotherShip(Enemy):
 
     def spawn_teenie_ship(self):
         # Spawn a TeenieShip at the MotherShip's current location
-        teenie_ship = TeenieShip(self.x, self.y, 0.1)  # Adjust speed as needed
+        teenie_ship = TeenieShip(self.x, self.y)  
         global game_env
         game_env.enemies.append(teenie_ship)
         
 class TeenieShip(Enemy):
-    def __init__(self, x, y, speed):
-        super().__init__(x, y, speed, bitmap=bytearray([7,2,2]), damage=1, toughness=1, experience=1, name='TeenieShip')
+    base_speed = 0.1
+    def __init__(self, x, y):
+        super().__init__(x, y, bitmap=bytearray([7,2,2]), damage=1, toughness=1, experience=1, name='TeenieShip')
 
 
 
@@ -451,6 +460,15 @@ def shuffle(lst):
     for i in range(len(lst) - 1, 0, -1):
         j = random.randint(0, i)
         lst[i], lst[j] = lst[j], lst[i]
+        
+def weighted_random_choice(choices):
+    total_weight = sum(weight for _, weight in choices)
+    random_num = random.uniform(0, total_weight)
+    upto = 0
+    for choice, weight in choices:
+        if upto + weight >= random_num:
+            return choice
+        upto += weight
 
 # Function to display and select power-ups
 def display_and_select_power_ups():
