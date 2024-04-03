@@ -9,7 +9,7 @@ class GameEnvironment:
         self.projectiles = []
         self.player = Player(36, 20, 0.3,shipSprite, 100)
         self.lastFireTime = 0
-        self.spawnThreshold = 60  # Initial spawn threshold
+        self.spawnThreshold = 80  # Initial spawn threshold
         self.minimumSpawnThreshold = 20  # Minimum spawn threshold
         self.spawnRateIncrease = 1
         self.gameOver = False
@@ -70,6 +70,10 @@ class GameEnvironment:
                 self.enemies.remove(enemy)
                 self.player.gain_experience(enemy.experience)
                 continue  # Enemy has been destroyed, no need to check further collision
+            if enemy.check_collision_with_shields(self.player.shields):
+                self.enemies.remove(enemy)
+                self.player.gain_experience(enemy.experience)
+                continue  # Enemy has been destroyed, no need to check further collision
             if enemy.check_collision_with_player(self.player):
                 self.player.health -= enemy.damage
                 if self.player.health <= 0:
@@ -88,6 +92,7 @@ class Player:
         self.experience = 0
         # Initialize the player with a list of weapons
         self.weapons = [Laser(0,0,'up')]  # Example: Starting with just the Laser weapon
+        self.shields = []
         self.enemiesKilled = 0
         self.multi_projectile_level = 0
         self.chain_reaction_level = 0
@@ -119,6 +124,9 @@ class Player:
         self.x = min(self.x, 72 - self.size/2)  
         self.y = max(self.y, 0 - self.size/2)  
         self.y = min(self.y, 40 - self.size/2)
+        for shield in self.shields[:]:
+            shield.update()
+            shield.render()
 
     def render(self):
         thumby.display.blit(self.bitmap, int(self.x), int(self.y), self.size, self.size, 0, self.lastHorizontalDirection == 'left', 0)
@@ -164,6 +172,15 @@ class Enemy:
         if (self.x < player.x + player.size) and (self.x + self.size > player.x) and \
            (self.y < player.y + player.size) and (self.y + self.size > player.y):
             return True
+        return False
+        
+    def check_collision_with_shields(self, shields):
+        for shield in shields:
+            if (self.x < shield.x + 1) and (self.x + self.size > shield.x) and \
+               (self.y < shield.y + 1) and (self.y + self.size > shield.y):
+                self.toughness -= shield.damage
+                if self.toughness <= 0:
+                    return True  # Collision detected
         return False
 
 class TinyShip(Enemy):
@@ -275,6 +292,25 @@ class Projectile:
                 # Append the new projectile with calculated direction and increment the generation
                 game_env.projectiles.append(Projectile(x, y, dx, dy, self.damage, self.toughness, self.generation + 1))
 
+class RotatingShield:
+    def __init__(self, player, radius=10, rotation_speed=0.05, damage=1):
+        self.player = player
+        self.radius = radius
+        self.angle = 0
+        self.damage = damage
+        self.rotation_speed = rotation_speed
+
+    def update(self):
+        # Update the angle to rotate the shield
+        self.angle += self.rotation_speed
+        # Calculate the shield's new position
+        self.x = self.player.x + self.player.size/2 + math.cos(self.angle) * self.radius
+        self.y = self.player.y + self.player.size/2 + math.sin(self.angle) * self.radius
+
+    def render(self):
+        # Render the shield at its current position
+        thumby.display.setPixel(int(self.x), int(self.y), 1)
+
 class PowerUp:
     def __init__(self, name, rarity):
         self.name = name
@@ -335,6 +371,14 @@ class ChainReaction(PowerUp):
     def activate(self, player):
         player.chain_reaction_level += 1
         
+class RotatingShieldPowerUp(PowerUp):
+    def __init__(self):
+        super().__init__("Rotating Shield", 3)
+
+    def activate(self, player):
+        # Attach a rotating shield to the player
+        player.shields.append(RotatingShield(player))
+        
 class AddWeapon(PowerUp):
     def __init__(self):
         super().__init__("Add Weapon", 4)
@@ -358,7 +402,7 @@ def shuffle(lst):
 
 # Function to display and select power-ups
 def display_and_select_power_ups():
-    all_power_ups = [MoreSpeed(), IncreaseDamage(), FasterFireRate(), AddWeapon(), ArmorPiercing(), MultiProjectile(), HullRepairs(), ChainReaction()]
+    all_power_ups = [MoreSpeed(), IncreaseDamage(), FasterFireRate(), AddWeapon(), ArmorPiercing(), MultiProjectile(), HullRepairs(), ChainReaction(), RotatingShieldPowerUp()]
     shuffle(all_power_ups)  # Use the custom shuffle function
     power_ups = all_power_ups[:3]  # Select the first three power-ups after shuffling
 
