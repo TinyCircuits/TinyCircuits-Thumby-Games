@@ -21,9 +21,13 @@ class GameEnvironment:
         startTime = time.ticks_ms()  # Game start time, assuming this is defined globally
         
         self.enemy_types = {
-            'TinyShip': {'class': TinyShip, 'min_time': 0, 'rarity': 5},
-            'LittleShip': {'class': LittleShip, 'min_time': 0, 'rarity': 30},
-            'MotherShip': {'class': MotherShip, 'min_time': 1, 'rarity': 50}
+            'TinyShip': {'class': TinyShip, 'min_time': 0, 'rarity': 2},
+            'LittleShip': {'class': LittleShip, 'min_time': 0, 'rarity': 10},
+            'BigShip': {'class': BigShip, 'min_time': 1, 'rarity': 20},
+            'FastShip': {'class': FastShip, 'min_time': 2, 'rarity': 15},
+            'GunShip': {'class': GunShip, 'min_time': 3, 'rarity': 25},
+            'MotherShip': {'class': MotherShip, 'min_time': 2, 'rarity': 50},
+            'SuperMotherShip': {'class': SuperMotherShip, 'min_time': 4, 'rarity': 10}
         }
 
 
@@ -174,10 +178,14 @@ class Enemy:
         self.experience = experience
 
     def update(self, playerX, playerY):
-        dx = playerX - self.x
-        dy = playerY - self.y
-        self.x += self.speed if dx > 0 else -self.speed if dx < 0 else 0
-        self.y += self.speed if dy > 0 else -self.speed if dy < 0 else 0
+        global game_env
+        # Calculate direction from enemy center to player center
+        dx = (playerX + game_env.player.size / 2) - (self.x + self.size / 2)
+        dy = (playerY + game_env.player.size / 2) - (self.y + self.size / 2)
+        distance = max((dx ** 2 + dy ** 2) ** 0.5, 1)
+        dx, dy = dx / distance, dy / distance
+        self.x += dx * self.speed
+        self.y += dy * self.speed
 
     def render(self):
         global game_env
@@ -220,6 +228,10 @@ class TinyShip(Enemy):
 class LittleShip(Enemy):
     def __init__(self, x, y):
         super().__init__(x, y, bitmap=bytearray([18,51,63,51,18,18]), damage=10, toughness=2, experience=20, name='LittleShip')
+        
+class BigShip(Enemy):
+    def __init__(self, x, y):
+        super().__init__(x, y, bitmap=bytearray([36,102,126,126,219,219,219,66]), damage=15, toughness=5, experience=30, name='BigShip')
 
 class MotherShip(Enemy):
     base_speed = 0.01  # Override base speed for MotherShip
@@ -240,6 +252,30 @@ class MotherShip(Enemy):
         global game_env
         game_env.enemies.append(teenie_ship)
         
+class SuperMotherShip(MotherShip):
+    def __init__(self, x, y):
+        super().__init__(x, y)
+        # Override specific properties after calling the parent's __init__
+        self.bitmap=bytearray([36,255,126,60,165,255,189,129])
+        self.size = len(self.bitmap)
+        self.damage = 50
+        self.toughness = 10
+        self.experience = 100
+        self.name = 'SuperMotherShip'
+        # Adjust the base_speed directly since it's a class attribute
+        SuperMotherShip.base_speed = 0.03
+        
+class FastShip(Enemy):
+    base_speed = 0.2
+    def __init__(self, x, y):
+        super().__init__(x, y, bitmap=bytearray([15,6,6,6]), damage=2, toughness=2, experience=5, name='FastShip')
+        
+class GunShip(Enemy):
+    base_speed = 0.03
+    def __init__(self, x, y):
+        super().__init__(x, y, bitmap=bytearray([73,127,62,20,20,20,20]), damage=5, toughness=4, experience=10, name='GunShip')
+
+
 class TeenieShip(Enemy):
     base_speed = 0.1
     def __init__(self, x, y):
@@ -354,14 +390,14 @@ class PowerUp:
 
 class MoreSpeed(PowerUp):
     def __init__(self):
-        super().__init__("Increase Speed", 1)
+        super().__init__("Increase Speed", 2)
     
     def activate(self, player):
         player.speed += 0.3
 
 class IncreaseDamage(PowerUp):
     def __init__(self):
-        super().__init__("Increase Damage", 2)
+        super().__init__("Increase Damage", 1)
     
     def activate(self, player):
         for weapon in player.weapons:
@@ -377,14 +413,14 @@ class ArmorPiercing(PowerUp):
             
 class HullRepairs(PowerUp):
     def __init__(self):
-        super().__init__("Hull Repair", 2)
+        super().__init__("Hull Repair", 1)
     
     def activate(self, player):
         player.health = 100
 
 class FasterFireRate(PowerUp):
     def __init__(self):
-        super().__init__("Faster Fire Rate", 3)
+        super().__init__("Faster Fire Rate", 1)
     
     def activate(self, player):
         for weapon in player.weapons:
@@ -414,7 +450,7 @@ class RotatingShieldPowerUp(PowerUp):
         
 class AddWeapon(PowerUp):
     def __init__(self):
-        super().__init__("Add Weapon", 4)
+        super().__init__("Add Weapon", 3)
     
     def activate(self, player):
         weapon_configurations = {
