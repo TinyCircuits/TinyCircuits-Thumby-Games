@@ -21,9 +21,9 @@ class GameEnvironment:
         startTime = time.ticks_ms()  # Game start time, assuming this is defined globally
         
         self.enemy_types = {
-            'TinyShip': {'class': TinyShip, 'min_time': 0, 'rarity': 50},
+            'TinyShip': {'class': TinyShip, 'min_time': 0, 'rarity': 5},
             'LittleShip': {'class': LittleShip, 'min_time': 0, 'rarity': 30},
-            'MotherShip': {'class': MotherShip, 'min_time': 2, 'rarity': 10}
+            'MotherShip': {'class': MotherShip, 'min_time': 1, 'rarity': 50}
         }
 
 
@@ -460,7 +460,7 @@ def shuffle(lst):
     for i in range(len(lst) - 1, 0, -1):
         j = random.randint(0, i)
         lst[i], lst[j] = lst[j], lst[i]
-        
+
 def weighted_random_choice(choices):
     total_weight = sum(weight for _, weight in choices)
     random_num = random.uniform(0, total_weight)
@@ -473,17 +473,26 @@ def weighted_random_choice(choices):
 # Function to display and select power-ups
 def display_and_select_power_ups():
     all_power_ups = [MoreSpeed(), IncreaseDamage(), FasterFireRate(), AddWeapon(), ArmorPiercing(), MultiProjectile(), HullRepairs(), ChainReaction(), RotatingShieldPowerUp()]
-    shuffle(all_power_ups)  # Use the custom shuffle function
-    power_ups = all_power_ups[:3]  # Select the first three power-ups after shuffling
+    # Convert power-ups to (power-up, weight) pairs based on rarity
+    power_up_weights = [(power_up, 4 - power_up.rarity) for power_up in all_power_ups]
+    
+    # Select three unique power-ups based on their weights
+    selected_power_ups = []
+    for _ in range(3):
+        choice = weighted_random_choice(power_up_weights)
+        selected_power_ups.append(choice)
+        # Remove the chosen power-up from the list of weights to ensure it's not selected again
+        power_up_weights = [pw for pw in power_up_weights if pw[0] != choice]
 
-    selected_index = 0  # Default to first power-up in the randomized list
+    selected_index = 0  # Default to first power-up in the selected list
+
 
     # Display power-up selection menu
     while True:
         thumby.display.fill(0)  # Clear display
 
         # Display each power-up option
-        for i, power_up in enumerate(power_ups):
+        for i, power_up in enumerate(selected_power_ups):
             if i == selected_index:
                 # Highlight selected power-up
                 thumby.display.drawText(">", 0, i * 10, 1)
@@ -493,16 +502,16 @@ def display_and_select_power_ups():
 
         # Navigation
         if thumby.buttonU.pressed():
-            selected_index = (selected_index - 1) % len(power_ups)
+            selected_index = (selected_index - 1) % len(selected_power_ups)
         elif thumby.buttonD.pressed():
-            selected_index = (selected_index + 1) % len(power_ups)
+            selected_index = (selected_index + 1) % len(selected_power_ups)
         elif thumby.buttonA.pressed():
             thumby.display.fill(0)
             break  # Confirm selection
 
         time.sleep(0.1)  # Debounce buttons
 
-    return power_ups[selected_index]
+    return selected_power_ups[selected_index]
 
 
 # Function to apply the selected power-up
