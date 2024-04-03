@@ -16,6 +16,7 @@ class GameEnvironment:
         self.lastCollisionCheckTime = 0
         self.collisionCheckInterval = 200  # milliseconds
         self.levelUpTarget = 100
+        self.powerUp = None
         global startTime
         startTime = time.ticks_ms()  # Game start time, assuming this is defined globally
 
@@ -37,7 +38,15 @@ class GameEnvironment:
             else:
                 self.enemies.append(TinyShip(random.randint(10, 71), random.choice([-8, 40]), 0.03 + random.uniform(0, 0.01)))
 
+    def spawn_power_up(self):
+        if not self.powerUp and random.randint(0, 500) == 0:
+            speed = 0.2
+            y, dy = (0, speed) if random.choice([True, False]) else (40, -speed)
+            dx = math.cos(random.uniform(-math.pi / 4, math.pi / 4)) * speed
+            x = random.randint(15, 67)
+            self.powerUp = PowerUpItem(x, y, dx, dy)
 
+            
     def update(self, currentTime):
         # Player movement and firing
         self.player.update()
@@ -59,9 +68,18 @@ class GameEnvironment:
         for enemy in self.enemies[:]:
             enemy.update(self.player.x, self.player.y)
             enemy.render()
+            
+        if self.powerUp:
+            self.powerUp.update()
+            if self.powerUp.active:
+                self.powerUp.render()
+            else:
+                self.powerUp = None  # Remove the power-up if it's not active
 
         # Randomly spawn new enemies, adjusted by time
         self.spawn_enemy()
+        
+        self.spawn_power_up()
             
     def check_collisions(self):
         # Move your collision check logic here, from the update method
@@ -79,6 +97,12 @@ class GameEnvironment:
                 if self.player.health <= 0:
                     # Handle game over scenario
                     displayGameOverScreen(self.player)  # Display the game over screen
+        if self.powerUp and self.powerUp.active:
+            if self.player.x < self.powerUp.x + 2 and self.player.x + self.player.size > self.powerUp.x and \
+               self.player.y < self.powerUp.y + 2 and self.player.y + self.player.size > self.powerUp.y:
+                self.powerUp.active = False  # Deactivate the power-up
+                selected_power_up = display_and_select_power_ups()
+                apply_power_up(selected_power_up)
 
 class Player:
     def __init__(self, x, y, speed, bitmap, health):
@@ -394,6 +418,34 @@ class AddWeapon(PowerUp):
         if count <= 4 : 
             player.weapons = weapon_configurations[count]
 
+class PowerUpItem:
+    def __init__(self, x, y, dx, dy):
+        self.x = x
+        self.y = y
+        self.dx = dx
+        self.dy = dy
+        self.active = True  # Indicates whether the power-up is active
+
+    def update(self):
+        # Move the power-up based on its velocity
+        self.x += self.dx
+        self.y += self.dy
+        # Check if the power-up has moved off-screen
+        if self.x < 10 or self.x > 72 or self.y < 0 or self.y > 40:
+            self.active = False
+
+    def render(self):
+        if self.active:
+            # Get the current time in milliseconds
+            current_time = time.ticks_ms()
+            
+            # Check if the current time modulo some number results in a value that meets our condition for flashing
+            if current_time // 50 % 2 == 0:  # This will toggle the visibility every 250 milliseconds
+                # Draw a 2x2 square for the power-up
+                thumby.display.drawRectangle(int(self.x), int(self.y), 2, 2, 1)
+
+
+
 import random
 def shuffle(lst):
     for i in range(len(lst) - 1, 0, -1):
@@ -485,6 +537,7 @@ def getGameTime():
 
 # Game start time
 startTime = time.ticks_ms()
+random.seed(startTime)
 thumby.display.setFont("/lib/font3x5.bin", 3, 5, 1)
 
 # Game variables
