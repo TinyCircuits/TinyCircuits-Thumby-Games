@@ -28,7 +28,7 @@ class GameEnvironment:
             'FastShip': {'class': FastShip, 'min_time': 2, 'rarity': 15},
             'GunShip': {'class': GunShip, 'min_time': 3, 'rarity': 25},
             'MotherShip': {'class': MotherShip, 'min_time': 2, 'rarity': 50},
-            'SuperMotherShip': {'class': SuperMotherShip, 'min_time': 4, 'rarity': 10}
+            'SuperMotherShip': {'class': SuperMotherShip, 'min_time': 4, 'rarity': 100}
         }
 
 
@@ -118,6 +118,7 @@ class Player:
         self.health = health
         self.bitmap = bitmap
         self.size = len(bitmap)
+        self.rad = self.size / 2
         self.lastHorizontalDirection = 'right'
         self.experience = 0
         # Initialize the player with a list of weapons
@@ -163,6 +164,7 @@ class Player:
 
 class Enemy:
     base_speed = 0.03  # Default base speed for all enemies
+    lastDirectionUpdateTime = 0
     
     def __init__(self, x, y, bitmap, damage, toughness, experience, name='Enemy'):
         self.x = x
@@ -174,17 +176,22 @@ class Enemy:
         self.toughness = toughness
         self.name = name
         self.size = len(bitmap)
+        self.rad = self.size / 2
         self.experience = experience
+        self.dx = 0
+        self.dy = 0
 
     def update(self, playerX, playerY):
-        global game_env
-        # Calculate direction from enemy center to player center
-        dx = (playerX + game_env.player.size / 2) - (self.x + self.size / 2)
-        dy = (playerY + game_env.player.size / 2) - (self.y + self.size / 2)
-        distance = max(abs(dx) + abs(dy), 1)
-        dx, dy = dx / distance, dy / distance
-        self.x += dx * self.speed
-        self.y += dy * self.speed
+        currentTime = time.ticks_ms()  # Get the current time in milliseconds
+        # Update direction only every 200ms
+        if currentTime - Enemy.lastDirectionUpdateTime > 400:
+            # Calculate direction from enemy center to player center
+            dx = (playerX + game_env.player.rad) - (self.x + self.rad)
+            dy = (playerY + game_env.player.rad) - (self.y + self.rad)
+            self.lastDirectionUpdateTime = currentTime  # Update the last direction update time
+        # Update position every time
+        self.x += self.speed if dx > 0 else -self.speed if dx < 0 else 0
+        self.y += self.speed if dy > 0 else -self.speed if dy < 0 else 0
 
     def render(self):
         global game_env
