@@ -18,6 +18,7 @@ class GameEnvironment:
         self.levelUpTarget = 100
         self.powerUp = None
         global startTime
+        global elapsedTime
         startTime = time.ticks_ms()  # Game start time, assuming this is defined globally
         
         self.enemy_types = {
@@ -32,8 +33,6 @@ class GameEnvironment:
 
 
     def spawn_enemy(self):
-        currentTime = time.ticks_ms()
-        elapsedTime = currentTime - startTime
         self.spawnThreshold = max(self.minimumSpawnThreshold, 
                                   self.spawnThreshold - (elapsedTime // 60000) * self.spawnRateIncrease)
     
@@ -54,11 +53,11 @@ class GameEnvironment:
             self.powerUp = PowerUpItem(x, y, dx, dy)
 
             
-    def update(self, currentTime):
+    def update(self):
         # Player movement and firing
         self.player.update()
         # Fire all weapons that are ready and add their projectiles to the game
-        new_projectiles = self.player.fire_weapons(currentTime)
+        new_projectiles = self.player.fire_weapons()
         self.projectiles.extend(new_projectiles)
 
         # Update and render projectiles
@@ -68,9 +67,9 @@ class GameEnvironment:
             else:
                 projectile.render()
                 
-        if currentTime - self.lastCollisionCheckTime > self.collisionCheckInterval:
+        if elapsedTime - self.lastCollisionCheckTime > self.collisionCheckInterval:
             self.check_collisions()  # A new method to handle all collision checks
-            self.lastCollisionCheckTime = currentTime
+            self.lastCollisionCheckTime = elapsedTime
 
         for enemy in self.enemies[:]:
             enemy.update(self.player.x, self.player.y)
@@ -128,10 +127,10 @@ class Player:
         self.multi_projectile_level = 0
         self.chain_reaction_level = 0
         
-    def fire_weapons(self, currentTime):
+    def fire_weapons(self):
         projectiles = []
         for weapon in self.weapons:
-            projectile = weapon.fire(currentTime, self.x + 4, self.y + 4, self.lastHorizontalDirection)
+            projectile = weapon.fire(self.x + 4, self.y + 4, self.lastHorizontalDirection)
             if projectile:
                 projectiles.append(projectile)
         return projectiles    
@@ -182,7 +181,7 @@ class Enemy:
         # Calculate direction from enemy center to player center
         dx = (playerX + game_env.player.size / 2) - (self.x + self.size / 2)
         dy = (playerY + game_env.player.size / 2) - (self.y + self.size / 2)
-        distance = max((dx ** 2 + dy ** 2) ** 0.5, 1)
+        distance = max(abs(dx) + abs(dy), 1)
         dx, dy = dx / distance, dy / distance
         self.x += dx * self.speed
         self.y += dy * self.speed
@@ -291,7 +290,7 @@ class Weapon:
         self.projectileToughness = projectileToughness
         self.lastFireTime = 0
 
-    def fire(self, currentTime, x, y, direction):
+    def fire(self, x, y, direction):
         # Base fire method to be overridden by subclasses
         raise NotImplementedError("Subclass must implement abstract method")
 
@@ -307,9 +306,10 @@ class Laser(Weapon):
             'right': {'up': 'right', 'down': 'left', 'left': 'up', 'right': 'down'}
         }
 
-    def fire(self, currentTime, x, y, shipDirection):
-        if currentTime - self.lastFireTime >= self.fireRate:
-            self.lastFireTime = currentTime
+    def fire(self, x, y, shipDirection):
+        global elapsedTime
+        if elapsedTime - self.lastFireTime >= self.fireRate:
+            self.lastFireTime = elapsedTime
             # Adjust the shot direction based on the ship's direction
             final_direction = self.direction_mappings[shipDirection][self.shotDirection]
             # Calculate projectile velocity and offset based on final direction
@@ -349,7 +349,7 @@ class Projectile:
         
     def destroy(self, target, x, y):
         global game_env
-        if game_env.player.multi_projectile_level > 0 and (self.generation == 0 or game_env.player.chain_reaction_level >= self.generation - 1  ):
+        if game_env.player.multi_projectile_level > 0 and (self.generation == 0 or game_env.player.chain_reaction_level >= self.generation  ):
             split_count = 1 + game_env.player.multi_projectile_level  # Determine how many projectiles to split into
             angle_increment = 360 / split_count  # Calculate the angle increment
     
@@ -560,9 +560,9 @@ def apply_power_up(power_up):
 
 # Helper function to draw the toolbar
 def updateToolbarDynamic():
-    global game_env, startTime
+    global game_env, startTime, elapsedTime
     # Calculate elapsed time
-    elapsedSeconds = (time.ticks_ms() - startTime) // 1000
+    elapsedSeconds = (elapsedTime) // 1000
     minutes = elapsedSeconds // 60
     seconds = elapsedSeconds % 60
 
@@ -601,6 +601,8 @@ def getGameTime():
 # Game start time
 startTime = time.ticks_ms()
 random.seed(startTime)
+currentTime = time.ticks_ms()
+elapsedTime = currentTime - startTime
 thumby.display.setFont("/lib/font3x5.bin", 3, 5, 1)
 
 # Game variables
@@ -630,6 +632,7 @@ updateToolbarDynamic()
 
 while True:
     currentTime = time.ticks_ms()
+    elapsedTime = currentTime - startTime
     
     # Check for power-up selection
     if game_env.player.experience >= game_env.levelUpTarget:
@@ -640,7 +643,7 @@ while True:
 
     
     thumby.display.drawFilledRectangle(10, 0, 62, 40, 0)  # Clear game area
-    game_env.update(currentTime)
+    game_env.update()
     game_env.player.render()
 
     # Draw the toolbar
