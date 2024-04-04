@@ -9,9 +9,9 @@ class GameEnvironment:
         self.projectiles = []
         self.player = Player(36, 20, 0.3,shipSprite, 100)
         self.lastFireTime = 0
-        self.spawnThreshold = 80  # Initial spawn threshold
+        self.maxspawnThreshold = 80  # Initial spawn threshold
         self.minimumSpawnThreshold = 20  # Minimum spawn threshold
-        self.spawnRateIncrease = 1
+        self.spawnRateIncrease = 5
         self.gameOver = False
         self.lastCollisionCheckTime = 0
         self.collisionCheckInterval = 200  # milliseconds
@@ -33,10 +33,10 @@ class GameEnvironment:
 
 
     def spawn_enemy(self):
-        self.spawnThreshold = max(self.minimumSpawnThreshold, 
-                                  self.spawnThreshold - (elapsedTime // 60000) * self.spawnRateIncrease)
+        spawnThreshold = max(self.minimumSpawnThreshold, 
+                                  self.maxspawnThreshold - (elapsedTime // 60000) * self.spawnRateIncrease)
     
-        if random.randint(0, self.spawnThreshold) == 0:
+        if random.randint(0, spawnThreshold) == 0:
             possible_enemies = [(data['class'], 1.0 / data['rarity']) for name, data in self.enemy_types.items() 
                                 if elapsedTime >= data['min_time'] * 60000]
             if possible_enemies:
