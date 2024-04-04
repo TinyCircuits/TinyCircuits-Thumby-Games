@@ -657,7 +657,7 @@ while True:
     thumby.display.blit(toolbar, 0, 0, 10, 40, 0, 0, 0)
 
     if currentTime - lastToolbarUpdateTime >= 1000:
-        thumby.display.drawFilledRectangle(2, 10, 6, 10, 0)
+        thumby.display.drawFilledRectangle(1, 10, 7, 10, 0)
         thumby.display.drawFilledRectangle(4, 27, 2, 10, 0)
         updateToolbarDynamic()
         lastToolbarUpdateTime = currentTime  # Update the last update time
