@@ -11,7 +11,7 @@ class GameEnvironment:
         self.lastFireTime = 0
         self.maxspawnThreshold = 80  # Initial spawn threshold
         self.minimumSpawnThreshold = 20  # Minimum spawn threshold
-        self.spawnRateIncrease = 5
+        self.spawnRateIncrease = 10
         self.gameOver = False
         self.lastCollisionCheckTime = 0
         self.collisionCheckInterval = 200  # milliseconds
@@ -272,7 +272,7 @@ class SuperMotherShip(MotherShip):
         SuperMotherShip.base_speed = 0.03
         
 class FastShip(Enemy):
-    base_speed = 0.2
+    base_speed = 0.15
     def __init__(self, x, y):
         super().__init__(x, y, bitmap=bytearray([15,6,6,6]), damage=2, toughness=2, experience=5, name='FastShip')
         
@@ -385,7 +385,8 @@ class RotatingShield:
 
     def render(self):
         # Render the shield at its current position
-        thumby.display.setPixel(int(self.x), int(self.y), 1)
+        if self.x > 10:
+            thumby.display.setPixel(int(self.x), int(self.y), 1)
 
 class PowerUp:
     def __init__(self, name, rarity):
