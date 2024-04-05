@@ -1,3 +1,8 @@
+NAME=CosmicSurvivor
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/CosmicSurvivor/CosmicSurvivor.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/CosmicSurvivor/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/CosmicSurvivor/arcade_description.txt
+
 NAME=MazeSpeedRun
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/MazeSpeedRun/MazeSpeedRun.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/MazeSpeedRun/arcade_title_image.png
