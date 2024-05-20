@@ -22,13 +22,13 @@ class GameEnvironment:
         startTime = time.ticks_ms()  # Game start time, assuming this is defined globally
         
         self.enemy_types = {
-            'TinyShip': {'class': TinyShip, 'min_time': 0, 'rarity': 2},
-            'LittleShip': {'class': LittleShip, 'min_time': 0, 'rarity': 10},
-            'BigShip': {'class': BigShip, 'min_time': 1, 'rarity': 20},
-            'FastShip': {'class': FastShip, 'min_time': 2, 'rarity': 15},
-            'GunShip': {'class': GunShip, 'min_time': 3, 'rarity': 25},
-            'MotherShip': {'class': MotherShip, 'min_time': 2, 'rarity': 50},
-            'SuperMotherShip': {'class': SuperMotherShip, 'min_time': 4, 'rarity': 100}
+            'TinyShip': {'class': TinyShip, 'min_time': 0, 'max_time': 2, 'rarity': 2},
+            'LittleShip': {'class': LittleShip, 'min_time': 0, 'max_time': 3, 'rarity': 10},
+            'BigShip': {'class': BigShip, 'min_time': 1, 'max_time': 10, 'rarity': 20},
+            'FastShip': {'class': FastShip, 'min_time': 2, 'max_time': 10, 'rarity': 15},
+            'GunShip': {'class': GunShip, 'min_time': 3, 'max_time': 20, 'rarity': 25},
+            'MotherShip': {'class': MotherShip, 'min_time': 2, 'max_time': 20, 'rarity': 50},
+            'SuperMotherShip': {'class': SuperMotherShip, 'min_time': 4, 'max_time': 100, 'rarity': 100}
         }
 
 
@@ -37,11 +37,18 @@ class GameEnvironment:
                                   self.maxspawnThreshold - (elapsedTime // 60000) * self.spawnRateIncrease)
     
         if random.randint(0, spawnThreshold) == 0:
-            possible_enemies = [(data['class'], 1.0 / data['rarity']) for name, data in self.enemy_types.items() 
-                                if elapsedTime >= data['min_time'] * 60000]
+            possible_enemies = [(data['class'], 1.0 / data['rarity']) for name, data in self.enemy_types.items()
+                        if elapsedTime >= data['min_time'] * 60000 and elapsedTime <= data['max_time'] * 60000]
             if possible_enemies:
                 enemy_class = weighted_random_choice(possible_enemies)
-                self.enemies.append(enemy_class(random.randint(10, 71), random.choice([-8, 40])))
+                enemy = enemy_class(random.randint(10, 71), random.choice([-8, 40]))
+                minutes_past_five = max(0, (elapsedTime - 300000) // 60000)
+                if minutes_past_five > 0:
+                    additional_damage = 3 * minutes_past_five
+                    additional_toughness = 3 * minutes_past_five
+                    enemy.damage += additional_damage
+                    enemy.toughness += additional_toughness
+                self.enemies.append(enemy)
 
 
     def spawn_power_up(self):
@@ -401,7 +408,7 @@ class MoreSpeed(PowerUp):
         super().__init__("Increase Speed", 2)
     
     def activate(self, player):
-        player.speed += 0.3
+        player.speed += 0.1
 
 class IncreaseDamage(PowerUp):
     def __init__(self):
@@ -561,9 +568,6 @@ def display_and_select_power_ups():
 # Function to apply the selected power-up
 def apply_power_up(power_up):
     global game_env
-    # This is a placeholder for applying the selected power-up
-    # You would add logic here based on the selected index
-    print("Applying power-up:", power_up)
     power_up.activate(game_env.player)
 
 # Helper function to draw the toolbar
@@ -625,7 +629,17 @@ toolbar = bytearray([255,1,121,165,165,165,197,121,1,255,
            255,0,96,240,224,224,240,96,0,255,
            255,0,252,4,5,5,4,252,0,255,
            255,128,191,160,160,160,160,191,128,255])
+           
+# BITMAP: width: 72, height: 40
+title = bytearray([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,128,192,96,48,48,56,252,186,141,236,220,252,30,30,151,140,236,236,140,23,30,44,92,156,220,31,24,252,60,62,24,48,224,192,128,128,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+           0,0,0,0,0,0,0,128,224,160,240,216,216,232,180,236,254,126,115,117,63,60,56,56,48,56,124,195,193,97,49,31,147,103,147,238,14,15,234,17,43,193,7,57,49,65,193,119,60,56,56,56,60,63,114,117,183,254,254,254,220,248,248,224,128,128,0,0,0,0,0,0,
+           0,0,8,4,6,7,7,7,3,3,3,3,113,124,127,15,1,0,0,0,0,0,0,0,0,0,0,0,3,14,250,0,255,132,200,15,5,5,143,17,192,127,129,227,63,23,1,0,0,0,0,0,0,0,0,0,0,0,3,127,127,121,1,3,3,3,7,7,7,6,12,8,
+           0,0,0,0,0,0,0,0,0,0,0,128,192,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,252,189,255,255,1,127,127,194,255,223,252,255,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,192,0,0,0,0,0,0,0,0,
+           0,0,0,0,0,0,0,0,0,96,60,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,39,31,15,8,12,12,15,31,31,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,15,248,0,0,0,0,0,0])
 
+TITLE_PAGE = 0
+GAME_LOOP = 1
+gameState = TITLE_PAGE  # Initial state
 # Game loop setup
 thumby.display.setFPS(60)
 thumby.display.setFont("/lib/font3x5.bin", 3, 5, 1)
@@ -636,31 +650,126 @@ lastToolbarUpdateTime = time.ticks_ms()
 thumby.display.blit(toolbar, 0, 0, 10, 40, 0, 0, 0)
 updateToolbarDynamic()
 
+# Timing for flashing text
+textFlashInterval = 500  # Time in milliseconds
+lastFlashTime = time.ticks_ms()
+textVisible = True
+
+# Star settings
+numStars = 10
+stars = [{'x': random.randint(0, 71), 'y': random.randint(0, 39)} for _ in range(numStars)]
+
+# Setup display
+thumby.display.setFPS(60)
+thumby.display.setFont("/lib/font3x5.bin", 3, 5, 1)
+
+def update_stars():
+    for star in stars:
+        star['y'] -= 1  # Move star up
+        if star['y'] < 0:
+            star['x'] = random.randint(0, 71)
+            star['y'] = 39
+            
+            
+soundTrack = [
+    (262, 75),  # C4 - Starting the rhythm
+    (330, 75),  # E4 - Upbeat and lively
+    (392, 75),  # G4 - Keeping the energy high
+    (330, 75),  # E4 - Return to maintain rhythm
+    (440, 75),  # A4 - Lift the melody
+    (392, 75),  # G4 - Step down in scale
+    (440, 75),  # A4 - Back up
+    (494, 75),  # B4 - Peak of the sequence
+    (440, 75),  # A4 - Back down to start the loop
+    (392, 75),  # G4 - Further down
+    (330, 75),  # E4 - Return to earlier upbeat tone
+    (262, 75),  # C4 - Close the loop with base note
+    (330, 75),  # E4 - Start again to maintain energy
+    (392, 75),  # G4 - Continue the loop
+    (440, 75),  # A4 - Keep energy before restarting loop
+    (494, 75),  # B4 - Hit the peak again for loop closure
+]
+
+currentNote = 0  # Index of the current note to play
+lastNoteTime = time.ticks_ms()  # Time when the last note was played
+noteInterval = 200  # Time between notes in ms
+
+# Function to play a sequence of sounds non-blocking
+def playSoundtrack():
+    global currentNote, lastNoteTime
+    currentTime = time.ticks_ms()
+    if currentNote >= len(soundTrack):
+        currentNote = 0  # Reset to loop the soundtrack
+    if soundTrack[currentNote] is None:
+        lastNoteTime = currentTime + 150  # Set time for rest duration
+        currentNote += 1
+    elif currentTime - lastNoteTime >= noteInterval:
+        note = soundTrack[currentNote]
+        thumby.audio.play(note[0], note[1])
+        lastNoteTime = currentTime
+        currentNote += 1
 
 
 while True:
-    currentTime = time.ticks_ms()
-    elapsedTime = currentTime - startTime
     
-    # Check for power-up selection
-    if game_env.player.experience >= game_env.levelUpTarget:
-        selected_power_up = display_and_select_power_ups()  # Pause game and select power-up
-        apply_power_up(selected_power_up)  # Apply selected power-up
-        game_env.player.experience = 0  # Reset experience after selecting power-up
-        game_env.levelUpTarget += 50
+    if gameState == TITLE_PAGE:
+        # Clear display
+        thumby.display.fill(0)
+        
+        # Update stars position
+        update_stars()
 
+        # Draw the title
+        thumby.display.blit(title, 0, 0, 72, 40, -1, 0, 0)
+        
+        # Handle flashing text
+        currentTime = time.ticks_ms()
+        if currentTime - lastFlashTime > textFlashInterval:
+            textVisible = not textVisible
+            lastFlashTime = currentTime
+        
+        if textVisible:
+            thumby.display.drawText("Press", 3, 24, 1)
+            thumby.display.drawText("A", 3, 30, 1)
+        
+        # Draw stars
+        for star in stars:
+            thumby.display.setPixel(star['x'], star['y'], 1)
+        
+        playSoundtrack()  # This plays the music non-blockingly
+        
+        # Update the display
+        thumby.display.update()
+        
+        if thumby.buttonA.pressed():
+            gameState = GAME_LOOP
+            thumby.display.fill(0)
+            time.sleep(0.3)
+            
+    elif gameState == GAME_LOOP:
     
-    thumby.display.drawFilledRectangle(10, 0, 62, 40, 0)  # Clear game area
-    game_env.update()
-    game_env.player.render()
-
-    # Draw the toolbar
-    thumby.display.blit(toolbar, 0, 0, 10, 40, 0, 0, 0)
-
-    if currentTime - lastToolbarUpdateTime >= 1000:
-        thumby.display.drawFilledRectangle(1, 10, 7, 10, 0)
-        thumby.display.drawFilledRectangle(4, 27, 2, 10, 0)
-        updateToolbarDynamic()
-        lastToolbarUpdateTime = currentTime  # Update the last update time
-
-    thumby.display.update()
+        currentTime = time.ticks_ms()
+        elapsedTime = currentTime - startTime
+        
+        # Check for power-up selection
+        if game_env.player.experience >= game_env.levelUpTarget:
+            selected_power_up = display_and_select_power_ups()  # Pause game and select power-up
+            apply_power_up(selected_power_up)  # Apply selected power-up
+            game_env.player.experience = 0  # Reset experience after selecting power-up
+            game_env.levelUpTarget += 50
+    
+        
+        thumby.display.drawFilledRectangle(10, 0, 62, 40, 0)  # Clear game area
+        game_env.update()
+        game_env.player.render()
+    
+        # Draw the toolbar
+        thumby.display.blit(toolbar, 0, 0, 10, 40, 0, 0, 0)
+    
+        if currentTime - lastToolbarUpdateTime >= 1000:
+            thumby.display.drawFilledRectangle(1, 10, 7, 10, 0)
+            thumby.display.drawFilledRectangle(4, 27, 2, 10, 0)
+            updateToolbarDynamic()
+            lastToolbarUpdateTime = currentTime  # Update the last update time
+    
+        thumby.display.update()
