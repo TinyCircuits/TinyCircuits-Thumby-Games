@@ -325,7 +325,7 @@ def handle_input():
 display.setFPS(30)
 WORD_LENGTH = 6
 # Create title with the words "thumby slowly handle wordly"
-words = ["thumby000002", "slowly001022", "wordly222222"]
+words = ["thumby000002", "slowly001122", "wordly222222"]
 y_position = 10
 display.fill(0)  # Clear the display
 for word in words:
