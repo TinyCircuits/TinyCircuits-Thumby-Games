@@ -1,9 +1,16 @@
 import time
 import thumby
+from machine import ADC
 import sys
 
 CURRENT_FOLDER = '/Games/Flucht'
 sys.path.insert(1, CURRENT_FOLDER)
+
+# https://github.com/TinyCircuits/TinyCircuits-Thumby-Games/blob/master/Battery/Battery.py
+adc = ADC(26)
+level_1 = 33700 #~45min
+level_2 = 34300 #~30min
+level_3 = 35400 #~15min
 
 import common_code
 
@@ -87,6 +94,33 @@ class game_interface:
 		except:
 			pass			
 		return data_dict
+	
+	def draw_battery(self):
+		x = 28
+		y = 3
+		w = 8
+		h = 5
+		bw = { 0:6, 1:4, 2:2, 3:0 }
+		
+		# [0..3]
+		battery_level = 3
+				
+		b=adc.read_u16()
+		if (b > level_3):
+			battery_level = 3
+		elif (b > level_2):
+			battery_level = 2
+		elif (b > level_1):
+			battery_level = 1
+		else:
+			battery_level = 0
+		
+		self.drawFilledRectangle(x-2,y-1,w+3,h+2,0)
+		self.drawFilledRectangle(x, y, w, h, 1)
+		self.drawRectangle(x-1, y+1, 1, h-2, 1)
+		
+		if battery_level < 3:
+			self.drawFilledRectangle(x+1,y+1,bw[battery_level],h-2,0)
 
 _game_interface = game_interface()
 
