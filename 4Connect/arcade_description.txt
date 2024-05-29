@@ -1,0 +1,5 @@
+The classic boardgame - with minmax AI of various difficulty levels - can you beat the thumby CPU?
+
+Author: austinio7116, ChatGPT4o
+Version: 1.0
+License: GPL3
