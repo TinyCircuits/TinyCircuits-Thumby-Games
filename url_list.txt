@@ -3,6 +3,12 @@ https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/4Connect/4Connect.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/4Connect/arcade_title_video.webm
 
+NAME=Gravity
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Gravity/Gravity.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Gravity/track_data_bytes.bin
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Gravity/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Gravity/arcade_title_video.webm
+
 NAME=CosmicSurvivor
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/CosmicSurvivor/CosmicSurvivor.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/CosmicSurvivor/arcade_description.txt
