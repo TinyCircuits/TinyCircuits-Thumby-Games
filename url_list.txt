@@ -1,3 +1,9 @@
+NAME=Flucht
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Flucht/Flucht.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Flucht/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Flucht/common_code.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Flucht/arcade_title_video.webm
+
 NAME=4Connect
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/4Connect/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/4Connect/4Connect.py
@@ -559,12 +565,6 @@ NAME=tinymem
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/tinymem/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/tinymem/tinymem.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/tinymem/tinymem_video.webm
-
-NAME=Flucht
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Flucht/Flucht.py
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Flucht/arcade_description.txt
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Flucht/common_code.py
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Flucht/arcade_title_video.webm
 
 NAME=DrCDice
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/DrCDice/arcade_description.txt
