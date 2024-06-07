@@ -1,0 +1,46 @@
+The Legend of Thelda (DEMO)
+
+This is an ongoing attempt to recreate the NES classic
+of a similar title for the Thumby console.  
+
+It's dangerous to go alone!
+Don't forget to grab your sword from the cave on the 
+starting map screen.
+
+Currently has six unique enemies.
+
+If you encounter an UNDER CONSTRUCTION screen, 
+simply return the way you came.
+
+Access pause menu by pressing "A+B + UP" and exit 
+with the same.
+
+Bombs do damage but don't destroy walls yet.
+Boomerang works to freeze enemies in place.
+Bow is not yet implemented.
+
+Shield can deflect octorok attacks but not zora attacks, 
+and only if you're not attacking on impact.
+
+THIS IS A WORK IN PROGRESS AND IS UNFINISHED
+
+The world isn't fully populated with enemies, the first 
+dungeon is still unfinished.  There is currently no actual 
+goal for the player to accomplish.  Right now, it's just an
+explorable sandbox.
+
+SOON:  The next update should include a larger world map,
+ three more enemy types, pushable blocks, spike traps, 
+Dungeon Boss 1 and working bow and arrows.
+
+FUTURE:  Shops, loot changes, more enemies, more items, 
+music and more sound effects.
+
+
+The current state of this project has been reached without
+using any AI assistance, and is a labor of love and obsession.
+
+
+Author: PanduhBeer
+Version: 0.3.11
+
