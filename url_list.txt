@@ -1,3 +1,10 @@
+NAME=Wordly
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Wordly/words.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Wordly/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Wordly/easywords.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Wordly/Wordly.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Wordly/arcade_title_video.webm
+
 NAME=CircleGame
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/CircleGame/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/CircleGame/CircleGame.py
