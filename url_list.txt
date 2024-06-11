@@ -1,3 +1,9 @@
+NAME=SlapAGnome
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/SlapAGnome/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/SlapAGnome/SlapAGnome.blocks
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/SlapAGnome/SlapAGnome.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/SlapAGnome/arcade_title_video.webm
+
 NAME=Wordly
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Wordly/words.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Wordly/arcade_description.txt
