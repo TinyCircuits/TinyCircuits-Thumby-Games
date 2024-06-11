@@ -1,0 +1,5 @@
+Wordly - a word guessing game.  Try to guess the 5 letter word - only valid words can be made as guesses.  If you guess the right letter in the right place it will be highlighted with a white background - the right letter but in the wrong place will be underlined and letters not in the word at all will be removed from the keyboard.  You have up to 6 guesses.  Keep track of your stats over time.
+
+Author: austinio7116 - many thanks to Mr.Giraffe for the initial blockly version as this was a micropython rewrite of the blockly version - especially the keyboard letter select sprites and the sound effects which were used unchanged.
+Version: 1.0
+License: GPL3
