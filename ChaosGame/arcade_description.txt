@@ -1,0 +1,10 @@
+The Chaos Game is a way of making fractals. Starting with a polygon with a certain number of vertices, you will add another point somewhere, then, from that point you will go a certain fraction of the distance between that point and one random vertex, then you keep going from the last point drawn towards one random vertex. This will often result in a fractal pattern. If you start with 3 vertices and the distance is 0.5 it will result in what is known as a Sierpinski triangle. In this version you can select the number of vertices, then, it will ask you for the "ratio" which is the ratio of the distance from the current point being drawn and the previous point, to the distance of the current point to the vertex that was randomly chosen. 
+
+
+If my explanation was confusing or you want to know more, here is the Wikipedia page > https://en.wikipedia.org/wiki/Chaos_game
+
+
+Controls: 
+Up and Down or Left and Right to change the vertices/ratio
+A to select/start/stop
+
