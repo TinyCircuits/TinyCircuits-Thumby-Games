@@ -59,8 +59,14 @@ class KeyRow:
             self.select( selected )
 
     def select( self, index ):
+        rowLen = len( self.keys )
         self.keys[ self.selected ].select( False )
-        self.selected = max( 0, min( len( self.keys ) - 1, index ) )
+        if index < 0:
+            self.selected = rowLen - 1
+        elif index >= rowLen:
+            self.selected = 0
+        else:
+            self.selected = index
         self.keys[ self.selected ].select( True )
 
     def deselect( self ):
@@ -104,23 +110,25 @@ class Keyboard:
 
     def handleInput( self ):
         button = buttons.whichButton()
-        if button == 'U':
+        if not button:
+            return None
+        if button in 'Uu':
             if self.row > 0:
                 index = self.rows[ self.row ].selected
                 self.rows[ self.row ].deselect()
                 self.row = self.row - 1
                 self.rows[ self.row ].select( index )
-        elif button == 'D':
+        elif button in 'Dd':
             if self.row < len( self.rows ) - 1:
                 index = self.rows[ self.row ].selected
                 self.rows[ self.row ].deselect()
                 self.row = self.row + 1
                 self.rows[ self.row ].select( index )
-        elif button == 'R':
+        elif button in 'Rr':
             self.rows[ self.row ].right()
-        elif button == 'L':
+        elif button in 'Ll':
             self.rows[ self.row ].left()
-        elif button == 'A':
+        elif button in 'Aa':
             keyOut = self.rows[ self.row ].getLetter()
             self.output = self.output + keyOut
         elif button == 'B':

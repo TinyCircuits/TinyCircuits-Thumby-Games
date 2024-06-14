@@ -1,0 +1,4 @@
+A game I built from scratch.
+Ball image from the internet.
+The fortunes are from the WEEJA Thumby game (found on TinyCircuits News)
+Author: CodeGuyEli

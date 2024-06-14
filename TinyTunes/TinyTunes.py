@@ -27,12 +27,24 @@ def splash():
     thumby.display.drawText( "Tunes", thumby.display.width - 48, 10, 1 )
     thumby.display.update()
     thumby.display.setFont( "/lib/font5x7.bin", 5, 10, 1 )
+    thumby.display.update()
     thumby.display.drawText( "Music editor", 1, 22, 1 )
-    thumby.display.update()
-    thumby.display.update()
-    thumby.display.drawText( "A/B: start", 7, 33, 1 )
-    while( not thumby.actionJustPressed() ):
+    buttonMsg = 'Help: A   Start: B'
+    offset = 0
+    strLen = len( buttonMsg ) * 6 + thumby.display.width
+    global baseFPS
+    thumby.display.setFPS( 45 )
+    while True:
         thumby.display.update()
+        if thumby.buttonA.justPressed():
+            thumby.display.setFPS( baseFPS )
+            return True
+        if thumby.buttonB.justPressed():
+            thumby.display.setFPS( baseFPS )
+            return False
+        thumby.display.drawFilledRectangle(0, 33, thumby.display.width, 8, 0)
+        thumby.display.drawText( buttonMsg, thumby.display.width - offset, 33, 1 )
+        offset = ( offset + 1 ) % strLen
 
 def instructions():
     thumby.display.fill( 0 )
@@ -41,7 +53,7 @@ def instructions():
     thumby.display.drawText( "  L: prev",     0, 16, 1 )
     thumby.display.drawText( "  R: nxt/add",  0, 24, 1 )
     thumby.display.drawText( " -- more --",   0, 32, 1 )
-    while( not thumby.actionJustPressed() ):
+    while not thumby.actionJustPressed():
         thumby.display.update()
     thumby.display.fill( 0 )
     thumby.display.drawText( "A: menu,",     0,  0, 1 )
@@ -49,7 +61,7 @@ def instructions():
     thumby.display.drawText( "B: play tune", 0, 16, 1 )
     thumby.display.drawText( "  close menu", 0, 24, 1 )
     thumby.display.drawText( " -- start --", 0, 32, 1 )
-    while( not thumby.actionJustPressed() ):
+    while not thumby.actionJustPressed():
         thumby.display.update()
 
 sprites = {
@@ -318,13 +330,13 @@ class Note:
             width = width + 1
         return width
 
-    def play( self ):
-        totalMillis = 15.625 * self.length + 0.5
+    def play( self, tempo ):
+        totalMillis = ( 3750.0 / tempo ) * self.length
         if '.' in self.flags:
             totalMillis = totalMillis * 1.5
         if not 'r' in self.flags:
             if 'z' in self.flags:
-                soundMillis = totalMillis
+                soundMillis = totalMillis * 1.1
             elif 's' in self.flags:
                 soundMillis = totalMillis * 0.75
             else:
@@ -397,14 +409,20 @@ class Tune:
     def __init__( self, initString = None ):
         self.notes = []
         if initString:
-            for noteStr in initString.split( ',' ):
+            parts = initString.split( ':' )
+            if len( parts ) == 1:
+                self.tempo = 240
+            else:
+                self.tempo = int( parts[ 0 ] )
+            for noteStr in parts[ -1 ].split( ',' ):
                 self.notes.append( Note.parse( noteStr ) )
         else:
             self.notes.append( Note() )
+            self.tempo = 120
         self.note = 0
 
     def __repr__( self ):
-        return ','.join( map( repr, self.notes ) )
+        return str( self.tempo ) + ':' + ','.join( map( repr, self.notes ) )
 
     def play( self ):
         self.note = 0
@@ -415,7 +433,7 @@ class Tune:
         for note in self.notes[ self.note : ]:
             self.display();
             self.note = self.note + 1
-            note.play()
+            note.play( self.tempo )
         self.note = self.note - 1
         global baseFPS
         thumby.display.setFPS( baseFPS )
@@ -432,11 +450,13 @@ class Tune:
         else:
             buzz()
 
-    def next( self ):
+    def next( self, allowDuplicate ):
         if self.note < len( self.notes ) - 1:
             self.note = self.note + 1
-        else:
+        elif allowDuplicate:
             self.duplicate()
+        else:
+            buzz()
 
     def shorten( self ):
         self.notes[ self.note ].shorten()
@@ -524,11 +544,13 @@ class Menu:
         self.item = 0
 
     def handleButton( self, button ):
-        if button == 'U':
+        if not button:
+            return
+        if button in 'Uu':
             if self.item > 0:
                 self.item = self.item - 1
             return False
-        if button == 'D':
+        if button in 'Dd':
             if self.item < len( self.items ) - 1:
                 self.item = self.item + 1
             return False
@@ -572,12 +594,15 @@ class Editor:
                 ( 'Shorten',     lambda: self.tune.shorten()  ),
                 ( 'Lengthen',    lambda: self.tune.lengthen() ),
                 ( 'Note...',     lambda: self.menuNote()      ),
+                ( 'Tempo...',    lambda: self.setTempo()      ),
                 ( 'To start',    lambda: self.tune.toStart()  ),
                 ( 'To end',      lambda: self.tune.toEnd()    ),
                 ( 'Play here',   lambda: self.tune.playHere() ),
                 ( 'Save...',     lambda: self.menuSave()      ),
                 ( 'Load...',     lambda: self.load()          ),
-                ( 'Del save...', lambda: self.delete()        )
+                ( 'Del save...', lambda: self.delete()        ),
+                ( 'New tune...', lambda: self.confirmNew()    ),
+                ( 'Exit',        lambda: thumby.reset()       )
             ]
         )
         self.noteMenu = Menu(
@@ -606,17 +631,66 @@ class Editor:
         thumby.saveData.setItem( name, tuneString )
         dir.append ( name )
 
+    def setTempo( self ):
+        tempo = self.tune.tempo
+        thumby.display.setFPS( 18 )
+        while True:
+            thumby.display.fill( 0 )
+            thumby.display.drawText( 'Tune tempo', 6, 0, 1 )
+
+            arrow = sprites[ 'cursor' ]
+            oldX = arrow.x
+            oldY = arrow.y
+            arrow.x = 12
+            arrow.y = 14
+            thumby.display.drawSprite( arrow )
+            arrow.x = oldX
+            arrow.y = oldY
+
+            arrow = sprites[ 'cursor_rot' ]
+            oldX = arrow.x
+            oldY = arrow.y
+            arrow.x = 12
+            arrow.y = 30
+            thumby.display.drawSprite( arrow )
+            arrow.x = oldX
+            arrow.y = oldY
+
+            thumby.display.drawText( str( tempo ), 6, 20, 1 )
+            thumby.display.drawText( 'A: OK', 36, 20, 1 )
+            thumby.display.drawText( 'B: cncl', 30, 28, 1 )
+            thumby.display.update()
+
+            b = buttons.whichButton()
+            if b:
+                if b == 'A':
+                    self.tune.tempo = tempo
+                    break
+                elif b == 'B':
+                    break
+                elif b in 'Uu':
+                    tempo = tempo + 1
+                    if tempo > 600:
+                        tempo = 600
+                elif b in 'Dd':
+                    tempo = tempo - 1
+                    if tempo < 15:
+                        tempo = 15
+        thumby.display.setFPS( baseFPS )
+
     def menuNote( self ):
         self.noteMenu.display()
         while not self.noteMenu.handleButton( buttons.whichButton() ):
             self.noteMenu.display()
 
     def menuSave( self ):
-        menuItems = []
         if self.fileName:
-            menuItems.append( ( self.fileName, lambda: self.saveReplace() ) )
-            menuItems.append( ( 'Save as...',  lambda: self.saveAs()      ) )
-            saveMenu = Menu( menuItems )
+            saveMenu = Menu(
+                [
+                    ( self.fileName, lambda: self.saveReplace() ),
+                    ( 'Save as...',  lambda: self.saveAs()      )
+                ]
+            )
             saveMenu.display()
             while not saveMenu.handleButton( buttons.whichButton() ):
                 saveMenu.display()
@@ -624,24 +698,45 @@ class Editor:
             self.saveAs()
 
     def saveAs( self ):
-        self.fileName = keyboard.Keyboard().getOutput()
-        if self.fileName in self.directory:
+        tempFileName = keyboard.Keyboard().getOutput()
+        print( 'Name is ' + tempFileName )
+        if tempFileName in self.directory:
+            print( 'Name ' + tempFileName + ' found in directory' )
             confirmMenu = Menu(
                 [
-                    ( 'Replace', lambda : self.saveReplace() ),
-                    ( 'Cancel',  lambda : None               )
+                    ( 'Cancel',  lambda: None                              ),
+                    ( 'Replace', lambda: self.saveWithName( tempFileName ) )
                 ]
             )
+            while not confirmMenu.handleButton( buttons.whichButton() ):
+                confirmMenu.display()
+        else:
+            self.fileName = tempFileName
+            print( 'Saving as ' + self.fileName )
+            if not self.fileName in self.directory:
+                print( 'Writing directory entry for ' + self.fileName )
+                self.directory.append( self.fileName )
+                self.writeDir()
+            print( 'Writing tune for ' + self.fileName )
+            tune = str( self.tune )
+            print( tune )
+            thumby.saveData.setItem( self.fileName, tune )
+            thumby.saveData.save()
+
+    def saveWithName( self, fileName ):
+        self.fileName = fileName
         self.saveReplace()
 
-        thumby.saveData.setItem( self.fileName, str( self.tune ) )
-        thumby.saveData.save()
-
     def saveReplace( self ):
+        print( 'Replacing ' + self.fileName )
         if not self.fileName in self.directory:
+            print( 'Writing directory entry for ' + self.fileName )
             self.directory.append( self.fileName )
             self.writeDir()
-        thumby.saveData.setItem( self.fileName, str( self.tune ) )
+        print( 'Writing tune for ' + self.fileName )
+        tune = str( self.tune )
+        print( tune )
+        thumby.saveData.setItem( self.fileName, tune )
         thumby.saveData.save()
 
     def writeDir( self ):
@@ -665,7 +760,7 @@ class Editor:
         thumby.display.fill( 0 )
         thumby.display.drawText( 'No tunes',     10,  9, 1 )
         thumby.display.drawText( 'A/B continue',  0, 25, 1 )
-        while( not thumby.actionJustPressed() ):
+        while not thumby.actionJustPressed():
             thumby.display.update()
 
     def loadName( self, name ):
@@ -699,19 +794,38 @@ class Editor:
         self.writeDir()
         thumby.saveData.save()
 
+    def confirmNew( self ):
+        confirmMenu = Menu(
+            [
+                ( 'No, keep', lambda: None           ),
+                ( 'Yes, new', lambda: self.newTune() )
+            ]
+        )
+        confirmMenu.display()
+        while not confirmMenu.handleButton( buttons.whichButton() ):
+            confirmMenu.display()
+
+    def newTune( self ):
+        self.tune = Tune()
+        self.fileName = None
+
     def handleInput( self ):
         button = buttons.whichButton()
+        if not button:
+            return
         if self.menuMode:
             if self.menu.handleButton( button ):
                 self.menuMode = False
-        elif button == 'U':
+        elif button in 'Uu':
             self.tune.raisePitch()
-        elif button == 'D':
+        elif button in 'Dd':
             self.tune.lowerPitch()
-        elif button == 'L':
+        elif button in 'Ll':
             self.tune.prev()
         elif button == 'R':
-            self.tune.next()
+            self.tune.next( True )
+        elif button == 'r':
+            self.tune.next( False )
         elif button == 'B':
             self.tune.play()
         elif button == 'A':
@@ -724,8 +838,8 @@ class Editor:
             self.tune.display()
 
 thumby.display.setFPS( baseFPS )
-splash()
-instructions()
+if splash():
+    instructions()
 editor = Editor()
 while True:
     editor.handleInput()

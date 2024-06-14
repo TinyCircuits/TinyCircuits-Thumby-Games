@@ -15,3 +15,5 @@ Version 1.0.10 Beta:
 -Added a Exit screen accessed with the calculator
 Version 1.0.11 Beta:
 Tweaked the keybinds loading screen to have a easier to read 5x7 Thumby font
+Version 1.0.20 Beta:
+-Tweaked an issue where the selected box when trying to exit the game would overlap the "YES" Button.

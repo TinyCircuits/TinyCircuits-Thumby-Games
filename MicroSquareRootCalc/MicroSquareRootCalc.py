@@ -17,9 +17,9 @@ BBfiChe_logo = bytearray([0,254,254,6,250,250,250,6,250,250,250,6,254,250,250,2,
            0,255,255,255,255,255,13,237,237,237,237,252,31,111,108,109,29,253,253,12,251,255,252,255,255,15,236,239,239,239,239,255,252,255,255,255,255,255,255,255,0,255,255,255,7,116,4,255,255,0,255,232,235,235,11,235,235,235,255,0,
            0,255,95,95,223,223,80,215,87,215,87,223,80,95,223,223,80,95,223,208,87,87,87,215,95,80,87,215,87,87,87,223,95,223,95,223,95,95,95,255,0,255,159,15,255,9,233,15,255,0,255,31,111,111,104,111,111,31,255,0,
            0,127,64,91,100,127,124,67,124,127,68,127,64,91,100,127,64,91,100,127,64,125,127,127,95,64,95,127,64,95,95,127,64,123,64,127,64,91,91,127,64,127,123,120,123,120,123,120,127,64,127,112,127,127,127,127,127,112,127,0])
-# BITMAP: width: 14, height: 9
-sel_side = bytearray([255,1,1,1,1,1,1,1,1,1,1,1,1,255,
-           1,1,1,1,1,1,1,1,1,1,1,1,1,1])
+# BITMAP: width: 15, height: 9
+sel_side = bytearray([255,1,1,1,1,1,1,1,1,1,1,1,1,1,255,
+           1,1,1,1,1,1,1,1,1,1,1,1,1,1,1])
 
 thumby.display.setFont("/lib/font3x5.bin", 3, 5, 1)
 selx = 0
@@ -130,6 +130,7 @@ while True:
     thumby.display.drawText(f"Inpt:{result}",1,25,1)
     thumby.display.drawText(f"Out:{output}",1,31,1)
     thumby.display.blit(selected,selx,sely,7,9,0,0,0)
+    sv_r = result
     # calculates the SQRT
     if result:
         output = sqrt(int(''.join(map(str, result))))
@@ -157,8 +158,9 @@ while True:
             thumby.display.drawText("----------------",5,11,1)
             thumby.display.drawText("Press up button",3,15,1)
             thumby.display.drawText("YES",15,25,1)
-            thumby.display.drawText("NO!",35,25,1)
-            thumby.display.blit(sel_side,sels_x,sels_y,14,9,0,0,0)
+            thumby.display.drawText("NO",35,25,1)
+            thumby.display.drawText("!",44,25,1)
+            thumby.display.blit(sel_side,sels_x,sels_y,15,9,0,0,0)
             if thumby.buttonL.pressed():
                 sels_x -= 20
                 time.sleep(0.2)
