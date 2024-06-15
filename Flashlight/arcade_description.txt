@@ -4,5 +4,8 @@ Created by @BBfiChe on Discord
 -------------------
 Updates:
 -------------------
+Update 1.0.1
+ - Updated dark screen flashlight to appear off instead of on.
+
 Update 1.0.0
  - Added Flashlight game.
