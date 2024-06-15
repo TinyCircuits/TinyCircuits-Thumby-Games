@@ -9,6 +9,10 @@ black = bytearray([255, 233, 207, 9, 15, 9, 207, 233,
 white = bytearray([0, 22, 48, 246, 240, 246, 48, 22,
                    0, 0, 0, 3, 3, 3, 0, 0])
 
+# BITMAP: width: 8, height: 10
+off_flashlight = bytearray([0,16,48,240,240,240,48,16,
+           0,0,0,3,3,3,0,0])
+
 version = bytearray([255, 233, 207, 9, 15, 9, 207, 233,
                      3, 3, 3, 0, 0, 0, 3, 3])
                      
@@ -26,8 +30,8 @@ while True:
     if thumby.buttonA.justPressed():
         if fill == 1:
             fill = 0
-            version = bytearray([0, 22, 48, 246, 240, 246, 48, 22,
-                                 0, 0, 0, 3, 3, 3, 0, 0])
+            version = bytearray([0,16,48,240,240,240,48,16,
+           0,0,0,3,3,3,0,0])
         else:
             fill = 1
             version = bytearray([255, 233, 207, 9, 15, 9, 207, 233,
