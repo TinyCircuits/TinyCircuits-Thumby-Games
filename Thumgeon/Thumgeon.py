@@ -160,6 +160,9 @@ def getcharinputNew():
     return ' '
 
 curMsg = ""
+goldChr = "$" # Symbol for in-game currency or gold
+fontWidth = const(6) # 6 pixels per character
+
 lastHit = ""
 
 def addhp(n):
@@ -239,7 +242,7 @@ class dungeonTile:
             # Tile is a chest
             chestGold = randint(1, 15)
             player.gp += chestGold
-            curMsg = "got "+str(chestGold)+"g!"
+            curMsg = "got "+str(chestGold)+goldChr+"!"
             self.tiledata.clear()
             self.tiletype = 0
 
@@ -322,7 +325,7 @@ class dungeonTile:
                     if(len(player.inventory) > 0):
                         selpos = min(selpos, len(player.inventory)-1)
                         thumby.display.drawText(player.inventory[selpos], 0, 8, 1)
-                        thumby.display.drawText(str(itemprice(player.inventory[selpos])[1]) + "g", 0, 16, 1)
+                        thumby.display.drawText(str(itemprice(player.inventory[selpos])[1]) + goldChr, 0, 16, 1)
                     if(actpos == 0):
                         thumby.display.drawFilledRectangle(0, 0, 24, 8, 1)
                         thumby.display.drawText("inv", 0, 0, 0)
@@ -335,7 +338,7 @@ class dungeonTile:
                     if(len(currentRoom.shopInv) > 0):
                         selpos = min(selpos, len(currentRoom.shopInv)-1)
                         thumby.display.drawText(currentRoom.shopInv[selpos], 0, 8, 1)
-                        thumby.display.drawText(str(itemprice(currentRoom.shopInv[selpos])[0]) + "g", 0, 16, 1)
+                        thumby.display.drawText(str(itemprice(currentRoom.shopInv[selpos])[0])+goldChr, 0, 16, 1)
                     if(actpos == 0):
                         thumby.display.drawFilledRectangle(0, 0, 32, 8, 1)
                         thumby.display.drawText("shop", 0, 0, 0)
@@ -344,7 +347,7 @@ class dungeonTile:
                         thumby.display.drawText("shop", 0, 0, 1)
                         thumby.display.drawFilledRectangle(40, 0, 24, 8, 1)
                         thumby.display.drawText("buy", 40, 0, 0)
-                thumby.display.drawText(str(player.gp)+"g", 64 - len(str(player.gp)+"g")*8, 32, 1)
+                thumby.display.drawText(str(player.gp)+goldChr, 64-len(str(player.gp))*fontWidth, 32, 1)
                 thumby.display.update()
                 while(getcharinputNew() == ' '):
                     pass
@@ -1240,24 +1243,29 @@ def ensureExit(room):
         room.getTile(pos[0], pos[1]).tiletype = 3
         exitSpawned = True
 
-# Draw the entire gamestate with HUD
+# Draw the entire gamestate, including Heads-Up-Display (HUD)
 def drawGame():
     global display
     thumby.display.fill(0)
     currentRoom.drawRoom()
     if(curMsg != ""):
-        thumby.display.drawFilledRectangle(56, 32, 32, 8, 1)
-        thumby.display.drawText(str(floorNo)+"f", 56, 33, 0)
+        # Default 'Msg' will be the Player's gold pieces
+        thumby.display.drawFilledRectangle(0, 32, (len(curMsg)*fontWidth)+1, 8, 1)
+        thumby.display.drawText(curMsg, 1, 33, 0)
+    
+    floorHUD=str(floorNo)+"F"
+    floorHUDWidth=len(floorHUD)*fontWidth
+    thumby.display.drawFilledRectangle(72-floorHUDWidth-1, 32, 32, 8, 1)
+    thumby.display.drawText(floorHUD, 72-floorHUDWidth, 33, 0)
+    
+    hpHUD=str(player.hp)+"HP"
+    thumby.display.drawFilledRectangle(0, 0, (len(hpHUD)*fontWidth)+1, 8, 1)
+    thumby.display.drawText(hpHUD, 1, 0, 0)
 
-        thumby.display.drawFilledRectangle(0, 32, len(curMsg)*8, 8, 1)
-        thumby.display.drawText(curMsg, 0, 33, 0)
-
-    thumby.display.drawFilledRectangle(0, 0, 32, 8, 1)
-    thumby.display.drawText(str(player.hp), 0, 0, 0)
-    thumby.display.drawText("HP", 16, 0, 0)
-    thumby.display.drawFilledRectangle(40, 0, 32, 8, 1)
-    thumby.display.drawText(str(player.mp), 40, 0, 0)
-    thumby.display.drawText("MP", 56, 0, 0)
+    mpHUD=str(player.mp)+"MP"
+    mpHUDWidth=len(mpHUD)*fontWidth
+    thumby.display.drawFilledRectangle(72-mpHUDWidth-1, 0, 32, 8, 1)
+    thumby.display.drawText(mpHUD, 72-mpHUDWidth, 0, 0)
 
     thumby.display.update()
 
@@ -1382,7 +1390,7 @@ while(True):
                     currentRoom.getTile(player.tilex, player.tiley).tiletype = 0
                     player.tiley = player.tiley-1
                     currentRoom.getTile(player.tilex, player.tiley).tiletype = 5
-                curMsg = str(player.gp)+"g"
+                curMsg = str(player.gp)+goldChr
                 updateMonsters()
                 if(turnCounter % 4 == 0):
                     turnCounter = 0
@@ -1394,7 +1402,7 @@ while(True):
                     currentRoom.getTile(player.tilex, player.tiley).tiletype = 0
                     player.tiley = player.tiley+1
                     currentRoom.getTile(player.tilex, player.tiley).tiletype = 5
-                curMsg = str(player.gp)+"g"
+                curMsg = str(player.gp)+goldChr
                 updateMonsters()
                 if(turnCounter % 4 == 0):
                     turnCounter = 0
@@ -1406,7 +1414,7 @@ while(True):
                     currentRoom.getTile(player.tilex, player.tiley).tiletype = 0
                     player.tilex = player.tilex-1
                     currentRoom.getTile(player.tilex, player.tiley).tiletype = 5
-                curMsg = str(player.gp)+"g"
+                curMsg = str(player.gp)+goldChr
                 updateMonsters()
                 if(turnCounter % 4 == 0):
                     turnCounter = 0
@@ -1418,7 +1426,7 @@ while(True):
                     currentRoom.getTile(player.tilex, player.tiley).tiletype = 0
                     player.tilex = player.tilex+1
                     currentRoom.getTile(player.tilex, player.tiley).tiletype = 5
-                curMsg = str(player.gp)+"g"
+                curMsg = str(player.gp)+goldChr
                 updateMonsters()
                 if(turnCounter % 4 == 0):
                     turnCounter = 0
@@ -1622,7 +1630,7 @@ while(True):
                 # Clear the current message so the screen looks a little less cluttered
                 curMsg = ""
             drawGame()
-            # Free all the memory we can, and print some game info
+            # Free all the memory we can and print some game info
 
     thumby.display.fill(0)
     thumby.display.drawText("You died!", 0, 0, 1)
