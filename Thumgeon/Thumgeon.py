@@ -33,6 +33,8 @@ from gc import enable as gc_enable, collect as gc_collect
 freq(48_000_000)
 gc_enable()
 
+fontWidth = const(6) # 6 pixels per character
+
 
 # Sprite data for game objects
 
@@ -160,10 +162,9 @@ def getcharinputNew():
 
     return ' '
 
-curMsg = ""
-goldChr = "$" # Symbol for in-game currency or gold
-fontWidth = const(6) # 6 pixels per character
 
+goldChr = "$" # Symbol for in-game currency or gold
+curMsg  = "0"+goldChr
 lastHit = ""
 
 def addhp(n):
@@ -175,6 +176,9 @@ def addmp(n):
     player.mp = player.mp + n
     if(player.mp > player.maxmp):
         player.mp = player.maxmp
+
+def addgp():
+    player.gp = player.gp + randint(1, 5) + floorNo
 
 class dungeonTile:
     def __init__(self, ttype, *data):
@@ -190,14 +194,14 @@ class dungeonTile:
         global exitSpawned
         if(self.tiletype == 1):
             # Tile is a block
-            curMsg = "a wall."
+            curMsg = "a wall"
 
         elif(self.tiletype == 2):
             # Tile is a door
             if(len(self.tiledata) == 0):
                 curMsg = "broken!"
             else:
-                curMsg = "entered."
+                curMsg = "entered"
                 global currentRoom
                 global player
                 currentRoom.getTile(player.tilex, player.tiley).tiletype = 0
@@ -223,7 +227,7 @@ class dungeonTile:
         elif(self.tiletype == 4):
             # Tile is a sign
             if(len(self.tiledata) == 0):
-                curMsg = "nothing."
+                curMsg = "nothing"
             else:
                 # Draw the sign's text
                 thumby.display.fill(0)
@@ -272,7 +276,7 @@ class dungeonTile:
                     # Monster is dead
                     self.tiledata.clear()
                     self.tiletype = 0
-                    player.gp = player.gp + randint(1, 5) + floorNo
+                    addgp()
             else:
                 # Attack with held item
                 if(player.mp >= manacost(player.inventory[player.helditem])):
@@ -285,7 +289,7 @@ class dungeonTile:
                         # Monster is dead
                         self.tiledata.clear()
                         self.tiletype = 0
-                        player.gp = player.gp + randint(1, 5) + floorNo
+                        addgp()
                     if(player.inventory[player.helditem] == "bsc lch" or player.inventory[player.helditem] == "adv lch" or player.inventory[player.helditem] == "ult lch"):
                         # Leech spell, add damage to health
                         addhp(dmg)
@@ -313,7 +317,7 @@ class dungeonTile:
                         # Monster is dead
                         self.tiledata.clear()
                         self.tiletype = 0
-                        player.gp = player.gp + randint(1, 5) + floorNo
+                        addgp()
 
         elif(self.tiletype == 9):
             # Shop tile, open shop inventory
@@ -440,9 +444,9 @@ class dungeonTile:
                         # Monster is dead
                         currentRoom.getTile(x, y).tiledata.clear()
                         currentRoom.getTile(x, y).tiletype = 0
-                        player.gp = player.gp + randint(1, 5) + floorNo
+                        addgp()
                 else:
-                    curMsg = "missed."
+                    curMsg = "missed"
 
             elif(itemtile(player.inventory[player.helditem]).tiledata[0] == 7):
                 # Held item is a spell, try casting it
@@ -480,7 +484,7 @@ class dungeonTile:
                             # Monster is dead
                             currentRoom.getTile(x, y).tiledata.clear()
                             currentRoom.getTile(x, y).tiletype = 0
-                            player.gp = player.gp + randint(1, 5) + floorNo
+                            addgp()
 
                         if(player.inventory[player.helditem] == "bsc cnfs"):
                             currentRoom.getTile(x, y).tiledata[2] = currentRoom.getTile(x, y).tiledata[2] + 3
@@ -493,7 +497,7 @@ class dungeonTile:
                             # Leech spell, add damage to health
                             addhp(dmg)
                     elif(player.inventory[player.helditem] != "bsc tlpt" and player.inventory[player.helditem] != "adv tlpt" and player.inventory[player.helditem] == "ult tlpt"):
-                        curMsg = "missed."
+                        curMsg = "missed"
                     if(player.helditem != -1 and player.inventory[player.helditem] == "bsc tlpt"):
                         currentRoom.getTile(player.tilex, player.tiley).tiletype = 0
                         if(x - player.tilex < 0):
@@ -570,7 +574,7 @@ class dungeonTile:
                     curMsg = "no mana!"
             elif(player.helditem != -1 and itemtile(player.inventory[player.helditem]).tiledata[0] == 2):
                 # Held item is a potion, drink it
-                curMsg = "yuck."
+                curMsg = "yuck!"
                 if(player.inventory[player.helditem] == "sml hpot"):
                     addhp(5)
                 elif(player.inventory[player.helditem] == "sml mpot"):
@@ -924,7 +928,7 @@ class dungeonRoom:
 
                 elif(tile.tiletype == 5):
                     # The player
-                    thumby.display.drawText('@', x*8, y*8, 1)
+                    thumby.display.drawText("@", (x*8)+1, (y*8)+1, 1)
 
                 elif(tile.tiletype == 6):
                     # Chest tile
@@ -937,9 +941,9 @@ class dungeonRoom:
                 elif(tile.tiletype == 8):
                     # Monster tile
                     if(ticks_ms() % 1000 > 500):
-                        thumby.display.blit(monsterSprites[int(tile.tiledata[0])], x*8, y*8, 8, 8, -1, 0, 0)
+                        thumby.display.blit(monsterSprites[int(tile.tiledata[0])], x*8, y*8, 8, 8, 0, 0, 0)
                     else:
-                        thumby.display.blit(monsterSprites[int(tile.tiledata[0])], x*8, y*8-1, 8, 8, -1, 0, 0)
+                        thumby.display.blit(monsterSprites[int(tile.tiledata[0])], x*8, y*8-1, 8, 8, 0, 0, 0)
                 if(self.hasShop):
                     thumby.display.blit(shopSpr, 16, 8, 16, 16, -1, 0, 0)
 
@@ -1334,26 +1338,16 @@ def updateMonsters():
 
 # Draw title screen
 thumby.display.fill(0)
-thumby.display.drawText("Thumgeon", 11, 0, 1)
-thumby.display.drawText("@", 32, 16, 1)
+thumby.display.drawText("Thumgeon", 12, 0, 1)
+thumby.display.drawText("@", 33, 17, 1)
 thumby.display.update()
 getcharinputNew()
-while(swAstate == 1 or swBstate == 1):
-    if(ticks_ms() % 1000 < 500):
-        thumby.display.drawFilledRectangle(0, 32, 72, 8, 0)
-        thumby.display.drawText("Press A/B", 9, 32, 1)
-    else:
-        thumby.display.drawFilledRectangle(0, 32, 72, 8, 1)
-        thumby.display.drawText("Press A/B", 9, 32, 0)
-    thumby.display.update()
-    getcharinputNew()
-    pass
 while(swAstate == 0 and swBstate == 0):
     if(ticks_ms() % 1000 < 500):
-        thumby.display.drawFilledRectangle(0, 32, 72, 8, 0)
+        thumby.display.drawFilledRectangle(0, 31, 72, 9, 0)
         thumby.display.drawText("Press A/B", 9, 32, 1)
     else:
-        thumby.display.drawFilledRectangle(0, 32, 72, 8, 1)
+        thumby.display.drawFilledRectangle(0, 31, 72, 9, 1)
         thumby.display.drawText("Press A/B", 9, 32, 0)
     thumby.display.update()
     getcharinputNew()
@@ -1509,7 +1503,7 @@ while(True):
                                 player.pantsitem = selpos
                             else:
                                 player.helditem = selpos
-                            curMsg = "eqp'd."
+                            curMsg = "eqp'd"
                             updateMonsters()
                             if(turnCounter % 4 == 0):
                                 turnCounter = 0
@@ -1604,17 +1598,17 @@ while(True):
                     thumby.display.drawText(str(player.maxwt), 56, 0, 1)
                     # Highlight the equipped item(s)
                     if(player.helditem == selpos or player.pantsitem == selpos or player.shirtitem == selpos):
-                        thumby.display.drawFilledRectangle(0, 8, len(l1) * 8, 8, 1)
+                        thumby.display.drawFilledRectangle(0, 8, len(l1)*fontWidth, 8, 1)
                         thumby.display.drawText(l1, 0, 8, 0)
                     else:
                         thumby.display.drawText(l1, 0, 8, 1)
                     if(player.helditem == selpos+1 or player.pantsitem == selpos+1 or player.shirtitem == selpos+1):
-                        thumby.display.drawFilledRectangle(0, 16, len(l2)*8, 8, 1)
+                        thumby.display.drawFilledRectangle(0, 16, len(l2)*fontWidth, 8, 1)
                         thumby.display.drawText(l2, 0, 16, 0)
                     else:
                         thumby.display.drawText(l2, 0, 16, 1)
                     if(player.helditem == selpos+2 or player.pantsitem == selpos+2 or player.shirtitem == selpos+2):
-                        thumby.display.drawFilledRectangle(0, 24, len(l3)*8, 8, 1)
+                        thumby.display.drawFilledRectangle(0, 24, len(l3)*fontWidth, 8, 1)
                         thumby.display.drawText(l3, 0, 24, 0)
                     else:
                         thumby.display.drawText(l3, 0, 24, 1)
@@ -1641,7 +1635,6 @@ while(True):
     thumby.display.drawText("floor "+str(floorNo), 0, 32, 1)
     thumby.display.update()
 
-    curMsg = ""
     currentRoom.tiles.clear()
     gc_collect()
 
@@ -1673,6 +1666,7 @@ while(True):
     if(selpos == 0):
         del currentRoom
         del player
+        curMsg = "0"+goldChr
         gc_collect()
     else:
         thumby.reset() # Exit game to main menu
