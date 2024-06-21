@@ -1369,7 +1369,7 @@ while(True):
     # Make the starting room
     currentRoom = dungeonRoom()
     currentRoom.tiles[2*9+2] = dungeonTile(4)
-    currentRoom.tiles[2*9+2].tiledata = bytes("Welcome!\n\nB to act\nA for inv\n - have fun!", 'ascii')
+    currentRoom.tiles[2*9+2].tiledata = bytes("Welcome!\n\nA to act\nB for inv\n - have fun!", 'ascii')
     generateRoom(currentRoom)
     ensureExit(currentRoom)
 
@@ -1641,6 +1641,7 @@ while(True):
     thumby.display.drawText("floor "+str(floorNo), 0, 32, 1)
     thumby.display.update()
 
+    curMsg = ""
     currentRoom.tiles.clear()
     gc_collect()
 
