@@ -66,6 +66,9 @@ monsterSprites = (blobSpr, spiritSpr, arachSpr, skeleSpr, wizardSpr, tempestSpr)
 shopSpr = bytes([128,228,106,210,64,254,72,254,64,92,98,92,64,126,202,132,255,
     234,245,234,245,234,229,48,174,249,63,249,174,48,224,255])
 
+# Icons for HUD
+hpSpr = bytes([30,62,120,62,30])
+mpSpr = bytes([72,108,62,27,9])
 
 signMessages = (
     bytes("I wonder\nif anyone\nwill see\nthis...?", 'ascii'),
@@ -164,7 +167,7 @@ def getcharinputNew():
 
 
 goldChr = "$" # Symbol for in-game currency or gold
-curMsg  = "0"+goldChr
+curMsg  = goldChr+"0"
 lastHit = ""
 
 def addhp(n):
@@ -179,6 +182,8 @@ def addmp(n):
 
 def addgp():
     player.gp = player.gp + randint(1, 5) + floorNo
+    if(player.gp > 999):
+        player.gp = 999
 
 class dungeonTile:
     def __init__(self, ttype, *data):
@@ -247,7 +252,7 @@ class dungeonTile:
             # Tile is a chest
             chestGold = randint(1, 15)
             player.gp += chestGold
-            curMsg = "got "+str(chestGold)+goldChr+"!"
+            curMsg = "got "+goldChr+str(chestGold)+"!"
             self.tiledata.clear()
             self.tiletype = 0
 
@@ -330,7 +335,7 @@ class dungeonTile:
                     if(len(player.inventory) > 0):
                         selpos = min(selpos, len(player.inventory)-1)
                         thumby.display.drawText(player.inventory[selpos], 0, 8, 1)
-                        thumby.display.drawText(str(itemprice(player.inventory[selpos])[1]) + goldChr, 0, 16, 1)
+                        thumby.display.drawText(str(itemprice(player.inventory[selpos])[1])+goldChr, 0, 16, 1)
                     if(actpos == 0):
                         thumby.display.drawFilledRectangle(0, 0, 24, 8, 1)
                         thumby.display.drawText("inv", 0, 0, 0)
@@ -1254,17 +1259,27 @@ def drawGame():
     thumby.display.fill(0)
     currentRoom.drawRoom()
 
-    hpHUD=str(player.hp)+"H"
+    hpHUD=" "+str(player.hp)
     hpHUDWidth=len(hpHUD)*fontWidth
     thumby.display.drawFilledRectangle(1, 1, hpHUDWidth, 8, 1)
     thumby.display.drawFilledRectangle(0, 0, hpHUDWidth, 8, 0)
     thumby.display.drawText(hpHUD, 0, 0, 1)
+    # thumby.display.blit(hpSpr,hpHUDWidth-6,0,5,8,-1,0,0)
+    thumby.display.blit(hpSpr,0,0,5,8,-1,0,0)
 
-    mpHUD=str(player.mp)+"M"
+
+    mpHUD=str(player.mp)+" "
     mpHUDWidth=len(mpHUD)*fontWidth
     thumby.display.drawFilledRectangle(71-mpHUDWidth, 1, 32, 8, 1)
     thumby.display.drawFilledRectangle(72-mpHUDWidth, 0, 32, 8, 0)
     thumby.display.drawText(mpHUD, 73-mpHUDWidth, 0, 1)
+    thumby.display.blit(mpSpr,67,0,5,8,-1,0,0)
+
+    floorHUD=str(floorNo)+"F"
+    floorHUDWidth=len(floorHUD)*fontWidth
+    thumby.display.drawFilledRectangle(71-floorHUDWidth, 31, 32, 9, 1)
+    thumby.display.drawFilledRectangle(72-floorHUDWidth, 32, 32, 8, 0)
+    thumby.display.drawText(floorHUD, 73-floorHUDWidth, 33, 1)
 
     if(curMsg != ""):
         # Default 'Msg' will show the Player's gold pieces
@@ -1272,12 +1287,6 @@ def drawGame():
         thumby.display.drawFilledRectangle(0, 31, curMsgWidth+1, 9, 1)
         thumby.display.drawFilledRectangle(0, 32, curMsgWidth, 8, 0)
         thumby.display.drawText(curMsg, 0, 33, 1)
-
-    floorHUD=str(floorNo)+"F"
-    floorHUDWidth=len(floorHUD)*fontWidth
-    thumby.display.drawFilledRectangle(71-floorHUDWidth, 31, 32, 9, 1)
-    thumby.display.drawFilledRectangle(72-floorHUDWidth, 32, 32, 8, 0)
-    thumby.display.drawText(floorHUD, 73-floorHUDWidth, 33, 1)
 
     thumby.display.update()
 
@@ -1392,7 +1401,7 @@ while(True):
                     currentRoom.getTile(player.tilex, player.tiley).tiletype = 0
                     player.tiley = player.tiley-1
                     currentRoom.getTile(player.tilex, player.tiley).tiletype = 5
-                curMsg = str(player.gp)+goldChr
+                curMsg = goldChr+str(player.gp)
                 updateMonsters()
                 if(turnCounter % 4 == 0):
                     turnCounter = 0
@@ -1404,7 +1413,7 @@ while(True):
                     currentRoom.getTile(player.tilex, player.tiley).tiletype = 0
                     player.tiley = player.tiley+1
                     currentRoom.getTile(player.tilex, player.tiley).tiletype = 5
-                curMsg = str(player.gp)+goldChr
+                curMsg = goldChr+str(player.gp)
                 updateMonsters()
                 if(turnCounter % 4 == 0):
                     turnCounter = 0
@@ -1416,7 +1425,7 @@ while(True):
                     currentRoom.getTile(player.tilex, player.tiley).tiletype = 0
                     player.tilex = player.tilex-1
                     currentRoom.getTile(player.tilex, player.tiley).tiletype = 5
-                curMsg = str(player.gp)+goldChr
+                curMsg = goldChr+str(player.gp)
                 updateMonsters()
                 if(turnCounter % 4 == 0):
                     turnCounter = 0
@@ -1428,7 +1437,7 @@ while(True):
                     currentRoom.getTile(player.tilex, player.tiley).tiletype = 0
                     player.tilex = player.tilex+1
                     currentRoom.getTile(player.tilex, player.tiley).tiletype = 5
-                curMsg = str(player.gp)+goldChr
+                curMsg = goldChr+str(player.gp)
                 updateMonsters()
                 if(turnCounter % 4 == 0):
                     turnCounter = 0
@@ -1673,7 +1682,7 @@ while(True):
     if(selpos == 0):
         del currentRoom
         del player
-        curMsg = "0"+goldChr
+        curMsg = goldChr+"0"
         gc_collect()
     else:
         thumby.reset() # Exit game to main menu
