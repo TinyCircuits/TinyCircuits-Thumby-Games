@@ -1262,33 +1262,30 @@ def drawGame():
     thumby.display.fill(0)
     currentRoom.drawRoom()
 
-    hpHUD=" "+str(player.hp)
-    hpHUDWidth=len(hpHUD)*fontWidth
-    thumby.display.drawFilledRectangle(1, 1, hpHUDWidth, 8, 1)
+    hpHUDWidth=(len(str(player.hp))+1)*fontWidth
+    thumby.display.drawRectangle(1, 1, hpHUDWidth, 8, 1)
     thumby.display.drawFilledRectangle(0, 0, hpHUDWidth, 8, 0)
-    thumby.display.drawText(hpHUD, 0, 0, 1)
-    # thumby.display.blit(hpSpr,hpHUDWidth-6,0,5,8,-1,0,0)
+    thumby.display.drawText(str(player.hp), 6, 0, 1)
     thumby.display.blit(hpSpr,0,0,5,8,-1,0,0)
 
-
-    mpHUD=str(player.mp)+" "
-    mpHUDWidth=len(mpHUD)*fontWidth
-    thumby.display.drawFilledRectangle(71-mpHUDWidth, 1, 32, 8, 1)
+    mpHUDWidth=(len(str(player.mp))+1)*fontWidth
+    thumby.display.drawRectangle(71-mpHUDWidth, 1, 32, 8, 1)
     thumby.display.drawFilledRectangle(72-mpHUDWidth, 0, 32, 8, 0)
-    thumby.display.drawText(mpHUD, 73-mpHUDWidth, 0, 1)
+    thumby.display.drawText(str(player.mp), 73-mpHUDWidth, 0, 1)
     thumby.display.blit(mpSpr,67,0,5,8,-1,0,0)
 
     floorHUD=str(floorNo)+"F"
     floorHUDWidth=len(floorHUD)*fontWidth
-    thumby.display.drawFilledRectangle(71-floorHUDWidth, 31, 32, 9, 1)
+    thumby.display.drawRectangle(71-floorHUDWidth, 31, 32, 9, 1)
     thumby.display.drawFilledRectangle(72-floorHUDWidth, 32, 32, 8, 0)
     thumby.display.drawText(floorHUD, 73-floorHUDWidth, 33, 1)
 
     if(curMsg == ""):
         # Default 'Msg' will show the Player's gold pieces
         curMsg = goldChr+str(player.gp)
+
     curMsgWidth=len(curMsg)*fontWidth
-    thumby.display.drawFilledRectangle(0, 31, curMsgWidth+1, 9, 1)
+    thumby.display.drawRectangle(0, 31, curMsgWidth+1, 9, 1)
     thumby.display.drawFilledRectangle(0, 32, curMsgWidth, 8, 0)
     thumby.display.drawText(curMsg, 0, 33, 1)
 
