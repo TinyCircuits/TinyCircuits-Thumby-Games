@@ -167,7 +167,7 @@ def getcharinputNew():
 
 
 goldChr = "$" # Symbol for in-game currency or gold
-curMsg  = goldChr+"0"
+curMsg = ""
 lastHit = ""
 
 def addhp(n):
@@ -199,14 +199,14 @@ class dungeonTile:
         global exitSpawned
         if(self.tiletype == 1):
             # Tile is a block
-            curMsg = "a wall"
+            curMsg = "a wall."
 
         elif(self.tiletype == 2):
             # Tile is a door
             if(len(self.tiledata) == 0):
-                curMsg = "broken!"
+                curMsg = "ERR!"
             else:
-                curMsg = "entered"
+                curMsg = "" # entered
                 global currentRoom
                 global player
                 currentRoom.getTile(player.tilex, player.tiley).tiletype = 0
@@ -232,7 +232,7 @@ class dungeonTile:
         elif(self.tiletype == 4):
             # Tile is a sign
             if(len(self.tiledata) == 0):
-                curMsg = "nothing"
+                curMsg = "nothing."
             else:
                 # Draw the sign's text
                 thumby.display.fill(0)
@@ -329,13 +329,14 @@ class dungeonTile:
             actpos = 0
             selpos = 0
             inventory = 0
+            curMsg = ""
             while(swAstate != 1):
                 thumby.display.fill(0)
                 if(inventory == 0):
                     if(len(player.inventory) > 0):
                         selpos = min(selpos, len(player.inventory)-1)
                         thumby.display.drawText(player.inventory[selpos], 0, 8, 1)
-                        thumby.display.drawText(str(itemprice(player.inventory[selpos])[1])+goldChr, 0, 16, 1)
+                        thumby.display.drawText(goldChr+str(itemprice(player.inventory[selpos])[1]), 0, 16, 1)
                     if(actpos == 0):
                         thumby.display.drawFilledRectangle(0, 0, 24, 8, 1)
                         thumby.display.drawText("inv", 0, 0, 0)
@@ -348,7 +349,7 @@ class dungeonTile:
                     if(len(currentRoom.shopInv) > 0):
                         selpos = min(selpos, len(currentRoom.shopInv)-1)
                         thumby.display.drawText(currentRoom.shopInv[selpos], 0, 8, 1)
-                        thumby.display.drawText(str(itemprice(currentRoom.shopInv[selpos])[0])+goldChr, 0, 16, 1)
+                        thumby.display.drawText(goldChr+str(itemprice(currentRoom.shopInv[selpos])[0]), 0, 16, 1)
                     if(actpos == 0):
                         thumby.display.drawFilledRectangle(0, 0, 32, 8, 1)
                         thumby.display.drawText("shop", 0, 0, 0)
@@ -357,7 +358,7 @@ class dungeonTile:
                         thumby.display.drawText("shop", 0, 0, 1)
                         thumby.display.drawFilledRectangle(40, 0, 24, 8, 1)
                         thumby.display.drawText("buy", 40, 0, 0)
-                thumby.display.drawText(str(player.gp)+goldChr, 64-len(str(player.gp))*fontWidth, 32, 1)
+                thumby.display.drawText(goldChr+str(player.gp), 64-len(str(player.gp))*fontWidth, 32, 1)
                 thumby.display.update()
                 while(getcharinputNew() == ' '):
                     pass
@@ -451,7 +452,7 @@ class dungeonTile:
                         currentRoom.getTile(x, y).tiletype = 0
                         addgp()
                 else:
-                    curMsg = "missed"
+                    curMsg = "missed."
 
             elif(itemtile(player.inventory[player.helditem]).tiledata[0] == 7):
                 # Held item is a spell, try casting it
@@ -502,7 +503,7 @@ class dungeonTile:
                             # Leech spell, add damage to health
                             addhp(dmg)
                     elif(player.inventory[player.helditem] != "bsc tlpt" and player.inventory[player.helditem] != "adv tlpt" and player.inventory[player.helditem] == "ult tlpt"):
-                        curMsg = "missed"
+                        curMsg = "missed."
                     if(player.helditem != -1 and player.inventory[player.helditem] == "bsc tlpt"):
                         currentRoom.getTile(player.tilex, player.tiley).tiletype = 0
                         if(x - player.tilex < 0):
@@ -1253,9 +1254,11 @@ def ensureExit(room):
         room.getTile(pos[0], pos[1]).tiletype = 3
         exitSpawned = True
 
+
 # Draw the entire gamestate, including Heads-Up-Display (HUD)
 def drawGame():
     global display
+    global curMsg
     thumby.display.fill(0)
     currentRoom.drawRoom()
 
@@ -1281,14 +1284,16 @@ def drawGame():
     thumby.display.drawFilledRectangle(72-floorHUDWidth, 32, 32, 8, 0)
     thumby.display.drawText(floorHUD, 73-floorHUDWidth, 33, 1)
 
-    if(curMsg != ""):
+    if(curMsg == ""):
         # Default 'Msg' will show the Player's gold pieces
-        curMsgWidth=len(curMsg)*fontWidth
-        thumby.display.drawFilledRectangle(0, 31, curMsgWidth+1, 9, 1)
-        thumby.display.drawFilledRectangle(0, 32, curMsgWidth, 8, 0)
-        thumby.display.drawText(curMsg, 0, 33, 1)
+        curMsg = goldChr+str(player.gp)
+    curMsgWidth=len(curMsg)*fontWidth
+    thumby.display.drawFilledRectangle(0, 31, curMsgWidth+1, 9, 1)
+    thumby.display.drawFilledRectangle(0, 32, curMsgWidth, 8, 0)
+    thumby.display.drawText(curMsg, 0, 33, 1)
 
     thumby.display.update()
+
 
 def updateMonsters():
     for y in range(5):
@@ -1401,7 +1406,7 @@ while(True):
                     currentRoom.getTile(player.tilex, player.tiley).tiletype = 0
                     player.tiley = player.tiley-1
                     currentRoom.getTile(player.tilex, player.tiley).tiletype = 5
-                curMsg = goldChr+str(player.gp)
+                curMsg = ""
                 updateMonsters()
                 if(turnCounter % 4 == 0):
                     turnCounter = 0
@@ -1413,7 +1418,7 @@ while(True):
                     currentRoom.getTile(player.tilex, player.tiley).tiletype = 0
                     player.tiley = player.tiley+1
                     currentRoom.getTile(player.tilex, player.tiley).tiletype = 5
-                curMsg = goldChr+str(player.gp)
+                curMsg = ""
                 updateMonsters()
                 if(turnCounter % 4 == 0):
                     turnCounter = 0
@@ -1425,7 +1430,7 @@ while(True):
                     currentRoom.getTile(player.tilex, player.tiley).tiletype = 0
                     player.tilex = player.tilex-1
                     currentRoom.getTile(player.tilex, player.tiley).tiletype = 5
-                curMsg = goldChr+str(player.gp)
+                curMsg = ""
                 updateMonsters()
                 if(turnCounter % 4 == 0):
                     turnCounter = 0
@@ -1437,13 +1442,14 @@ while(True):
                     currentRoom.getTile(player.tilex, player.tiley).tiletype = 0
                     player.tilex = player.tilex+1
                     currentRoom.getTile(player.tilex, player.tiley).tiletype = 5
-                curMsg = goldChr+str(player.gp)
+                curMsg = ""
                 updateMonsters()
                 if(turnCounter % 4 == 0):
                     turnCounter = 0
                     addmp(1)
                 turnCounter = turnCounter + 1
-            # Handle action button
+
+            # Handle action 'A'-button
             elif(swBstate == 1):
                 curMsg = "act on?"
                 drawGame()
@@ -1484,7 +1490,7 @@ while(True):
                 elif(swBstate == 1):
                     curMsg = ""
 
-            # Handle inventory button
+            # Handle inventory 'B'-button
             elif(swAstate == 1):
                 selpos = 0
                 actpos = 1
@@ -1519,7 +1525,7 @@ while(True):
                                 player.pantsitem = selpos
                             else:
                                 player.helditem = selpos
-                            curMsg = "eqp'd"
+                            curMsg = "eqp'd."
                             updateMonsters()
                             if(turnCounter % 4 == 0):
                                 turnCounter = 0
@@ -1682,7 +1688,7 @@ while(True):
     if(selpos == 0):
         del currentRoom
         del player
-        curMsg = goldChr+"0"
+        curMsg = ""
         gc_collect()
     else:
         thumby.reset() # Exit game to main menu
