@@ -5,7 +5,7 @@
 # with aforementioned loot -- and stay alive!
 
 # Written by Mason Watmough for TinyCircuits.
-# Last edited XX-Jun-2024
+# Last edited 22-Jun-2024
 
 '''
     This program is free software: you can redistribute it and/or modify
@@ -33,6 +33,7 @@ from gc import enable as gc_enable, collect as gc_collect
 freq(48_000_000)
 gc_enable()
 
+thumby.display.setFPS(30)
 fontWidth = const(6) # 6 pixels per character
 
 
@@ -97,18 +98,12 @@ signMessages = (
 )
 
 
-SW_L = 3
-SW_R = 5
-SW_U = 4
-SW_D = 6
-SW_A = 24
-SW_B = 27
-swL = Pin(SW_L, Pin.IN, Pin.PULL_UP)
-swR = Pin(SW_R, Pin.IN, Pin.PULL_UP)
-swU = Pin(SW_U, Pin.IN, Pin.PULL_UP)
-swD = Pin(SW_D, Pin.IN, Pin.PULL_UP)
-swA = Pin(SW_A, Pin.IN, Pin.PULL_UP)
-swB = Pin(SW_B, Pin.IN, Pin.PULL_UP)
+swL = Pin(3, Pin.IN, Pin.PULL_UP)
+swR = Pin(5, Pin.IN, Pin.PULL_UP)
+swU = Pin(4, Pin.IN, Pin.PULL_UP)
+swD = Pin(6, Pin.IN, Pin.PULL_UP)
+swA = Pin(24, Pin.IN, Pin.PULL_UP)
+swB = Pin(27, Pin.IN, Pin.PULL_UP)
 
 swLstate=1
 swRstate=1
@@ -596,7 +591,7 @@ class dungeonTile:
 
             elif(player.helditem != -1 and player.inventory[player.helditem] == "food"):
                 # Held item is food, eat it
-                curMsg = "ate food"
+                curMsg = "yum!"
                 player.inventory.pop(player.helditem)
                 player.helditem = -1
                 player.wt = player.wt - 1
@@ -894,12 +889,13 @@ def itemwt(itemName):
     }
     return switcher.get(itemName, 0)
 
+
 class dungeonRoom:
-    # Each dungeon room is exactly 9*5=45 tiles
     def __init__(self):
         self.tiles = []
         self.shopInv = []
         self.hasShop = False
+        # Each dungeon room is exactly 9*5=45 tiles
         for i in range(45):
             self.tiles.append(dungeonTile(0))
 
@@ -956,14 +952,15 @@ class dungeonRoom:
     def getTile(self, tx, ty):
         return self.tiles[ty*9+tx]
 
+
 class playerobj:
-    def __init__(self, newname):
+    def __init__(self):
         self.hp = 20
         self.maxhp = 20
         self.armor = 0
         self.mp = 15
         self.maxmp = 15
-        self.name = newname
+        # self.name = newname
         self.tilex = 4
         self.tiley = 2
         self.wt = itemwt("basicswd") + itemwt("pants") + itemwt("sml hpot") + itemwt("sml hpot") + itemwt("bsc cnfs")
@@ -972,12 +969,9 @@ class playerobj:
         self.helditem = -1
         self.shirtitem = -1
         self.pantsitem = -1
-        self.facing = 0
+        self.facing = 0 # 0 up, 1 right, 2 down, 3 left.
         self.gp = 0
-        # 0 is up
-        # 1 is right
-        # 2 is down
-        # 3 is left
+
 
 random_seed()
 
@@ -1386,7 +1380,7 @@ while(True):
     ensureExit(currentRoom)
 
     # Make the player
-    player = playerobj("testname")
+    player = playerobj()
 
     while(player.hp > 0):
 
