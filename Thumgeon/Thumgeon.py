@@ -915,39 +915,32 @@ class dungeonRoom:
                 if(tile.tiletype == 1):
                     # Block tile
                     thumby.display.blit(blockSpr, x*8, y*8, 8, 8, -1, 0, 0)
-
                 elif(tile.tiletype == 2):
                     # Door tile
                     thumby.display.blit(doorSpr, x*8, y*8, 8, 8, -1, 0, 0)
-
                 elif(tile.tiletype == 3):
                     # Stairs tile
                     thumby.display.blit(stairSpr, x*8, y*8, 8, 8, -1, 0, 0)
-
                 elif(tile.tiletype == 4):
                     # Sign tile
                     thumby.display.blit(signSpr, x*8, y*8, 8, 8, -1, 0, 0)
-
                 elif(tile.tiletype == 5):
                     # The player
                     thumby.display.drawText("@", (x*8)+1, (y*8)+1, 1)
-
                 elif(tile.tiletype == 6):
                     # Chest tile
                     thumby.display.blit(chestSpr, x*8, y*8, 8, 8, -1, 0, 0)
-
                 elif(tile.tiletype == 7):
                     # item tile
                     thumby.display.blit(itemSprites[int(tile.tiledata[0])], x*8, y*8, 8, 8, -1, 0, 0)
-
                 elif(tile.tiletype == 8):
                     # Monster tile
                     if(ticks_ms() % 1000 > 500):
                         thumby.display.blit(monsterSprites[int(tile.tiledata[0])], x*8, y*8, 8, 8, 0, 0, 0)
                     else:
                         thumby.display.blit(monsterSprites[int(tile.tiledata[0])], x*8, y*8-1, 8, 8, 0, 0, 0)
-                if(self.hasShop):
-                    thumby.display.blit(shopSpr, 16, 8, 16, 16, -1, 0, 0)
+        if(self.hasShop):
+            thumby.display.blit(shopSpr, 16, 8, 16, 16, -1, 0, 0)
 
     def getTile(self, tx, ty):
         return self.tiles[ty*9+tx]
@@ -1605,10 +1598,8 @@ while(True):
 
                     # Draw everything
                     thumby.display.fill(0)
-                    thumby.display.drawText("w", 24, 0, 1)
-                    thumby.display.drawText(str(player.wt), 32, 0, 1)
-                    thumby.display.drawText("/", 48, 0, 1)
-                    thumby.display.drawText(str(player.maxwt), 56, 0, 1)
+                    wtHUD=str(player.wt)+"/"+str(player.maxwt)+"wt"
+                    thumby.display.drawText(wtHUD, 73-(len(wtHUD)*fontWidth), 0, 1)
                     # Highlight the equipped item(s)
                     if(player.helditem == selpos or player.pantsitem == selpos or player.shirtitem == selpos):
                         thumby.display.drawFilledRectangle(0, 8, len(l1)*fontWidth, 8, 1)
