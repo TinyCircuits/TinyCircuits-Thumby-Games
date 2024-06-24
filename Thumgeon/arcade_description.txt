@@ -3,4 +3,5 @@ Thumgeon
 Explore an endless, tough-as-nails pseudorandom dungeon crawler. Collect items, potions, and weapons, kill monsters with aforementioned loot -- and stay alive!
 
 Author: Mason W.
-Version: 1.0
+Contributors: ace-dent, A.G.S, AyreGuitar, PresentFox, taco_pwr.
+Version: 2.0
