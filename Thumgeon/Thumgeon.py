@@ -1345,18 +1345,11 @@ def updateMonsters():
 thumby.display.fill(0)
 thumby.display.drawText("Thumgeon", 12, 0, 1)
 thumby.display.drawText("@", 33, 17, 1)
-thumby.display.update()
-getcharinputNew()
-while(swAstate == 0 and swBstate == 0):
-    if(ticks_ms() % 1000 < 500):
-        thumby.display.drawFilledRectangle(0, 31, 72, 9, 0)
-        thumby.display.drawText("Press A/B", 9, 32, 1)
-    else:
-        thumby.display.drawFilledRectangle(0, 31, 72, 9, 1)
-        thumby.display.drawText("Press A/B", 9, 32, 0)
+while(not thumby.actionJustPressed()):
+    color = ticks_ms() % 1000 < 500
+    thumby.display.drawFilledRectangle(0, 31, 72, 9, 1-color)
+    thumby.display.drawText("Press A/B", 9, 32, color)
     thumby.display.update()
-    getcharinputNew()
-    pass
 
 
 # Main game loop
@@ -1645,10 +1638,10 @@ while(True):
     while(getcharinputNew() == ' '):
         pass
 
-    selpos = 0
     while(swBstate == 1):
         getcharinputNew()
 
+    selpos = 0
     while(swBstate != 1):
         thumby.display.fill(0)
         thumby.display.drawText("Restart?", 0, 8, 1)
@@ -1662,9 +1655,9 @@ while(True):
             thumby.display.drawText("no", 40, 16, 0)
         thumby.display.update()
         getcharinputNew()
-        if(swLstate == 1):
+        if(thumby.buttonL.pressed()):
             selpos = 0
-        if(swRstate == 1):
+        if(thumby.buttonR.pressed()):
             selpos = 1
 
     if(selpos == 0):
