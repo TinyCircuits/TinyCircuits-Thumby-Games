@@ -1577,7 +1577,7 @@ while(True):
                     if(selpos >= len(player.inventory)):
                         selpos = len(player.inventory)-1
 
-                    # Only have 3 lines to use for showing items, anyway
+                    # Only 3 lines to use for showing items
                     l1 = ""
                     l2 = ""
                     l3 = ""
@@ -1619,10 +1619,10 @@ while(True):
                         thumby.display.drawText("eqp", 48, 32, 0)
                     thumby.display.update()
             else:
-                # Clear the current message so the screen looks a little less cluttered
+                # Clear the current message
                 curMsg = ""
             drawGame()
-            # Free all the memory we can and print some game info
+
 
     thumby.display.fill(0)
     thumby.display.drawText("You died!", 0, 0, 1)
@@ -1632,38 +1632,30 @@ while(True):
     thumby.display.drawText("floor "+str(floorNo), 0, 32, 1)
     thumby.display.update()
 
-    currentRoom.tiles.clear()
-    gc_collect()
-
-    while(getcharinputNew() == ' '):
+    while(not thumby.actionPressed()):
         pass
 
-    while(swBstate == 1):
-        getcharinputNew()
-
-    selpos = 0
-    while(swBstate != 1):
-        thumby.display.fill(0)
-        thumby.display.drawText("Restart?", 0, 8, 1)
-        if(selpos == 0):
-            thumby.display.drawFilledRectangle(0, 16, 24, 8, 1)
-            thumby.display.drawText("yes", 0, 16, 0)
-            thumby.display.drawText("no", 40, 16, 1)
-        else:
-            thumby.display.drawText("yes", 0, 16, 1)
-            thumby.display.drawFilledRectangle(40, 16, 16, 8, 1)
-            thumby.display.drawText("no", 40, 16, 0)
+    select = 0
+    thumby.display.fill(0)
+    thumby.display.drawText("Restart?", 0, 8, 1)
+    thumby.actionJustPressed() # Debounce
+    while(not thumby.actionJustPressed()):
+        thumby.display.drawFilledRectangle(0, 16, 24, 8, 1-select)
+        thumby.display.drawText("yes", 0, 16, select)
+        thumby.display.drawFilledRectangle(40, 16, 16, 8, select)
+        thumby.display.drawText("no", 40, 16, 1-select)
         thumby.display.update()
-        getcharinputNew()
         if(thumby.buttonL.pressed()):
-            selpos = 0
+            select = 0
         if(thumby.buttonR.pressed()):
-            selpos = 1
+            select = 1
 
-    if(selpos == 0):
-        del currentRoom
-        del player
-        curMsg = ""
-        gc_collect()
-    else:
+    # Free memory
+    del currentRoom
+    del player
+    curMsg = ""
+    gc_collect()
+
+    if(select == 1):
         thumby.reset() # Exit game to main menu
+    # Else: Restart game loop
