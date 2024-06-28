@@ -332,27 +332,19 @@ class dungeonTile:
                         selpos = min(selpos, len(player.inventory)-1)
                         thumby.display.drawText(player.inventory[selpos], 0, 8, 1)
                         thumby.display.drawText(goldChr+str(itemprice(player.inventory[selpos])[1]), 0, 16, 1)
-                    if(actpos == 0):
-                        thumby.display.drawFilledRectangle(0, 0, 24, 8, 1)
-                        thumby.display.drawText("inv", 0, 0, 0)
-                        thumby.display.drawText("sell", 32, 0, 1)
-                    else:
-                        thumby.display.drawText("inv", 0, 0, 1)
-                        thumby.display.drawFilledRectangle(32, 0, 32, 8, 1)
-                        thumby.display.drawText("sell", 32, 0, 0)
+                    thumby.display.drawFilledRectangle(0, 0, 24, 8, 1-actpos)
+                    thumby.display.drawText("inv", 0, 0, actpos)
+                    thumby.display.drawFilledRectangle(32, 0, 32, 8, actpos)
+                    thumby.display.drawText("sell", 32, 0, 1-actpos)
                 else:
                     if(len(currentRoom.shopInv) > 0):
                         selpos = min(selpos, len(currentRoom.shopInv)-1)
                         thumby.display.drawText(currentRoom.shopInv[selpos], 0, 8, 1)
                         thumby.display.drawText(goldChr+str(itemprice(currentRoom.shopInv[selpos])[0]), 0, 16, 1)
-                    if(actpos == 0):
-                        thumby.display.drawFilledRectangle(0, 0, 32, 8, 1)
-                        thumby.display.drawText("shop", 0, 0, 0)
-                        thumby.display.drawText("buy", 40, 0, 1)
-                    else:
-                        thumby.display.drawText("shop", 0, 0, 1)
-                        thumby.display.drawFilledRectangle(40, 0, 24, 8, 1)
-                        thumby.display.drawText("buy", 40, 0, 0)
+                    thumby.display.drawFilledRectangle(0, 0, 32, 8, 1-actpos)
+                    thumby.display.drawText("shop", 0, 0, actpos)
+                    thumby.display.drawFilledRectangle(40, 0, 24, 8, actpos)
+                    thumby.display.drawText("buy", 40, 0, 1-actpos)
                 thumby.display.drawText(goldChr+str(player.gp), 64-len(str(player.gp))*fontWidth, 32, 1)
                 thumby.display.update()
                 while(getcharinputNew() == ' '):
