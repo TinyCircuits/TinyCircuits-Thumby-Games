@@ -4,6 +4,12 @@ Created by @BBfiChe on Discord
 -------------------
 Updates:
 -------------------
+Update 1.0.2
+ - Added a brightness level changer
+ - Thumby starts the game at screen's max brightness
+ - Removed the ablility to turn off the flashlight as it was not very useful
+ - Removed flashlight symbol
+
 Update 1.0.1
  - Updated dark screen flashlight to appear off instead of on.
 
