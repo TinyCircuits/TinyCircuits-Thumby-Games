@@ -1,3 +1,14 @@
+NAME=Flashlight
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Flashlight/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Flashlight/Flashlight.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Flashlight/arcade_title_video.webm
+
+NAME=SlotMachine
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/SlotMachine/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/SlotMachine/SlotMachine.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/SlotMachine/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/SlotMachine/arcade_title_image.png
+
 NAME=Thumgeon
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Thumgeon/Thumgeon.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Thumgeon/arcade_description.txt
@@ -8,11 +19,6 @@ https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/MicroSquareRootCalc/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/MicroSquareRootCalc/thumby_emulator_screenshot.png
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/MicroSquareRootCalc/arcade_title_video.webm
-
-NAME=Flashlight
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Flashlight/arcade_description.txt
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Flashlight/Flashlight.py
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Flashlight/arcade_title_video.webm
 
 NAME=ChaosGame
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/ChaosGame/arcade_description.txt
