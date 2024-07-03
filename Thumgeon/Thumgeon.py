@@ -950,9 +950,9 @@ class playerobj:
         self.wt = itemwt("basicswd") + itemwt("pants") + itemwt("sml hpot") + itemwt("sml hpot") + itemwt("bsc cnfs")
         self.maxwt = 30
         self.inventory = ["basicswd", "pants", "sml hpot", "sml hpot", "bsc cnfs"]
-        self.helditem = -1
+        self.helditem = 0 # Pre-equip basicswd
         self.shirtitem = -1
-        self.pantsitem = -1
+        self.pantsitem = 1 # Pre-equip pants
         self.facing = 0 # 0 up, 1 right, 2 down, 3 left.
         self.gp = 0
 
@@ -1070,7 +1070,7 @@ def generateRoom(room):
         room.getTile(4, 2).tiledata = signMessages[randint(0, len(signMessages) - 1)]
 
     #Each room has a 10% chance of having a chest in it
-    if(randint(0, 0) == 0):
+    if(randint(0, 9) == 0):
         pos = getRandomFreePosition(room)
         room.getTile(pos[0], pos[1]).tiletype = 6
 
@@ -1194,8 +1194,8 @@ def generateRoom(room):
         room.getTile(pos[0], pos[1]).tiletype = item.tiletype
         room.getTile(pos[0], pos[1]).tiledata = item.tiledata.copy()
 
-    # Each room has a 50% chance of having a monster in it
-    if(randint(0, 1) == 0):
+    # Each room has a 40% chance of having a monster in it
+    if(randint(0, 4) < 2):
         pos = getRandomFreePosition(room)
         room.getTile(pos[0], pos[1]).tiletype = 8
         room.getTile(pos[0], pos[1]).tiledata.append(randint(0, len(monsterSprites) - 1))
@@ -1209,6 +1209,7 @@ def generateRoom(room):
         room.getTile(pos[0], pos[1]).tiledata.append(randint(0, len(monsterSprites) - 1))
         room.getTile(pos[0], pos[1]).tiledata.append(randint(10, 15) + 2 * floorNo)
         room.getTile(pos[0], pos[1]).tiledata.append(1)
+
 
 # Draw the entire gamestate, including Heads-Up-Display (HUD)
 def drawGame():
@@ -1236,7 +1237,7 @@ def drawGame():
     thumby.display.drawText(floorHUD, 73-floorHUDWidth, 33, 1)
 
     if(curMsg == ""):
-        # Default 'Msg' will show the Player's gold pieces
+        # Default will show the Player's gold pieces
         curMsg = goldChr+str(player.gp)
 
     curMsgWidth=len(curMsg)*fontWidth
