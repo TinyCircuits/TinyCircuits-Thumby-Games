@@ -219,9 +219,9 @@ class dungeonTile:
             gc_collect()
             currentRoom = dungeonRoom()
             generateRoom(currentRoom)
-            while(currentRoom.getTile(player.tilex, player.tiley).tiletype != 0):
-                player.tilex = randint(1, 7)
-                player.tiley = randint(1, 3)
+            if(currentRoom.getTile(player.tilex, player.tiley).tiletype != 0):
+                pos = getRandomFreePosition(currentRoom)
+                player.tilex, player.tiley = pos[0], pos[1]
 
         elif(self.tiletype == 4):
             # Tile is a sign
@@ -564,6 +564,7 @@ class dungeonTile:
                         addhp(8)
                 else:
                     curMsg = "no mana!"
+
             elif(player.helditem != -1 and itemtile(player.inventory[player.helditem]).tiledata[0] == 2):
                 # Held item is a potion, drink it
                 curMsg = "yuck!"
@@ -576,7 +577,6 @@ class dungeonTile:
                 elif(player.inventory[player.helditem] == "big mpot"):
                     addmp(8)
                 player.wt = player.wt - itemwt(player.inventory[player.helditem])
-
                 player.inventory.pop(player.helditem)
                 player.helditem = -1
 
@@ -962,9 +962,8 @@ random_seed()
 def getRandomFreePosition(room):
     px = randint(1, 7)
     py = randint(1, 3)
-
     # Check that tile is empty and there are no doors this could block
-    while(room.getTile(px, py).tiletype != 0 or ((px==4 and py==1) or (px==4 and py==3) or (px==1 and py==2) or (px==7 and py==2))):
+    while(room.getTile(px, py).tiletype != 0 or ((px==4 and (py==1 or py==3)) or (py==2 and (px==1 or px==7))) ):
         px = randint(1, 7)
         py = randint(1, 3)
     return [px, py]
@@ -1069,7 +1068,7 @@ def generateRoom(room):
         room.getTile(4, 2).tiletype = 4
         room.getTile(4, 2).tiledata = signMessages[randint(0, len(signMessages) - 1)]
 
-    #Each room has a 10% chance of having a chest in it
+    # Each room has a 10% chance of having a chest in it
     if(randint(0, 9) == 0):
         pos = getRandomFreePosition(room)
         room.getTile(pos[0], pos[1]).tiletype = 6
