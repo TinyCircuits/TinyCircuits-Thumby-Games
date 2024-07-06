@@ -5,7 +5,7 @@
 # with aforementioned loot -- and stay alive!
 
 # Written by Mason Watmough for TinyCircuits.
-# Last edited 22-Jun-2024
+# Last edited 06-Jul-2024
 
 '''
     This program is free software: you can redistribute it and/or modify
@@ -29,9 +29,9 @@ import thumby
 from time import ticks_ms
 from random import seed as random_seed, randint
 from gc import enable as gc_enable, collect as gc_collect
-
-freq(48_000_000)
 gc_enable()
+random_seed()
+freq(24_000_000)
 
 thumby.display.setFPS(30)
 fontWidth = const(6) # 6 pixels per character
@@ -613,6 +613,37 @@ class dungeonTile:
             curMsg = "???"
 
 
+weaponLevel = {
+    0: "brkn",
+    1: "basic",
+    2: "",
+    3: "good",
+    4: "ultra",
+    5: "epic"
+}
+potionLevel = {
+    0: "sml ",
+    1: "big "
+}
+spellLevel = {
+    0: "bsc ",
+    1: "adv ",
+    2: "ult "
+}
+spellType = {
+    0: "fblt",
+    1: "eblt",
+    2: "cnfs",
+    3: "lch",
+    4: "tlpt",
+    5: "heal"
+}
+
+# TODO: Refactor lists of items
+t1Items = ("brknswd", "basicswd", "brknbow", "basicbow", "sml hpot", "sml mpot", "food", "shirt", "pants", "bsc cnfs", "bsc fblt", "bsc eblt", "bsc tlpt", "bsc lch", "bsc heal")
+t2Items = ("swd", "bow", "goodswd", "goodbow", "big hpot", "big mpot", "hpup", "mpup", "adv cnfs", "adv fblt", "adv eblt", "adv tlpt", "adv lch", "adv heal")
+t3Items = ("epicswd", "ultraswd", "epicbow", "ultrabow", "ult cnfs", "ult fblt", "ult eblt", "ult tlpt", "ult lch", "ult heal")
+
 def manacost(itemName):
     items = {
         "bsc cnfs": 3,
@@ -767,7 +798,6 @@ def itemname(itemTile):
     elif(itemTile.tiledata[0] == 4):
         return "food"
     elif(itemTile.tiledata[0] == 5):
-
         return "pants"
     elif(itemTile.tiledata[0] == 6):
         return "shirt"
@@ -957,8 +987,6 @@ class playerobj:
         self.gp = 0
 
 
-random_seed()
-
 def getRandomFreePosition(room):
     px = randint(1, 7)
     py = randint(1, 3)
@@ -972,10 +1000,6 @@ floorNo = 1
 roomno = 0
 maxrooms = 12
 exitSpawned = False
-
-t1Items = ("brknswd", "basicswd", "brknbow", "basicbow", "sml hpot", "sml mpot", "food", "shirt", "pants", "bsc cnfs", "bsc fblt", "bsc eblt", "bsc tlpt", "bsc lch", "bsc heal")
-t2Items = ("swd", "bow", "goodswd", "goodbow", "big hpot", "big mpot", "hpup", "mpup", "adv cnfs", "adv fblt", "adv eblt", "adv tlpt", "adv lch", "adv heal")
-t3Items = ("epicswd", "ultraswd", "epicbow", "ultrabow", "ult cnfs", "ult fblt", "ult eblt", "ult tlpt", "ult lch", "ult heal")
 
 
 # Procedural generation of dungeon rooms
@@ -1046,7 +1070,6 @@ def generateRoom(room):
     # Place stairs to exit floor in the last room, at fixed position
     if(not exitSpawned):
         room.getTile(7, 3).tiletype = 3
-        print("Spawned exit") # DEBUG
         exitSpawned = True
 
     # Each room (except starting room) has a 10% chance of having a shopkeep
@@ -1073,123 +1096,53 @@ def generateRoom(room):
         pos = getRandomFreePosition(room)
         room.getTile(pos[0], pos[1]).tiletype = 6
 
-    if(randint(0, 2) == 0):
-    # Each room has a 33% chance of having a broken or basic-tier piece of loot in it
+    # Each room has a 35% chance of having a piece of loot in it
+    if(randint(0, 19) <  7):
         pos = getRandomFreePosition(room)
         item = dungeonTile(0)
-        sel = randint(0, 5)
-        if(sel == 0):
-            # Put a sword there
+        lootChance = randint(0, 99)
+        if(lootChance < 88):
+            # 88% is basic-tier loot
+            lootTier = 0
+            lootType = randint(0, 5)
+        elif(lootChance < 98):
+            # 10% is normal or good-tier loot
+            lootTier = 1
+            lootType = randint(0, 4)
+        else:
+            # 2% is epic or ultra-tier loot
+            lootTier = 2
+            lootType = randint(0, 2)
+        if(lootType == 0):
+            # Sword
+            item = itemtile(weaponLevel.get(randint(0,1)+(2*lootTier))+"swd")
+        elif(lootType == 1):
+            # Bow
+            item = itemtile(weaponLevel.get(randint(0,1)+(2*lootTier))+"bow")
+        elif(lootType == 2):
+            # Spell
+            item = itemtile(spellLevel.get(lootTier)+spellType.get(randint(0,5), "??? tome"))
+        elif(lootType == 3):
+            # Potion
             if(randint(0, 1) == 0):
-                item = itemtile("basicswd")
+                item = itemtile(potionLevel.get(lootTier)+"hpot")
             else:
-                item = itemtile("brknswd")
-        elif(sel == 1):
-            # Put a bow there
-            if(randint(0, 1) == 0):
-                item = itemtile("basicbow")
+                item = itemtile(potionLevel.get(lootTier)+"mpot")
+        elif(lootType == 4):
+            # Player stats booster
+            if(lootTier == 0):
+                if(randint(0, 1) == 0):
+                    item = itemtile("shirt")
+                else:
+                    item = itemtile("pants")
             else:
-                item = itemtile("brknbow")
-        elif(sel == 2):
-            # Put food there
+                if(randint(0, 1) == 0):
+                    item = itemtile("hpup")
+                else:
+                    item = itemtile("mpup")
+        else:
+            # Food
             item = itemtile("food")
-        elif(sel == 3):
-            # Put a spell there
-            spells = {
-                0: "bsc fblt",
-                1: "bsc eblt",
-                2: "bsc cnfs",
-                3: "bsc lch",
-                4: "bsc tlpt",
-                5: "bsc heal",
-            }
-            item = itemtile(spells.get(randint(0, 5), "??? tome"))
-        elif(sel == 4):
-            # Put a potion there
-            if(randint(0, 1) == 0):
-                item = itemtile("sml hpot")
-            else:
-                item = itemtile("sml mpot")
-        elif(sel == 5):
-            # Put some clothing there
-            if(randint(0, 1) == 0):
-                item = itemtile("shirt")
-            else:
-                item = itemtile("pants")
-        room.getTile(pos[0], pos[1]).tiletype = item.tiletype
-        room.getTile(pos[0], pos[1]).tiledata = item.tiledata.copy()
-
-    # Each room has a 5% chance of having a normal or good-tier piece of loot in it
-    if(randint(0, 19) == 0):
-        pos = getRandomFreePosition(room)
-        item = dungeonTile(0)
-        sel = randint(0, 4)
-        if(sel == 0):
-            # Put a sword there
-            if(randint(0, 1) == 0):
-                item = itemtile("goodswd")
-            else:
-                item = itemtile("swd")
-        elif(sel == 1):
-            # Put a bow there
-            if(randint(0, 1) == 0):
-                item = itemtile("goodbow")
-            else:
-                item = itemtile("bow")
-        elif(sel == 2):
-            # Put a spell there
-            spells = {
-                0: "adv fblt",
-                1: "adv eblt",
-                2: "adv cnfs",
-                3: "adv lch",
-                4: "adv tlpt",
-                5: "adv heal",
-            }
-            item = itemtile(spells.get(randint(0, 5), "??? tome"))
-        elif(sel == 3):
-            # Put a potion there
-            if(randint(0, 1) == 0):
-                item = itemtile("big hpot")
-            else:
-                item = itemtile("big mpot")
-        elif(sel == 4):
-            # put a hpup or mpup there
-            if(randint(0, 1) == 0):
-                item = itemtile("hpup")
-            else:
-                item = itemtile("mpup")
-        room.getTile(pos[0], pos[1]).tiletype = item.tiletype
-        room.getTile(pos[0], pos[1]).tiledata = item.tiledata.copy()
-
-    # Each room has a 1% chance of having an epic or ultra-tier piece of loot in it
-    if(randint(0, 99) == 0):
-        pos = getRandomFreePosition(room)
-        item = dungeonTile(0)
-        sel = randint(0, 2)
-        if(sel == 0):
-            # Put a sword there
-            if(randint(0, 1) == 0):
-                item = itemtile("ultraswd")
-            else:
-                item = itemtile("epicswd")
-        elif(sel == 1):
-            # Put a bow there
-            if(randint(0, 1) == 0):
-                item = itemtile("ultrabow")
-            else:
-                item = itemtile("epicbow")
-        elif(sel == 2):
-            # Put a spell there
-            spells = {
-                0: "ult fblt",
-                1: "ult eblt",
-                2: "ult cnfs",
-                3: "ult lch",
-                4: "ult tlpt",
-                5: "ult heal",
-            }
-            item = itemtile(spells.get(randint(0, 5), "??? tome"))
         room.getTile(pos[0], pos[1]).tiletype = item.tiletype
         room.getTile(pos[0], pos[1]).tiledata = item.tiledata.copy()
 
@@ -1249,7 +1202,7 @@ def drawGame():
 
 def updateTurn():
     global turnCounter
-    # Restore player's mana every fourth turn
+    # Restore the player's mana every fourth turn
     if(turnCounter % 4 == 0):
         turnCounter = 0
         addmp(1)
