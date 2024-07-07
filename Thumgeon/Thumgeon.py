@@ -1099,8 +1099,8 @@ def generateRoom(room):
         room.getTile(4, 2).tiletype = 4
         room.getTile(4, 2).tiledata = signMessages[randint(0, len(signMessages) - 1)]
 
-    # Each room has a 10% chance of having a chest in it
-    if(randint(0, 9) == 0):
+    # Each room has a 15% chance of having a chest in it
+    if(randint(0, 19) < 3):
         pos = getRandomFreePosition(room)
         room.getTile(pos[0], pos[1]).tiletype = 6
 
@@ -1154,21 +1154,21 @@ def generateRoom(room):
         room.getTile(pos[0], pos[1]).tiletype = item.tiletype
         room.getTile(pos[0], pos[1]).tiledata = item.tiledata.copy()
 
-    # Each room has a 40% chance of having a monster in it
-    if(randint(0, 4) < 2):
-        pos = getRandomFreePosition(room)
-        room.getTile(pos[0], pos[1]).tiletype = 8
-        room.getTile(pos[0], pos[1]).tiledata.append(randint(0, len(monsterSprites) - 1))
-        room.getTile(pos[0], pos[1]).tiledata.append(randint(10, 15) + 2 * floorNo)
-        room.getTile(pos[0], pos[1]).tiledata.append(1)
-
-    # Each room has a 20% chance of having another monster in it
-    if(randint(0, 4) == 0):
-        pos = getRandomFreePosition(room)
-        room.getTile(pos[0], pos[1]).tiletype = 8
-        room.getTile(pos[0], pos[1]).tiledata.append(randint(0, len(monsterSprites) - 1))
-        room.getTile(pos[0], pos[1]).tiledata.append(randint(10, 15) + 2 * floorNo)
-        room.getTile(pos[0], pos[1]).tiledata.append(1)
+    # Each room has a 50% chance of one or more monsters
+    if(randint(0, 1) == 0):
+        monsters = 1
+        # 10% chance the room contains a horde of monsters (except first room)
+        if(room != currentRoom and randint(0, 9) == 0):
+            if(floorNo < 4):
+                monsters = 2
+            else:
+                monsters = 3
+        for i in range(monsters):
+            pos = getRandomFreePosition(room)
+            room.getTile(pos[0], pos[1]).tiletype = 8
+            room.getTile(pos[0], pos[1]).tiledata.append(randint(0, len(monsterSprites) - 1))
+            room.getTile(pos[0], pos[1]).tiledata.append(randint(10, 15) + 2 * floorNo)
+            room.getTile(pos[0], pos[1]).tiledata.append(1)
 
 
 # Draw the entire gamestate, including Heads-Up-Display (HUD)
