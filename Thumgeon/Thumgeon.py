@@ -164,21 +164,22 @@ def getcharinputNew():
 goldChr = "$" # Symbol for in-game currency or gold
 curMsg = ""
 lastHit = ""
+floorNo = 1
 
 def addhp(n):
-    player.hp = player.hp + n
+    player.hp += n
     if(player.hp > player.maxhp):
         player.hp = player.maxhp
 
 def addmp(n):
-    player.mp = player.mp + n
+    player.mp += n
     if(player.mp > player.maxmp):
         player.mp = player.maxmp
 
-def addgp():
-    player.gp = player.gp + randint(1, 5) + floorNo
-    if(player.gp > 999):
-        player.gp = 999
+def addgp(n=randint(1,5)+floorNo):
+    player.gp += n
+    if(player.gp > 9999):
+        player.gp = 9999
 
 class dungeonTile:
     def __init__(self, ttype, *data):
@@ -215,6 +216,9 @@ class dungeonTile:
             roomno = 0
             exitSpawned = False
             floorNo = floorNo + 1
+            # floorSeed = ticks_ms()
+            # random_seed(floorSeed)
+            freq(250_000_000)
             currentRoom.tiles.clear()
             gc_collect()
             currentRoom = dungeonRoom()
@@ -222,6 +226,8 @@ class dungeonTile:
             if(currentRoom.getTile(player.tilex, player.tiley).tiletype != 0):
                 pos = getRandomFreePosition(currentRoom)
                 player.tilex, player.tiley = pos[0], pos[1]
+            freq(24_000_000)
+            # TODO: Auto save feature to be added
 
         elif(self.tiletype == 4):
             # Tile is a sign
@@ -244,8 +250,10 @@ class dungeonTile:
 
         elif(self.tiletype == 6):
             # Tile is a chest
-            chestGold = randint(1, 15)
-            player.gp += chestGold
+            chestGold = randint(1, 9)
+            if(randint(0,99) == 0): # 1% Bonus
+                chestGold += randint(10, 30)
+            addgp(chestGold)
             curMsg = "got "+goldChr+str(chestGold)+"!"
             self.tiledata.clear()
             self.tiletype = 0
@@ -381,7 +389,7 @@ class dungeonTile:
                             if(player.shirtitem == selpos):
                                 player.shirtitem = -1
                             currentRoom.shopInv.append(player.inventory[selpos])
-                            player.gp = player.gp + itemprice(player.inventory[selpos])[1]
+                            addgp(itemprice(player.inventory[selpos])[1])
                             player.inventory.pop(selpos)
                         else:
                             if(player.gp >= itemprice(currentRoom.shopInv[selpos])[0]):
