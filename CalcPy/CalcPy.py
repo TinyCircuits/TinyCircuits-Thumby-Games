@@ -189,11 +189,6 @@ while(1):
         sely = (sely-1)%4
     elif button.buttonD.justPressed():
         sely = (sely+1)%4
-    
-    if cursor_pos < 1:
-        cursor_pos = len(exp)
-    elif cursor_pos > len(exp):
-        cursor_pos = 1
         
     if button.buttonA.justPressed():
         borw = 0
