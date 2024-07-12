@@ -195,7 +195,10 @@ while(1):
         frameCounter = -60
         char = CalcFun.char(selx, sely, layer)
         if char in exclude:
-            if char == 'del': exp = exp[:-1]
+            if char == 'del':
+                if cursor_pos != 0:
+                    exp = exp[:cursor_pos-1] + exp[cursor_pos:]
+                if len(exp) > 0 and cursor_pos != 0: cursor_pos -= 1
             elif char == 'clr':
                 if prevExp == '':
                     prevExp = exp
