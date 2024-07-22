@@ -1,3 +1,14 @@
+NAME=AstroSpace
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/AstroSpace/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/AstroSpace/AstroSpace.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/AstroSpace/arcade_description.txt
+
+NAME=DemoRT
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/DemoRT/DemoRT.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/DemoRT/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/DemoRT/thumbyrt.mpy
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/DemoRT/DemoRT_video.webm
+
 NAME=Foxgine
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Foxgine/models.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Foxgine/arcade_title_video.webm.webm
@@ -5,12 +16,6 @@ https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Foxgine/arcade_description.txt.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Foxgine/Obj3D.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Foxgine/Cam.py
-
-NAME=DemoRT
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/DemoRT/DemoRT.py
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/DemoRT/arcade_description.txt
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/DemoRT/thumbyrt.mpy
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/DemoRT/DemoRT_video.webm
 
 NAME=CalcPy
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/CalcPy/CalcFun.py
