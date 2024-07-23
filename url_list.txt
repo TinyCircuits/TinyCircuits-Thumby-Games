@@ -1,3 +1,8 @@
+NAME=XirbysDreamland
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/XirbysDreamland/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/XirbysDreamland/XirbysDreamland.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/XirbysDreamland/arcade_description.txt
+
 NAME=AstroSpace
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/AstroSpace/arcade_title_video.webm
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/AstroSpace/AstroSpace.py
