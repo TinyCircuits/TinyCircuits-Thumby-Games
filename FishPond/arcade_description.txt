@@ -1,6 +1,7 @@
 Fish Pond
 (demo version)
-by T. Marigold
+by marigoldfish
+https://github.com/marigoldfish/
 
 Head to a very tiny river to catch some fish! 
 
