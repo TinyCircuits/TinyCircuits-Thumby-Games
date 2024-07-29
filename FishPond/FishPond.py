@@ -15,8 +15,8 @@ rand_seed = None
 river_birds = None
 river_bg = None
 caught_fish_size = None
-cast_pwr = None
 bobber_idle = None
+cast_pwr = None
 can_catch = None
 bobber_nibble = None
 bobber_bite = None
@@ -35,7 +35,7 @@ draw_fishingline_y = None
 
 # Set random seed based on ms
 def setup_rand():
-  global counter, title, rand_seed, river_birds, river_bg, caught_fish_size, cast_pwr, bobber_idle, can_catch, bobber_nibble, bobber_bite, rand_wait, cast_anim, fish1, rand_nibbles, cast_anim_fin, exit_nav, bobber_A_hit, exclm_point, cast_direction, display_qty, draw_fishingline_x, draw_fishingline_y
+  global counter, title, rand_seed, river_birds, river_bg, caught_fish_size, bobber_idle, cast_pwr, can_catch, bobber_nibble, bobber_bite, rand_wait, cast_anim, fish1, rand_nibbles, cast_anim_fin, exit_nav, bobber_A_hit, exclm_point, cast_direction, display_qty, draw_fishingline_x, draw_fishingline_y
   rand_seed = int(time.ticks_ms())
   exec('random.seed(rand_seed)')
 
@@ -61,7 +61,7 @@ exclm_point = Sprite(1,1,bytearray([1]))
 
 # Load all the sprites...
 def setup_sprites():
-  global counter, title, rand_seed, river_birds, river_bg, caught_fish_size, cast_pwr, bobber_idle, can_catch, bobber_nibble, bobber_bite, rand_wait, cast_anim, fish1, rand_nibbles, cast_anim_fin, exit_nav, bobber_A_hit, exclm_point, cast_direction, display_qty, draw_fishingline_x, draw_fishingline_y
+  global counter, title, rand_seed, river_birds, river_bg, caught_fish_size, bobber_idle, cast_pwr, can_catch, bobber_nibble, bobber_bite, rand_wait, cast_anim, fish1, rand_nibbles, cast_anim_fin, exit_nav, bobber_A_hit, exclm_point, cast_direction, display_qty, draw_fishingline_x, draw_fishingline_y
   title = Sprite(72,40,bytearray([0,0,64,64,64,160,32,32,16,16,8,8,4,4,130,0,0,0,0,0,0,0,0,136,120,0,0,0,0,0,0,0,8,8,8,8,232,200,16,16,16,16,16,16,16,96,128,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,64,192,0,0,0,0,0,0,0,255,255,16,16,8,8,0,0,200,56,0,0,24,20,36,196,0,0,192,63,8,4,4,248,0,0,0,0,0,0,0,252,255,3,8,8,8,16,16,16,136,68,35,32,32,64,128,0,32,224,64,32,32,32,192,0,128,64,32,32,32,64,224,30,1,0,0,0,0,0,8,8,11,11,8,8,8,8,8,8,9,9,8,4,5,5,5,4,4,5,5,4,4,4,5,5,4,0,0,0,0,0,47,47,32,32,32,32,32,32,32,32,35,36,40,40,40,36,35,64,78,73,64,64,64,78,73,64,67,68,72,72,72,92,83,64,64,0,0,0,0,0,0,120,20,120,0,0,40,0,0,0,0,0,0,72,84,36,0,4,124,4,0,120,20,120,0,124,20,104,0,4,124,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8,20,8,0,32,82,37,2,224,16,16,80,24,20,20,36,220,128,0,0,0,128,128,0,0,0,31,21,26,0,0,10,0,0,0,0,0,0,18,21,9,0,31,21,17,0,1,31,1,0,1,31,1,0,0,31,0,0,31,14,31,0,14,17,29,0,18,21,9,0,0,0,0,0,0,0,0,0,0,0,3,4,24,40,56,40,8,8,8,7,14,49,193,120,7,0,0,64,64,64,160,32,32,16,16,8,8,4,4,130,0,0,0,0,0,0,0,0,136,120,0,0,0,0,0,0,0,8,8,8,8,232,200,16,16,16,16,16,16,16,96,128,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,64,192,0,0,0,0,0,0,0,255,255,16,16,8,8,0,0,200,56,0,0,24,20,36,196,0,0,192,63,8,4,4,248,0,0,0,0,0,0,0,252,255,3,8,8,8,16,16,16,136,68,35,32,32,64,128,0,32,224,64,32,32,32,192,0,128,64,32,32,32,64,224,30,1,0,0,0,0,0,8,8,11,11,8,8,8,8,8,8,9,9,8,4,5,5,5,4,4,5,5,4,4,4,5,5,4,0,0,0,0,0,47,47,32,32,32,32,32,32,32,32,35,36,40,40,40,36,35,64,78,73,64,64,64,78,73,64,67,68,72,72,72,92,83,64,64,0,0,0,0,0,0,120,20,120,0,0,40,0,0,0,0,0,0,72,84,36,0,4,124,4,0,120,20,120,0,124,20,104,0,4,124,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,10,4,0,0,16,40,18,5,226,16,16,80,24,20,20,36,220,128,0,0,0,128,128,0,0,0,31,21,26,0,0,10,0,0,0,0,0,0,18,21,9,0,31,21,17,0,1,31,1,0,1,31,1,0,0,31,0,0,31,14,31,0,14,17,29,0,18,21,9,0,0,0,0,0,0,0,0,0,0,0,3,4,24,40,56,40,8,8,8,7,14,49,193,120,7]),title.x,title.y,title.key,title.mirrorX,title.mirrorY)
   river_bg = Sprite(72,40,bytearray([255,255,255,255,255,254,252,252,56,112,96,232,212,170,85,170,87,172,216,112,80,96,64,0,4,136,72,80,32,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,128,128,128,128,64,64,64,32,32,32,32,32,16,16,16,24,136,136,72,64,255,255,255,255,255,254,253,253,248,242,229,202,213,170,85,170,85,170,117,235,86,108,88,40,48,1,1,130,196,40,48,32,0,0,0,0,0,0,0,0,0,192,32,16,72,132,196,98,34,17,9,9,8,8,136,132,132,4,2,2,2,2,1,129,65,33,1,1,128,64,32,16,255,255,255,255,255,251,243,231,207,207,159,43,87,47,79,172,73,170,85,170,85,186,110,172,68,196,128,128,8,11,4,132,128,128,64,64,32,96,144,144,16,59,36,200,80,80,49,18,12,0,0,0,32,25,0,0,192,48,0,0,1,129,65,32,16,8,4,3,0,0,0,0,255,255,255,223,191,31,63,31,63,191,127,63,127,127,254,124,249,242,69,27,31,10,14,5,5,5,154,226,66,33,49,17,17,10,12,12,4,4,2,2,3,1,1,32,32,16,16,16,136,4,0,0,64,64,56,6,1,0,128,112,15,0,56,68,196,68,56,128,128,64,64,32,255,255,255,127,127,127,255,255,255,255,62,126,126,252,252,56,56,120,112,98,98,2,2,2,1,1,0,128,64,0,0,0,16,8,4,2,2,0,16,8,4,4,4,130,130,65,65,33,32,16,8,0,0,224,24,4,2,1,0,0,8,4,4,202,63,201,11,12,0,0,0,0,255,255,255,255,255,254,252,252,56,112,96,232,212,170,85,170,87,172,216,112,80,96,64,0,4,136,72,80,32,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,128,128,128,128,64,64,64,32,32,32,32,32,16,16,16,24,136,136,72,64,255,255,255,255,255,254,253,253,248,242,229,202,213,170,85,170,85,170,117,235,86,108,88,40,48,1,1,130,196,40,48,32,0,0,0,0,0,0,0,0,0,192,32,16,72,132,196,98,34,17,9,9,8,8,8,4,132,4,2,2,2,130,65,33,33,33,1,1,128,64,32,16,255,255,255,255,255,251,243,231,207,207,159,43,87,47,79,172,73,170,85,170,85,186,110,172,68,196,128,128,8,11,4,132,128,128,64,64,32,96,144,144,16,59,36,200,80,80,49,18,12,0,0,0,48,9,1,225,16,16,0,0,1,128,64,32,16,8,4,3,0,0,0,0,255,255,255,223,191,31,63,31,63,191,127,63,127,127,254,124,249,242,69,27,31,10,14,5,5,5,154,226,66,33,49,17,17,10,12,12,4,4,2,2,3,1,1,32,16,8,8,8,4,132,0,0,96,28,3,0,0,0,128,112,15,0,56,68,196,68,56,128,128,64,64,32,255,255,255,127,127,127,255,255,255,255,62,126,126,252,252,56,56,120,112,98,98,2,2,2,1,1,128,64,0,0,0,16,16,8,4,2,0,0,0,16,8,8,8,132,68,34,34,18,17,8,8,0,0,224,24,4,2,1,0,0,8,4,4,202,63,201,11,12,0,0,0,0]),river_bg.x,river_bg.y,river_bg.key,river_bg.mirrorX,river_bg.mirrorY)
   river_birds = Sprite(12,6,bytearray([8,16,32,16,8,0,0,4,2,4,2,4,32,16,32,16,32,0,0,1,2,4,2,1]),river_birds.x,river_birds.y,river_birds.key,river_birds.mirrorX,river_birds.mirrorY)
@@ -85,7 +85,7 @@ saveData.setName(globals().get('__file__', 'FAST_EXECUTE').replace('/Games/','')
 
 # Title Screen
 def title_screen():
-  global counter, title, rand_seed, river_birds, river_bg, caught_fish_size, cast_pwr, bobber_idle, can_catch, bobber_nibble, bobber_bite, rand_wait, cast_anim, fish1, rand_nibbles, cast_anim_fin, exit_nav, bobber_A_hit, exclm_point, cast_direction, display_qty, draw_fishingline_x, draw_fishingline_y
+  global counter, title, rand_seed, river_birds, river_bg, caught_fish_size, bobber_idle, cast_pwr, can_catch, bobber_nibble, bobber_bite, rand_wait, cast_anim, fish1, rand_nibbles, cast_anim_fin, exit_nav, bobber_A_hit, exclm_point, cast_direction, display_qty, draw_fishingline_x, draw_fishingline_y
   gc.collect()
   while True:
     if exit_nav == 0:
@@ -110,7 +110,7 @@ def title_screen():
 
 # Settings Screen
 def settings_screen():
-  global counter, title, rand_seed, river_birds, river_bg, caught_fish_size, cast_pwr, bobber_idle, can_catch, bobber_nibble, bobber_bite, rand_wait, cast_anim, fish1, rand_nibbles, cast_anim_fin, exit_nav, bobber_A_hit, exclm_point, cast_direction, display_qty, draw_fishingline_x, draw_fishingline_y
+  global counter, title, rand_seed, river_birds, river_bg, caught_fish_size, bobber_idle, cast_pwr, can_catch, bobber_nibble, bobber_bite, rand_wait, cast_anim, fish1, rand_nibbles, cast_anim_fin, exit_nav, bobber_A_hit, exclm_point, cast_direction, display_qty, draw_fishingline_x, draw_fishingline_y
   while True:
     display.setFont("/lib/font3x5.bin", 3, 5, display.textSpaceWidth)
     display.drawText(str('A: RECORDS'), 0, 0, 1)
@@ -134,7 +134,7 @@ def settings_screen():
 
 # Records screen - show scores
 def records_screen():
-  global counter, title, rand_seed, river_birds, river_bg, caught_fish_size, cast_pwr, bobber_idle, can_catch, bobber_nibble, bobber_bite, rand_wait, cast_anim, fish1, rand_nibbles, cast_anim_fin, exit_nav, bobber_A_hit, exclm_point, cast_direction, display_qty, draw_fishingline_x, draw_fishingline_y
+  global counter, title, rand_seed, river_birds, river_bg, caught_fish_size, bobber_idle, cast_pwr, can_catch, bobber_nibble, bobber_bite, rand_wait, cast_anim, fish1, rand_nibbles, cast_anim_fin, exit_nav, bobber_A_hit, exclm_point, cast_direction, display_qty, draw_fishingline_x, draw_fishingline_y
   while True:
     display.setFont("/lib/font5x7.bin", 5, 7, display.textSpaceWidth)
     display.drawText(str('Fish Caught:'), 2, 0, 1)
@@ -156,7 +156,7 @@ def records_screen():
 # 0: Sound off
 # 1: Sound on
 def sound_settings():
-  global counter, title, rand_seed, river_birds, river_bg, caught_fish_size, cast_pwr, bobber_idle, can_catch, bobber_nibble, bobber_bite, rand_wait, cast_anim, fish1, rand_nibbles, cast_anim_fin, exit_nav, bobber_A_hit, exclm_point, cast_direction, display_qty, draw_fishingline_x, draw_fishingline_y
+  global counter, title, rand_seed, river_birds, river_bg, caught_fish_size, bobber_idle, cast_pwr, can_catch, bobber_nibble, bobber_bite, rand_wait, cast_anim, fish1, rand_nibbles, cast_anim_fin, exit_nav, bobber_A_hit, exclm_point, cast_direction, display_qty, draw_fishingline_x, draw_fishingline_y
   while True:
     display.setFont("/lib/font5x7.bin", 5, 7, display.textSpaceWidth)
     display.drawText(str('Sound is'), 2, 0, 1)
@@ -193,7 +193,7 @@ def sound_settings():
 
 # Tutorial/How to Play
 def tutorial_screen():
-  global counter, title, rand_seed, river_birds, river_bg, caught_fish_size, cast_pwr, bobber_idle, can_catch, bobber_nibble, bobber_bite, rand_wait, cast_anim, fish1, rand_nibbles, cast_anim_fin, exit_nav, bobber_A_hit, exclm_point, cast_direction, display_qty, draw_fishingline_x, draw_fishingline_y
+  global counter, title, rand_seed, river_birds, river_bg, caught_fish_size, bobber_idle, cast_pwr, can_catch, bobber_nibble, bobber_bite, rand_wait, cast_anim, fish1, rand_nibbles, cast_anim_fin, exit_nav, bobber_A_hit, exclm_point, cast_direction, display_qty, draw_fishingline_x, draw_fishingline_y
   # Show tutorial
   while True:
     display.setFont("/lib/font5x7.bin", 5, 7, display.textSpaceWidth)
@@ -219,7 +219,7 @@ def tutorial_screen():
 
 # Clear Data Screen
 def clear_data_screen():
-  global counter, title, rand_seed, river_birds, river_bg, caught_fish_size, cast_pwr, bobber_idle, can_catch, bobber_nibble, bobber_bite, rand_wait, cast_anim, fish1, rand_nibbles, cast_anim_fin, exit_nav, bobber_A_hit, exclm_point, cast_direction, display_qty, draw_fishingline_x, draw_fishingline_y
+  global counter, title, rand_seed, river_birds, river_bg, caught_fish_size, bobber_idle, cast_pwr, can_catch, bobber_nibble, bobber_bite, rand_wait, cast_anim, fish1, rand_nibbles, cast_anim_fin, exit_nav, bobber_A_hit, exclm_point, cast_direction, display_qty, draw_fishingline_x, draw_fishingline_y
   # Delete save data
   while True:
     display.setFont("/lib/font8x8.bin", 8, 8, display.textSpaceWidth)
@@ -246,7 +246,7 @@ def clear_data_screen():
 
 # Show the river animation
 def river_screen():
-  global counter, title, rand_seed, river_birds, river_bg, caught_fish_size, cast_pwr, bobber_idle, can_catch, bobber_nibble, bobber_bite, rand_wait, cast_anim, fish1, rand_nibbles, cast_anim_fin, exit_nav, bobber_A_hit, exclm_point, cast_direction, display_qty, draw_fishingline_x, draw_fishingline_y
+  global counter, title, rand_seed, river_birds, river_bg, caught_fish_size, bobber_idle, cast_pwr, can_catch, bobber_nibble, bobber_bite, rand_wait, cast_anim, fish1, rand_nibbles, cast_anim_fin, exit_nav, bobber_A_hit, exclm_point, cast_direction, display_qty, draw_fishingline_x, draw_fishingline_y
   gc.collect()
   river_birds.x = 36
   river_birds.y = 3
@@ -272,7 +272,7 @@ def river_screen():
 
 # Casting Screen
 def cast_screen():
-  global counter, title, rand_seed, river_birds, river_bg, caught_fish_size, cast_pwr, bobber_idle, can_catch, bobber_nibble, bobber_bite, rand_wait, cast_anim, fish1, rand_nibbles, cast_anim_fin, exit_nav, bobber_A_hit, exclm_point, cast_direction, display_qty, draw_fishingline_x, draw_fishingline_y
+  global counter, title, rand_seed, river_birds, river_bg, caught_fish_size, bobber_idle, cast_pwr, can_catch, bobber_nibble, bobber_bite, rand_wait, cast_anim, fish1, rand_nibbles, cast_anim_fin, exit_nav, bobber_A_hit, exclm_point, cast_direction, display_qty, draw_fishingline_x, draw_fishingline_y
   setup_rand()
   display.fill(0)
   display.update()
@@ -285,6 +285,7 @@ def cast_screen():
   cast_anim_fin.y = 3
   exclm_point.x = 65
   exclm_point.y = 20
+  cast_anim.setFrame(0)
   cast_direction = 1
   cast_pwr = -1
   # Adjust the speed of the casting bar (default 30)
@@ -380,7 +381,7 @@ def cast_screen():
 
 # Cycle bobber_idle animation
 def bobber_idle2():
-  global counter, title, rand_seed, river_birds, river_bg, caught_fish_size, cast_pwr, bobber_idle, can_catch, bobber_nibble, bobber_bite, rand_wait, cast_anim, fish1, rand_nibbles, cast_anim_fin, exit_nav, bobber_A_hit, exclm_point, cast_direction, display_qty, draw_fishingline_x, draw_fishingline_y
+  global counter, title, rand_seed, river_birds, river_bg, caught_fish_size, bobber_idle, cast_pwr, can_catch, bobber_nibble, bobber_bite, rand_wait, cast_anim, fish1, rand_nibbles, cast_anim_fin, exit_nav, bobber_A_hit, exclm_point, cast_direction, display_qty, draw_fishingline_x, draw_fishingline_y
   display.fill(0)
   display.drawSprite(bobber_idle)
   counter = (counter if isinstance(counter, Number) else 0) + 1
@@ -391,7 +392,7 @@ def bobber_idle2():
 
 # Cycle bobber_nibble animation
 def bobber_nibble2():
-  global counter, title, rand_seed, river_birds, river_bg, caught_fish_size, cast_pwr, bobber_idle, can_catch, bobber_nibble, bobber_bite, rand_wait, cast_anim, fish1, rand_nibbles, cast_anim_fin, exit_nav, bobber_A_hit, exclm_point, cast_direction, display_qty, draw_fishingline_x, draw_fishingline_y
+  global counter, title, rand_seed, river_birds, river_bg, caught_fish_size, bobber_idle, cast_pwr, can_catch, bobber_nibble, bobber_bite, rand_wait, cast_anim, fish1, rand_nibbles, cast_anim_fin, exit_nav, bobber_A_hit, exclm_point, cast_direction, display_qty, draw_fishingline_x, draw_fishingline_y
   display.fill(0)
   counter = (counter if isinstance(counter, Number) else 0) + 1
   display.drawSprite(bobber_nibble)
@@ -402,7 +403,7 @@ def bobber_nibble2():
 
 # Cycle bobber_bite animation
 def bobber_bite2():
-  global counter, title, rand_seed, river_birds, river_bg, caught_fish_size, cast_pwr, bobber_idle, can_catch, bobber_nibble, bobber_bite, rand_wait, cast_anim, fish1, rand_nibbles, cast_anim_fin, exit_nav, bobber_A_hit, exclm_point, cast_direction, display_qty, draw_fishingline_x, draw_fishingline_y
+  global counter, title, rand_seed, river_birds, river_bg, caught_fish_size, bobber_idle, cast_pwr, can_catch, bobber_nibble, bobber_bite, rand_wait, cast_anim, fish1, rand_nibbles, cast_anim_fin, exit_nav, bobber_A_hit, exclm_point, cast_direction, display_qty, draw_fishingline_x, draw_fishingline_y
   counter = (counter if isinstance(counter, Number) else 0) + 1
   display.fill(0)
   display.drawSprite(bobber_bite)
@@ -413,7 +414,7 @@ def bobber_bite2():
 
 # Fishing Screen - the main event!
 def fishing_screen():
-  global counter, title, rand_seed, river_birds, river_bg, caught_fish_size, cast_pwr, bobber_idle, can_catch, bobber_nibble, bobber_bite, rand_wait, cast_anim, fish1, rand_nibbles, cast_anim_fin, exit_nav, bobber_A_hit, exclm_point, cast_direction, display_qty, draw_fishingline_x, draw_fishingline_y
+  global counter, title, rand_seed, river_birds, river_bg, caught_fish_size, bobber_idle, cast_pwr, can_catch, bobber_nibble, bobber_bite, rand_wait, cast_anim, fish1, rand_nibbles, cast_anim_fin, exit_nav, bobber_A_hit, exclm_point, cast_direction, display_qty, draw_fishingline_x, draw_fishingline_y
   counter = 0
   display.setFPS(30)
   # 0 = no bite
@@ -544,7 +545,7 @@ def fishing_screen():
 
 # Describe this function...
 def eval_screen():
-  global counter, title, rand_seed, river_birds, river_bg, caught_fish_size, cast_pwr, bobber_idle, can_catch, bobber_nibble, bobber_bite, rand_wait, cast_anim, fish1, rand_nibbles, cast_anim_fin, exit_nav, bobber_A_hit, exclm_point, cast_direction, display_qty, draw_fishingline_x, draw_fishingline_y
+  global counter, title, rand_seed, river_birds, river_bg, caught_fish_size, bobber_idle, cast_pwr, can_catch, bobber_nibble, bobber_bite, rand_wait, cast_anim, fish1, rand_nibbles, cast_anim_fin, exit_nav, bobber_A_hit, exclm_point, cast_direction, display_qty, draw_fishingline_x, draw_fishingline_y
   if can_catch == 0:
     if int(saveData.getItem('sound_setting')) == 1:
       audio.play(587, 250)
