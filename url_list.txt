@@ -1,3 +1,8 @@
+NAME=FishPond
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/FishPond/FishPond.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/FishPond/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/FishPond/arcade_description.txt
+
 NAME=XirbysDreamland
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/XirbysDreamland/XirbysDreamland.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/XirbysDreamland/arcade_title_video.webm
