@@ -1,0 +1,16 @@
+Fish Pond
+(demo version)
+by marigoldfish
+https://github.com/marigoldfish/
+
+Head to a very tiny river to catch some fish! 
+
+Hold A to power up your cast. Release with good timing to catch a bigger fish!
+
+Wait for a bite, and when you see !!!, press A to catch the fish!
+
+In the settings menu, you can view your fishing records, replay the tutorial, turn sounds on and off, and clear your save data. 
+
+In this demo, you can only visit the river, and you can only catch one type of generic fish. 
+
+A future version might have more locations and more species of fish.
