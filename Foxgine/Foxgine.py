@@ -15,6 +15,7 @@ rendType = 0
 gameStart = 0
 rendAmt = 2
 objects = []
+objPositions = [[0,0,0]]
 
 display.setFont("/lib/font3x5.bin", 3, 5, 1)
 display.setFPS(30)
@@ -60,7 +61,7 @@ def makeObjs(fileObjs, rendType):
     print(fileObjs["combined"]["Polygons"])
 
     objMaker.append(Object3D(fileObjs, "combined", (0, 0, 0), rendType))
-    objMaker.append(Object3D(fileObjs, "tris", (0, 3, 0), rendType))
+    objMaker.append(Object3D(fileObjs, "tris", (1.5, 0, 0), rendType))
     
     for obj_name in combinedObjs:
         fileObjs[obj_name]["Verticies"].clear()
@@ -85,7 +86,7 @@ while True:
         objects.sort(key=lambda obj: distance(obj, cam), reverse=True)
         for obj in objects:
             obj.render(fov, (w, h), (cx, cy), cam, -1, 20)
-
+        
         cam.update(dt, buttons, objects)
 
         display.drawText("X: " + str(int(cam.pos[0])), 2, 2, 2)
