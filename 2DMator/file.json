@@ -1,0 +1,62 @@
+{
+    "test": {
+        "bones": [
+            {"id": 0, "name": "Head", "offset": [0, -2], "connects_to": 1, "smearable": 0},
+            {"id": 1, "name": "Neck", "offset": [0, 0], "connects_to": 2, "smearable": 0},
+            {"id": 2, "name": "UTorso", "offset": [0, 3], "connects_to": 3, "smearable": 0},
+            {"id": 3, "name": "LTorso", "offset": [0, 5], "connects_to": 2, "smearable": 0},
+            {"id": 4, "name": "Left Arm", "offset": [-5, 3], "connects_to": 2, "smearable": 1},
+            {"id": 5, "name": "Right Arm", "offset": [5, 3], "connects_to": 2, "smearable": 1},
+            {"id": 6, "name": "Left Leg", "offset": [-2, 10], "connects_to": 3, "smearable": 1},
+            {"id": 7, "name": "Right Leg", "offset": [2, 10], "connects_to": 3, "smearable": 1}
+        ],
+        "animations": {
+            "idle": [
+                [
+                    [0, 2], [0, 2],
+                    [0, 1], [0, 1],
+                    [0, 3], [0, 3],
+                    [-1, 0], [1, 0]
+                ],
+                [
+                    [0, 0], [0, 0],
+                    [0, 0], [0, 0],
+                    [0, 0], [0, 0],
+                    [0, 0], [0, 0]
+                ],
+                [
+                    [0, 0], [0, 0],
+                    [0, 0], [0, 0],
+                    [0, 0], [0, 0],
+                    [0, 0], [0, 0]
+                ]
+            ],
+            "walk": [
+                [
+                    [-2, 2], [-1, 2],
+                    [0, 1], [0, 0],
+                    [0, 3], [0, 3],
+                    [0, 0], [2, -2]
+                ],
+                [
+                    [0, 0], [0, 0],
+                    [0, 0], [0, 0],
+                    [0, 0], [0, 0],
+                    [0, 0], [0, 0]
+                ],
+                [
+                    [2, 2], [1, 2],
+                    [0, 1], [0, 0],
+                    [0, 3], [0, 3],
+                    [-2, -2], [0, 0]
+                ],
+                [
+                    [0, 0], [0, 0],
+                    [0, 0], [0, 0],
+                    [0, 0], [0, 0],
+                    [0, 0], [0, 0]
+                ]
+            ]
+        }
+    }
+}
