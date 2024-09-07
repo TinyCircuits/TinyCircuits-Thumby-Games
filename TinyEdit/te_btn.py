@@ -49,7 +49,6 @@ def repeatPress( abOk ):
 
 def which( abOk = True ):
     global keyMode
-    #oldKeyMode = keyMode
     timePassed = ticks_diff( ticks_ms(), baseTicks )
     result = None
     if keyMode == REPEATING:
@@ -68,14 +67,13 @@ def which( abOk = True ):
     elif keyMode == PRESSED:
         if timePassed > REPEAT_THRESHOLD_MS:
             keyMode = REPEATING
+            resetTimeCounter()
             result = repeatPress( abOk )
             if not result:
                 keyMode = NORMAL
-                resetTimeCounter()
     else:
         resetTimeCounter()
         result = normalPress()
         if result:
             keyMode = PRESSED
-    #if oldKeyMode != keyMode: print( oldKeyMode, '->', keyMode, '-', result )
     return result
