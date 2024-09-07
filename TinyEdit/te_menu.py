@@ -63,6 +63,8 @@ class Menu:
                     'B':     lambda: True,
                     'U':     lambda: self.u(),
                     'D':     lambda: self.d(),
+                    'u':     lambda: self.u(),
+                    'd':     lambda: self.d(),
                     'L':     lambda: self.l(),
                     'R':     lambda: self.r(),
                     'lFill': lambda: leftFill()

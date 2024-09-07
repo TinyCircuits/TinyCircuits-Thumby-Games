@@ -19,13 +19,15 @@ def resetTimeCounter():
     baseTicks = ticks_ms()
 
 def normalPress():
-    if b.buttonU.justPressed(): return 'U'
-    if b.buttonD.justPressed(): return 'D'
-    if b.buttonL.justPressed(): return 'L'
-    if b.buttonR.justPressed(): return 'R'
-    if b.buttonA.justPressed(): return 'A'
-    if b.buttonB.justPressed(): return 'B'
-    return None
+    result = None
+    if   b.buttonU.justPressed(): result = 'U'
+    elif b.buttonD.justPressed(): result = 'D'
+    elif b.buttonL.justPressed(): result = 'L'
+    elif b.buttonR.justPressed(): result = 'R'
+    elif b.buttonA.justPressed(): result = 'A'
+    elif b.buttonB.justPressed(): result = 'B'
+    clear()
+    return result
 
 def clear():
     b.buttonU.justPressed()
@@ -36,16 +38,18 @@ def clear():
     b.buttonB.justPressed()
 
 def repeatPress( abOk ):
-    if b.buttonU.pressed(): return 'u'
-    if b.buttonD.pressed(): return 'd'
-    if b.buttonL.pressed(): return 'l'
-    if b.buttonR.pressed(): return 'r'
-    if abOk and b.buttonA.pressed(): return 'a'
-    if abOk and b.buttonB.pressed(): return 'b'
-    return None
+    result = None
+    if   b.buttonU.pressed(): result = 'u'
+    elif b.buttonD.pressed(): result = 'd'
+    elif b.buttonL.pressed(): result = 'l'
+    elif b.buttonR.pressed(): result = 'r'
+    elif abOk and b.buttonA.pressed(): result = 'a'
+    elif abOk and b.buttonB.pressed(): result = 'b'
+    return result
 
 def which( abOk = True ):
     global keyMode
+    #oldKeyMode = keyMode
     timePassed = ticks_diff( ticks_ms(), baseTicks )
     result = None
     if keyMode == REPEATING:
@@ -73,4 +77,5 @@ def which( abOk = True ):
         result = normalPress()
         if result:
             keyMode = PRESSED
+    #if oldKeyMode != keyMode: print( oldKeyMode, '->', keyMode, '-', result )
     return result

@@ -53,8 +53,8 @@ def sideScroll( displayString, x, y, w, b, lambdas ):
     d.drawText( displayString, x, y, 1 )
     d.update()
     b = te_btn.which( False )
-    if b and b.upper() in lambdas:
-        return lambdas[ b.upper() ]()
+    if b and b in lambdas:
+        return lambdas[ b ]()
 
 def getDirAbove( path ):
     return path[ 0 : path.rfind( '/', 0, len( path ) - 1 ) ]
