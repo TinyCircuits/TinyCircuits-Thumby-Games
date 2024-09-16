@@ -1203,7 +1203,6 @@ class Help( Command ):
         self.shell.write( 'A: menu, choose\n' )
         self.shell.write( 'B: abort\n'        )
         self.shell.write( 'R: open dir\n'     )
-        self.shell.write( '\n'                )
         self.shell.write( 'More help: http://codeberg.org/JBanana/TinySh' )
 
 class Shell:
@@ -1231,27 +1230,27 @@ class Shell:
         self.getSprite = spriteGetter
         self.dirName = '/'
         self.commands = OrderedDict([
-            ( 'help',       lambda: Help()   ),
-            ( 'run',        lambda: Run()    ),
-            ( 'changedir',  lambda: ChDir()  ),
-            ( 'pwd',        lambda: Pwd()    ),
-            ( 'listdir',    lambda: List()   ),
-            ( 'show',       lambda: Show()   ),
-            ( 'edit',       lambda: Edit()   ),
-            ( 'copy',       lambda: Copy()   ),
-            ( 'move',       lambda: Move()   ),
-            ( 'delete',     lambda: Delete() ),
-            ( 'makedir',    lambda: MkDir()  ),
-            ( 'deletedir',  lambda: RmDir()  ),
-            ( 'env',        lambda: Env()    ),
-            ( 'echo',       lambda: Echo()   ),
-            ( 'grep',       lambda: Grep()   ),
-            ( 'find',       lambda: Find()   ),
-            ( '>',          lambda: Redir()  ),
-            ( '>>',         lambda: Append() ),
-            ( 'version',    lambda: Ver()    ),
-            ( 'debug',      lambda: Debug()  ),
-            ( 'exit',       lambda: Exit()   )
+            ( 'help',          lambda: Help()   ),
+            ( 'run',           lambda: Run()    ),
+            ( 'changedir',     lambda: ChDir()  ),
+            ( 'pwd',           lambda: Pwd()    ),
+            ( 'listdir',       lambda: List()   ),
+            ( 'show',          lambda: Show()   ),
+            ( 'edit',          lambda: Edit()   ),
+            ( 'copy',          lambda: Copy()   ),
+            ( 'move',          lambda: Move()   ),
+            ( 'delete',        lambda: Delete() ),
+            ( 'makedir',       lambda: MkDir()  ),
+            ( 'deletedir',     lambda: RmDir()  ),
+            ( 'env',           lambda: Env()    ),
+            ( 'echo',          lambda: Echo()   ),
+            ( 'grep',          lambda: Grep()   ),
+            ( 'find',          lambda: Find()   ),
+            ( '>',             lambda: Redir()  ),
+            ( '>>',            lambda: Append() ),
+            ( 'version',       lambda: Ver()    ),
+            ( 'debug logging', lambda: Debug()  ),
+            ( 'exit',          lambda: Exit()   )
         ])
 
         menuItems = []
