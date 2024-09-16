@@ -1,0 +1,60 @@
+# These are the same
+if fish = fish
+jump :ok1
+# Don't put a comment immediately after the if!
+
+echo Oops: not equal! (plain)
+jump :end
+
+:ok1
+# These are the same if the substitution works
+if {PLATFORM} = rp2
+jump :ok2
+# Don't put a comment immediately after the if!
+
+echo Oops: not equal! (variable substitution)
+jump :end
+
+:ok2
+# Let's try a pipe
+echo dog
+if dog = |
+jump :ok3
+# Don't put a comment immediately after the if!
+
+echo Oops: not equal! (pipe)
+jump :end
+
+:ok3
+# Let's go wild - pipe and variable substitution
+set openCurly {
+set closeCurly }
+echo {openCurly}PLATFORM{closeCurly}
+if rp2 = |
+jump :ok4
+# Don't put a comment immediately after the if!
+
+echo Oops: not equal! (wild)
+jump :end
+
+:ok4
+# Let's try double equals
+if fish == fish
+jump :ok5
+# Don't put a comment immediately after the if!
+
+echo Oops: not equal! (double)
+jump :end
+
+:ok5
+# Quoting spaces
+if 'a b' == 'a b'
+jump :ok6
+
+echo Oops: not equal! (quoted spaces)
+jump :end
+
+:ok6
+echo All OK
+
+:end
