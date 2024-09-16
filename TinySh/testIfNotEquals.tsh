@@ -1,0 +1,31 @@
+# These are not the same
+if not cat = dog
+jump :ok1
+# Don't put a comment immediately after the if!
+
+echo Oops - equal! (plain)
+jump :end
+
+:ok1
+# One of these should get substituted
+# So this should be false
+if not {PLATFORM} == rp2
+jump :whoops
+# Don't put a comment immediately after the if!
+
+# Both of these should get substituted, but with different values
+if not {RANDOM} = {RANDOM}
+jump :ok2
+# Don't put a comment immediately after the if!
+
+echo Oops - equal! (double substitution)
+jump :end
+
+:ok2
+echo All OK
+jump :end
+
+:whoops
+echo Oops - equal! (variable substitution)
+
+:end
