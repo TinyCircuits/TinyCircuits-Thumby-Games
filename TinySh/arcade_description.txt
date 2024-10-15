@@ -1,0 +1,7 @@
+TinySh is a command shell for Thumby. You can copy or delete a file, make or remove a directory, and so on. And you can script repetitive tasks.
+
+This project is at beta stage. There may be bugs. Use TinySh at your own risk. It allows you to delete files or replace their content. With great power comes great responsibility. To try things out, the Thumby emulator is good because no real files are affected.
+
+As far as I know, everything works. If you find something that doesn't, please let me know.
+
+Some test scripts are included - try allTests.tsh, coin.tsh or deleteGame.tsh (careful!) - documentation is at https://codeberg.org/JBanana/tinysh#readme
