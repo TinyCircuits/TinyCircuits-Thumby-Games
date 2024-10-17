@@ -1,5 +1,7 @@
 import math
 import random
+import json
+from thumbySaves import saveData
 z = __import__('/Games/Micro2048/obnlib')
 
 APP_CODE = "#H01"
@@ -7,7 +9,7 @@ APP_NAME = "MICRO 2048"
 APP_RELEASE = "2022"
 APP_VERSION = "V0.1"
 APP_FPS = 50
-
+saveData.setName('Micro2048')
 #------------------------------------------------------------------------------
 
 IMAGE_TITLE = z.Image(
@@ -69,6 +71,7 @@ class TitleState:
     def menu_new_game(self):
         global continuable
         continuable = False
+        saveData.delItem('boardState')
         self.start = True
 
     def menu_sound(self):
@@ -148,7 +151,11 @@ class GameState:
 
     def __init__(self):
         global continuable
-        continuable = False
+        if saveData.hasItem('boardState') == False:
+
+            continuable = False
+        else:
+            continuable = True
 
     def prepare(self):
         global continuable
@@ -161,6 +168,20 @@ class GameState:
             self.anim = 0
             self.gameover = False
             continuable = True
+        else:
+            self.field = Field()
+            self.work = None
+            self.backup = None
+            self.anim = 0
+            self.gameover = False
+            mapData = saveData.getItem('boardState')
+            jdata = json.loads(mapData)
+            for i in range(0, FIELD_SIZE):
+                for j in self.field.field_range():
+                    if jdata[i][j] >= 0:
+                        self.field.restore_panel(j, i, jdata[i][j])
+
+            
         self.idle = 0
         self.undo_msg = 0
         self.shake = 0.0
@@ -185,6 +206,7 @@ class GameState:
                 self.shake = 0.0
                 z.play("O4S4>C<GE", 15)
             elif z.btn_d(z.BTN_B):
+                self.saveGameState()
                 global continuable
                 continuable = not self.gameover
                 next_state = TitleState.ID
@@ -206,6 +228,7 @@ class GameState:
                 self.field = self.work
                 self.work = None
                 self.field.add_new_panel()
+                self.saveGameState()
                 value, high = self.field.upgrade_panels()
                 if value >= 0:
                     z.play(UP_MML[value], value)
@@ -218,6 +241,17 @@ class GameState:
                     z.play("O4S6ED+DS8C+C<BS12A+A", 20)
                 self.anim = 0
         return next_state
+        
+    def saveGameState(self):
+        mapData = [[-1]*FIELD_SIZE for i in self.field.field_range()]
+        for i in range(0, FIELD_SIZE):
+            for j in self.field.field_range():
+                if self.field.panels[i][j]:
+                    mapData[i][j] = self.field.panels[i][j].value
+        json_data = json.dumps(mapData)
+        print(json_data)
+        saveData.setItem('boardState', json_data)
+        saveData.save() 
 
     def draw(self):
         z.cls()
@@ -247,6 +281,7 @@ class Panel:
 class Field:
 
     def __init__(self, src=None):
+        
         self.panels = [[None]*FIELD_SIZE for i in self.field_range()]
         self.vx = 0
         self.vy = 0
@@ -323,7 +358,11 @@ class Field:
         if not up:
             self.empty -= 1
         return move
-
+    
+    def restore_panel(self, x, y, value):
+        self.panels[y][x] = Panel(value, fresh=True)
+        self.empty -= 1
+    
     def add_new_panel(self):
         x = 0
         y = 0
