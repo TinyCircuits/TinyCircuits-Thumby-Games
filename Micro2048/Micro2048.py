@@ -152,7 +152,6 @@ class GameState:
     def __init__(self):
         global continuable
         if saveData.hasItem('boardState') == False:
-
             continuable = False
         else:
             continuable = True
@@ -180,6 +179,8 @@ class GameState:
                 for j in self.field.field_range():
                     if jdata[i][j] >= 0:
                         self.field.restore_panel(j, i, jdata[i][j])
+            if self.field.is_playable() == False:
+                self.gameover = True;
 
             
         self.idle = 0
@@ -249,7 +250,6 @@ class GameState:
                 if self.field.panels[i][j]:
                     mapData[i][j] = self.field.panels[i][j].value
         json_data = json.dumps(mapData)
-        print(json_data)
         saveData.setItem('boardState', json_data)
         saveData.save() 
 
