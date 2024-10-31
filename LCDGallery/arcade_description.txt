@@ -1,0 +1,37 @@
+LCD Gallery
+Author: Lauren Croney
+LCD Gallery is a game inspired by classic LCD handheld games. It includes the following three games:
+
+---Sky Quest---
+You must brave the magic platforms to retrieve the Helmet of Ultimate Power and return it to solid ground. Unfortunately, you're trapped in a sisyphean nightmare and must do this over and over again.
+
+Objective:
+    Move from the left side of the screen to the right to retrieve the helmet. Make it back to the cliff without falling from one of the vanishing platforms. The magic platforms will periodically begin to vanish and then reappear. If you are jumping on or standing on a platform which has vanished, you will fall and lose a life. The middle platform is a safe zone and will not vanish.  After you leave the cliff, you can't go back until you get the helmet. The helmet will hover up and down; you can only grab it when it's low enough.
+Controls:
+    Left: Move left
+    A: Move right
+
+---Duel---
+It's a classic quick-draw shootout, with a twist! Use your special space-age blaster gun to take down your opponent!
+
+Objective:
+    After the countdown, numbers will appear above you (on the left) and the computer player     (right). Whoever has the larger number must try to shoot; whoever has the smaller number must try to dodge. In event of a tie, whoever shoots first wins. Each player starts with 100 hit points. The bars on the left and right show your health and the computer player's health, respectively. The player who is shot will take damage equal to double the other player's number. The game will end when you run out of hit points.
+Controls:
+    Left:   Dodge
+    A:  Shoot
+
+---Juggle---
+Look at these things! I don't know what they are, but if you drop them you're fired.
+
+Objective:
+    Move the paddle into position before a thing falls to hit it back up into the air. The height that things begin to fall back down can vary. The thing on the right will sometimes get stuck in a wandering bubble; when this happens it won't fall down until the bubble pops.
+
+Controls:
+    Left: Move left
+    A: Move right
+
+------------
+During any game, hold Down + B to enter the pause menu.
+
+For more complete game details, go to:
+ !!!!!!!!!!!!!!!!!!!!!!!!!!ADD URL!!!!!!!!!!!!!!!!!!!!!!!!
