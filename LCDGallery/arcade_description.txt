@@ -33,5 +33,4 @@ Controls:
 ------------
 During any game, hold Down + B to enter the pause menu.
 
-For more complete game details, go to:
- !!!!!!!!!!!!!!!!!!!!!!!!!!ADD URL!!!!!!!!!!!!!!!!!!!!!!!!
+For more complete game details, go to: https://github.com/laurenrad/LCDGallery
