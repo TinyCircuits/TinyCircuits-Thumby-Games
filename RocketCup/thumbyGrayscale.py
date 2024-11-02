@@ -21,11 +21,12 @@ import _thread
 from os import stat
 from math import sqrt, floor
 from array import array
+from thumbyAudio import audio
 from thumbyButton import buttonA, buttonB, buttonU, buttonD, buttonL, buttonR
 from thumbyHardware import HWID
 from sys import modules
 
-__version__ = '4.0.2-hemlock'
+__version__ = '4.0.3'
 
 
 emulator = None
@@ -275,6 +276,7 @@ class Grayscale:
         if not emulator:
             try:
                 with open("thumbyGS.cfg", "r") as fh:
+                    audio.playBlocking(11,11) # Fix rare config load crash (PF).
                     vls = fh.read().split('\n')
                     for fhd in vls:
                         if fhd.startswith('gsV3,'):

@@ -1,10 +1,11 @@
-# Miminised Thumby grayscale library (version 4.0.2-hemlock)
+# Miminised Thumby grayscale library (version 4.0.3)
 # See: https://github.com/Timendus/thumby-grayscale
 
 from utime import sleep_ms, ticks_diff, ticks_ms, sleep_us
 from machine import Pin, SPI, idle, mem32
 import _thread
 from array import array
+from thumbyAudio import audio
 
 emulator = None
 try:
@@ -225,6 +226,7 @@ class _GrayscaleLauncher:
         calibrate = False
         try:
             with open("thumbyGS.cfg", "r") as fh:
+                audio.playBlocking(11,11) # Fix rare config load crash (PF).
                 vls = fh.read().split('\n')
                 for fhd in vls:
                     if fhd.startswith('gsV3,'):
