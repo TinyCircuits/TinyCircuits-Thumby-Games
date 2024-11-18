@@ -110,6 +110,11 @@ https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/LCDGallery/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/LCDGallery/juggle.py
 
+NAME=Snake
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Snake/Snake.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Snake/snake_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Snake/snake_description.txt
+
 NAME=Neko
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Neko/arcade_title_video.webm
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Neko/Neko.py
