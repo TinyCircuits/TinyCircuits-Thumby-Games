@@ -1,3 +1,8 @@
+NAME=BatteryPet
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/BatteryPet/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/BatteryPet/BatteryPet.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/BatteryPet/arcade_description.txt
+
 NAME=Neko
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Neko/arcade_title_video.webm
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Neko/Neko.py
