@@ -100,6 +100,16 @@ https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/SnekePal/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/SnekePal/thumbyGrayscale.py
 
+NAME=LCDGallery
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/LCDGallery/fight.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/LCDGallery/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/LCDGallery/lcd.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/LCDGallery/font_segment.bin
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/LCDGallery/LCDGallery.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/LCDGallery/skywalk.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/LCDGallery/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/LCDGallery/juggle.py
+
 NAME=Neko
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Neko/arcade_title_video.webm
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Neko/Neko.py
