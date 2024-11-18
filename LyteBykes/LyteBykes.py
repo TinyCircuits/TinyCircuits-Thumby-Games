@@ -1,4 +1,6 @@
-import thumby
+from thumbyAudio import audio
+from thumbyButton import inputPressed
+from thumbyButton import buttonU, buttonD, buttonL, buttonR
 import random
 import time
 import math
@@ -85,9 +87,9 @@ def play_melody():
         if note == 0:  # Rest
             time.sleep(duration / 1000.0)
         else:
-            thumby.audio.play(note, duration)
+            audio.play(note, duration)
             time.sleep(duration / 1000.0)
-        if thumby.inputPressed():
+        if inputPressed():
             play = False
             break
 
@@ -114,7 +116,7 @@ def play_crash_sound(speed):
     frequency = int(random.randrange(500, 2000) * speed)  # A4 note, you can change this to get different sounds
     duration = 300  # Duration in milliseconds
     if frequency > 20:
-        thumby.audio.play(frequency, duration)
+        audio.play(frequency, duration)
 
 # Function to reset the game state
 def reset_game():
@@ -218,13 +220,13 @@ def move_ai():
 
 def control_player():
     global player_direction
-    if thumby.buttonU.pressed() and player_direction != (0, 1):
+    if buttonU.pressed() and player_direction != (0, 1):
         player_direction = (0, -1)
-    elif thumby.buttonD.pressed() and player_direction != (0, -1):
+    elif buttonD.pressed() and player_direction != (0, -1):
         player_direction = (0, 1)
-    elif thumby.buttonL.pressed() and player_direction != (1, 0):
+    elif buttonL.pressed() and player_direction != (1, 0):
         player_direction = (-1, 0)
-    elif thumby.buttonR.pressed() and player_direction != (-1, 0):
+    elif buttonR.pressed() and player_direction != (-1, 0):
         player_direction = (1, 0)
 
 
@@ -313,7 +315,7 @@ def show_game_over_screen():
 def wait_for_input():
     global play, particles
     while True:
-        if thumby.inputPressed():
+        if inputPressed():
             particles = []
             play = True
             break
@@ -371,7 +373,7 @@ while True:
             show_title_screen()
         
         # Refresh the screen
-        display.drawRectangle(0, 6, thumby.display.width, thumby.display.height - 6, 1)
+        display.drawRectangle(0, 6, display.width, display.height - 6, 1)
         
         display.update()
     
