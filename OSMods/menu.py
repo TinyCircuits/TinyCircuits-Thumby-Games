@@ -1,6 +1,3 @@
-
-# fix brightness not persistent
-
 from machine import freq
 freq(250_000_000)
 from machine import mem32, soft_reset, ADC
