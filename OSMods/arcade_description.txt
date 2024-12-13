@@ -1,0 +1,4 @@
+An installer for a custom menu.py
+Deletes self after installation
+
+If you know of any glitches, or have an idea for a feature, send me a message on Discord - @unredknown
