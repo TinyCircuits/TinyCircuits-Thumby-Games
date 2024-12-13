@@ -4,6 +4,12 @@ https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/OSMods/OSMods.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/OSMods/arcade_description.txt
 
+NAME=EscapeRoom
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/EscapeRoom/EscapeRoom.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/EscapeRoom/images.bin
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/EscapeRoom/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/EscapeRoom/arcade_description.txt
+
 NAME=BatteryPet
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/BatteryPet/arcade_title_video.webm
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/BatteryPet/BatteryPet.py
