@@ -269,14 +269,11 @@ def overlay():
     drawDup( 0, 4, 0, 5 )
 
 def playCuckoo():
-    audio.play( 523, 500 ) # 12|16| 
-    audio.play( 392, 750 ) # 7|16| .
-    sleep( 0.5 )           # 7|16| r
-    audio.play( 523, 500 ) # 12|16| 
-    audio.play( 392, 750 ) # 7|16| .
-    sleep( 0.5 )           # 7|16| r
-    audio.play( 523, 500 ) # 12|16| 
-    audio.play( 392, 750 ) # 7|16| .
+    for _ in range( 3 ):
+        audio.playBlocking( 587, 300 )
+        sleep( 0.1 )
+        audio.playBlocking( 392, 250 )
+        sleep( 0.6 )
 
 def showText( line1, line2 = None, line3 = None ):
     d.fill( 1 )
