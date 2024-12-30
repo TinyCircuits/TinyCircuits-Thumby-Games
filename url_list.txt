@@ -4,6 +4,11 @@ https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/EscapeRoom/images.bin
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/EscapeRoom/arcade_title_video.webm
 
+NAME=A_Reboot
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/A_Reboot/A_Reboot.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/A_Reboot/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/A_Reboot/arcade_title_video.webm
+
 NAME=OSMods
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/OSMods/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/OSMods/OSMods.py
