@@ -74,7 +74,8 @@ class Sword:
                         if not enemy.is_buried:
                             self.process_hit(enemy, thumby)
                     else:
-                        self.process_hit(enemy, thumby)
+                        if not enemy.enemy_type == "blade:":
+                            self.process_hit(enemy, thumby)
 
     
     def display_death_sprite(self, thumby):
@@ -202,7 +203,7 @@ class Loot:
         self.heart_drop_map = bytearray([31,25,19,25,31])
         self.rupee_drop_map = bytearray([31,17,14,17,31])
         self.bigrupee_drop_map = bytearray([31,17,0,17,31])
-        # self.bomb_drop_map = bytearray([31,3,1,2,30])
+        self.bomb_drop_map = bytearray([31,3,1,2,30])
         self.loot_flash = bytearray([31,31,31,31,31])
         self.timer = 0
         self.lifespan = 100
@@ -219,6 +220,8 @@ class Loot:
             self.sprite = thumby.Sprite(5, 5, self.rupee_drop_map, self.x, self.y, key=1)
         if self.loot_type == "bigrupee":
             self.sprite = thumby.Sprite(5, 5, self.bigrupee_drop_map, self.x, self.y, key=1)
+        if self.loot_type == "bomb":
+            self.sprite = thumby.Sprite(5, 5, self.bomb_drop_map, self.x, self.y, key=1)
     
     def display_loot(self, display):
         if self.timer < self.lifespan:
@@ -240,7 +243,7 @@ class Player:
         self.rupees_text = str(self.rupees)
         self.keys_text = str(self.keys)
         self.bombs_text = str(self.bombs)
-        self.loot_types = ["heart", "rupee", "bigrupee", "none"]
+        self.loot_types = ["heart", "rupee", "bigrupee", "bomb", "none"]
         self.loot_randomizer = int
         self.type_of_loot = int
         self.facingDirection = ""
@@ -347,7 +350,7 @@ class Player:
             display.drawText("GAME OVER", 10, 17, 1)
             display.update()
             sleep(2)
-            thumbyHardware.reset() 
+            thumby.thumbyHardware.reset() 
             
             
     def get_collision(self, collider, mod1, mod2, mod3, mod4, mod5, mod6):
@@ -365,36 +368,37 @@ class Player:
                 enemy.health -= 1
                 if enemy.facingDirection == "up":
                     if direction == "down":
-                        enemy.y += 5
+                        enemy.y += 4
                 elif enemy.facingDirection == "down":
                     if direction == "up":
-                        enemy.y -= 5
+                        enemy.y -= 4
                 elif enemy.facingDirection == "left":
                     if direction == "right":
-                        enemy.x += 5
+                        enemy.x += 4
                 elif enemy.facingDirection == "right":
                     if direction == "left":
-                        enemy.x -= 5
+                        enemy.x -= 4
         if enemy.enemy_type == "stalfos":
             thumby.audio.playBlocking(392, 50)
             thumby.audio.play(523, 150)
             enemy.health -= 1
             if enemy.facingDirection == "up":
                 if direction == "down":
-                    enemy.y += 5
+                    enemy.y += 4
             elif enemy.facingDirection == "down":
                 if direction == "up":
-                    enemy.y -= 5
+                    enemy.y -= 4
             elif enemy.facingDirection == "left":
                 if direction == "right":
-                    enemy.x += 5
+                    enemy.x += 4
             elif enemy.facingDirection == "right":
                 if direction == "left":
-                    enemy.x -= 5
+                    enemy.x -= 4
         else:
-            thumby.audio.playBlocking(392, 50)
-            thumby.audio.play(523, 150)
-            enemy.health -= 1
+            if not enemy.enemy_type == "blade":
+                thumby.audio.playBlocking(392, 50)
+                thumby.audio.play(523, 150)
+                enemy.health -= 1
                 
     
     def hit_detection(self, enemy_controller, thumby):
@@ -421,39 +425,49 @@ class Player:
                         self.process_hit(self.facingDirection, enemy, thumby)
 
 # TO DO:  Put this in the enemy_controller object
-            if enemy.health < 1:
-                enemy.is_dead = True
-                enemy_controller.enemies_used = enemy_controller.enemies_used + (enemy.identity, )
-                self.loot_randomizer = randrange(0, 5)
-                
-                if self.loot_randomizer == 1:
-                    self.type_of_loot = self.loot_types[0]
-                elif self.loot_randomizer == 2:
-                    self.type_of_loot = self.loot_types[1]
-                elif self.loot_randomizer == 3:
-                    self.type_of_loot = self.loot_types[2]
-                else:
-                    self.type_of_loot = self.loot_types[3]
-                enemy_controller.loot.append(Loot(enemy.x, enemy.y, self.type_of_loot, thumby))
-                
-                while enemy_controller.animation_counter < enemy_controller.animation_length:
-                    enemy.map_to_display = [enemy.blank_map, 0, 0]
-                    enemy_controller.display_death_sprite(enemy)
+            if not enemy.enemy_type == "blade":
+                if enemy.health < 1:
+                    enemy.is_dead = True
+                    enemy_controller.enemies_used = enemy_controller.enemies_used + (enemy.identity, )
+                    self.loot_randomizer = randrange(0, 5)
                     
-                else:
-                    enemy.health = enemy.starting_health
-                    enemy.is_dead = False
-                    enemy_index = enemy_controller.enemies.index(enemy)
-                    # print(enemy_index)
-                    del enemy_controller.enemies[enemy_index]
-                    enemy_controller.animation_counter = 0
-            if len(enemy_controller.enemies) == 0:
-                enemy_controller.enemies_killed = True
+                    if self.loot_randomizer == 1:
+                        self.type_of_loot = self.loot_types[0]
+                    elif self.loot_randomizer == 2:
+                        self.type_of_loot = self.loot_types[1]
+                    elif self.loot_randomizer == 3:
+                        self.type_of_loot = self.loot_types[2]
+                    elif self.loot_randomizer == 4:
+                        self.type_of_loot = self.loot_types[3]
+                    else:
+                        self.type_of_loot = self.loot_types[4]
+                    enemy_controller.loot.append(Loot(enemy.x, enemy.y, self.type_of_loot, thumby))
+                    
+                    while enemy_controller.animation_counter < enemy_controller.animation_length:
+                        enemy.map_to_display = [enemy.blank_map, 0, 0]
+                        enemy_controller.display_death_sprite(enemy)
+                        
+                    else:
+                        enemy.health = enemy.starting_health
+                        enemy.is_dead = False
+                        enemy_index = enemy_controller.enemies.index(enemy)
+                        # print(enemy_index)
+                        del enemy_controller.enemies[enemy_index]
+                        enemy_controller.animation_counter = 0
+                if len(enemy_controller.enemies) == 0:
+                    enemy_controller.enemies_killed = True
     
     def save_game(self, scene_controller, json):
         save_list = [6, self.max_hearts, self.rupees, self.keys, self.bombs, scene_controller.isDangerous, scene_controller.doors_unlocked, scene_controller.keys_used]
         with open("/Games/Thelda/save.json", 'w') as savefile: 
             json.dump(save_list, savefile)
+            
+    def remove_block_lock(self, scene_controller):
+        if "blocklocks" in scene_controller.this_scene:
+            for blocklock in scene_controller.block_locks:
+                if blocklock.id == self.colliding_wall.id:
+                    scene_controller.doors_unlocked.append(blocklock.id)
+                    scene_controller.block_locks.remove(blocklock)
     
 
     # Dpad movement.  TO DO:  Refactor this monstrosity
@@ -466,6 +480,12 @@ class Player:
                     if item.sword:
                         scene_controller.isDangerous = False
                         scene_controller.this_scene["items"][0].y -= 40
+                else:
+                    if item.item_type == "heartcontainer":
+                        self.max_hearts += 2
+                        self.hearts = self.max_hearts
+                        scene_controller.heart_containers_used.append(item.identity)
+                        scene_controller.items.remove(item)
                         
         for lock in scene_controller.locks:
             if (((self.playerSprite.x + 4 < lock.x + 6) and (self.playerSprite.x + 9 > lock.x - 1)) and 
@@ -586,7 +606,7 @@ class Player:
                             thumby.display.fill(1)
                             rock_index = enemy.rocks.index(rock)
                             del enemy.rocks[rock_index]
-            if enemy.enemy_type == "zora":            
+            if enemy.enemy_type == "zora" or enemy.enemy_type == "aquamentus":            
                 for magic in enemy.magic:
                     if (((self.playerSprite.x + 4 < magic.x + 3) and (self.playerSprite.x + 9 > magic.x)) and 
                     ((magic.y < self.playerSprite.y + 9) and (magic.y + 3 > self.playerSprite.y + 4))):
@@ -604,24 +624,21 @@ class Player:
         if self.enemyCollisionBuffer > 20:
             self.enemyCollision = False
     
-        
+        collidables = (scene_controller.walls + scene_controller.bushes + 
+                   scene_controller.water + scene_controller.barriers + 
+                   scene_controller.locks + scene_controller.blocks + scene_controller.pushable_blocks + scene_controller.block_locks)
         if thumby.buttonU.pressed():
             if not self.isTransitioning:
                 self.isColliding = False
-                for wall in scene_controller.walls:    
-                        self.get_collision(wall, 4, 5, 9, 9, 5, 3)
-                for bush in scene_controller.bushes:    
-                        self.get_collision(bush, 4, 5, 9, 9, 5, 3)
-                for water in scene_controller.water:    
-                        self.get_collision(water, 4, 5, 9, 9, 5, 3)
-                for barrier in scene_controller.barriers:    
-                        self.get_collision(barrier, 4, 5, 9, 9, 5, 3)
-                for lock in scene_controller.locks:    
-                        self.get_collision(lock, 4, 5, 9, 9, 5, 3)
-                for block in scene_controller.blocks:    
-                        self.get_collision(block, 4, 5, 9, 9, 5, 3)
                 self.facingDirection = "up"
+                for collidable in collidables:
+                    self.get_collision(collidable, 4, 5, 9, 9, 5, 3)
                 if self.isColliding:
+                    if self.colliding_wall in scene_controller.pushable_blocks:
+                        if self.colliding_wall.pushable == self.facingDirection:
+                            self.colliding_wall.y -= 5
+                            self.colliding_wall.pushable = "Null"
+                            self.remove_block_lock(scene_controller)
                     self.playerSprite.y = self.colliding_wall.y + 2
                     self.isColliding = False
                 player_sprite_x = self.playerSprite.x
@@ -649,20 +666,15 @@ class Player:
         if thumby.buttonD.pressed():
             if not self.isTransitioning:
                 self.isColliding = False
-                for wall in scene_controller.walls:    
-                        self.get_collision(wall, 4, 5, 9, 10, 5, 4)
-                for bush in scene_controller.bushes:    
-                        self.get_collision(bush, 4, 5, 9, 10, 5, 4)
-                for water in scene_controller.water:    
-                        self.get_collision(water, 4, 5, 9, 10, 5, 4)
-                for barrier in scene_controller.barriers:    
-                        self.get_collision(barrier, 4, 5, 9, 10, 5, 4)
-                for lock in scene_controller.locks:    
-                        self.get_collision(lock, 4, 5, 9, 10, 5, 4)
-                for block in scene_controller.blocks:    
-                        self.get_collision(block, 4, 5, 9, 10, 5, 4)
                 self.facingDirection = "down"
+                for collidable in collidables:    
+                    self.get_collision(collidable, 4, 5, 9, 10, 5, 4)
                 if self.isColliding:
+                    if self.colliding_wall in scene_controller.pushable_blocks:
+                        if self.colliding_wall.pushable == self.facingDirection:
+                            self.colliding_wall.y += 5
+                            self.colliding_wall.pushable = "Null"
+                            self.remove_block_lock(scene_controller)
                     self.playerSprite.y = self.colliding_wall.y - 10
                     self.isColliding = False
                 player_sprite_x = self.playerSprite.x
@@ -723,20 +735,15 @@ class Player:
         if thumby.buttonL.pressed():
             if not self.isTransitioning:
                 self.isColliding = False
-                for wall in scene_controller.walls:    
-                        self.get_collision(wall, 3, 5, 9, 9, 5, 4)
-                for bush in scene_controller.bushes:    
-                        self.get_collision(bush, 3, 5, 9, 9, 5, 4)
-                for water in scene_controller.water:    
-                        self.get_collision(water, 3, 5, 9, 9, 5, 4)
-                for barrier in scene_controller.barriers:    
-                        self.get_collision(barrier, 3, 5, 9, 9, 5, 4)
-                for lock in scene_controller.locks:    
-                        self.get_collision(lock, 3, 5, 9, 9, 5, 4)
-                for block in scene_controller.blocks:    
-                        self.get_collision(block, 3, 5, 9, 9, 5, 4)
                 self.facingDirection = "left"
+                for collidable in collidables:    
+                    self.get_collision(collidable, 3, 5, 9, 9, 5, 4)
                 if self.isColliding:
+                    if self.colliding_wall in scene_controller.pushable_blocks:
+                        if self.colliding_wall.pushable == self.facingDirection:
+                            self.colliding_wall.x -= 5
+                            self.colliding_wall.pushable = "Null"
+                            self.remove_block_lock(scene_controller)
                     self.playerSprite.x = self.colliding_wall.x + 2
                     self.isColliding = False
                 player_sprite_x = self.playerSprite.x
@@ -761,20 +768,15 @@ class Player:
         if thumby.buttonR.pressed():
             if not self.isTransitioning:
                 self.isColliding = False
-                for wall in scene_controller.walls:    
-                        self.get_collision(wall, 4, 5, 10, 9, 5, 4)
-                for bush in scene_controller.bushes:    
-                        self.get_collision(bush, 4, 5, 10, 9, 5, 4)
-                for water in scene_controller.water:    
-                        self.get_collision(water, 4, 5, 10, 9, 5, 4)
-                for barrier in scene_controller.barriers:    
-                        self.get_collision(barrier, 4, 5, 10, 9, 5, 4)
-                for lock in scene_controller.locks:    
-                        self.get_collision(lock, 4, 5, 10, 9, 5, 4)
-                for block in scene_controller.blocks:    
-                        self.get_collision(block, 4, 5, 10, 9, 5, 4)
                 self.facingDirection = "right"
+                for collidable in collidables:    
+                    self.get_collision(collidable, 4, 5, 10, 9, 5, 4)
                 if self.isColliding:
+                    if self.colliding_wall in scene_controller.pushable_blocks:
+                        if self.colliding_wall.pushable == self.facingDirection:
+                            self.colliding_wall.x += 5
+                            self.colliding_wall.pushable = "Null"
+                            self.remove_block_lock(scene_controller)
                     self.playerSprite.x = self.colliding_wall.x - 10
                     self.isColliding = False
                 player_sprite_x = self.playerSprite.x
@@ -892,7 +894,7 @@ class Player:
             if self.active_item == "boomerang":
                 if self.items == []:
                     self.items.append(Boomerang(self.playerSprite, self.facingDirection, thumby.display))
-            elif self.active_item == "bombs":
+            elif self.active_item == "bombs" and self.bombs >= 1:
                 if self.items == []:
                     if self.facingDirection == "up":
                         bomb_x = self.playerSprite.x + 4
@@ -910,6 +912,8 @@ class Player:
                         bomb_x = playerSprite.x
                         bomb_y = playerSprite.y
                     self.items.append(Bomb(bomb_x, bomb_y))
+                    if self.bombs > 0:
+                        self.bombs -= 1
         if not self.items == []:
             for item in self.items:
                 if item.item_type == "boomerang":
@@ -919,7 +923,8 @@ class Player:
                             thumby.audio.play(4186, 50)
                             item.lifecounter = item.lifespan
                             if not enemy.frozen:
-                                enemy.frozen = True
+                                if not enemy.enemy_type == "blade" and not enemy.enemy_type == "aquamentus":
+                                    enemy.frozen = True
                                 
                     if (((self.playerSprite.x + 4 < item.x + 5) and (self.playerSprite.x + 9 > item.x)) and 
                     ((item.y < self.playerSprite.y + 9) and (item.y + 5 > self.playerSprite.y + 4))) and item.lifecounter >= item.lifespan:
