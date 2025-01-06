@@ -1,10 +1,13 @@
-import thumby
 import gc
+import thumby
+gc.collect()
 import json
+gc.collect()
 from sys import path
 path.append("/Games/Thelda")
 # import thumbyHardware
 import fonthandler
+gc.collect()
 from player import Player
 gc.collect()
 from enemycontroller import EnemyController
@@ -35,6 +38,7 @@ def loadgame():
     with open("/Games/Thelda/save.json", 'r') as savefile:
         thisdata = json.load(savefile)
         return thisdata
+gc.collect()
 
 title_screen = bytearray([0,252,14,246,26,234,234,234,106,106,106,234,106,234,106,234,106,234,234,234,234,106,234,234,234,106,234,234,234,106,106,234,234,106,234,234,234,106,106,234,234,106,106,234,234,234,106,106,106,234,106,106,106,234,234,234,234,234,234,234,234,234,234,234,234,234,234,26,22,14,252,0,
            0,255,0,255,0,255,255,255,159,164,183,55,244,246,52,55,52,4,5,207,247,52,5,197,63,196,244,53,7,196,13,244,247,20,20,21,7,204,7,244,7,12,253,254,7,247,244,53,52,103,204,30,63,255,7,247,23,23,55,199,15,63,255,255,255,255,255,0,0,0,255,0,
@@ -115,7 +119,7 @@ while playing:
     thumby.display.fill(1) # Fill canvas to white
     scene_controller.build_scene(scene_controller.scene_x, scene_controller.scene_y, font_handler, thumby.display, enemy_controller)
     enemy_controller.populate_enemies(scene_controller)
-    enemy_controller.move_enemies(scene_controller)
+    enemy_controller.move_enemies(scene_controller, my_player)
     enemy_controller.attack(my_player)
     enemy_controller.display_loot(my_player, enemy_controller, thumby.display)
     if not my_player.swinging:
