@@ -1,5 +1,6 @@
 from random import randint
-
+from thumby import Sprite
+from items import Heart_Container
 class NSDoorway:
     def __init__(self, x, y):
         self.doorway = bytearray([31,31,31,31,31,31])
@@ -33,11 +34,8 @@ class EWLock:
         self.y = y
         self.size_x = 5
 
-
 class Scenes80:
     def __init__(self):
-        
-        
         self.scenes = {
              "scene -797,404": {
                 "barriers": [(1, 5), (6, 5), (11, 5), (16, 5), (21, 5), (26, 5), (31, 5), (36, 5), (41, 5), (46, 5), (51, 5), (56, 5), (61, 5), (66, 5),
@@ -82,7 +80,9 @@ class Scenes80:
                 "blocks": [(46, 10), (51, 10), (56, 10), (61, 10), 
                     (56, 15), (61, 15), 
                     (56, 25), (61, 25), 
-                    (46, 30), (51, 30), (56, 30), (61, 30)], 
+                    (46, 30), (51, 30), (56, 30), (61, 30)],
+                "items": [Heart_Container(55, 20, "HC01")],
+                "enemies": {"aquamentus": [(45, 15, "D1E39")]}
             },
             
             "scene -799,400": {
@@ -236,7 +236,9 @@ class Scenes80:
                     (1, 30), (66, 30),
                     (1, 35), (6, 35),  (11, 35), (16, 35), (21, 35), (26, 35), (41, 35), (46, 35), (51, 35), (56, 35), (61, 35), (66, 35)], 
                 "doorways": [EWDoorway(1, 20), EWDoorway(66, 20), NSDoorway(33, 35)], 
-                "blocks": [(31, 20)]
+                "pushableblocks": [(31, 20, "left", "D1PB01")],
+                "blocklocks": [(1, 20, "D1PB01", "EW")],
+                "enemies": {"gel": [("D1E32"), ("D1E33"), ("D1E34")]},
             },
             
             "scene -801,405": {
@@ -248,8 +250,11 @@ class Scenes80:
                     (1, 35), (6, 35), (11, 35), (16, 35), (21, 35), (26, 35), (41, 35), (46, 35), (51, 35), (56, 35), (61, 35), (66, 35), 
                     (33, 5), (33, 35), (1, 20)], 
                 "doorways": [EWDoorway(66, 20)],
-                "blocks": [(36, 15), (31, 20), (41, 20), (36, 25)],
-                "stairs": [(36, 20)]
+                "blocks": [(36, 15), (41, 20), (36, 25)],
+                "doors": [(36, 20)],
+                "stairs": [(36, 20)], 
+                "pushableblocks": [(31, 20, "down", "D1PB02")],
+                "enemies": {"blade": [(6, 10, 25, 7, "D1E35"), (60, 10, 25, 7, "D1E36"), (6, 30, 25, 7, "D1E37"), (60, 30, 25, 7, "D1E38")]},
             },
             
             "scene -801,400": {

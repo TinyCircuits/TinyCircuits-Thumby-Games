@@ -19,7 +19,20 @@ class Block:
     def __init__(self, x, y):
         self.x = x
         self.y = y
+
+class Pushable_Block:
+    def __init__(self, x, y, push_direction, identity):
+        self.pushable = push_direction
+        self.id = identity
+        self.x = x
+        self.y = y
         
+class Block_Lock:
+    def __init__(self, x, y, identity, direction):
+        self.x = x
+        self.y = y
+        self.id = identity
+        self.direction = direction
 class Key:
     def __init__(self, x, y, is_solo, identity, scenestring, conditional):
         self.key = bytearray([31,13,2,29,31])
@@ -59,6 +72,8 @@ class SceneController:
         self.locks = []
         self.keys = []
         self.blocks = []
+        self.pushable_blocks = []
+        self.block_locks = []
         self.frame_timer = 0
         self.frame_delay = 0
         self.is_still_here = False
@@ -68,6 +83,7 @@ class SceneController:
         self.isDangerous = True
         self.doors_unlocked = []
         self.keys_used = []
+        self.heart_containers_used = []
         self.key_assigned = False
         print(f"Items:{len(self.items)}")
 
@@ -171,7 +187,11 @@ class SceneController:
                 if "items" in self.this_scene:
                     for item in self.this_scene["items"]:
                         if not item.item_type == "sword":
-                            self.items.append(item)
+                            if not item.item_type == "heartcontainer":
+                                self.items.append(item)
+                            elif item.item_type == "heartcontainer" and not item.identity in self.heart_containers_used:
+                                self.items.append(item)
+                            
                         else:
                             if self.isDangerous:
                                 self.items.append(item)
@@ -201,6 +221,15 @@ class SceneController:
                 if "blocks" in self.this_scene:
                     for block in self.this_scene["blocks"]:
                         self.blocks.append(Block(block[0], block[1]))
+            if self.pushable_blocks == []:
+                if "pushableblocks" in self.this_scene:
+                    for pushableblock in self.this_scene["pushableblocks"]:
+                        self.pushable_blocks.append(Pushable_Block(pushableblock[0], pushableblock[1], pushableblock[2], pushableblock[3]))
+            if self.block_locks == []:
+                if "blocklocks" in self.this_scene:
+                    for blocklock in self.this_scene["blocklocks"]:
+                        if not blocklock[2] in self.doors_unlocked:
+                            self.block_locks.append(Block_Lock(blocklock[0], blocklock[1], blocklock[2], blocklock[3]))
                         
             gc.collect()
                         
@@ -235,31 +264,41 @@ class SceneController:
             display.blit(item.item, item.x, item.y, 5, 5, -1, 0, 0)
         for tree in self.trees:
             display.blit(self.tree_tile, tree.x, tree.y, 5, 5, -1, 0, 0)
+        for pushableblock in self.pushable_blocks:
+            display.blit(bytearray([0,14,6,2,0]), pushableblock.x, pushableblock.y, 5, 5, -1, 0, 0)
+            
         for key in self.keys:
             if key.home_scene == self.scene_string:
                 if key.solo:
                     if not key.conditional:
+                        # Display the key if it is solo and unconditional
                         display.blit(key.key, key.x, key.y, 5, 5, -1, 0, 0)
                     else:
-                        if enemy_controller.enemies == [] and not key.identity in self.keys_used:
+                        # Display the key if it is solo and conditional but only if no enemies are present
+                        if enemy_controller.enemies == [] and key.identity not in self.keys_used:
                             display.blit(key.key, key.x, key.y, 5, 5, -1, 0, 0)
                 else:
                     if not self.key_assigned:
-                        if not len(enemy_controller.enemies) == 0:
+                        if enemy_controller.enemies:
+                            # Assign the first enemy as the keyholder if there are enemies
                             self.keyholder = enemy_controller.enemies[0]
                             self.key_assigned = True
                             key.carried = True
                         else:
+                            # Display the key if it is not carried and no enemies are present
                             key.carried = False
                             display.blit(key.key, key.x, key.y, 5, 5, -1, 0, 0)
-                    else:    
+                    else:
                         if self.keyholder in enemy_controller.enemies:
+                            # Update key position to follow the keyholder
                             key.x = self.keyholder.x
                             key.y = self.keyholder.y
                             display.blit(key.key, self.keyholder.x, self.keyholder.y, 5, 5, -1, 0, 0)
                         else:
+                            # Display the key at its original position if it is no longer carried
                             key.carried = False
                             display.blit(key.key, key.x, key.y, 5, 5, -1, 0, 0)
+
                         
         if self.in_dungeon:
             display.blit(self.dungeon_wall, 1, 5, 35, 18, 1, 0, 0)
@@ -272,9 +311,16 @@ class SceneController:
                 
             for lock in self.locks:
                 display.blit(lock.lock, lock.x, lock.y, lock.size_x, 5, 1, 0, 0)
+            
+            for blocklock in self.block_locks:
+                if blocklock.direction == "EW":
+                    display.blit(bytearray([0,10,0,10,0]), blocklock.x, blocklock.y, 5, 5, -1, 0, 0)
+                else:
+                    display.blit(bytearray([0,10,0,0,10,0]), blocklock.x, blocklock.y, 6, 5, -1, 0, 0)
                 
             for block in self.blocks:
                 display.blit(bytearray([0,14,6,2,0]), block.x, block.y, 5, 5, 1, 0, 0)
+            
             
         
         for sprite in self.sprites:
@@ -309,6 +355,8 @@ class SceneController:
         self.doorways = []
         self.locks = []
         self.blocks = []
+        self.pushable_blocks = []
+        self.block_locks = []
         self.key_assigned = False
         for enemy in enemy_controller.enemies:
             if enemy.enemy_type == "zora":

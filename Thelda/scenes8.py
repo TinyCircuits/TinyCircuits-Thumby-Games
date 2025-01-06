@@ -81,6 +81,8 @@ class Scenes8:
                     (1, 35), (6, 35), (11, 35), (16, 35), (21, 35), (26, 35), (31, 35),
                     (36, 35), (41, 35), (46, 35), (51, 35), (56, 35), (61, 35), (66, 35)],
                 "doors": [(16, 10)],
+                # "pushableblocks": [(28, 20, "down", "OWPB01")],
+                # "enemies": {"aquamentus": [(45, 15, "S8E08")]}
                 # "slopes": [
                 #     # Slope(self.nw_slope_map, 26, 10), Slope(self.nw_slope_map, 11, 15), Slope(self.ne_slope_map, 41, 15), Slope(self.sw_slope_map, 6, 25)
                 # ]
