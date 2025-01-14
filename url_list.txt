@@ -1,3 +1,9 @@
+NAME=TimePlanner
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TimePlanner/events.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TimePlanner/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TimePlanner/TimePlanner.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TimePlanner/TimePlanner.py
+
 NAME=Tinynvaders
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Tinynvaders/Tinynvaders.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Tinynvaders/arcade_description.txt
