@@ -1,0 +1,5 @@
+TimePlanner v1.1 by N0P3
+
+Use the D-Pad to control the placement position and press the A button to drop. The dashed line on the left represents the deadline. You need to ensure there are no gaps every time the deadline is reached. Any gaps will cost you one life point. The game ends when you run out of life points.
+
+P.S. I know this might not be the most exciting game, but I really wanted to create something for this tiny device.
