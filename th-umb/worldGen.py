@@ -3,7 +3,7 @@ def floorGen(logic,sl,worldType):
 	if sl.loadWorld(logic,logic.Logic,logic.sprites):return
 	allEntities=[];worldNumb={0:0,1:3,2:0,3:11,4:0,5:0,6:9}.get(worldType,0);logic.world=bytearray(worldNumb for _ in range(logic.ws[0]));logic.el=logic.Logic(logic,allEntities,logic.sprites)
 def worldGen(logic,sl):
-	A='World Finished Generating!'
+	A='Worlds Finished Generating!'
 	if sl.loadWorld(logic,logic.Logic,logic.sprites):return
 	types=rand=xPos=yPos=0;allEntities=[];logic.waterLine=[0,0,0];random.seed(logic.counter);logic.worldType=random.randint(0,7)
 	if logic.worldType==0:
