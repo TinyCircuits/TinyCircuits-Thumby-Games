@@ -1,0 +1,11 @@
+A simple 2D sandbox game made for the thumby! Hence the name TH-UMB!
+
+Disclaimer ( THIS IS A DEMAKE OF UMB MADE BY LURPLE!!! )
+If you need any info about the game, i would highly recommend joining the thumby discord server and looking for the thread named " TH-UMB ( UMB De/Remake ) "!
+This game will "hopefully" eventually have a modular support for modding in the future for yall to add whatever you want!
+
+" Creator of Foxgine! "
+
+Author: PresentFox
+Version: 1.0
+License: None
