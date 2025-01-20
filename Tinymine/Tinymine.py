@@ -31,8 +31,6 @@ def log( msg ):
         #    f.write( '\n' )
         pass
 
-log( 'Hello world' )
-
 try:
     if startTaskRunner( DIR ):
         log( 'Started tune thread' )
@@ -53,13 +51,11 @@ except Exception as x:
     thumby.reset()
 
 def shuffle( list ):
-    log( 'Shuffle start' )
     random.seed( time.ticks_cpu() )
     # Fisher-Yates shuffle (apparently)
     for i in range( len( list ) - 1, 0, -1 ):
         j = random.randrange( i + 1 )
         list[ i ], list[ j ] = list[ j ], list[ i ]
-    log( 'Shuffle end' )
 
 def setUpSprites( spriteX, spriteY ):
     sprites = {}
@@ -93,7 +89,7 @@ def setUpSprites( spriteX, spriteY ):
         spriteX, spriteY,
         -1
     )
-    
+
     # 8x7 for 4 frames
     sprites['crouchingSprite'] = thumby.Sprite(
         8, 7,
@@ -221,6 +217,9 @@ class Snake:
         self.state = 0
 
 def loadLevel( id, canJump, canRide, chaos ):
+    global startTime
+    if id == 1:
+        startTime = time.time()
     thumby.display.fill( 0 )
     thumby.display.drawText( "Loading...", 3, 8, 1 )
     thumby.display.update()
@@ -285,7 +284,6 @@ def loadLevel( id, canJump, canRide, chaos ):
         thumby.display.drawText( "Chaos...", 23, 31, 1 )
         thumby.display.update()
         gc.collect()
-        log( 'finding gold positions, ' + str( gc.mem_alloc() ) + ' allocated' )
         # Get all possible positions, and remove symbols
         possibleGold = []
         for row, line in enumerate( mine ):
@@ -297,18 +295,14 @@ def loadLevel( id, canJump, canRide, chaos ):
             mine[ row ] = line.replace( '.', ' ' ).replace( '@', ' ' )
         # Randomise positions
         gc.collect()
-        log( 'applying chaos, ' + str( gc.mem_alloc() ) + ' allocated' )
         shuffle( possibleGold )
         # Put some gold back
         gc.collect()
-        log( 'putting gold back, ' + str( gc.mem_alloc() ) + ' allocated' )
         for pos in possibleGold [ : level.gold ]:
             line = mine[ pos[ 0 ] ]
             col = pos[ 1 ]
             mine[ pos[ 0 ] ] = line[ : col ] + '@' + line[ col + 1 : ]
         gc.collect()
-        log( 'chaos applied, ' + str( gc.mem_alloc() ) + ' allocated' )
-    log( 'level loaded' )
     return level
 
 def getOkDirs( mine ):
@@ -418,14 +412,17 @@ def sayDone( chaos ):
     thumby.display.setFont( "/lib/font8x8.bin", 8, 8, 1 )
     thumby.display.drawText( "Complete", 0, 5, 1 )
     thumby.display.setFont( "/lib/font5x7.bin", 5, 10, 1 )
-    thumby.display.drawText("You legend!", 4, 25, 1 )
+    thumby.display.drawText("You legend!", 4, 20, 1 )
+    if startTime > 0:
+        msg = 'Time: ' + str( time.time() - startTime ) + 's'
+        thumby.display.drawText( msg, int( ( 6 - len( msg ) / 2 ) * 6 ), 33, 1 )
     thumby.display.update()
     time.sleep( 0.5 )
     #play( [
     #    "6 S", "R XXS", "6 XS", "R XXS", "6 XS", "4 M s", "6 M", "4 M s", "0 L s"
     #] )
     #c  c# d  d# e  f  f# g  g# a  a# b  c  c# d  d# e  f  f# g  g# a  a#  b  c
-    #7     6     5  4     3     2     1  0     
+    #7     6     5  4     3     2     1  0
     #0  1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17 18 19 20 21
     addTask( Tune( "240:2|16| ,2|4|r,2|8| ,2|4|r,2|8| ,6|32| ,2|32| ,6|32| ,14|64|." ).play )
     while( not thumby.inputPressed() ):
@@ -709,6 +706,7 @@ def checkConfig( itemName ):
 canJump = checkConfig( 'canJump' )
 canRide = checkConfig( 'canRide' )
 chaos = checkConfig( 'chaos' )
+startTime = -1
 
 # Here follows spaghetti. Sorry - it just grew and I never refactored it.
 try:
@@ -723,22 +721,18 @@ try:
         if not level or level.gold == 0:
             level = None
             gc.collect()
-            log( 'level setup start, ' + str( gc.mem_alloc() ) + ' allocated' )
             levelNumber = levelNumber + 1
             if levelNumber > 6:
                 sayDone( chaos )
                 break
             levelSplash( sprites, spriteY )
             level = loadLevel( levelNumber, canJump, canRide, chaos )
-            log( 'saving progress' )
             thumby.saveData.setItem( 'levelNumber', levelNumber )
             thumby.saveData.save()
-            log( 'saved progress' )
             ridingCart = None
             spriteName = '?'
             row = level.startRow
             col = level.startCol
-            log( 'level setup end' )
 
         # Blank canvas
         thumby.display.fill( 0 )
@@ -985,4 +979,3 @@ except Exception as x:
     except ImportError:
         with open('/Games/Tinymine/crashdump.log','w',encoding="utf-8") as f:
             print_exception(x,f)
-thumby.reset()

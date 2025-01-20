@@ -1,0 +1,5 @@
+run {1}
+if | = 'All OK'
+jump :end
+> {allTestsLog}
+:end

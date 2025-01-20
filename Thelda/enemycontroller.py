@@ -173,7 +173,57 @@ class Keese:
         self.prespawn_map = bytearray([31,19,25,19,31])
         self.flap1_map = bytearray([25,29,27,29,25])
         self.flap2_map = bytearray([23,19,27,19,23])
+        
+        
+class Gel:
+    def __init__(self, x, y, facingDirection, walk_distance, identity):
+        self.identity = identity
+        self.enemy_type = "gel"
+        self.x = x
+        self.y = y
+        self.damage = 1
+        self.health = 1
+        self.frozen = False
+        self.freeze_counter = 0
+        self.starting_health = 1
+        self.animation_counter = 0
+        # BITMAP: width: 7, height: 6
+        self.map = bytearray([31,19,21,19,31])
+        self.move_map = bytearray([31,23,19,23,31])
+        self.directions = ["up", "down", "left", "right"]
+        self.prespawn = True
+        self.prespawn_map = bytearray([25, 5, 14, 20, 19])
+        self.facingDirection = facingDirection
+        self.walk_distance = walk_distance
+        self.distance_count = 0
+        self.move_buffer = 0
+        self.is_dead = False
+        self.move_speed = 5
+        self.has_key = False
+        self.blank_map = bytearray([31, 31, 31, 31, 31])
+        
 
+class Blade:
+    def __init__(self, x, y, h_move_distance, v_move_distance, identity):
+        self.identity = identity
+        self.enemy_type = "blade"
+        self.x = x
+        self.y = y
+        self.starting_x = x
+        self.starting_y = y
+        self.damage = 1
+        # BITMAP: width: 7, height: 6
+        self.map = bytearray([21,0,17,0,21])
+        self.directions = ["up", "down", "left", "right"]
+        self.horizontal_move_distance = h_move_distance
+        self.vertical_move_distance = v_move_distance
+        self.distance_count = 0
+        self.move_buffer = 0
+        self.move_speed = 1
+        self.prespawn = False
+        self.frozen = False
+        self.attacking = False
+        self.attacking_direction = "Null"
 
 
 class Rock:
@@ -211,10 +261,12 @@ class Rock:
 
         
 class Magic:
-    def __init__(self, enemy, player):
+    def __init__(self, enemy, player_x, player_y):
         self.enemy = enemy
-        self.target_x = player.playerSprite.x + 6
-        self.target_y = player.playerSprite.y + 6
+        # self.target_x = player.playerSprite.x + 6
+        # self.target_y = player.playerSprite.y + 6
+        self.target_x = player_x + 6
+        self.target_y = player_y + 6
         self.x = enemy.x + 1
         self.y = enemy.y + 1
         self.dir = (self.target_x - self.x, self.target_y - self.y)
@@ -270,7 +322,7 @@ class EnemyController:
     
     
     def check_for_overlap(self, scene_controller, enemy):
-        elements = scene_controller.walls + scene_controller.bushes + scene_controller.water + scene_controller.trees + scene_controller.barriers + scene_controller.blocks + scene_controller.locks
+        elements = scene_controller.walls + scene_controller.bushes + scene_controller.water + scene_controller.trees + scene_controller.barriers + scene_controller.blocks + scene_controller.locks + scene_controller.pushable_blocks + scene_controller.block_locks
     
         while any(enemy.x < element.x + 5 and enemy.x + 5 > element.x and element.y < enemy.y + 5 and element.y + 5 > enemy.y for element in elements):
             enemy.x = randrange(11, 56, 5)
@@ -330,27 +382,112 @@ class EnemyController:
                                 if not stalfos in self.enemies_used:
                                     self.enemies.append(Stalfos(enemyx, enemyy, enemy_facingDirection, enemy_walkDistance, stalfos))
                                     gc.collect()
+                                    
+                        if enemy == "gel":
+                            for gel in scene_controller.this_scene["enemies"][enemy]:
+                                enemyx = randrange(11, 56, 5)
+                                enemyy = randrange(10, 25, 5)
+                                enemy_facingDirection = choice(["up", "down", "left", "right"])
+                                enemy_walkDistance = 5
+                                if not gel in self.enemies_used:
+                                    self.enemies.append(Gel(enemyx, enemyy, enemy_facingDirection, enemy_walkDistance, gel))
+                                    gc.collect()
+                        
+                        if enemy == "blade":
+                            for blade in scene_controller.this_scene["enemies"][enemy]:
+                                if not blade in self.enemies_used:
+                                    self.enemies.append(Blade(blade[0], blade[1], blade[2], blade[3], blade[4]))
+                                    gc.collect()
                             
                         if enemy == "keese":
                             for keese in scene_controller.this_scene["enemies"][enemy]:
                                 if not keese[2] in self.enemies_used:
                                     self.enemies.append(Keese(keese[0], keese[1], keese[2]))
                                     gc.collect()
+                                    
+                        if enemy == "aquamentus":
+                            for boss in scene_controller.this_scene["enemies"][enemy]:
+                                if not boss[2] in self.enemies_used:
+                                    from bosses import Aquamentus
+                                    self.enemies.append(Aquamentus(boss[0], boss[1], boss[2]))
+                                    gc.collect()
                             
                         
                     if len(self.enemies) > 0:
                         print(f"Enemies: {len(self.enemies)}")
                         for enemy in self.enemies:
-                            if not enemy.enemy_type == "zora" and not enemy.enemy_type == "tektite" and not enemy.enemy_type == "keese":
+                            if not enemy.enemy_type == "zora" and not enemy.enemy_type == "tektite" and not enemy.enemy_type == "keese" and not enemy.enemy_type == "aquamentus":
                                 self.check_for_overlap(scene_controller, enemy)
                             print(enemy.enemy_type)
                     # gc.collect()
 
     
-    def move_enemies(self, scene_controller): 
+    def move_enemies(self, scene_controller, player): 
         desired_movement_buffer = 1
         self.map_to_display = ()
         for enemy in self.enemies:
+            if enemy.enemy_type == "blade":
+                if enemy.x == enemy.starting_x and enemy.y == enemy.starting_y and not enemy.attacking:
+                    enemy.distance_count = 0
+                if not enemy.attacking:
+                    if enemy.x > enemy.starting_x:
+                        enemy.x -= 1
+                    if enemy.x < enemy.starting_x:
+                        enemy.x += 1
+                    if enemy.y > enemy.starting_y:
+                        enemy.y -= 1
+                    if enemy.y < enemy.starting_y:
+                        enemy.y += 1
+                if not enemy.attacking and enemy.distance_count == 0:
+                    if player.playerSprite.x + 4 == enemy.x:
+                        enemy.attacking = True
+                        if player.playerSprite.y > enemy.y:
+                            enemy.attacking_direction = "down"
+                        elif player.playerSprite.y < enemy.y:
+                            enemy.attacking_direction = "up"
+                    elif player.playerSprite.y + 4 == enemy.y:
+                        enemy.attacking = True
+                        if player.playerSprite.x > enemy.x:
+                            enemy.attacking_direction = "right"
+                        elif player.playerSprite.x < enemy.x:
+                            enemy.attacking_direction = "left"
+                        
+                    
+                if enemy.attacking:
+                    if enemy.attacking_direction == "down":
+                        if enemy.distance_count < enemy.vertical_move_distance:
+                            enemy.y += enemy.move_speed
+                            enemy.distance_count += enemy.move_speed
+                        elif enemy.distance_count >= enemy.vertical_move_distance:
+                            enemy.attacking = False
+                            
+                    elif enemy.attacking_direction == "up":
+                        if enemy.distance_count < enemy.vertical_move_distance:
+                            enemy.y -= enemy.move_speed
+                            enemy.distance_count += enemy.move_speed
+                        elif enemy.distance_count >= enemy.vertical_move_distance:
+                            enemy.attacking = False
+
+                    elif enemy.attacking_direction == "right":
+                        if enemy.distance_count < enemy.horizontal_move_distance:
+                            enemy.x += enemy.move_speed
+                            enemy.distance_count += enemy.move_speed
+                        elif enemy.distance_count >= enemy.horizontal_move_distance:
+                            enemy.attacking = False
+                                
+                    elif enemy.attacking_direction == "left":
+                        if enemy.distance_count < enemy.horizontal_move_distance:
+                            enemy.x -= enemy.move_speed
+                            enemy.distance_count += enemy.move_speed
+                        elif enemy.distance_count >= enemy.horizontal_move_distance:
+                            enemy.attacking = False
+                self.map_to_display = (enemy.map, 0, 0)
+                
+            if enemy.enemy_type == "aquamentus":
+                enemy.move()
+                enemy.spawn_animation_counter += 1
+                self.map_to_display = (enemy.prespawn_map, enemy.x, enemy.y)
+                
             if enemy.frozen:
                 if enemy.freeze_counter < 40:
                     enemy.frozen = True
@@ -359,7 +496,9 @@ class EnemyController:
                     enemy.freeze_counter = 0
                     enemy.frozen = False
             if self.spawn_counter < self.spawn_time:
-                enemy.prespawn = True
+                if not enemy.enemy_type == "blade" and not enemy.enemy_type == "aquamentus":
+                    enemy.prespawn = True
+                
                 if enemy.enemy_type == "zora":
                     if enemy.spawn_animation_counter < 10:
                         self.map_to_display = (enemy.surface_map_1, 0, 0)
@@ -377,9 +516,10 @@ class EnemyController:
                         self.map_to_display = (enemy.attack_map, 0, 0)
                         enemy.spawn_animation_counter = 0
                         self.spawn_counter += 1
-                else:    
-                    self.map_to_display = (enemy.prespawn_map, 0, 0)
-                    self.spawn_counter += 1
+                else:
+                    if not enemy.enemy_type == "blade" and not enemy.enemy_type == "aquamentus":
+                        self.map_to_display = (enemy.prespawn_map, 0, 0)
+                        self.spawn_counter += 1
                 
                 if enemy.enemy_type == "leever":
                     if enemy.spawn_animation_counter < 10:
@@ -399,44 +539,42 @@ class EnemyController:
                         enemy.spawn_animation_counter = 0
                         self.spawn_counter += 1
                 else:
-                    if not enemy.enemy_type == "zora":
+                    if not enemy.enemy_type == "zora" and not enemy.enemy_type == "blade" and not enemy.enemy_type == "aquamentus":
                         self.map_to_display = (enemy.prespawn_map, 0, 0)
                         self.spawn_counter += 1
             else:
                 enemy.prespawn = False
                 
-                if enemy.enemy_type == "octorok" or enemy.enemy_type == "stalfos":
+                
+                if enemy.enemy_type == "octorok" or enemy.enemy_type == "stalfos" or enemy.enemy_type == "gel":
                     if not enemy.frozen:
+                        # if enemy.enemy_type == "gel":
+                        #     enemy.walk_distance = 5
+                        # else:
                         enemy.walk_distance = randint(15, 25)
                         if enemy.y % 5 == 0 or enemy.x % 5 == 0:
                             if enemy.distance_count >= enemy.walk_distance:
                                 enemy.facingDirection = choice(enemy.directions)
                                 enemy.distance_count = 0
-                            else: 
-                                enemy.distance_count += 1
+                            else:
+                                if enemy.enemy_type == "gel":
+                                    enemy.distance_count += 5
+                                else:
+                                    enemy.distance_count += 1
                     
                         def check_for_collisions(scene_controller, mod1, mod2, mod3, mod4):
                             enemy.isColliding = False
-                            for wall in scene_controller.walls:    
-                                if (((enemy.x < wall.x + mod1) and (enemy.x + mod2 > wall.x)) and ((wall.y < enemy.y + mod3) and (wall.y + mod4 > enemy.y))):
+                            collidables = (scene_controller.walls + scene_controller.bushes +
+                                           scene_controller.water + scene_controller.barriers +
+                                           scene_controller.blocks + scene_controller.pushable_blocks + scene_controller.block_locks)
+                            
+                            for obj in collidables:
+                                if (((enemy.x < obj.x + mod1) and (enemy.x + mod2 > obj.x)) and
+                                    ((obj.y < enemy.y + mod3) and (obj.y + mod4 > enemy.y))):
                                     enemy.isColliding = True
-                                    enemy.colliding_wall = wall
-                            for bush in scene_controller.bushes:    
-                                if (((enemy.x < bush.x + mod1) and (enemy.x + mod2 > bush.x)) and ((bush.y < enemy.y + mod3) and (bush.y + mod4 > enemy.y))):
-                                    enemy.isColliding = True
-                                    enemy.colliding_wall = bush
-                            for water in scene_controller.water:    
-                                if (((enemy.x < water.x + mod1) and (enemy.x + mod2 > water.x)) and ((water.y < enemy.y + mod3) and (water.y + mod4 > enemy.y))):
-                                    enemy.isColliding = True
-                                    enemy.colliding_wall = water
-                            for barrier in scene_controller.barriers:    
-                                if (((enemy.x < barrier.x + mod1) and (enemy.x + mod2 > barrier.x)) and ((barrier.y < enemy.y + mod3) and (barrier.y + mod4 > enemy.y))):
-                                    enemy.isColliding = True
-                                    enemy.colliding_wall = barrier
-                            for block in scene_controller.blocks:    
-                                if (((enemy.x < block.x + mod1) and (enemy.x + mod2 > block.x)) and ((block.y < enemy.y + mod3) and (block.y + mod4 > enemy.y))):
-                                    enemy.isColliding = True
-                                    enemy.colliding_wall = block
+                                    enemy.colliding_wall = obj
+                                    break  # Stop checking further if a collision is found
+
                                 
                         if enemy.facingDirection == "up":
                             check_for_collisions(scene_controller, 5, 5, 5, 6)
@@ -445,14 +583,21 @@ class EnemyController:
                                 while enemy.facingDirection == "up":
                                     enemy.facingDirection = choice(enemy.directions)
                                     enemy.isColliding = False
-            
                             elif enemy.y > 5:
-                                if enemy.move_buffer < desired_movement_buffer:
-                                    if not enemy.isColliding:
-                                        enemy.y -= enemy.move_speed
+                                if enemy.enemy_type == "gel":
+                                    if enemy.move_buffer > desired_movement_buffer + randint(10, 30):
+                                        if not enemy.isColliding:
+                                            enemy.y -= enemy.move_speed
+                                            enemy.move_buffer = 0
+                                    else:
                                         enemy.move_buffer += 1
-                                else:
-                                    enemy.move_buffer = 0
+                                else:    
+                                    if enemy.move_buffer < desired_movement_buffer:
+                                        if not enemy.isColliding:
+                                            enemy.y -= enemy.move_speed
+                                            enemy.move_buffer += 1
+                                    else:
+                                        enemy.move_buffer = 0
                             else:
                                 enemy.facingDirection = choice(enemy.directions)
             
@@ -465,12 +610,20 @@ class EnemyController:
                                     enemy.facingDirection = choice(enemy.directions)
                                     enemy.isColliding = False
                             elif enemy.y < 30:
-                                if enemy.move_buffer < desired_movement_buffer:
-                                    if not enemy.isColliding:
-                                        enemy.y += enemy.move_speed
+                                if enemy.enemy_type == "gel":
+                                    if enemy.move_buffer > desired_movement_buffer + randint(10, 30):
+                                        if not enemy.isColliding:
+                                            enemy.y += enemy.move_speed
+                                            enemy.move_buffer = 0
+                                    else:
                                         enemy.move_buffer += 1
                                 else:
-                                    enemy.move_buffer = 0
+                                    if enemy.move_buffer < desired_movement_buffer:
+                                        if not enemy.isColliding:
+                                            enemy.y += enemy.move_speed
+                                            enemy.move_buffer += 1
+                                    else:
+                                        enemy.move_buffer = 0
                             else:
                                 enemy.facingDirection = choice(enemy.directions)
             
@@ -483,12 +636,20 @@ class EnemyController:
                                     enemy.facingDirection = choice(enemy.directions)
                                     enemy.isColliding = False
                             elif enemy.x < 61:
-                                if enemy.move_buffer < desired_movement_buffer:
-                                    if not enemy.isColliding:
-                                        enemy.x += enemy.move_speed
+                                if enemy.enemy_type == "gel":
+                                    if enemy.move_buffer > desired_movement_buffer + randint(10, 30):
+                                        if not enemy.isColliding:
+                                            enemy.x += enemy.move_speed
+                                            enemy.move_buffer = 0
+                                    else:
                                         enemy.move_buffer += 1
                                 else:
-                                    enemy.move_buffer = 0
+                                    if enemy.move_buffer < desired_movement_buffer:
+                                        if not enemy.isColliding:
+                                            enemy.x += enemy.move_speed
+                                            enemy.move_buffer += 1
+                                    else:
+                                        enemy.move_buffer = 0
                             else:
                                 enemy.facingDirection = choice(enemy.directions)
             
@@ -501,23 +662,39 @@ class EnemyController:
                                     enemy.facingDirection = choice(enemy.directions)
                                     enemy.isColliding = False
                             elif enemy.x > 6:
-                                if enemy.move_buffer < desired_movement_buffer:
-                                    if not enemy.isColliding:
-                                        enemy.x -= enemy.move_speed
+                                if enemy.enemy_type == "gel":
+                                    if enemy.move_buffer > desired_movement_buffer + randint(10, 30):
+                                        if not enemy.isColliding:
+                                            enemy.x -= enemy.move_speed
+                                            enemy.move_buffer = 0
+                                    else:
                                         enemy.move_buffer += 1
                                 else:
-                                    enemy.move_buffer = 0
+                                    if enemy.move_buffer < desired_movement_buffer:
+                                        if not enemy.isColliding:
+                                            enemy.x -= enemy.move_speed
+                                            enemy.move_buffer += 1
+                                    else:
+                                        enemy.move_buffer = 0
                             else:
                                 enemy.facingDirection = choice(enemy.directions)
         
                     if not enemy.is_dead:
-                        if enemy.enemy_type == "stalfos":
-                            if enemy.animation_counter >= 2:
-                                self.map_to_display = (enemy.map, 0, 0)
-                                enemy.animation_counter = 0
+                        if enemy.enemy_type == "stalfos" or enemy.enemy_type == "gel":
+                            if enemy.enemy_type == "gel":
+                                if enemy.animation_counter >= 6:
+                                    self.map_to_display = (enemy.move_map, 0, 0)
+                                    enemy.animation_counter = 0
+                                else:
+                                    self.map_to_display = (enemy.map, 1, 0)
+                                    enemy.animation_counter += 1
                             else:
-                                self.map_to_display = (enemy.map, 1, 0)
-                                enemy.animation_counter += 1
+                                if enemy.animation_counter >= 2:
+                                    self.map_to_display = (enemy.map, 0, 0)
+                                    enemy.animation_counter = 0
+                                else:
+                                    self.map_to_display = (enemy.map, 1, 0)
+                                    enemy.animation_counter += 1
                         else:
                             if enemy.facingDirection == "up" and enemy.move_buffer < 1:
                                 self.map_to_display = (enemy.enemy_up_map, 0, 0)
@@ -612,34 +789,55 @@ class EnemyController:
                         self.map_to_display = (enemy.surface_map_1, 0, 0)
                         enemy.spawn_animation_counter += 1
                         
+                # Helper function to check collisions for each direction
+                def check_collision(enemy, scene_controller, direction):
+                    enemy.isColliding = False
+                    collidables = scene_controller.walls + scene_controller.bushes + scene_controller.water
+                    
+                    for obj in collidables:
+                        if direction == "up":
+                            if (((enemy.x < obj.x + 5) and (enemy.x + 5 > obj.x)) and 
+                                ((obj.y < enemy.y + 5) and (obj.y + 6 > enemy.y))):
+                                enemy.isColliding = True
+                                enemy.colliding_wall = obj
+                                break
+                        elif direction == "down":
+                            if (((enemy.x < obj.x + 5) and (enemy.x + 5 > obj.x)) and 
+                                ((obj.y - 1 < enemy.y + 5) and (obj.y + 5 > enemy.y))):
+                                enemy.isColliding = True
+                                enemy.colliding_wall = obj
+                                break
+                        elif direction == "right":
+                            if (((enemy.x < obj.x + 5) and (enemy.x + 5 > obj.x - 1)) and 
+                                ((obj.y < enemy.y + 5) and (obj.y + 5 > enemy.y))):
+                                enemy.isColliding = True
+                                enemy.colliding_wall = obj
+                                break
+                        elif direction == "left":
+                            if (((enemy.x < obj.x + 6) and (enemy.x + 5 > obj.x)) and 
+                                ((obj.y < enemy.y + 5) and (obj.y + 5 > enemy.y))):
+                                enemy.isColliding = True
+                                enemy.colliding_wall = obj
+                                break
+                
+                # Main enemy logic
                 if enemy.enemy_type == "leever":
                     if enemy.is_buried:
                         if enemy.distance_count >= enemy.walk_distance:
                             enemy.facingDirection = choice(enemy.directions)
                             enemy.distance_count = 0
-                        else: 
+                        else:
                             enemy.distance_count += 1
-                    if not enemy.is_buried: 
+                    else:
                         if not enemy.frozen:
-                            if enemy.facingDirection == "up":
-                                enemy.isColliding = False
-                                for wall in scene_controller.walls:    
-                                    if (((enemy.x < wall.x + 5) and (enemy.x + 5 > wall.x)) and ((wall.y < enemy.y + 5) and (wall.y + 6 > enemy.y))):
-                                        enemy.isColliding = True
-                                        enemy.colliding_wall = wall
-                                for bush in scene_controller.bushes:    
-                                    if (((enemy.x < bush.x + 5) and (enemy.x + 5 > bush.x)) and ((bush.y < enemy.y + 5) and (bush.y + 6 > enemy.y))):
-                                        enemy.isColliding = True
-                                        enemy.colliding_wall = bush
-                                for water in scene_controller.water:    
-                                    if (((enemy.x < water.x + 5) and (enemy.x + 5 > water.x)) and ((water.y < enemy.y + 5) and (water.y + 6 > enemy.y))):
-                                        enemy.isColliding = True
-                                        enemy.colliding_wall = water        
+                            direction = enemy.facingDirection
+                            check_collision(enemy, scene_controller, direction)
+                            
+                            if direction == "up":
                                 if enemy.isColliding:
                                     enemy.y = enemy.colliding_wall.y + 5
                                     enemy.facingDirection = "down"
                                     enemy.isColliding = False
-                
                                 elif enemy.y > 5:
                                     if enemy.move_buffer < desired_movement_buffer:
                                         if not enemy.isColliding:
@@ -649,23 +847,7 @@ class EnemyController:
                                         enemy.move_buffer = 0
                                 else:
                                     enemy.facingDirection = "down"
-                
-                                    
-                            elif enemy.facingDirection == "down":
-                                enemy.isColliding = False
-                                for wall in scene_controller.walls:    
-                                    if (((enemy.x < wall.x + 5) and (enemy.x + 5 > wall.x)) and ((wall.y - 1 < enemy.y + 5) and (wall.y + 5 > enemy.y))):
-                                        enemy.isColliding = True
-                                        enemy.colliding_wall = wall
-                                for bush in scene_controller.bushes:    
-                                    if (((enemy.x < bush.x + 5) and (enemy.x + 5 > bush.x)) and ((bush.y - 1 < enemy.y + 5) and (bush.y + 5 > enemy.y))):
-                                        enemy.isColliding = True
-                                        enemy.colliding_wall = bush
-                                for water in scene_controller.water:    
-                                    if (((enemy.x < water.x + 5) and (enemy.x + 5 > water.x)) and ((water.y - 1 < enemy.y + 5) and (water.y + 5 > enemy.y))):
-                                        enemy.isColliding = True
-                                        enemy.colliding_wall = water
-                                        
+                            elif direction == "down":
                                 if enemy.isColliding:
                                     enemy.y = enemy.colliding_wall.y - 5
                                     enemy.facingDirection = "up"
@@ -679,23 +861,7 @@ class EnemyController:
                                         enemy.move_buffer = 0
                                 else:
                                     enemy.facingDirection = "up"
-                
-                
-                            elif enemy.facingDirection == "right":
-                                enemy.isColliding = False
-                                for wall in scene_controller.walls:    
-                                    if (((enemy.x < wall.x + 5) and (enemy.x + 5 > wall.x - 1)) and ((wall.y < enemy.y + 5) and (wall.y + 5 > enemy.y))):
-                                        enemy.isColliding = True
-                                        enemy.colliding_wall = wall
-                                for bush in scene_controller.bushes:    
-                                    if (((enemy.x < bush.x + 5) and (enemy.x + 5 > bush.x - 1)) and ((bush.y < enemy.y + 5) and (bush.y + 5 > enemy.y))):
-                                        enemy.isColliding = True
-                                        enemy.colliding_wall = bush
-                                for water in scene_controller.water:    
-                                    if (((enemy.x < water.x + 5) and (enemy.x + 5 > water.x - 1)) and ((water.y < enemy.y + 5) and (water.y + 5 > enemy.y))):
-                                        enemy.isColliding = True
-                                        enemy.colliding_wall = water
-                                        
+                            elif direction == "right":
                                 if enemy.isColliding:
                                     enemy.x = enemy.colliding_wall.x - 5
                                     enemy.facingDirection = "left"
@@ -709,23 +875,7 @@ class EnemyController:
                                         enemy.move_buffer = 0
                                 else:
                                     enemy.facingDirection = "left"
-                
-                
-                            elif enemy.facingDirection == "left":
-                                enemy.isColliding = False
-                                for wall in scene_controller.walls:    
-                                    if (((enemy.x < wall.x + 6) and (enemy.x + 5 > wall.x)) and ((wall.y < enemy.y + 5) and (wall.y + 5 > enemy.y))):
-                                        enemy.isColliding = True
-                                        enemy.colliding_wall = wall
-                                for bush in scene_controller.bushes:    
-                                    if (((enemy.x < bush.x + 6) and (enemy.x + 5 > bush.x)) and ((bush.y < enemy.y + 5) and (bush.y + 5 > enemy.y))):
-                                        enemy.isColliding = True
-                                        enemy.colliding_wall = bush
-                                for water in scene_controller.water:    
-                                    if (((enemy.x < water.x + 6) and (enemy.x + 5 > water.x)) and ((water.y < enemy.y + 5) and (water.y + 5 > enemy.y))):
-                                        enemy.isColliding = True
-                                        enemy.colliding_wall = water        
-                                        
+                            elif direction == "left":
                                 if enemy.isColliding:
                                     enemy.x = enemy.colliding_wall.x + 5
                                     enemy.facingDirection = "right"
@@ -739,6 +889,7 @@ class EnemyController:
                                         enemy.move_buffer = 0
                                 else:
                                     enemy.facingDirection = "right"
+
                     
                     
                     if enemy.spawn_animation_counter < 10:
@@ -824,20 +975,19 @@ class EnemyController:
                     else:
                         enemy.animation_counter += 1
                         self.map_to_display = (enemy.prespawn_map, enemy.x, enemy.y)
+                        
               
 ###############################################################################TEST#######################################################################
                 
-                
-                
                         
-                        
-            if enemy.enemy_type == "zora":
+            if enemy.enemy_type == "zora" or enemy.enemy_type == "aquamentus":
                 if enemy.spawn_animation_counter >= 100:
                     if not enemy.frozen:
                         enemy.magic = []
-                        spawn_tile = choice(scene_controller.water)
-                        enemy.x = spawn_tile.x
-                        enemy.y = spawn_tile.y
+                        if enemy.enemy_type == "zora":
+                            spawn_tile = choice(scene_controller.water)
+                            enemy.x = spawn_tile.x
+                            enemy.y = spawn_tile.y
                         enemy.spawn_animation_counter = 0
                         enemy.has_fired = False
                 else:
@@ -851,6 +1001,8 @@ class EnemyController:
                         enemy.spawn_animation_counter = 0
                 else:
                     display.blit(self.map_to_display[0], enemy.x, enemy.y, 5, 5, 1, self.map_to_display[1], self.map_to_display[2])
+            if enemy.enemy_type == "aquamentus":
+                display.blitWithMask(self.map_to_display[0], enemy.x, enemy.y, 10, 10, 1, self.map_to_display[1], self.map_to_display[2], enemy.prespawn_mask)
             else:
                 display.blit(self.map_to_display[0], enemy.x, enemy.y, 5, 5, 1, self.map_to_display[1], self.map_to_display[2])
 
@@ -875,14 +1027,21 @@ class EnemyController:
                                 del enemy.rocks[rock_index]
                                 rock.timer = 0
                                 
-                    if enemy.enemy_type == "zora":
+                    if enemy.enemy_type == "zora" or enemy.enemy_type == "aquamentus":
                         if not enemy.has_fired:
                             if enemy.spawn_animation_counter >= 40:
                                 if enemy.magic == []:
-                                    enemy.magic.append(Magic(enemy, player))
+                                    if enemy.enemy_type == "aquamentus":
+                                        enemy.magic.append(Magic(enemy, player.playerSprite.x - 5, player.playerSprite.y))
+                                        enemy.magic.append(Magic(enemy, player.playerSprite.x - 5, player.playerSprite.y + 15))
+                                        enemy.magic.append(Magic(enemy, player.playerSprite.x - 5, player.playerSprite.y - 15))
+                                    else:
+                                        enemy.magic.append(Magic(enemy, player.playerSprite.x, player.playerSprite.y))
                             for magic in enemy.magic:
                                 magic.move()
                                 display.drawSprite(magic.magic_sprite)
+                                
+                    
        
                     
     def display_loot(self, my_player, enemy_controller, display):
@@ -916,10 +1075,10 @@ class EnemyController:
                     del self.loot[loot_index]
                     my_player.rupees += 5
                     my_player.rupees_text = str(my_player.rupees)
-                # if loot.loot_type == "bomb" and my_player.bombs < 9:
-                #     del self.loot[loot_index]
-                #     my_player.bombs += 1
-                #     my_player.bombs_text = str(my_player.bombs)
+                if loot.loot_type == "bomb" and my_player.bombs < 9:
+                    del self.loot[loot_index]
+                    my_player.bombs += 1
+                    my_player.bombs_text = str(my_player.bombs)
                 else:
                     loot.destroyed = True
 

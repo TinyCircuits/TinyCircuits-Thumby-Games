@@ -8,5 +8,6 @@ Warning! Don't edit anything unless you have a backup.
 
 More info at http://codeberg.org/JBanana/TinyEdit
 
-v1.1
-Can load slightly larger files
+v2.0
+Can now edit arbitrarily large files
+Can now be called from another thumby app
