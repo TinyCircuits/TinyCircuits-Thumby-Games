@@ -58,7 +58,7 @@ class Craft:
 				elif self.items[0][self.craftSpot]=='Step':check=[[17,5]];self.tableCraft(check,10)
 				elif self.items[0][self.craftSpot]==_B:check=[[5,3]];self.tableCraft(check,14)
 				elif self.items[0][self.craftSpot]==_C:check=[[5,3],[6,3]];self.tableCraft(check,15)
-				elif self.items[0][self.craftSpot]=='Bed':check=[[1,3],[5,3]];self.tableCraft(check,13)
+				elif self.items[0][self.craftSpot]=='Bed':check=[[1,3],[17,3]];self.tableCraft(check,13)
 			return
 		elif self.logic.invArea==1 and self.enabled[0]==0:self.logic.display.drawText('Need #',5,32,1);return
 		if self.logic.invArea==2 and self.enabled[1]==1:

@@ -6,6 +6,9 @@ This game will "hopefully" eventually have a modular support for modding in the 
 
 " Creator of Foxgine! "
 
+1.1:
+  Fixed an issue with crafting the bed, it now uses the material i mentioned beforehand!
+
 Author: PresentFox
-Version: 1.0
+Version: 1.1
 License: None
