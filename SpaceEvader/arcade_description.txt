@@ -1,0 +1,8 @@
+Space Evaders
+by SuperRiley64
+
+Don't let the UFOs abduct your prize-winning cows! Use the WWII tank your grandpa left you to evade the aliens!
+
+Controls:
+Left/Right - Aim
+A - Fire

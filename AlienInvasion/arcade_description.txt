@@ -1,0 +1,23 @@
+Destroy aliens and bosses and protect your planet from the alien invasion.
+Avoid being abducted or destroyed for as long as possible!
+
+Controls:
+D-PAD: Move
+A: Fire a single missile forward
+B: Fire two missiles to the left and right
+
+Tips:
+~ Score points by destroying aliens and bosses.
+~ Aliens that make it all the way across the screen subtract from your score.
+~ Only 3 missiles can be on screen at a time, aim carefully!
+~ Remaining missiles are shown at the bottom right of the screen.
+~ During a boss encounter normal aliens do not add or subtract from your score, focus on the boss!
+~ Boss health appears in the top left of the screen.
+~ While being abducted, the ship can't move but can still fire missiles forward at a delayed rate (a bar appears above the missile count).  Keep mashing and stay alive!
+~ Normal aliens gain a new movement type after each boss is defeated.
+~ The high score can be cleared in the logo screen.
+~ Sound effects can be toggled on or off in the logo screen.
+
+Author: jpritcha3-14, find me on GitHub :)
+License: MIT
+Version: 1.1 - Added sound effects

@@ -1,0 +1,24 @@
+WallRacer 1.3
+Now with multiplayer mode!
+
+Tron like game using a scrolling virtual screen 4 times the thumby screen size.
+
+Menu
+Select speed using Up/Down buttons.
+Select game mode with Left/Right buttons.
+Start the game with A or B.
+
+Game Modes
+1P * One Player with bonus dots
+1P   One Player without bonus dots
+2P   Two Player without bonus dots
+
+In the game use ANY direction button to turn left, use A or B button to turn right.
+Collect the flashing dots for bonus points if available (worth speed * 20).
+In multiplayer mode the winner gets double the points.
+
+After a crash your points and the highscore are displayed.
+There is a seperate highscore for each speed.
+No highscore in multiplayer mode.
+
+Return to the menu using A or B button.

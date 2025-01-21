@@ -1,0 +1,21 @@
+A tiny take on a classic.
+Smaller mazes, fewer ghosts... just as much fun and danger!
+
+Features:
+3 different mazes
+Pellet munching sound
+Ghosts increase in speed for each level
+
+New in Version 1.1:
+New title screen
+New sounds/music on game start/death/eating ghost
+Pause the game by pressing A
+Can view battery level on pause screen
+Keeps track of high score
+Can exit game from title screen
+New lives at every 5k points
+Past level 3 there are 3 ghosts per maze
+
+Game by Christopher Carson
+Thanks to Xyvir for updating to new api syntax
+Battery level code by AyreGuitar

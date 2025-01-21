@@ -1,0 +1,17 @@
+Implementation of all 255 rules of elementary cellular automata, enumerated via Wolfram Code
+
+https://en.wikipedia.org/wiki/Elementary_cellular_automaton
+
+Start screen art by Auri
+
+Controls: 
+Start Screen: 
+A - Begin
+
+Simulation Screen:
+A - Toggle cell alive/dead
+B - Clear all cells to dead
+Left - Move cursor left
+Right - Move cursor right
+Up - Move to the next automata rule
+Down - Move to the previous automata rule

@@ -1,0 +1,10 @@
+{
+  "name": "Rocket (Joseph Weisbecker, 1978)",
+  "link": "https://github.com/Timendus/chip-8/blob/master/octo/rocket.8o",
+  "desc": "The original game that kicked off the CHIP-8 frenzy! In an article in Byte Magazine in 1978 Joseph Weisbecker explains the concept of CHIP-8 and uses this very simple 'game' as the example program. The objective is to launch rockets and hit the alien ship. You score points for each hit.\n\nLaunch the rocket with A or B.",
+  "type": "VIP",
+  "keys": {
+    "a": 15,
+    "b": 15
+  }
+}

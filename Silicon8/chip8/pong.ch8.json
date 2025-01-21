@@ -1,0 +1,9 @@
+{
+  "name": "Pong",
+  "desc": "An implementation of the classic game Pong, for one person. Originally this game is played against a friend, both moving one of the paddles. This is a single player version where you play against the computer.\n\nMove your paddle with UP and DOWN.",
+  "type": "VIP",
+  "keys": {
+    "up": 1,
+    "down": 4
+  }
+}

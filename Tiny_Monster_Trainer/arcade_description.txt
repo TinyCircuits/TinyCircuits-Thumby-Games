@@ -1,0 +1,11 @@
+Tiny Monster Trainer  
+Train and battle with procedurally created monsters!
+
+Versus modes have been added. You can fight other players via the link cable though the Link Battle mode. After you've fought someone over a link cable their data is saved so you can fight them offline via the Ghost Battle mode.
+
+Please see the README.md for instructions and more information about the game.
+Version: 013023  
+
+Author: Blake B. 
+Thanks to Mason W. & Thumby Team for References.
+Thanks to MateiL for inspiration. 

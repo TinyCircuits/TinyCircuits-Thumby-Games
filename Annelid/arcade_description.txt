@@ -1,0 +1,6 @@
+Annelid
+
+Crawl around and collect food! This is the most comprehensive and short game source on the Thumby by default; its implementation should serve as a tutorial for beginner programming with Thumby features.
+
+Author: Mason W.
+Version: 1.0

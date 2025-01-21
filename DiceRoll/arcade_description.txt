@@ -1,0 +1,6 @@
+[DiceRoll]
+
+Roll a random(ish) die. Useful if you're out of a die and need one.
+
+Author: jvdw008
+Version: 1.0

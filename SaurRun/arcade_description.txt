@@ -1,0 +1,6 @@
+SaurRun
+
+Enter the mindset of a high-velocity reptile in a less-than-temperate environment for as long as possible.
+
+Author: Mason W.
+Version: 1.0

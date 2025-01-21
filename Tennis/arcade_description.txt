@@ -1,0 +1,9 @@
+Tennis
+
+Play single or multiplayer Tennis!
+
+Author: Jason M.
+Version: 1.1
+
+Update 1.1:
+You can now navigate out of multiplayer mode 'waiting for player' state without restarting your thumby!

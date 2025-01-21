@@ -1,0 +1,7 @@
+A simple simulation of the Langton's Ant cellular automata.
+
+https://en.wikipedia.org/wiki/Langton%27s_ant
+
+Press the A button to begin the simulation, and to pause/play it once running.
+
+Amazing title screen by Auri.

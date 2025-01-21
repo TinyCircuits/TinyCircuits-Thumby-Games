@@ -1,0 +1,12 @@
+Thasteroids
+
+Thasteroids is a clone of the classic arcade game "Asteroids" for the Thumby.  Most of the elements found in the original are here in some form.  Shoot asteroids for points while avoiding and shooting fragments for even more points!  Avoid being crushed by asteroids or shot down by alien ships to make your mark as the high score holder in this reimagining of a classic.
+
+Thrust: 'Up'
+Turn: 'L/R'
+Shoot: 'A'
+Warp: 'B'
+
+
+Author: PanduhBeer
+Version: 1.0

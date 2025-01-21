@@ -1,0 +1,7 @@
+Micro 2048
+
+Tiles with the same number merge into one when they touch. Add them up to reach 2048 and more.
+
+Author: OBONO
+Version: 0.1
+License: MIT

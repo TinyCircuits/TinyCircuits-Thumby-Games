@@ -1,0 +1,10 @@
+3D_CUBE
+YouTube - 3DSage
+
+I made a real 3D spinning cube for the Thumby!
+U = increase speed
+A = invert screen
+B = Freeze rotation
+D = Pyramid
+
+

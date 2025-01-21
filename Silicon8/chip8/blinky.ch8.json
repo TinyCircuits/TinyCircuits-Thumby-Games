@@ -1,0 +1,13 @@
+{
+  "name": "Blinky (Hans Christian Egeberg, 1991)",
+  "desc": "Blinky is a clone of the famous game Pacman, ported to CHIP-8. You have to collect all the dots, evading the ghosts! The game keeps score of the number of dots you have collected.\n\nControl Blinky/Pacman with UP, DOWN, LEFT and RIGHT. Restart the game with A or B.",
+  "type": "VIP",
+  "keys": {
+    "up": 8,
+    "left": 4,
+    "down": 5,
+    "right": 6,
+    "a": 15,
+    "b": 15
+  }
+}

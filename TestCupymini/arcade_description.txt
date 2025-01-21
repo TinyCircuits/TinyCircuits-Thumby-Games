@@ -1,0 +1,27 @@
+Test Cupymini
+
+WARNING: This game uses strobing lights
+
+
+Well, maybe you've heard of the popular game, Cuphead!? Now you can try the minimal version of this game, right here or/and on Thumby!
+
+Controls:
+In the:
+=Menu section=
+- you can choose with Up and Down buttons
+- select with the B one
+
+= Game =
+- Up - quit to menu
+- Left or Right - move Cupymini on the Left or Right side
+- Down - lay down Cupymini
+- A button - shoot
+- B button - jump
+
+"It's just the beginning, right? Then test until the next release/version of Cupymini game!"
+
+Author: Nemo Fishman
+
+Version: 1.0
+
+If you want to get in contact with the creator or others , here you can go! On Discord comunity, by this link: https://discord.gg/qurDQa92

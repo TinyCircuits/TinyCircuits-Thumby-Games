@@ -1,0 +1,6 @@
+DarkEscape
+
+The shadow has hijacked your Thumby and now you must keep pressing keys as they're displayed or the lights will go out and the shadow will get you!
+
+Author : Thomas K.
+Version: 1.0

@@ -1,0 +1,6 @@
+SpaceDebris
+
+Navigate the cosmos, and clean up the eject from humanity's latter achievements and mining operations.
+
+Author: Mason W.
+Version: 1.0

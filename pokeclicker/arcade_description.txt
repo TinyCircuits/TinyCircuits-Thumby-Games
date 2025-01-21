@@ -1,0 +1,4 @@
+Sit back and relax with a super simple clicker game.
+Directions: press a/b to click
+How to save: The game automaticaly saves after every click
+this game is a simple clicker game made with blockly code and is more of a test than a real game.

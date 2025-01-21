@@ -1,0 +1,15 @@
+LyteBykes
+
+Inspired by an arcade classic, in LyteBykes
+the object is to cut off the gray AI bike and make it
+crash into one of the light trails or walls.
+
+The first bike to score 5 wins is the overall winner!
+
+# of Players: 1 (multiplayer version is in progress)
+
+Controls: Use Up, Left, Down, and Right buttons to 
+control your bike.
+
+Author: PanduhBeer
+Version: 1.0

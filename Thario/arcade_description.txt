@@ -1,0 +1,11 @@
+Thario Run
+
+A run and dodge game inspired by a world-saving plumber.
+
+Author: Jeroen Peters (jeroenpeters1986)
+Version: 1.1
+
+Changelog
+=========
+Version 1.1: New enemies and now you can collect coins
+Version 1.0: Initial

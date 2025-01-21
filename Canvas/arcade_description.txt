@@ -1,0 +1,17 @@
+Canvas
+
+Create 1-bit pixel art on Thumby!
+
+Features:
+- Draw pixel by pixel! Painstakingly fun!
+- Canvas of any size (that fits in the memory...)
+- Zoom in
+- Crop and resize canvas
+- Flip, rotate, invert colors
+- Save and load files
+- Copy and paste, paste from files
+- Undo / redo (limited to the pixel by pixel drawing)
+- Panic dump - in case of error, canvas is saved automatically.
+
+Author: TPReal
+Version: 1.2

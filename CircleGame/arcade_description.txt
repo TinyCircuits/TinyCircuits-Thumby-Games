@@ -1,0 +1,6 @@
+[Circle Game]
+
+Combine the circles to get a high score.
+
+Author: Will DiSanto
+Version: 1.0
