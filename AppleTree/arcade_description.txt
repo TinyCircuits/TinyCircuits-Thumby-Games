@@ -1,6 +1,0 @@
-Apple Tree
-
-Try to catch the falling apples in the basket!
-
-Author: NiallChandlerGames (@nchandlergames)
-Version: 1.0

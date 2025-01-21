@@ -1,3 +1,0 @@
-A simple calculator that follows the order of operations.
-
-Please report any bugs to @unredknown on the TinyCircuits Discord

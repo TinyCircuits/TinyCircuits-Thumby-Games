@@ -1,3 +1,0 @@
-A game I built in a thumby.us tutorial.
-
-Author: CodeGuyEli

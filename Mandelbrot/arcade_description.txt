@@ -1,6 +1,0 @@
-Mandelbrot
-
-Zoom into the twisty Mandelbrot set.
-
-Author: Daniel S.
-Version: 1.0

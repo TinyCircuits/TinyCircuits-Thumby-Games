@@ -1,9 +1,0 @@
-echo {RANDOM}
-grep 5
-if empty
-jump :no5
-echo Heads
-jump :end
-:no5
-echo Tails
-:end

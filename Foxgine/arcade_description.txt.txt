@@ -1,7 +1,0 @@
-A simple 3D engine that was made to be able to render out files similar to an obj
-
-Author: PresentFox
-Version: 1.0
-License: Open Source ( please tag me if you use this engine! )
-
-Thank you: Kada, Openmindedness, Demod ( for giving me advice and tips on 3D stuff! )

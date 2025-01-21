@@ -1,3 +1,0 @@
-Make as many unique 3-letter words as possible!
-
-By Xyvir

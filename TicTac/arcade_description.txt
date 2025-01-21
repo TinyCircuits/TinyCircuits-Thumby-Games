@@ -1,6 +1,0 @@
-TicTac
-
-Single and multiplayer TicTacToe
-
-Author: @angrykoala
-Version: 1.1

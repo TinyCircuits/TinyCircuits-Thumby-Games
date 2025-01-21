@@ -1,4 +1,0 @@
-SLAP A GNOME! Gnomes are stealing your food! Press A or B to slap the gnomes to prevent their thievery. Slap more than half of the gnome's face to advance to the next gnome. Watch out, those crafty gnomes get faster and faster. The more of the gnome's face you slap, the more points you score. What are you waiting for? GET SLAPPING!!!!
-
-Authors: Kiki & Neil Hennessy
-Version: 1.0

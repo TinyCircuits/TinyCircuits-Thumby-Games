@@ -1,6 +1,0 @@
-Dance!
-
-Ready to dance? You are in right place if you want! This is little rhythm game i made on py. Tap A/B in time to get high scores. Dance!
-
-Author: ArtyomTop1gg
-Version: 1.0.3
