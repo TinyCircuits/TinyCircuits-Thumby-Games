@@ -1,3 +1,8 @@
+NAME=ThumbyAI
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/ThumbyAI/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/ThumbyAI/ThumbyAI.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/ThumbyAI/arcade_title_video.webm
+
 NAME=th-umb
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/th-umb/thumbyGrayscale.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/th-umb/worldGen.py
