@@ -1,0 +1,9 @@
+Thexecutor
+
+Sound board featuring the sweet scifi sounds of the 80's and 90's
+
+AceGeiger
+
+Version 2025.1
+
+Pick a sound and press A to play. B quits the game.  The speaker on the Thumby is very small, you may need to hold it close to your ear.
