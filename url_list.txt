@@ -1,3 +1,8 @@
+NAME=TinyTimer
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyTimer/TinyTimer.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyTimer/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyTimer/arcade_description.txt
+
 NAME=Thexecutor
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Thexecutor/arcade_title_video.webm
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Thexecutor/Thexecuter.py
