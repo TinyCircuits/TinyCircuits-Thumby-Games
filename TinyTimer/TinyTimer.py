@@ -186,7 +186,7 @@ while(1):
             else:
                 if not isSettingTimer:
                     if timerM or timerS or timerMS:
-                        d.drawSprite(pauseSprite if isStopwatch else playSprite)
+                        d.drawSprite(pauseSprite if isTimer else playSprite)
                     else:
                         noneSprite.x = 13
                         d.drawSprite(noneSprite)
