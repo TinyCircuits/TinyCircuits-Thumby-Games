@@ -297,6 +297,8 @@ while(1):
                     flags.pop(flagSel)
                     if not flags:
                         yScrollTar = 0
+                        yScroll = 30
+                    flagSel = min(0, len(flags))
             elif xScroll == 72:
                 if not isSettingTimer:
                     if timerM or timerS or timerMS:
