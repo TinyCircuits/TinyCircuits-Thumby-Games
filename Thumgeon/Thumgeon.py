@@ -1018,8 +1018,8 @@ def generateRoom(room):
     global currentRoom
     if(roomno < maxrooms):
         roomno = roomno + 1
-        # Generating doors may create up to 3 more rooms
-        for k in [0,1,2]:
+        # Generating doors may create up to 2 more rooms
+        for k in [0,1]:
             # Each wall has a 1 in (k+1) chance of having a door to another room
             if(randint(0, k) == 0):
                 # Adding a door, there's an equal chance for N/E/S/W location
@@ -1027,7 +1027,7 @@ def generateRoom(room):
                 if(randint(0, 1) == 0):
                     # Add either a North or South door
                     doorOutX = playerOutX = doorBackX = playerBackX = 4
-                    if(randint(0, 1) == 0 and room.getTile(4, 0).tiletype != 2):
+                    if(randint(0, 1) == 0 and room.getTile(doorOutX, 0).tiletype != 2):
                         # Put door on North wall
                         doorOutY = 0
                         playerOutY = doorOutY+1
@@ -1035,7 +1035,7 @@ def generateRoom(room):
                         doorBackY = 4
                         playerBackY = doorBackY-1
                         doorDefined = True
-                    elif(room.getTile(4, 4).tiletype != 2):
+                    elif(room.getTile(doorOutX, 4).tiletype != 2):
                         # Put door on South wall
                         doorOutY = 4
                         playerOutY = doorOutY-1
@@ -1046,7 +1046,7 @@ def generateRoom(room):
                 else:
                     # Add either a West or East door
                     doorOutY = playerOutY = doorBackY = playerBackY = 2
-                    if(randint(0, 1) == 0 and room.getTile(0, 2).tiletype != 2):
+                    if(randint(0, 1) == 0 and room.getTile(0, doorOutY).tiletype != 2):
                         # Put door on West wall
                         doorOutX = 0
                         playerOutX = doorOutX+1
@@ -1054,7 +1054,7 @@ def generateRoom(room):
                         doorBackX = 8
                         playerBackX = doorBackX-1
                         doorDefined = True
-                    elif(room.getTile(8, 2).tiletype != 2):
+                    elif(room.getTile(8, doorOutY).tiletype != 2):
                         # Put door on East wall
                         doorOutX = 8
                         playerOutX = doorOutX-1
@@ -1072,6 +1072,7 @@ def generateRoom(room):
                     room.getTile(doorOutX,doorOutY).tiledata[0].getTile(doorBackX,doorBackY).tiledata.append(room)
                     room.getTile(doorOutX,doorOutY).tiledata[0].getTile(doorBackX,doorBackY).tiledata.append(playerOutX)
                     room.getTile(doorOutX,doorOutY).tiledata[0].getTile(doorBackX,doorBackY).tiledata.append(playerOutY)
+                    doorDefined = False
                     # Recursively generate doors and new rooms until maxrooms
                     generateRoom(room.getTile(doorOutX,doorOutY).tiledata[0])
 
