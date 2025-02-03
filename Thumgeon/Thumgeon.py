@@ -877,19 +877,19 @@ def itemwt(itemName):
         "goodswd": 3,
         "epicswd": 3,
         "ultraswd": 3,
-        "??? swd": 2,
+        # "??? swd": 2,
         "brknbow": 2,
         "basicbow": 2,
         "bow": 2,
         "goodbow": 2,
         "epicbow": 3,
         "ultrabow": 3,
-        "??? bow":2,
+        # "??? bow":2,
         "sml hpot": 1,
         "sml mpot": 1,
         "big hpot": 2,
         "big mpot": 2,
-        "??? pot": 1,
+        # "??? pot": 1,
         "key": 1,
         "food": 1,
         "pants": 3,
@@ -912,7 +912,7 @@ def itemwt(itemName):
         "ult lch": 1,
         "ult tlpt": 1,
         "ult heal": 1,
-        "??? tome": 1,
+        # "??? tome": 1,
         "hpup": 2,
         "mpup": 2,
     }
@@ -1104,23 +1104,23 @@ def generateRoom(room):
         pos = getRandomFreePosition(room)
         room.getTile(pos[0], pos[1]).tiletype = 6
 
-    # Each room has a 35% chance of having a piece of loot in it
-    if(randint(0, 19) <  7):
+    # Each room has a 33% chance of having a piece of loot in it
+    if(randint(0, 2) == 0):
         pos = getRandomFreePosition(room)
         item = dungeonTile(0)
         lootChance = randint(0, 99)
-        if(lootChance < 88):
-            # 88% is basic-tier loot
-            lootTier = 0
-            lootType = randint(0, 5)
-        elif(lootChance < 98):
-            # 10% is normal or good-tier loot
-            lootTier = 1
-            lootType = randint(0, 4)
-        else:
+        if(lootChance < 2):
             # 2% is epic or ultra-tier loot
             lootTier = 2
             lootType = randint(0, 2)
+        elif(lootChance < (2+14)):
+            # 14% is normal or good-tier loot
+            lootTier = 1
+            lootType = randint(0, 4)
+        else:
+            # 84% is basic-tier loot
+            lootTier = 0
+            lootType = randint(0, 5)
         if(lootType == 0):
             # Sword
             item = itemtile(weaponLevel.get(randint(0,1)+(2*lootTier))+"swd")
@@ -1197,8 +1197,11 @@ def drawGame():
     thumby.display.drawText(floorHUD, 73-floorHUDWidth, 33, 1)
 
     if(curMsg == ""):
-        # Default will show the Player's gold pieces
-        curMsg = goldChr+str(player.gp)
+        # Default to show the Player's gold pieces
+        if(player.gp <= 999):
+            curMsg = goldChr+str(player.gp)
+        else:
+            curMsg = str(player.gp)
 
     curMsgWidth=len(curMsg)*fontWidth
     thumby.display.drawRectangle(0, 31, curMsgWidth+1, 9, 1)
