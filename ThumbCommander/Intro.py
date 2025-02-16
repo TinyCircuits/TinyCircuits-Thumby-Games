@@ -1,9 +1,9 @@
 #asynchronously plays a logo video while stuff loads
 from time import sleep
-from thumbyGrayscale import display, Sprite
+from grayscale import display, Sprite
 from machine import Timer
 from gc import collect
-loc = "/Games/Starsvoxel/"
+loc = "/Games/ThumbCommander/"
 
 framecount = 0
 frame = 0
