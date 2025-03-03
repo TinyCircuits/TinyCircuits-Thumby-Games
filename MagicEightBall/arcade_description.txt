@@ -1,0 +1,4 @@
+Yet another Magic Eight Ball game.
+
+This one has animations for bubbles and fading in and out between answers to
+give the appearance of messages floating up and down in murky liquid.
