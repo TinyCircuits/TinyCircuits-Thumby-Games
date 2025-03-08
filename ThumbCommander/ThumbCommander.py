@@ -41,6 +41,7 @@ FPS = const(40)
 
 # Player properties
 player_speed:int = 65536
+player_target_speed:int = 65536
 
 lifes:int = 5
 player_angle:int = [0, 0, 0]
@@ -212,6 +213,7 @@ MIN_DAMPING = const(7)  # 0.0001 in fixed point
 MAX_T_DAMPING = const(10<<16)  # Maximum t/damping ratio
 EXP_TABLE = [float2fp(exp(-i * (MAX_T_DAMPING>>16) / TABLE_SIZE)) for i in range(TABLE_SIZE)]
 
+@micropython.native
 def apply_physics(damping: int, desired_vel: int, initial_vel: int, t: int) -> int:
     """
     Apply physics calculations independent of frame rate.
@@ -240,7 +242,6 @@ def apply_physics(damping: int, desired_vel: int, initial_vel: int, t: int) -> i
             frac = ((t_damping * TABLE_SIZE * fpdiv_a(65536, MAX_T_DAMPING))>>16) & (65536 - 1)
             e = ((EXP_TABLE[idx] * (65536 - frac)) + (EXP_TABLE[idx + 1] * frac))>>16
         new_vel = ((dv * e)>>16) + desired_vel
-#        print(fp2float(desired_vel),"; ", fp2float(initial_vel),";",fp2float(dv),";",fp2float(e),";",fp2float(new_vel),";",fp2float(t))
         return new_vel
     
 @micropython.native
@@ -438,6 +439,7 @@ class Enemies:
             for c in range(2):
                 # xy displacement based on player_angle * player_speed
                 e[c] += (player_angle[c] * player_speed) >> 16
+            e[2] -= fpmul(2048, player_speed)
                 
             # calc displacement of ship form orientation & thrust if not exploding
             if e[6] != 0:
@@ -448,8 +450,6 @@ class Enemies:
                 e[0] += e[11]
                 e[1] += e[12]
                 e[2] += e[13]
-            # z displacement based on player_speed    
-            #e[2] -= player_speed
             
             # rotate around z-axis
             if player_angle[2] != 0:
@@ -465,8 +465,12 @@ class Enemies:
             elif (e[1] < -(5600<<16)): e[1] = 1400<<16
             if (e[1] > (1400<<16)) or (e[1] < -(1400<<16)): visible = False
             
+            # adjust z-axis if enemy moves behind me in x & y orientation
+            if visible: e[2] = abs(e[2])
+            else: e[2] = -abs(e[2])
+            
             # if space in z axis is ending change ship's x-orientation by 180°
-            if (e[2] > (70<<16)) or (e[2] < 0):
+            if (e[2] > (70<<16)) or (e[2] < -70<<16):
                 e[3] = (e[3]+6) % 12
                 e[2] += sign(e[2])*(-5<<16)
             
@@ -523,8 +527,8 @@ class Enemies:
                                 e[5] = e[6] = 0
                             break
             # calc and draw radar
-            x = (((e[2]>>3) * fpcos((e[0]>>19)-256))>>32) + 63
-            y = (((e[2]>>3) * fpsin((e[0]>>19)-256))>>32) + 7
+            x = (((abs(e[2])>>3) * fpcos((e[0]>>19)-256))>>32) + 63
+            y = (((abs(e[2])>>3) * fpsin((e[0]>>19)-256))>>32) + 7
             height = (e[1]>>16) // 700
             color = 1 if e[8] == 1 else 3
             display.drawFilledRectangle(x,y,3,3,color)
@@ -624,6 +628,8 @@ class Ship:
         self.laser = []
         self.fire_couter = 0
         self.laser_energy = 5
+        self.last_time = 0
+        self.afterburner_time = 0
         display.setFont("/lib/font3x5.bin", 3, 5, 1)
     
     @micropython.native
@@ -657,8 +663,46 @@ class Ship:
     
     @micropython.native
     def move_me(self, enemies):
-        global player_angle, hudShip
-        if buttonR.pressed():
+        global player_angle, player_speed, player_target_speed, hudShip
+        # ticks in ms passed since last call for body inertia calaculation
+        new_time = ticks_us()
+        t = (ticks_diff(new_time, self.last_time,)<<16)//1000000
+        self.last_time = new_time
+        
+        if self.afterburner_time != 0:
+            ta = (ticks_diff(new_time, self.afterburner_time,)<<16)//1000000
+            if (ta > 250000):
+                self.afterburner_time = 0
+                player_target_speed = 1<<16
+        if buttonB.pressed():
+            if buttonR.justPressed():
+                if enemies:
+                    for i in range(len(enemies)):
+                        e = enemies[i]
+                        if e[8] == 1:
+                            e[8] = 0
+                            if (i+1) < len(enemies): enemies[i+1][8] = 1
+                            else: hudShip = None
+                            break
+                    else:
+                        if enemies[0] != None: enemies[0][8] = 1
+            elif buttonL.justPressed():
+                if enemies:
+                    for i in range(len(enemies) -1, -1, -1):
+                        e = enemies[i]
+                        if e[8] == 1:
+                            e[8] = 0
+                            if ((i-1) > -1): enemies[i-1][8] = 1
+                            else: hudShip = None
+                            break
+                    else:
+                        if enemies[0] != None: enemies[len(enemies) -1][8] = 1
+            elif buttonU.justPressed() and (self.afterburner_time == 0):
+                player_target_speed = 7<<16;
+                self.afterburner_time = new_time
+            elif buttonD.justPressed():
+                player_speed = 1<<16
+        elif buttonR.pressed():
             player_angle[0] -= 1<<16
             player_angle[2] = -3
             self.cockpit_sprite.x = SHIP_X-1
@@ -678,37 +722,35 @@ class Ship:
                 self.target_sprite = Sprite(7,7,(targetactive,targetactiveSHD),CENTER_X-3, CENTER_Y-3,0)
                 self.fire_couter += 20
                 self.laser_energy -= 1
-        elif buttonB.justPressed():
-            if enemies:
-                for i in range(len(enemies)):
-                    e = enemies[i]
-                    if e[8] == 1:
-                        e[8] = 0
-                        if (i+1) < len(enemies): enemies[i+1][8] = 1
-                        else: hudShip = None
-                        break
-                else:
-                    if enemies[0] != None: enemies[0][8] = 1
- 
-        #elif buttonB.pressed():
-        #    if buttonL.justPressed():
-        #       self.hud = (self.hud + 1) % (enemies-1)
-        #    else:
-        #        delta_x = sign(player_angle[0])
-        #        player_angle[0] -= delta_x<<16
-        #        self.cockpit_sprite.x = SHIP_X-delta_x
-        #        delta_y = sign(player_angle[1]) 
-        #        player_angle[1] -= delta_y<<16
-        #        self.cockpit_sprite.y = SHIP_Y-delta_y
-        #        if delta_x > 0:
-        #             player_angle[2] = -3
-        #        elif delta_x < 0:
-        #            player_angle[2] = +3
+        #elif buttonB.justPressed():
+        #    if enemies:
+        #        for i in range(len(enemies)):
+        #            e = enemies[i]
+        #            if e[8] == 1:
+        #                e[8] = 0
+        #                if (i+1) < len(enemies): enemies[i+1][8] = 1
+        #                else: hudShip = None
+        #                break
         #        else:
-        #            player_angle[2] = 0
-        #            self.cockpit_sprite.x = SHIP_X
-        #        if (player_angle[1] == 0):
-        #            self.cockpit_sprite.y = SHIP_Y
+        #            if enemies[0] != None: enemies[0][8] = 1
+ 
+        
+            #else:
+            #    delta_x = sign(player_angle[0])
+            #    player_angle[0] -= delta_x<<16
+            #    self.cockpit_sprite.x = SHIP_X-delta_x
+            #    delta_y = sign(player_angle[1]) 
+            #    player_angle[1] -= delta_y<<16
+            #    self.cockpit_sprite.y = SHIP_Y-delta_y
+            #    if delta_x > 0:
+            #         player_angle[2] = -3
+            #    elif delta_x < 0:
+            #        player_angle[2] = +3
+            #    else:
+            #        player_angle[2] = 0
+            #        self.cockpit_sprite.x = SHIP_X
+            #    if (player_angle[1] == 0):
+            #        self.cockpit_sprite.y = SHIP_Y
         else:
             player_angle[2] = 0
             self.cockpit_sprite.x = SHIP_X
@@ -726,7 +768,9 @@ class Ship:
         if player_angle[0] > 2293760: player_angle[0] = 2293760
         if player_angle[1] < -2162688: player_angle[1] = -2162688
         if player_angle[1] > 2162688: player_angle[1] = 2162688
- 
+        
+        player_speed = apply_physics(1<<16, player_target_speed, player_speed, t)
+        
     
 class Laser:
     def __init__(self,x:int,y:int,z:int=4<<16,vel_x:int=0,vel_y:int=0,vel_z:int=1<<16):
