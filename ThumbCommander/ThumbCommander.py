@@ -13,7 +13,7 @@ from machine import freq
 # Overclock. It doesn't seem to run above 250MHz
 freq(266_000_000)
 
-from thumbyButton import buttonA, buttonB, buttonU, buttonD, buttonL, buttonR, dpadPressed
+from thumbyButton import buttonA, buttonB, buttonU, buttonD, buttonL, buttonR, dpadPressed, inputJustPressed
 from thumbyHardware import reset
 from random import randint, randrange, choice
 from time import sleep
@@ -21,6 +21,7 @@ from utime import ticks_us, ticks_diff
 from math import sin, pi, cos, exp
 from array import array
 from gc import collect
+import json
 
 WIDTH = const(72) 
 HEIGHT = const(40)
@@ -92,6 +93,30 @@ shieldSHD = bytearray([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,128,128,192,192,224,2
            0,0,0,0,0,0,3,14,14,94,232,32,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,32,96,224,224,58,31,29,23,0,0,0,0,0,0,0,0,
            0,0,0,0,0,0,0,0,0,0,0,1,2,6,15,30,24,32,96,96,224,192,128,128,0,0,0,0,0,0,0,0,0,0,0,0,0,0,128,128,192,128,128,192,224,208,240,224,224,224,112,112,56,46,14,15,7,3,1,0,0,0,0,0,0,0,0,0,0,0,
            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,3,3,3,6,4,4,4,6,6,6,6,6,7,7,7,3,1,1,3,2,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0])
+
+#DEFAULT_KEYS = array('A', #FIRE
+#                     'B', #SHIFT
+#                     'L', #MOVE_LEFT
+#                     'R', #MOVE_RIGHT
+#                     'D', #MOVE_UP
+#                     'U', #MOVE_DOWN
+#                     'U', #AFTERBURNER
+#                     'D', #BREAK
+#                     'R', #TARGET_NEXT
+#                     'L') #TARGET_PREV
+
+DEFAULT_KEYS = {
+    "FIRE": "A",
+    "SHIFT": "B",
+    "MOVE_LEFT": "L",
+    "MOVE_RIGHT": "R",
+    "MOVE_UP": "D",
+    "MOVE_DOWN": "U",
+    "AFTERBURNER": "U",
+    "BREAK": "D",
+    "TARGET_NEXT": "R",
+    "TARGET_PREV": "L"
+}
 
 def copySprite(obj:Sprite):
     newSprite = Sprite(obj.width, obj.height,(bytearray(obj.bitmapByteCount), bytearray(obj.bitmapByteCount)),0,0,obj.key,obj.mirrorX,obj.mirrorY)
@@ -215,20 +240,6 @@ EXP_TABLE = [float2fp(exp(-i * (MAX_T_DAMPING>>16) / TABLE_SIZE)) for i in range
 
 @micropython.native
 def apply_physics(damping: int, desired_vel: int, initial_vel: int, t: int) -> int:
-    """
-    Apply physics calculations independent of frame rate.
-    
-    Args:
-        damping: Damping factor. Zero means instant velocity change
-        desired_vel: Target velocity
-        initial_vel: Starting velocity
-        t: Elapsed time since last call
-        
-    Returns:
-        tuple containing:
-        - new_vel: Current velocity
-    """
-   
     if damping < MIN_DAMPING:
         return desired_vel, (desired_vel * t) >> 16
     else:
@@ -248,7 +259,39 @@ def apply_physics(damping: int, desired_vel: int, initial_vel: int, t: int) -> i
 def getSprite(z, shape):
         OBJECTS[shape].setScale(fpdiv((71<<16)-abs(z), 60<<16))
         return OBJECTS[shape]
-            
+
+def button_exists(button_name):
+    try:
+        for part in button_name:
+            if not "button" + part in globals():
+                return False
+        return True
+    except:
+        return False
+        
+def load_keymaps():
+    try:
+        with open(loc + "keymap.json", "r") as f:
+            loaded_keys = json.loads(f.read())
+            complete_keys = DEFAULT_KEYS.copy()
+            for key, value in loaded_keys.items():
+                if button_exists(value):
+                    complete_keys[key] = value
+            return complete_keys    
+    except:
+        return DEFAULT_KEYS.copy()
+
+def save_keymaps(keymap):
+    try:
+        with open(loc + "keymap.json", "w") as f:
+            f.write(json.dumps(keymap))
+    except:
+        pass
+
+
+# Global variable to store key mappings
+KEYMAPS = load_keymaps()
+
 class Stars:
     def __init__(self, num:int, scale_pos:int=4, stable=80):
         stars = array('O', [None] * num)
@@ -674,8 +717,8 @@ class Ship:
             if (ta > 250000):
                 self.afterburner_time = 0
                 player_target_speed = 1<<16
-        if buttonB.pressed():
-            if buttonR.justPressed():
+        if getattr(globals()["button"+KEYMAPS["SHIFT"]], "pressed")():
+            if getattr(globals()["button"+KEYMAPS["TARGET_NEXT"]], "justPressed")():
                 if enemies:
                     for i in range(len(enemies)):
                         e = enemies[i]
@@ -686,7 +729,7 @@ class Ship:
                             break
                     else:
                         if enemies[0] != None: enemies[0][8] = 1
-            elif buttonL.justPressed():
+            elif getattr(globals()["button"+KEYMAPS["TARGET_PREV"]], "justPressed")():
                 if enemies:
                     for i in range(len(enemies) -1, -1, -1):
                         e = enemies[i]
@@ -697,60 +740,31 @@ class Ship:
                             break
                     else:
                         if enemies[0] != None: enemies[len(enemies) -1][8] = 1
-            elif buttonU.justPressed() and (self.afterburner_time == 0):
-                player_target_speed = 7<<16;
+            elif getattr(globals()["button"+KEYMAPS["AFTERBURNER"]], "justPressed")() and (self.afterburner_time == 0):
+                player_target_speed = 5<<16;
                 self.afterburner_time = new_time
-            elif buttonD.justPressed():
+            elif getattr(globals()["button"+KEYMAPS["BREAK"]], "justPressed")():
                 player_speed = 1<<16
-        elif buttonR.pressed():
+        elif getattr(globals()["button"+KEYMAPS["MOVE_RIGHT"]], "pressed")():
             player_angle[0] -= 1<<16
             player_angle[2] = -3
             self.cockpit_sprite.x = SHIP_X-1
-        elif buttonL.pressed():
+        elif getattr(globals()["button"+KEYMAPS["MOVE_LEFT"]], "pressed")():
             player_angle[0] += 1<<16
             player_angle[2] = 3
             self.cockpit_sprite.x = SHIP_X+1
-        elif buttonU.pressed():
+        elif getattr(globals()["button"+KEYMAPS["MOVE_DOWN"]], "pressed")():
             player_angle[1] -= 1<<16
             self.cockpit_sprite.y = SHIP_Y-1
-        elif buttonD.pressed():
+        elif getattr(globals()["button"+KEYMAPS["MOVE_UP"]], "pressed")():
             player_angle[1] += 1<<16
             self.cockpit_sprite.y = SHIP_Y+1
-        elif buttonA.justPressed():
+        elif getattr(globals()["button"+KEYMAPS["FIRE"]], "justPressed")():
             if (self.laser_energy > 0):
                 self.laser.append(Laser(player_angle[0], player_angle[1]))
                 self.target_sprite = Sprite(7,7,(targetactive,targetactiveSHD),CENTER_X-3, CENTER_Y-3,0)
                 self.fire_couter += 20
                 self.laser_energy -= 1
-        #elif buttonB.justPressed():
-        #    if enemies:
-        #        for i in range(len(enemies)):
-        #            e = enemies[i]
-        #            if e[8] == 1:
-        #                e[8] = 0
-        #                if (i+1) < len(enemies): enemies[i+1][8] = 1
-        #                else: hudShip = None
-        #                break
-        #        else:
-        #            if enemies[0] != None: enemies[0][8] = 1
- 
-        
-            #else:
-            #    delta_x = sign(player_angle[0])
-            #    player_angle[0] -= delta_x<<16
-            #    self.cockpit_sprite.x = SHIP_X-delta_x
-            #    delta_y = sign(player_angle[1]) 
-            #    player_angle[1] -= delta_y<<16
-            #    self.cockpit_sprite.y = SHIP_Y-delta_y
-            #    if delta_x > 0:
-            #         player_angle[2] = -3
-            #    elif delta_x < 0:
-            #        player_angle[2] = +3
-            #    else:
-            #        player_angle[2] = 0
-            #        self.cockpit_sprite.x = SHIP_X
-            #    if (player_angle[1] == 0):
-            #        self.cockpit_sprite.y = SHIP_Y
         else:
             player_angle[2] = 0
             self.cockpit_sprite.x = SHIP_X
@@ -770,6 +784,7 @@ class Ship:
         if player_angle[1] > 2162688: player_angle[1] = 2162688
         
         player_speed = apply_physics(1<<16, player_target_speed, player_speed, t)
+        inputJustPressed()
         
     
 class Laser:
@@ -874,27 +889,164 @@ def menu():
             display.drawText("Dog Fight",21,30,3)
         elif i==1:
             display.drawText("Dog Fight",21,20,1)
-            display.drawText("Exit Game",21,30,3)
+            display.drawText("Settings",21,30,3)
         elif i==2:
-            display.drawText("Dog Fight",21,20,3)
+            display.drawText("Settings",21,20,1)
+            display.drawText("Exit Game",21,30,3)
+        elif i==3:
+            display.drawText("Settings",21,20,3)
             display.drawText("Exit Game",21,30,1)
         display.update()
         if buttonD.justPressed():
             i+=1
-            if i > 2: i=2
+            if i > 3: i=3
             rot = -5
         elif buttonU.justPressed():
             i+=-1
             if i < 0: i=0
             rot = 5
     return i
+
+class SettingsMenu:
+    def __init__(self):
+        self.update_menu()
+        self.selected = 0
+        self.remapping = False
+        self.current_remap = ""
+        self.background = Stars(20, 4, 0)
+        display.setFont("/lib/font3x5.bin", 3, 5, 1)
+        # wait for button release
+        inputJustPressed()
     
+    def update_menu(self):
+        self.settings_items = [
+            "FIRE: " + KEYMAPS["FIRE"],
+            "SHIFT: " + KEYMAPS["SHIFT"],
+            "MOVE LEFT: " + KEYMAPS["MOVE_LEFT"],
+            "MOVE RIGHT: " + KEYMAPS["MOVE_RIGHT"],
+            "MOVE UP: " + KEYMAPS["MOVE_UP"],
+            "MOVE DOWN: " + KEYMAPS["MOVE_DOWN"],
+            "AFTERBURNER: " + KEYMAPS["SHIFT"]+"+"+KEYMAPS["AFTERBURNER"],
+            "BREAK: " + KEYMAPS["SHIFT"]+"+"+KEYMAPS["BREAK"],
+            "TGT NEXT: " + KEYMAPS["SHIFT"]+"+"+KEYMAPS["TARGET_NEXT"],
+            "TGT PREV: " + KEYMAPS["SHIFT"]+"+"+KEYMAPS["TARGET_PREV"],
+            "RESET DEFAULTS",
+            "BACK"
+        ]
+    def run(self):
+        global KEYMAPS
+        display.setFPS(30)
+        
+        while True:
+            display.fill(0)
+            self.background.run(0)
+            
+            # Draw title
+            display.drawText("SETTINGS", 22, 2, 1)
+            display.drawLine(0, 9, 72, 9, 1)
+            
+            # If in remapping mode
+            if self.remapping:
+                display.fill(0)
+                # Draw title
+                display.drawText("PRESS NEW KEY FOR:", 2, 2, 1)
+                display.drawLine(0, 9, 72, 9, 1)
+                display.drawText(self.current_remap, 16, 14, 3)
+                display.update()
+                
+                # Wait for a button press
+                while not (buttonA.pressed() or buttonB.pressed() or dpadPressed()):
+                    pass
+                
+                # Determine which button was pressed
+                new_key = ""
+                if buttonA.pressed(): new_key = "A"
+                elif buttonB.pressed(): new_key = "B"
+                elif buttonU.pressed(): new_key = "U"
+                elif buttonD.pressed(): new_key = "D"
+                elif buttonL.pressed(): new_key = "L"
+                elif buttonR.pressed(): new_key = "R"
+                
+                # Update mapping if valid
+                if new_key != "":
+                    KEYMAPS[self.current_remap] = new_key
+                    self.update_menu()
+                    
+                # Wait for button release
+                sleep(0.3)
+                inputJustPressed()
+                    
+                self.remapping = False
+                sleep(0.3)
+                continue
+            
+            # Draw menu items
+            start_idx = max(0, min(self.selected - 2, len(self.settings_items) - 5))
+            for i in range(start_idx, min(start_idx + 5, len(self.settings_items))):
+                y_pos = 12 + (i - start_idx) * 6
+                text_color = 1 if i == self.selected else 3
+                display.drawText(self.settings_items[i], 4, y_pos, text_color)
+            
+            # Draw scrollbar if needed
+            if len(self.settings_items) > 5:
+                scrollbar_height = min(35, 35 * 5 / len(self.settings_items))
+                scrollbar_pos = 12 + (35 - scrollbar_height) * self.selected / (len(self.settings_items) - 1)
+                display.drawFilledRectangle(70, int(scrollbar_pos), 2, int(scrollbar_height), 1)
+            
+            display.update()
+            
+            # Handle input
+            if buttonU.justPressed():
+                self.selected = (self.selected - 1) % len(self.settings_items)
+                sleep(0.15)
+            elif buttonD.justPressed():
+                self.selected = (self.selected + 1) % len(self.settings_items)
+                sleep(0.15)
+            elif buttonA.justPressed():
+                # Handle selection
+                if self.selected < 10:  # Key remapping options
+                    self.remapping = True
+                    if self.selected == 0:
+                        self.current_remap = "FIRE"
+                    elif self.selected == 1:
+                        self.current_remap = "SHIFT"
+                    elif self.selected == 2:
+                        self.current_remap = "MOVE_LEFT"
+                    elif self.selected == 3:
+                        self.current_remap = "MOVE_RIGHT"
+                    elif self.selected == 4:
+                        self.current_remap = "MOVE_UP"
+                    elif self.selected == 5:
+                        self.current_remap = "MOVE_DOWN"
+                    elif self.selected == 6:
+                        self.current_remap = "AFTERBURNER"
+                    elif self.selected == 7:
+                        self.current_remap = "BREAK"
+                    elif self.selected == 8:
+                        self.current_remap = "TARGET_NEXT"
+                    elif self.selected == 9:
+                        self.current_remap = "TARGET_PREV"
+                elif self.selected == 10:  # Reset defaults
+                    for key in DEFAULT_KEYS:
+                        KEYMAPS[key] = DEFAULT_KEYS[key]
+                    # Update menu text
+                    self.update_menu()
+                    sleep(0.3)
+                elif self.selected == 11:  # Back
+                    save_keymaps(KEYMAPS)
+                    return
+                sleep(0.15)
+            elif buttonB.justPressed():
+                # Go back
+                save_keymaps(KEYMAPS)
+                return
+            
 #Intro finished
 Intro.finish()
 
 while True:
     lifes = 5
-    player_speed = float2fp(1)
+    player_speed = player_target_speed = float2fp(1)
     player_angle = [0, 0, 0]
     score = 0
     # Show the Menu
@@ -933,5 +1085,8 @@ while True:
             display.update()
         die()    
         game_over()
+    elif (game == 2):
+        settings = SettingsMenu()
+        settings.run()
     else:
         reset()
