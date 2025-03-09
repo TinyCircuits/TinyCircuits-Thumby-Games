@@ -382,7 +382,7 @@ class Astroids:
                 if (a[c] > (1000<<16)) or (a[c] < -(1000<<16)):
                     a[c+3] = -a[c+3]
                 a[c] += a[c+3]
-                a[c] += fpmul((player_angle[c]), player_speed)
+                a[c] += fpmul((player_angle[c])//2, player_speed)
             a[2] -= fpmul(a[5], player_speed)
             
             # get sprite in correct size
@@ -481,7 +481,7 @@ class Enemies:
             # move in x,y,z-axis forward
             for c in range(2):
                 # xy displacement based on player_angle * player_speed
-                e[c] += (player_angle[c] * player_speed) >> 16
+                e[c] += (player_angle[c] // 2 * player_speed) >> 16
             e[2] -= fpmul(2048, player_speed)
                 
             # calc displacement of ship form orientation & thrust if not exploding
