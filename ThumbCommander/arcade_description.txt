@@ -3,3 +3,5 @@ Now is your time to jump into the cockpit on your thumby.
 Dash through classic astroid fields and engage in dogfights with nether ending enemy ships
 This would not have been possible without all the great graphic of the Wing Commander Encyclopedia Project. 
 It is my first pass on the game. Watch out for more to come.
+v1.0: initial releaese
+v1.1: (current_rlease) added ability to fly through space, added afterburner, added Setting menu to configure input
