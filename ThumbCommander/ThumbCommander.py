@@ -11,7 +11,7 @@ Intro.start()
 
 from machine import freq
 # Overclock. It doesn't seem to run above 250MHz
-freq(266_000_000)
+freq(200_000_000)
 
 from thumbyButton import buttonA, buttonB, buttonU, buttonD, buttonL, buttonR, dpadPressed, inputJustPressed
 from thumbyHardware import reset
@@ -94,29 +94,30 @@ shieldSHD = bytearray([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,128,128,192,192,224,2
            0,0,0,0,0,0,0,0,0,0,0,1,2,6,15,30,24,32,96,96,224,192,128,128,0,0,0,0,0,0,0,0,0,0,0,0,0,0,128,128,192,128,128,192,224,208,240,224,224,224,112,112,56,46,14,15,7,3,1,0,0,0,0,0,0,0,0,0,0,0,
            0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,3,3,3,6,4,4,4,6,6,6,6,6,7,7,7,3,1,1,3,2,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0])
 
-#DEFAULT_KEYS = array('A', #FIRE
-#                     'B', #SHIFT
-#                     'L', #MOVE_LEFT
-#                     'R', #MOVE_RIGHT
-#                     'D', #MOVE_UP
-#                     'U', #MOVE_DOWN
-#                     'U', #AFTERBURNER
-#                     'D', #BREAK
-#                     'R', #TARGET_NEXT
-#                     'L') #TARGET_PREV
+DEFAULT_KEYS = array('B', [
+    ord('A'),  # FIRE (index 0)
+    ord('B'),  # SHIFT (index 1)
+    ord('L'),  # MOVE_LEFT (index 2)
+    ord('R'),  # MOVE_RIGHT (index 3)
+    ord('D'),  # MOVE_UP (index 4)
+    ord('U'),  # MOVE_DOWN (index 5)
+    ord('U'),  # AFTERBURNER (index 6)
+    ord('D'),  # BREAK (index 7)
+    ord('R'),  # TARGET_NEXT (index 8)
+    ord('L')   # TARGET_PREV (index 9)
+])
 
-DEFAULT_KEYS = {
-    "FIRE": "A",
-    "SHIFT": "B",
-    "MOVE_LEFT": "L",
-    "MOVE_RIGHT": "R",
-    "MOVE_UP": "D",
-    "MOVE_DOWN": "U",
-    "AFTERBURNER": "U",
-    "BREAK": "D",
-    "TARGET_NEXT": "R",
-    "TARGET_PREV": "L"
-}
+# Constants for key indexes
+KEY_FIRE = const(0)
+KEY_SHIFT = const(1)
+KEY_MOVE_LEFT = const(2)
+KEY_MOVE_RIGHT = const(3)
+KEY_MOVE_UP = const(4)
+KEY_MOVE_DOWN = const(5)
+KEY_AFTERBURNER = const(6)
+KEY_BREAK = const(7)
+KEY_TARGET_NEXT = const(8)
+KEY_TARGET_PREV = const(9)
 
 def copySprite(obj:Sprite):
     newSprite = Sprite(obj.width, obj.height,(bytearray(obj.bitmapByteCount), bytearray(obj.bitmapByteCount)),0,0,obj.key,obj.mirrorX,obj.mirrorY)
@@ -260,12 +261,11 @@ def getSprite(z, shape):
         OBJECTS[shape].setScale(fpdiv((71<<16)-abs(z), 60<<16))
         return OBJECTS[shape]
 
-def button_exists(button_name):
+#@micropython.native
+def button_exists(button_char:int) -> bool:
     try:
-        for part in button_name:
-            if not "button" + part in globals():
-                return False
-        return True
+        button_name = "button" + chr(button_char)
+        return bool(button_name in globals())
     except:
         return False
         
@@ -273,18 +273,53 @@ def load_keymaps():
     try:
         with open(loc + "keymap.json", "r") as f:
             loaded_keys = json.loads(f.read())
-            complete_keys = DEFAULT_KEYS.copy()
-            for key, value in loaded_keys.items():
-                if button_exists(value):
-                    complete_keys[key] = value
-            return complete_keys    
+            # Create a new array with default values
+            complete_keys = array('B', DEFAULT_KEYS)
+            
+            # Update only valid keys
+            if "FIRE" in loaded_keys and button_exists(ord(loaded_keys["FIRE"])):
+                complete_keys[KEY_FIRE] = ord(loaded_keys["FIRE"])
+            if "SHIFT" in loaded_keys and button_exists(ord(loaded_keys["SHIFT"])):
+                complete_keys[KEY_SHIFT] = ord(loaded_keys["SHIFT"])
+            if "MOVE_LEFT" in loaded_keys and button_exists(ord(loaded_keys["MOVE_LEFT"])):
+                complete_keys[KEY_MOVE_LEFT] = ord(loaded_keys["MOVE_LEFT"])
+            if "MOVE_RIGHT" in loaded_keys and button_exists(ord(loaded_keys["MOVE_RIGHT"])):
+                complete_keys[KEY_MOVE_RIGHT] = ord(loaded_keys["MOVE_RIGHT"])
+            if "MOVE_UP" in loaded_keys and button_exists(ord(loaded_keys["MOVE_UP"])):
+                complete_keys[KEY_MOVE_UP] = ord(loaded_keys["MOVE_UP"])
+            if "MOVE_DOWN" in loaded_keys and button_exists(ord(loaded_keys["MOVE_DOWN"])):
+                complete_keys[KEY_MOVE_DOWN] = ord(loaded_keys["MOVE_DOWN"])
+            if "AFTERBURNER" in loaded_keys and button_exists(ord(loaded_keys["AFTERBURNER"])):
+                complete_keys[KEY_AFTERBURNER] = ord(loaded_keys["AFTERBURNER"])
+            if "BREAK" in loaded_keys and button_exists(ord(loaded_keys["BREAK"])):
+                complete_keys[KEY_BREAK] = ord(loaded_keys["BREAK"])
+            if "TARGET_NEXT" in loaded_keys and button_exists(ord(loaded_keys["TARGET_NEXT"])):
+                complete_keys[KEY_TARGET_NEXT] = ord(loaded_keys["TARGET_NEXT"])
+            if "TARGET_PREV" in loaded_keys and button_exists(ord(loaded_keys["TARGET_PREV"])):
+                complete_keys[KEY_TARGET_PREV] = ord(loaded_keys["TARGET_PREV"])
+            
+                return complete_keys
     except:
-        return DEFAULT_KEYS.copy()
+        return array('B', DEFAULT_KEYS)
+        
 
 def save_keymaps(keymap):
     try:
+        # Convert array to dictionary for JSON serialization
+        keymap_dict = {
+            "FIRE": chr(keymap[KEY_FIRE]),
+            "SHIFT": chr(keymap[KEY_SHIFT]),
+            "MOVE_LEFT": chr(keymap[KEY_MOVE_LEFT]),
+            "MOVE_RIGHT": chr(keymap[KEY_MOVE_RIGHT]),
+            "MOVE_UP": chr(keymap[KEY_MOVE_UP]),
+            "MOVE_DOWN": chr(keymap[KEY_MOVE_DOWN]),
+            "AFTERBURNER": chr(keymap[KEY_AFTERBURNER]),
+            "BREAK": chr(keymap[KEY_BREAK]),
+            "TARGET_NEXT": chr(keymap[KEY_TARGET_NEXT]),
+            "TARGET_PREV": chr(keymap[KEY_TARGET_PREV])
+        }
         with open(loc + "keymap.json", "w") as f:
-            f.write(json.dumps(keymap))
+            f.write(json.dumps(keymap_dict))
     except:
         pass
 
@@ -329,7 +364,7 @@ class Stars:
             # move forward
             if s[4] == 0:
                 for c in range(2):
-                    s[c] += fpmul((player_angle[c]), player_speed//4)
+                    s[c] += player_angle[c] + (player_speed-65536)
                     if (s[c] > (200<<16)) or (s[c] < -(200<<16)):
                         s[c] = -s[c]
             s[2]  -= fpmul(s[4], player_speed)
@@ -382,7 +417,7 @@ class Astroids:
                 if (a[c] > (1000<<16)) or (a[c] < -(1000<<16)):
                     a[c+3] = -a[c+3]
                 a[c] += a[c+3]
-                a[c] += fpmul((player_angle[c])//2, player_speed)
+                a[c] += player_angle[c] + (player_speed-65536)
             a[2] -= fpmul(a[5], player_speed)
             
             # get sprite in correct size
@@ -481,7 +516,7 @@ class Enemies:
             # move in x,y,z-axis forward
             for c in range(2):
                 # xy displacement based on player_angle * player_speed
-                e[c] += (player_angle[c] // 2 * player_speed) >> 16
+                e[c] += player_angle[c] + (player_speed-65536)
             e[2] -= fpmul(2048, player_speed)
                 
             # calc displacement of ship form orientation & thrust if not exploding
@@ -513,7 +548,7 @@ class Enemies:
             else: e[2] = -abs(e[2])
             
             # if space in z axis is ending change ship's x-orientation by 180°
-            if (e[2] > (70<<16)) or (e[2] < -70<<16):
+            if (e[2] > (70<<16)) or (e[2] < (-70<<16)):
                 e[3] = (e[3]+6) % 12
                 e[2] += sign(e[2])*(-5<<16)
             
@@ -709,16 +744,11 @@ class Ship:
         global player_angle, player_speed, player_target_speed, hudShip
         # ticks in ms passed since last call for body inertia calaculation
         new_time = ticks_us()
-        t = (ticks_diff(new_time, self.last_time,)<<16)//1000000
+        t = (int(ticks_diff(new_time, self.last_time,))<<16)//1000000
         self.last_time = new_time
         
-        if self.afterburner_time != 0:
-            ta = (ticks_diff(new_time, self.afterburner_time,)<<16)//1000000
-            if (ta > 250000):
-                self.afterburner_time = 0
-                player_target_speed = 1<<16
-        if getattr(globals()["button"+KEYMAPS["SHIFT"]], "pressed")():
-            if getattr(globals()["button"+KEYMAPS["TARGET_NEXT"]], "justPressed")():
+        if eval("button" + chr(KEYMAPS[KEY_SHIFT])).pressed():
+            if eval("button" + chr(KEYMAPS[KEY_TARGET_NEXT])).justPressed():
                 if enemies:
                     for i in range(len(enemies)):
                         e = enemies[i]
@@ -729,7 +759,7 @@ class Ship:
                             break
                     else:
                         if enemies[0] != None: enemies[0][8] = 1
-            elif getattr(globals()["button"+KEYMAPS["TARGET_PREV"]], "justPressed")():
+            elif eval("button" + chr(KEYMAPS[KEY_TARGET_PREV])).justPressed():
                 if enemies:
                     for i in range(len(enemies) -1, -1, -1):
                         e = enemies[i]
@@ -740,26 +770,26 @@ class Ship:
                             break
                     else:
                         if enemies[0] != None: enemies[len(enemies) -1][8] = 1
-            elif getattr(globals()["button"+KEYMAPS["AFTERBURNER"]], "justPressed")() and (self.afterburner_time == 0):
-                player_target_speed = 5<<16;
+            elif eval("button" + chr(KEYMAPS[KEY_AFTERBURNER])).justPressed() and (self.afterburner_time == 0):
+                player_target_speed = 7<<16;
                 self.afterburner_time = new_time
-            elif getattr(globals()["button"+KEYMAPS["BREAK"]], "justPressed")():
+            elif eval("button" + chr(KEYMAPS[KEY_BREAK])).justPressed():
                 player_speed = 1<<16
-        elif getattr(globals()["button"+KEYMAPS["MOVE_RIGHT"]], "pressed")():
+        elif eval("button" + chr(KEYMAPS[KEY_MOVE_RIGHT])).pressed():
             player_angle[0] -= 1<<16
             player_angle[2] = -3
             self.cockpit_sprite.x = SHIP_X-1
-        elif getattr(globals()["button"+KEYMAPS["MOVE_LEFT"]], "pressed")():
+        elif eval("button" + chr(KEYMAPS[KEY_MOVE_LEFT])).pressed():
             player_angle[0] += 1<<16
             player_angle[2] = 3
             self.cockpit_sprite.x = SHIP_X+1
-        elif getattr(globals()["button"+KEYMAPS["MOVE_DOWN"]], "pressed")():
+        elif eval("button" + chr(KEYMAPS[KEY_MOVE_DOWN])).pressed():
             player_angle[1] -= 1<<16
             self.cockpit_sprite.y = SHIP_Y-1
-        elif getattr(globals()["button"+KEYMAPS["MOVE_UP"]], "pressed")():
+        elif eval("button" + chr(KEYMAPS[KEY_MOVE_UP])).pressed():
             player_angle[1] += 1<<16
             self.cockpit_sprite.y = SHIP_Y+1
-        elif getattr(globals()["button"+KEYMAPS["FIRE"]], "justPressed")():
+        elif eval("button" + chr(KEYMAPS[KEY_FIRE])).justPressed():
             if (self.laser_energy > 0):
                 self.laser.append(Laser(player_angle[0], player_angle[1]))
                 self.target_sprite = Sprite(7,7,(targetactive,targetactiveSHD),CENTER_X-3, CENTER_Y-3,0)
@@ -783,6 +813,14 @@ class Ship:
         if player_angle[1] < -2162688: player_angle[1] = -2162688
         if player_angle[1] > 2162688: player_angle[1] = 2162688
         
+        if self.afterburner_time != 0:
+            ta = (int(ticks_diff(new_time, self.afterburner_time,))<<16)//1000000
+            self.cockpit_sprite.x = SHIP_X + choice([1,0,-1])
+            self.cockpit_sprite.y = SHIP_Y + choice([1,0,-1])
+            if (ta > 250000):
+                self.afterburner_time = 0
+                player_target_speed = 1<<16
+                
         player_speed = apply_physics(1<<16, player_target_speed, player_speed, t)
         inputJustPressed()
         
@@ -912,27 +950,27 @@ class SettingsMenu:
         self.update_menu()
         self.selected = 0
         self.remapping = False
-        self.current_remap = ""
+        self.current_remap = 0  # Now using index instead of string
         self.background = Stars(20, 4, 0)
         display.setFont("/lib/font3x5.bin", 3, 5, 1)
-        # wait for button release
-        inputJustPressed()
     
     def update_menu(self):
+        # Create menu items dynamically from key array
         self.settings_items = [
-            "FIRE: " + KEYMAPS["FIRE"],
-            "SHIFT: " + KEYMAPS["SHIFT"],
-            "MOVE LEFT: " + KEYMAPS["MOVE_LEFT"],
-            "MOVE RIGHT: " + KEYMAPS["MOVE_RIGHT"],
-            "MOVE UP: " + KEYMAPS["MOVE_UP"],
-            "MOVE DOWN: " + KEYMAPS["MOVE_DOWN"],
-            "AFTERBURNER: " + KEYMAPS["SHIFT"]+"+"+KEYMAPS["AFTERBURNER"],
-            "BREAK: " + KEYMAPS["SHIFT"]+"+"+KEYMAPS["BREAK"],
-            "TGT NEXT: " + KEYMAPS["SHIFT"]+"+"+KEYMAPS["TARGET_NEXT"],
-            "TGT PREV: " + KEYMAPS["SHIFT"]+"+"+KEYMAPS["TARGET_PREV"],
+            "FIRE: " + chr(KEYMAPS[KEY_FIRE]),
+            "SHIFT: " + chr(KEYMAPS[KEY_SHIFT]),
+            "MOVE LEFT: " + chr(KEYMAPS[KEY_MOVE_LEFT]),
+            "MOVE RIGHT: " + chr(KEYMAPS[KEY_MOVE_RIGHT]),
+            "MOVE UP: " + chr(KEYMAPS[KEY_MOVE_UP]),
+            "MOVE DOWN: " + chr(KEYMAPS[KEY_MOVE_DOWN]),
+            "AFTERBURNER: " + chr(KEYMAPS[KEY_SHIFT])+"+"+chr(KEYMAPS[KEY_AFTERBURNER]),
+            "BREAK: " + chr(KEYMAPS[KEY_SHIFT])+"+"+chr(KEYMAPS[KEY_BREAK]),
+            "TGT NEXT: " + chr(KEYMAPS[KEY_SHIFT])+"+"+chr(KEYMAPS[KEY_TARGET_NEXT]),
+            "TGT PREV: " + chr(KEYMAPS[KEY_SHIFT])+"+"+chr(KEYMAPS[KEY_TARGET_PREV]),
             "RESET DEFAULTS",
             "BACK"
         ]
+        
     def run(self):
         global KEYMAPS
         display.setFPS(30)
@@ -951,7 +989,12 @@ class SettingsMenu:
                 # Draw title
                 display.drawText("PRESS NEW KEY FOR:", 2, 2, 1)
                 display.drawLine(0, 9, 72, 9, 1)
-                display.drawText(self.current_remap, 16, 14, 3)
+                
+                # Show which key is being remapped
+                key_names = ["FIRE", "SHIFT", "MOVE LEFT", "MOVE RIGHT", 
+                             "MOVE UP", "MOVE DOWN", "AFTERBURNER", 
+                             "BREAK", "TARGET NEXT", "TARGET PREV"]
+                display.drawText(key_names[self.current_remap], 16, 14, 3)
                 display.update()
                 
                 # Wait for a button press
@@ -959,16 +1002,16 @@ class SettingsMenu:
                     pass
                 
                 # Determine which button was pressed
-                new_key = ""
-                if buttonA.pressed(): new_key = "A"
-                elif buttonB.pressed(): new_key = "B"
-                elif buttonU.pressed(): new_key = "U"
-                elif buttonD.pressed(): new_key = "D"
-                elif buttonL.pressed(): new_key = "L"
-                elif buttonR.pressed(): new_key = "R"
+                new_key = 0  # Default value
+                if buttonA.pressed(): new_key = ord('A')
+                elif buttonB.pressed(): new_key = ord('B')
+                elif buttonU.pressed(): new_key = ord('U')
+                elif buttonD.pressed(): new_key = ord('D')
+                elif buttonL.pressed(): new_key = ord('L')
+                elif buttonR.pressed(): new_key = ord('R')
                 
                 # Update mapping if valid
-                if new_key != "":
+                if new_key != 0:
                     KEYMAPS[self.current_remap] = new_key
                     self.update_menu()
                     
@@ -1006,29 +1049,11 @@ class SettingsMenu:
                 # Handle selection
                 if self.selected < 10:  # Key remapping options
                     self.remapping = True
-                    if self.selected == 0:
-                        self.current_remap = "FIRE"
-                    elif self.selected == 1:
-                        self.current_remap = "SHIFT"
-                    elif self.selected == 2:
-                        self.current_remap = "MOVE_LEFT"
-                    elif self.selected == 3:
-                        self.current_remap = "MOVE_RIGHT"
-                    elif self.selected == 4:
-                        self.current_remap = "MOVE_UP"
-                    elif self.selected == 5:
-                        self.current_remap = "MOVE_DOWN"
-                    elif self.selected == 6:
-                        self.current_remap = "AFTERBURNER"
-                    elif self.selected == 7:
-                        self.current_remap = "BREAK"
-                    elif self.selected == 8:
-                        self.current_remap = "TARGET_NEXT"
-                    elif self.selected == 9:
-                        self.current_remap = "TARGET_PREV"
+                    # Set current_remap to the index value instead of string
+                    self.current_remap = self.selected
                 elif self.selected == 10:  # Reset defaults
-                    for key in DEFAULT_KEYS:
-                        KEYMAPS[key] = DEFAULT_KEYS[key]
+                    # Reset to default values
+                    KEYMAPS = array('B', DEFAULT_KEYS)
                     # Update menu text
                     self.update_menu()
                     sleep(0.3)
@@ -1052,6 +1077,7 @@ while True:
     # Show the Menu
     game = menu()
     
+    inputJustPressed()
     if (game == 0):
         # show launch sequence
         launch()
