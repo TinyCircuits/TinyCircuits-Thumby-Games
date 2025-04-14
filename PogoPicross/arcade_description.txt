@@ -1,0 +1,4 @@
+A simple nonogram/picross puzzle game thing, made by Pogostix, ver 1.0, spring 2025.
+You can create custom puzzles! Guide included in the files.
+Little bit of a turd to run in the emulator, but it CAN be done, check the FAQ at the top of the main file code.
+If you have any questions/comments, I can be reached @Pogostix in the Thumby Discord. Enjoy!
