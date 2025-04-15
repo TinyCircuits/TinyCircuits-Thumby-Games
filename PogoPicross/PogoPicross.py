@@ -178,7 +178,6 @@ def buttonMoveSound():
     thumby.audio.play(261, 100)
 
 def happyNoise():
-    thumby.audio.setEnabled(True)
     thumby.audio.play(1661, 100)
     time.sleep(0.2)
     thumby.audio.play(1661, 100)
