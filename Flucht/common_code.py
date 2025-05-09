@@ -1234,6 +1234,7 @@ def game_loop(key_pressed, delta_time, game_interface):
 	# UI
 	if current_state is STATE_TITLE_SCREEN:
 		game_interface.drawSprite('SPRITE_TITLE')
+		game_interface.draw_battery()
 	elif current_state is STATE_GAME_OVER:
 		game_interface.drawSprite('SPRITE_SCORE')
 		height = 2 * math.sin(5 * time_since_last_state_change) + 48

@@ -1,0 +1,7 @@
+Stacker
+by Jason Ngo
+Version: 1.1.0
+
+Stack rows of blocks and reach the top without losing all your blocks.
+Your score is higher if you perform better (lose fewer blocks).
+Choose from three difficulties.

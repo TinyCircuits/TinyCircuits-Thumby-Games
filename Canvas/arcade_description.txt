@@ -14,4 +14,4 @@ Features:
 - Panic dump - in case of error, canvas is saved automatically.
 
 Author: TPReal
-Version: 1.0
+Version: 1.2

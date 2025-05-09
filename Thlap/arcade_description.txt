@@ -1,0 +1,1 @@
+Thlap, yet another Flappy bird clone for the Thumby. Any button flaps, d-pad left exits the game. Made by SipSup3314, some graphics by Lolhappy909_lol

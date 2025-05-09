@@ -1,0 +1,7 @@
+Try and get the highest score in this thumby Simon clone
+Use the d-pad to select menu options and choose the direction to press on the Simon
+
+Author: PossiblyAxolotl
+Version: 1.0
+
+Feel free to join my Discord server at https://discord.gg/zK4J8p4 and check out my socials at https://linktr.ee/possiblyaxolotl

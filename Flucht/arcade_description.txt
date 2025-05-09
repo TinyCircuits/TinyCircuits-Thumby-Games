@@ -6,5 +6,7 @@ Press any button to play it, in portrait mode.
 
 You can also play it in your web browser, plus more info: http://sergilazaro.itch.io/flucht
 
+Changelog 1.1: Added battery status icon to the main screen
+
 Author: Sergi Lazaro
-Version: 1.0
+Version: 1.1

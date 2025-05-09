@@ -1,0 +1,40 @@
+Umby & Glow - Save Their Cave!
+
+Play as Umby the earthworm, or Glow the caveworm,
+as the wormy duo embark on an epic adventure to save their cave,
+and the whole world!
+* Side scrolling platformer with destructable landscapes.
+* Supports 2 player coop (with link cable).
+* 8 epic Chapters through caves, forests, space, and beyond!
+* Aliens, Dragons, Owls, Lazers, their favourite nemesis: Lung.
+* 4 Boss Battles including one epic showdown.
+* 1 breathtaking font by Auri.
+* And a truckload of puntastic fun!
+
+Meet UMBY!
+Crawl the mud, blast tunnels, jump high, launch grenades,
+and create platforms!
+Move & Climb: Left/Right
+Jump: A (hold for higher)
+Aim: Up/Down
+Charge grenade: Hold B (release to launch)
+Create platform: B (while grenade in flight)
+
+Meet GLOW!
+Cling to the roof, blast tunnels, swing with a grappling hook,
+launch rockets, and wriggle through walls!
+Move & Climb: Left/Right
+Fall: A (hold)
+Aim: Up/Down
+Launch grappling hook: A (while falling)
+Release grappling hook: A (while grappling)
+Climb/Descend rope: Up/down (while grappling)
+Wiggle through walls: Left/Right + [Tapping A]
+Charge rocket: Hold B (release to launch)
+
+Story dialog options:
+TEXT: pauses game
+TALK: stays in active play
+
+Author: fuglaro (font by Auri)
+Version: v2

@@ -1,0 +1,11 @@
+Move up and down and avoid the spikes and walls! You get progressively faster.
+Based on the Wave from Geometry Dash.
+
+Controls:
+-Start: press A/B
+-Go down: hold A/B
+-Replay (after game over): Press A and B
+
+By Taco_pwr#9591 (aka BeepyDev)
+
+Version 1.3 /// Most recent update: Moved unoptimized version, fixed score bug, updated arcade description

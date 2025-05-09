@@ -1,0 +1,16 @@
+Welcome to TinySort, a very simple sorting game!
+
+Sort the hearts and stars and discard the bombs! 
+Hearts go in the H (heart) box and stars in the S (star) box.
+
+Controls:
+L: Put in heart box
+R: Put in star box
+U/D: discard
+Note: Only discard bombs!
+
+You have 60 seconds to get the highest score you can get :D
+But be careful because items start appearing faster each time!
+
+Version: 1.0
+Author: Natalia Salgado

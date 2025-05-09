@@ -1,0 +1,10 @@
+This is a port of Flappy Bird called ThumBird!
+After the intro animation press any button to start the game.
+Press any button to flap the bird through the pipes!
+
+This is The first Blocky code game! and the second program (the first is TinyCalc)
+
+game by: Mr.Giraffe
+Title and text art by: AyreGuitar
+V.1.3
+Questions? join the TinyCircuits Discord at Thumby.us

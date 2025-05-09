@@ -9,8 +9,7 @@ Move around, fight monsters, collect monsters, train monsters.
 ############ **Game Info** ##############
 
 **Player Info**  
-To start you can only have up to two Monsters with you.    
-Each Monster starts with 7 training points.
+To start you can only have up to two Monsters with you.  
 If you get an additional Monster, you will be asked you to select one & let it go.  
 Every 10 Trainer Levels you can have an additional Monster with you, up to a maximum of 5.  
 Your Trainer Level also influences how well your Active Monster can fight.  
@@ -39,7 +38,7 @@ The higher your Trainer Level, you'll seek out stronger Roaming Monsters to figh
 ############ **Training** #############  
 
 Train is used to increase a stat by 1 point, up to a maximum amount.  
-Learning a new attack cost 3 Training Points, a Monster can know up to 6 attacks.  
+Learning a new attack cost 3 Training Points, a Monster can know up to 5 attacks.  
 A monster can Mutate to increase a procedurally determined stat's maximum training amount.  
 A monster can mutate up to 5 times, if you have duplicates of a monster they will mutate in the same ways.  
 Mutating can potentially Change the look of a monster.  
@@ -52,19 +51,63 @@ Learn Attack: 3 TP
 Mutate:       5 TP  
 
 
+############ **Inspire** #############  
+
+Every time your trainer levels up, they will get an Inspiration Point. Inspiration Points can be used to inspire your active monster.  
+
+When a monster is inspired, their max trainable HP goes up by one and they will receive 2 Training Points.
+
+If you inspire a monster through dancing, their max trainable agility goes up by one
+If you inspire a monster through flexing, their max trainable strength goes up by one
+If you inspire a monster through running, their max trainable endurance goes up by one
+If you inspire a monster through meditation, their max trainable mysticism goes up by one
+If you inspire a monster through origami, their max trainable tinfoil goes up by one  
+
+  
+  
+############ **Campfire** #############    
+    
+ **Leave** : Allows you to select and leave a monster at the campfire.  
+ **Bring** : Allows you to select a monster that is already at the campfire to come with you.  
+ **Let Go** : Select a Monster at the campfire to release permanently.      
+ **Bye** : Leaves the camp  
+ 
+ Only three monsters can stay at the camp at a time.
+ A camp can be found by going back to the same screen you started on.  
+ A camp can be found randomly by exploring, it is mystically connected to the camp you store your monsters at. (SpOoKy!~)
+
+############ **Bean, The Traveling Merchant** #############  
+
+**Buy** : You can purchase items for sale, everything cost 10 Tiny Coins.   
+**Sell**  : Sell your items, everything can be bought for 5 Tiny Coins.  
+**Bye** : Leave the merchant.  
+  
+The only way to get Tiny Coins is to sell items.    
+The merchant can be found by exploring.    
+  
 ############# **Items** ##############  
 Items are not usable during combat.  
+  
+**For items that increase the a stat's maximum trainable amount:**  
+  You can only do this 30 times per monster. If you give a monster more than 30 items that do this the maximum number will not go up anymore, but the monster will still recover any HP that the item is set to restore.
+
+
 
 #######  
 **Item List**  
 #######  
   
-Bandaids - Heals 8 HP  
-PushPops - Heals 20 HP  
-Stickers - Raises max trainable HP by 1 and heals for 1  
-Ribbons  - Raises max trainable HP by 2 and heals for 2  
-Crystals - Will restore all stamina for all moves that the active Monster knows.
-         - Crystals are also needed for Taming Monsters. They are consumed by the opposing monster while attempting to Tame
+**Bandaids** - Heals 8 HP  
+**PushPops** - Heals 20 HP  
+  
+**Stickers** - Raises max trainable HP by 1 and heals for 10  
+**Vitamins** - Raises max trainable Strength by 1 and heals for 9  
+**Helium** - Raises max trainable Agility by 1 and heals for 8  
+**Pillows** - Raises max trainable Endurance by 1 and heals for 7  
+**Stardust** - Raises max trainable Mysticism by 1 and heals for 6  
+**Tinfoil** - Raises max trainable Tinfoil by 1 and heals for 5  
+
+**Crystals** - Will restore all stamina for all moves that the active Monster knows.  **Crystals are also needed for Taming Monsters.** They are consumed by the opposing monster while attempting to Tame
 
 ############# **Types: Strengths and Weakness** ##############  
 
@@ -162,49 +205,16 @@ Monster Type | Attack Name | Element Type | Damage based on Strength/Mysticism
 ------- |"Superlunary"   | Ethereal   | Mysticism   
 ------- |"Obscurity"     | Darkness   | Mysticism  
 ------- |"Rue"           | Mind       | Mysticism  
+
   
-  
-Updates as of 04/18/22:  
-Fixed Folder Name from Curtian to Curtain. I'm a dork :D
-Restructured things, now using methods and stuff. The game will now make a list of monsters to load from for when you encounter a roaming monster. Player now roams the wilderness. (Which is just the map from the previous version, that is based on the player seed.)  
-Things are setup so that new modes can be added, multiplayer is coming "soon(TM)" (Planning on adding live multiplayer via Link Cable & Ghost Multiplayer, to load someone else's trainer you have saved to fight them that way too), A storage mode to save monsters & be able to trade them via Link Cable. We'll see how far I can get with those things.  
-  
-Updates as of 4/11/22:   
-Fixed issue where items were not being loaded correctly, it only loaded the first item that was saved.  
-Added numbers to item screen, to help show how many items the player has.   
-Added text to tell the player they used an item.   
+Updates as of 01/30/23:  
+Added a merchant - Merchant will either be selling items that can increase a stat's maximum amount, or will only be selling crystals.  
+Added a campfire - You can leave up to three monsters at the campfire. 
+Game automatically saves after interacting with the merchant or campfire.
+(I would like to store more monsters at a campfire, but I need to do more testing than I'm able to do right now. :p)  
+Changed how roaming monster's stats are generated.  
+Changed combat damage so that more damage is applied if a monster is hit with an attack it's weak against.  
+
    
-Updates as of 4/10/22:  
-Rewrote the battle animation screen.    
-Attacks will pick a bolt that goes across the screen based on the element type for the attack that was selected.  
-Fixed maxFriends, so that you can't go above the max amount anymore.    
-Had to lower monster count to 22 due to memory issues that comes up when loading a game with 5 monsters on your team, from the title screen.  
-  
-Updates as of 4/9/22:  
-Changed up the combat math, trying to make it less swingy.  
-  
-Updates as of 4/8/22:  
-Fixed - now the game will let you know that active monster doesn't have enough HP to fight, if in a fight it will tell you that it switched to another monster that has HP  
-Added mutate animation ( That takes up too many lines :D )  
-
-Updates as of 4/6/22:  
-Added the ability to cycle up through select first monster/monster info/swap active screens.   
-Changed the way the options menu checks for the correct selection.  
-
-Updates as of 3/26/22:  
-Fixed issue where the worldseed wasn't assigned to the player block and the game would always load the default 0 world  
-If the world seed equals the default of '0' then the game will give you a new world seed.
-Fixed scroller speed on opening screen  
-
-Updates as of 1/19/22:  
-Fixed issue where you could go above the max amount for some skills
-
-Updates as of 1/14/22:  
-Issue where there was not enough memory to load TMT from the thumby launcher on physical thumby. Moved images and attacks to their own ujson files in an attempt to fix this.
-Fixed issue where there where two images named legs7. Changed name of Mind move to telekinesis from project rock. Added tmt.ujson save for ease of testing.
-
-Updates as of 1/5/22:  
-Changed some combat math s'more. I like it better now, but I still haven't been able to play it long enough to see what it might be like at higher trainer levels. I also added some visuals and more monster parts. I fixed some more things that I found that weren’t working as intended.
-
-Updates as of 1/3/22:  
-Changed combat math so that the potential for high agility monsters avoiding all damage, all the time, was hopefully removed. Added a couple of monster parts. Added some visuals to help with navigating the game. Rewrote some functions to be the same, they just take up less lines. Removed some errors that caused the game to break. Fixed some things that weren't working as intended.
+Older updates can be found at:  
+https://github.com/BlakeBild/Tiny_Monster_Trainer 

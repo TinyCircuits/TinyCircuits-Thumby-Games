@@ -46,7 +46,7 @@ def battleStartAnimation(color):
     thumby.display.setFPS(40)
     
     
-def currentSelectCheckRange(optionAmount, currentSelect):
+def chkRng(optionAmount, currentSelect):
     if optionAmount > 1 and optionAmount !=2:
         if currentSelect > optionAmount - 2 :
             currentSelect = currentSelect - optionAmount
@@ -79,10 +79,13 @@ def popItOff(theListofObjs, word):
         thumby.display.update()
 
 
-def showOptions(options, currentSelect, bottomText, x=0):
+def showOptions(options, currentSelect, bottomText, x=0, skipFill=0):
     optionAmount = len(options)
-    currentSelect = currentSelectCheckRange(optionAmount, currentSelect)
-    thumby.display.fill(0)
+    currentSelect = chkRng(optionAmount, currentSelect)
+    if skipFill == 0:
+        thumby.display.fill(0)
+    else:
+        thumby.display.drawFilledRectangle(0+x, 0, 72, 40, 0)
     thumby.display.drawFilledRectangle(0+x, 10, 72, 9, 1)
     if optionAmount > 1: 
         thumby.display.drawText(options[currentSelect - 1], 1+x, 2, 1) # prints top opt
@@ -169,7 +172,7 @@ def giveName(beingNamed):
         if c == 28:
             if len(selected_chars) == 0 or selected_chars[-1] == ' ':
                 selected_chars = selected_chars + capAlphabet[tempC]
-            else:
+            elif len(selected_chars) < 11: 
                 selected_chars = selected_chars + character_list[tempC]
         elif c == 29:
             if len(selected_chars) > 0:
@@ -180,16 +183,18 @@ def giveName(beingNamed):
                 goBack = 1
         if c >= 28:
             c = tempC
+
     return beingNamed
     
 
-def tameMon(playerInfo, npcMon):
+def tameMon(playerInfo, npcMon, sbToCopy):
     gc.collect()
     newMon = Monster()
-    newMon.statBlock = npcMon.statBlock.copy()
+    newMon.statBlock = sbToCopy.copy()
     newMon.bodyBlock = npcMon.bodyBlock.copy()
     newMon.attackList = npcMon.attackList.copy()
     newMon.mutateSeed = npcMon.mutateSeed.copy()
+    newMon.bonusStats = {'item' : 0, 'trained' : 0}    
     playerInfo.friends.append(newMon)
     if len(playerInfo.friends) > playerInfo.playerBlock['friendMax']:
             popItOff(playerInfo.friends, "monsters, please let one go!")
@@ -225,62 +230,90 @@ def drawArrows(l, r, d, u=1): # x, y):
     arrowUD = [8,24,63,24,8] # 5 x 6    # last three are: key, mirrorX, mirrorY
     thumby.display.blit(bytearray(arrowLR), 1, 17, 6, 5, l, abs(l), 0)
     thumby.display.blit(bytearray(arrowLR), 65, 17, 6, 5, r, 0, 0)
-    thumby.display.blit(bytearray(arrowUD), 66, 30, 5, 6, d, 0, 0)
-    thumby.display.blit(bytearray(arrowUD), 66, 4, 5, 6, u, 0, abs(u))
+    thumby.display.blit(bytearray(arrowUD), 66, 24, 5, 6, d, 0, 0)
+    thumby.display.blit(bytearray(arrowUD), 66, 9, 5, 6, u, 0, abs(u))
 
 
-def showMonInfo(playerInfo, startOfgameCheck=0, combatCheck=0):
+def showMonInfo(playerInfo, startOfgameCheck=0, combatCheck=0, campfire=0):
+    thumby.display.fill(0) # Fill canvas to black
+    thumby.display.update()
     left = 1
     right = -1
     down = -1
     up = -1
     x = 0
     xMonRange = len(playerInfo.friends)
-    currentSelect = -2
+    currentSelect = 0
     tempSelect = currentSelect
     tempSelect2 = tempSelect
     goBack = 0
     monsterListInfo = playerInfo.friends
-    while(goBack != 1): 
-        if currentSelect == 9:
-            currentSelect = -2
-        if currentSelect == -3:
-            currentSelect = 8
-        currentSelect = currentSelectCheckRange(10, currentSelect)
+    while(goBack != 1):
+        if currentSelect == 3:
+            currentSelect = 0
+        if currentSelect == -1:
+            currentSelect = 2
+        currentSelect = chkRng(10, currentSelect)
         tempSelect2 = tempSelect
         tempSelect = currentSelect
         thumby.display.fill(0)
-        if currentSelect == -2: 
-            printMon(monsterListInfo[x].bodyBlock, 25 ,0, 0)
-            drawArrows(left, right, down, up)
-            thumby.display.drawText(monsterListInfo[x].statBlock['given_name'], math.floor(((72-(len(monsterListInfo[x].statBlock['given_name']))*6))/2), 28, 1)
-        elif currentSelect == -1:
-            thingAquired(monsterListInfo[x].statBlock['given_name'], "is a", monsterListInfo[x].statBlock['name'], "", 0, 1)
-            drawArrows(left, right, down, up)
-        elif currentSelect <= 8:
-            while(monsterListInfo[x].statBlock[monsterListInfo[x].keyList[currentSelect]] == ""):
-                if tempSelect2 < currentSelect:
-                    currentSelect = currentSelect + 1
-                elif tempSelect2 > currentSelect:
-                    currentSelect = currentSelect - 1
-                else:
-                    currentSelect = currentSelect - 1
-            thingAquired(monsterListInfo[x].statBlock['given_name'] + "'s",
-                        monsterListInfo[x].keyList[currentSelect], 
-                        "is",str(monsterListInfo[x].statBlock[monsterListInfo[x].keyList[currentSelect]]), 0, 1)
-            drawArrows(left, right, down, up)
+        thumby.display.setFont("/lib/font3x5.bin", 3, 5, 1)
+        if currentSelect == 0:
+            printMon(monsterListInfo[x].bodyBlock, 42 ,10, 0)
+            thumby.display.drawText("Agi: "+str(monsterListInfo[x].statBlock['Agility']), 9, 9, 1)
+            thumby.display.drawText("Str: "+str(monsterListInfo[x].statBlock['Strength']), 9, 15, 1)
+            thumby.display.drawText("End: "+str(monsterListInfo[x].statBlock['Endurance']), 9, 21, 1)
+            thumby.display.drawText("Mst: "+str(monsterListInfo[x].statBlock['Mysticism']), 9, 27, 1)
+            thumby.display.drawText("Tin: "+str(monsterListInfo[x].statBlock['Tinfoil']), 9, 33, 1)
+            thumby.display.setFont("/lib/font5x7.bin", 5, 7, 1)
+            thumby.display.drawText(monsterListInfo[x].statBlock['given_name'], 1, 1, 1)
+        elif currentSelect == 1:
+            thumby.display.drawText("the", 1, 10, 1)
+            thumby.display.drawText("Type1:"+str(monsterListInfo[x].statBlock['Type1']), 9, 21, 1)
+            if monsterListInfo[x].statBlock['Type2'] != '':
+                thumby.display.drawText("Type2:"+str(monsterListInfo[x].statBlock['Type2']), 9, 27, 1)
+            if monsterListInfo[x].statBlock['Type3'] != '':
+                thumby.display.drawText("Type3:"+str(monsterListInfo[x].statBlock['Type3']), 9, 33, 1)
+            thumby.display.setFont("/lib/font5x7.bin", 5, 7, 1)
+            thumby.display.drawText(monsterListInfo[x].statBlock['given_name'], 1, 1, 1)
+            thumby.display.drawText(monsterListInfo[x].statBlock['name'], 15, 10, 1)
+        elif currentSelect == 2:
+            for n in range (0, len(playerInfo.friends[x].attackList)):
+                thumby.display.drawText(str(n+1)+"."+monsterListInfo[x].attackList[n].name, 9, 9+(n*6), 1)
+            thumby.display.drawText("HP:" +str(monsterListInfo[x].statBlock['currentHealth']), 50, 1, 1)
+            if startOfgameCheck == 1:
+                thumby.display.drawText("1. ???", 9, 10, 1)
+                thumby.display.drawText("2. ???", 9, 16, 1)
+                thumby.display.drawText("3. ???", 9, 22, 1)
+            thumby.display.setFont("/lib/font5x7.bin", 5, 7, 1)
+            thumby.display.drawText("Attacks", 1, 1, 1)
+        drawArrows(left, right, down, up)
         thumby.display.update()
         currentSelect = buttonInput(currentSelect)
         if currentSelect == 31 and combatCheck != 1:
-            if playerInfo.friends[0] != playerInfo.friends[x] or startOfgameCheck == 1:
-                if playerInfo.friends[x].statBlock['currentHealth'] == 0:
+            if playerInfo.friends[0] != playerInfo.friends[x] or startOfgameCheck == 1 or campfire > 0:
+                if playerInfo.friends[x].statBlock['currentHealth'] == 0 and campfire == 0:
                     thingAquired(monsterListInfo[x].statBlock['given_name'], "does not", "have enough", "HP to fight!", 2)
                 switchActiveMon(playerInfo, monsterListInfo[0], monsterListInfo[x], x)
+                if campfire > 0:
+                    if campfire == 1:
+                        thingAquired("Bring", playerInfo.friends[0].statBlock['given_name'], "with you?", "A:Yes, B:No", 0, 0, 0)
+                    elif campfire == 2:
+                        thingAquired(playerInfo.friends[0].statBlock['given_name'],"will stay", "at camp?", "A:Yes, B:No", 0, 0, 0)
+                    elif campfire == 3:
+                        thingAquired(playerInfo.friends[0].statBlock['given_name'],"will be", "released?", "A:Yes, B:No", 0, 0, 0)
+                    currentSelect = 0
+                    while(1):
+                        currentSelect = buttonInput(currentSelect)
+                        if currentSelect == 31:
+                            return 1
+                        elif currentSelect == 30:
+                            return 0
                 goBack = 1
-                if combatCheck != 2: #need to while switching in battle if selected mon has HPs
+                if combatCheck != 2: #need to when switching in battle if selected mon has HPs
                     thingAquired(monsterListInfo[0].statBlock['given_name'], "is now", "your active", "monster!", 2)
                 x = 0
-                currentSelect = -2
+                currentSelect = 0
                 if startOfgameCheck == 1:
                     goBack = 1
             else:
@@ -298,7 +331,7 @@ def showMonInfo(playerInfo, startOfgameCheck=0, combatCheck=0):
             if x < 0:
                 x = x + 1
         elif currentSelect >= 30:
-            currentSelect = -2
+            currentSelect = 0
         else:
             pass
         if x > 0 and x < (xMonRange-1):
@@ -318,14 +351,15 @@ def showMonInfo(playerInfo, startOfgameCheck=0, combatCheck=0):
 def obj_to_dict(obj):
     return obj.__dict__
 
-
-def save(playerInfo):
+        
+def save(playerInfo, name):
     gc.collect()
     statDict = {}
     bodyDict = {}
     attackDict = {}
     mutateDict = {}
     itemDict = {}
+    bonusDict = {}
     for x in range(0, len(playerInfo.friends)):
         tempAttackDict = {}
         for y in range (0, len(playerInfo.friends[x].attackList)):
@@ -334,11 +368,11 @@ def save(playerInfo):
         statDict["mon" + str(x) + "stat"] = playerInfo.friends[x].statBlock
         bodyDict["mon" + str(x) + "body"] = playerInfo.friends[x].bodyBlock
         mutateDict["mon" + str(x) + "mutate"] = playerInfo.friends[x].mutateSeed
+        bonusDict["mon" + str(x) + "bonus"] = playerInfo.friends[x].bonusStats
     for x in range(0, len(playerInfo.inventory)):
         itemDict["item" + str(x)] = obj_to_dict(playerInfo.inventory[x])
-    playerDict = [{"player" : playerInfo.playerBlock, "items" : [itemDict], "monsterInfo": [statDict, bodyDict, attackDict, mutateDict]}]
-    #print(playerDict)
-    with open('/Games/Tiny_Monster_Trainer/Curtain/tmt.ujson', 'w') as f:
+    playerDict = [{"player" : playerInfo.playerBlock, "items" : [itemDict], "monsterInfo": [statDict, bodyDict, attackDict, mutateDict, bonusDict]}]
+    with open('/Games/Tiny_Monster_Trainer/Curtain/'+name+'.ujson', 'w') as f:
         ujson.dump(playerDict, f)
         f.close()
     del playerDict
