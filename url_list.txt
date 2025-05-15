@@ -1,3 +1,13 @@
+NAME=MagicEightBall
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/MagicEightBall/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/MagicEightBall/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/MagicEightBall/MagicEightBall.py
+
+NAME=ObliqueStrategies
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/ObliqueStrategies/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/ObliqueStrategies/ObliqueStrategies.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/ObliqueStrategies/arcade_title_video.webm
+
 NAME=EscapeRoom2
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/EscapeRoom2/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/EscapeRoom2/arcade_title_video.webm
