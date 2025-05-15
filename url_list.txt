@@ -1,3 +1,8 @@
+NAME=2pddl42ppl
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/2pddl42ppl/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/2pddl42ppl/2pddl42ppl.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/2pddl42ppl/2pddl42ppl_live_video_low_res.webm
+
 NAME=PogoPicross
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/PogoPicross/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/PogoPicross/icon.bmp
