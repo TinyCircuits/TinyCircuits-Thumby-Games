@@ -17,11 +17,12 @@ from thumbyButton import buttonA, buttonB, buttonU, buttonD, buttonL, buttonR, d
 from thumbyHardware import reset
 from random import randint, randrange, choice
 from time import sleep
-from utime import ticks_us, ticks_diff
+from utime import ticks_us, ticks_ms, ticks_diff
 from math import sin, pi, cos, exp
 from array import array
 from gc import collect
 import json
+from campaign_engine import CampaignEngine
 
 WIDTH = const(72) 
 HEIGHT = const(40)
@@ -404,12 +405,13 @@ class Astroids:
         return a
         
     #@micropython.native
-    def run(self, laser=[]):
+    def run(self, laser=[], mission_phase_complete=False):
         global player_speed, lifes, score
         
         self.astroids = qsort(self.astroids)
         
         for i in range(len(self.astroids)):
+            if i >= len(self.astroids): return
             a = self.astroids[i]
             
             # move in x,y,z-axis forward
@@ -432,7 +434,11 @@ class Astroids:
                 if (-28 < x < WIDTH) and (-20 < y < HEIGHT):
                     lifes -= 1
                     display.drawFilledRectangle(0,0,WIDTH, HEIGHT, 1)
-                self.astroids[i] = self.new_astroid()
+                if not mission_phase_complete:
+                    self.astroids[i] = self.new_astroid()
+                else:
+                    self.astroids.pop(i)
+                    continue
                 
             # Rotate around z-axis
             if player_angle[2] != 0:
@@ -455,7 +461,11 @@ class Astroids:
             
             if (a[6] == 0):
                 if (n == 6):
-                    self.astroids[i] = self.new_astroid()
+                    if not mission_phase_complete:
+                        self.astroids[i] = self.new_astroid()
+                    else:
+                        self.astroids.pop(i)
+                        continue
             else:
                 for l in range(len(laser)):
                     if (abs(laser[l].z-a[2]) < (2<<16)) and (0 < (laser[l].screen_pos_x-x) < (mySprite.scaledWidth - (mySprite.scaledWidth >> 2))) and ( 0 < (laser[l].screen_pos_y-y) < (mySprite.scaledHeight - (mySprite.scaledHeight >> 2))):
@@ -500,7 +510,7 @@ class Enemies:
         return e
         
     #@micropython.native
-    def run(self, laser=[]):
+    def run(self, laser=[], mission_phase_complete=False):
         global player_speed, lifes, score, hudShip
         # ticks in ms passed since last call for body inertia calaculation
         new_time = ticks_us()
@@ -510,6 +520,7 @@ class Enemies:
         self.enemies = qsort(self.enemies)
         
         for i in range(len(self.enemies)):
+            if i >= len(self.enemies): return
             e = self.enemies[i]
             visible = True
             
@@ -542,9 +553,14 @@ class Enemies:
             if (e[1] > (5600<<16)): e[1] = -1400<<16
             elif (e[1] < -(5600<<16)): e[1] = 1400<<16
             if (e[1] > (1400<<16)) or (e[1] < -(1400<<16)): visible = False
-            
-            # adjust z-axis if enemy moves behind me in x & y orientation
-            if visible: e[2] = abs(e[2])
+                
+            # adjust x-y-z-axis if enemy moves behind and infront of me
+            if (e[2] < 0) and ((e[2] + e[13]) > 0):
+                e[2] += e[13]
+                visible = True
+                e[0] = e[0] % (2047<<16)
+                e[1] = e[1] % (1400<<16)
+            elif visible: e[2] = abs(e[2])
             else: e[2] = -abs(e[2])
             
             # if space in z axis is ending change ship's x-orientation by 180°
@@ -583,10 +599,15 @@ class Enemies:
                 if e[8] == 1:
                     hudShip = copySprite(mySprite)
                     hudShip.setLifes(e[7])
+                    #print("z:",e[2]/65535, " th:",e[13]/65536,"tx/ty: ", e[10].target_x,",",e[10].target_y)
                 # explosion done - get new ship
                 if (e[6] == 0):
                     if (e[5] == 6):
-                        self.enemies[i] = self.new_enemy()
+                        if not mission_phase_complete:
+                            self.enemies[i] = self.new_enemy()
+                        else:
+                            self.enemies.pop(i)
+                            continue
                 else:
                     if (e[8] == 1) and visible:
                         display.drawRectangle(x-2, y-2, mySprite.scaledWidth+4, mySprite.scaledHeight+4, 1)
@@ -678,13 +699,15 @@ class Pilot:
     
     @micropython.native    
     def do_flee(self):
-        if (self.target_x == 0): self.target_x = randint(2,4)
-        if (self.target_y == 0): self.target_y = choice([1,2,10,11])
+        self.enemy[5] = 20<<16
+        if (self.target_x == 0): self.target_x = 3 #randint(2,4)
+        #if (self.target_y == 0): self.target_y = choice([1,2,10,11])
         if (self.target_d == 0): self.target_d = choice([-1,1])
         if (self.enemy[3] != self.target_x): self.enemy[3] = (self.enemy[3]+self.target_d) % 12 
         elif (self.enemy[4] != self.target_y): self.enemy[4] = (self.enemy[4]+self.target_d) % 12
         elif (self.enemy[2] > (45<<16)): 
-            self.manuver = choice([Pilot.ATTACK,Pilot.CIRCLE,Pilot.CRAZYIVAN])
+            self.manuver = choice
+            self.enemy[5] = randint(6<<16,12<<16)
             self.target_x = self.target_y = self.target_d = 0
     
     @micropython.native    
@@ -895,6 +918,17 @@ def die():
         display.update()
     
     sleep(0.3) 
+    
+def home():
+    display.setFPS(10)
+    home_sprite = Sprite(74,30,(loc+"home_74.BIT.bin",loc+"home_74.SHD.bin"),0,5)
+    display.fill(0)
+    for i in range(home_sprite.frameCount):
+        home_sprite.setFrame(i)
+        display.drawSprite(home_sprite)
+        display.update()
+    
+    sleep(0.3) 
  
 def game_over():
     display.fill(0)     
@@ -927,17 +961,20 @@ def menu():
             display.drawText("Dog Fight",21,30,3)
         elif i==1:
             display.drawText("Dog Fight",21,20,1)
-            display.drawText("Settings",21,30,3)
+            display.drawText("Campaigns",21,30,3)
         elif i==2:
+            display.drawText("Campaigns",21,20,1)
+            display.drawText("Settings",21,30,3)
+        elif i==3:
             display.drawText("Settings",21,20,1)
             display.drawText("Exit Game",21,30,3)
-        elif i==3:
+        elif i==4:
             display.drawText("Settings",21,20,3)
             display.drawText("Exit Game",21,30,1)
         display.update()
         if buttonD.justPressed():
             i+=1
-            if i > 3: i=3
+            if i > 4: i=4
             rot = -5
         elif buttonU.justPressed():
             i+=-1
@@ -1065,7 +1102,159 @@ class SettingsMenu:
                 # Go back
                 save_keymaps(KEYMAPS)
                 return
-            
+
+def run_campaign(campaign_engine):
+    global lifes, player_speed, player_target_speed, player_angle, score
+    
+    # Get current mission configuration
+    mission_config = campaign_engine.get_mission_config()
+    if not mission_config:
+        return (0, False)  # Return score and success status
+    
+    # Get mission objectives
+    mission_objectives = campaign_engine.get_mission_objectives()
+    
+    # Show mission briefing
+    campaign_engine.show_mission_briefing(mission_config)
+    
+    # Reset game state
+    lifes = 5
+    player_speed = player_target_speed = float2fp(1)
+    player_angle = [0, 0, 0]
+    score = 0
+    
+    # Launch sequence
+    launch()
+    collect()
+    display.setFPS(FPS)
+    
+    # Prepare game objects based on mission type
+    stars = Stars(20, 5, 85)
+    mission_type = mission_config.get("type", "mixed")
+    
+    # Create enemies and asteroids based on mission type and difficulty
+    difficulty = mission_config.get("difficulty", 1)
+    enemy_count = mission_config.get("enemies", 0)
+    asteroid_count = mission_config.get("asteroids", 0)
+    
+    # Scale difficulty
+    enemy_health = min(5, 3 + difficulty // 2)
+    enemy_speed = 6554 + (difficulty * 1000)
+    
+    if mission_type == "dogfight" or mission_type == "mixed":
+        enemies = Enemies(max(1, enemy_count))
+        # Increase enemy health based on difficulty
+        for enemy in enemies.enemies:
+            enemy[7] = enemy_health  # Increase health
+            enemy[5] = enemy_speed   # Increase speed
+    else:
+        enemies = None
+    
+    if mission_type == "asteroids" or mission_type == "mixed":
+        astroids = Astroids(max(5, asteroid_count + (difficulty * 2)))
+    else:
+        astroids = None
+    
+    ship = Ship()
+    
+    # Initialize mission variables
+    mission_start_time = ticks_ms()
+    mission_duration = 0
+    kills_needed = mission_objectives.get("kills", 0)
+    survive_time = mission_objectives.get("survive_time", 0) * 1000  # Convert to ms
+    has_time_objective = survive_time > 0
+    has_kill_objective = kills_needed > 0
+    total_kills = 0  # Track total kills across the mission
+    mission_phase_complete = False
+    mission_successful = False
+    display.setFont("/lib/font3x5.bin", 3, 5, 1)
+    
+    # Main mission loop
+    while lifes > 0:
+        display.fill(0)
+        
+        # Check mission objectives
+        current_time = ticks_ms()
+        mission_duration = ticks_diff(current_time, mission_start_time)
+        
+        # Check if we've met the objectives
+        time_objective_met = has_time_objective and mission_duration >= survive_time
+        kill_objective_met = has_kill_objective and total_kills >= kills_needed
+        
+        # If both objectives are specified, both must be completed
+        if has_time_objective and has_kill_objective:
+            mission_phase_complete = time_objective_met and kill_objective_met
+        # If only one objective is specified, just check that one
+        elif has_time_objective:
+            mission_phase_complete = time_objective_met
+        elif has_kill_objective:
+            mission_phase_complete = kill_objective_met
+        
+        # Exit mission if successful
+        if mission_phase_complete:
+            if enemies and len(enemies.enemies) > 0:
+                pass
+            elif astroids and len(astroids.astroids) > 0:
+                pass    
+            else:
+                mission_successful = True
+                break
+        
+        # Save current score to detect kills
+        previous_score = score
+        
+        # Move player
+        if enemies:
+            ship.move_me(enemies.enemies)
+        else:
+            ship.move_me(None)
+        
+        # Update stars
+        stars.run(player_angle[2])
+  
+        if enemies:
+            enemies.run(ship.laser, mission_phase_complete)
+        if astroids:
+            astroids.run(ship.laser, mission_phase_complete)
+        
+        # Track kills by checking score difference
+        # The score increases when enemies or asteroids are destroyed
+        if score > previous_score:
+            new_kills = score - previous_score
+            total_kills += new_kills
+        
+        # Draw ship
+        ship.run()
+        
+        # Draw mission objectives
+        progress = ""
+        if mission_phase_complete:
+            progress += " CLEAR"
+        else:
+            if kills_needed > 0:
+                progress = f"{total_kills}/{kills_needed}"
+                progress += " *" if kill_objective_met else ""
+            if survive_time > 0:
+                time_remaining = max(0, (survive_time - mission_duration) // 1000)
+                progress += f"  {time_remaining}s"
+        display.drawText(f"STAT: {progress}", 2, 2, 1)
+        display.update()
+    
+    # Mission ended - either player died or objectives completed
+    if mission_successful:
+        # Play success sequence
+        home()
+        display.setFPS(FPS)
+        collect()
+        campaign_engine.show_mission_success()
+    else:
+        # Player died - play death sequence
+        die()
+        collect()
+    
+    # Return mission score and success status
+    return (score, mission_successful)
+    
 #Intro finished
 Intro.finish()
 
@@ -1086,6 +1275,7 @@ while True:
         stars = Stars(20,5)
         astroids = Astroids(12)
         ship = Ship()
+        hudShip = None
         while lifes > 0:
             display.fill(0)
             ship.move_me(None)
@@ -1102,6 +1292,7 @@ while True:
         stars = Stars(20,5,85)
         enemies = Enemies(3)
         ship = Ship()
+        hudShip = None
         while lifes > 0:
             display.fill(0)
             ship.move_me(enemies.enemies)
@@ -1111,8 +1302,69 @@ while True:
             display.update()
         die()    
         game_over()
-    elif (game == 2):
+    elif (game == 2):  # Campaigns
+        campaign_engine = CampaignEngine()
+        campaign = campaign_engine.run_campaign_menu(Stars(20,4,0))
+        
+        if campaign:
+            current_mission_attempt = 0
+            max_attempts = 3  # Maximum number of attempts per mission
+            
+            while True:
+                # Run current mission and get score and success status
+                mission_result = run_campaign(campaign)
+                mission_score = mission_result[0]
+                mission_success = mission_result[1]
+                
+                if mission_success:
+                    # Mission successful, show debriefing and advance
+                    action = campaign.run_post_mission_menu(mission_score)
+                    current_mission_attempt = 0  # Reset attempt counter
+                    
+                    if action == "complete" or action == "exit":
+                        break
+                else:
+                    # Mission failed
+                    current_mission_attempt += 1
+                    
+                    if current_mission_attempt >= max_attempts:
+                        # Too many failures, return to main menu
+                        display.fill(0)
+                        display.setFont("/lib/font5x7.bin", 5, 7, 1)
+                        display.drawText("MISSION", 15, 10, 1)
+                        display.drawText("FAILED", 18, 20, 1)
+                        display.update()
+                        sleep(2)
+                        
+                        display.setFont("/lib/font3x5.bin", 3, 5, 1)
+                        display.fill(0)
+                        display.drawText("Too many attempts.", 2, 10, 1)
+                        display.drawText("Returning to menu.", 2, 20, 1)
+                        display.update()
+                        sleep(2)
+                        break
+                    else:
+                        # Retry the mission
+                        display.fill(0)
+                        display.setFont("/lib/font5x7.bin", 5, 7, 1)
+                        display.drawText("MISSION", 15, 10, 1)
+                        display.drawText("FAILED", 18, 20, 1)
+                        display.update()
+                        sleep(1)
+                        
+                        display.setFont("/lib/font3x5.bin", 3, 5, 1)
+                        display.fill(0)
+                        display.drawText(f"Attempt {current_mission_attempt} of {max_attempts}", 2, 10, 1)
+                        display.drawText("Press A to retry", 2, 20, 1)
+                        display.update()
+                        
+                        # Wait for button press
+                        while not buttonA.justPressed():
+                            pass
+                        sleep(0.2)
+        
+    elif (game == 3):  # Settings (was previously 2)
         settings = SettingsMenu()
         settings.run()
-    else:
+    else:  # Exit (was previously 3)
         reset()
