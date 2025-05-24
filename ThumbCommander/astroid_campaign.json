@@ -1,0 +1,64 @@
+{
+  "title": "Asteroid Belt Challenge",
+  "description": "Navigate through increasingly difficult asteroid fields to become the ultimate space pilot.",
+  "intro": "The Interstellar Pilot Championship begins! As a rising star in asteroid navigation, you've been invited to compete in a series of increasingly difficult asteroid challenges. Each mission will test your reflexes and spatial awareness. Can you become the champion asteroid pilot?",
+  "outro": "Congratulations! You've conquered the most difficult asteroid fields in the galaxy and are now crowned the Champion Asteroid Pilot. Your name will be added to the hall of fame, and pilots across the galaxy will study your techniques for years to come.",
+  "missions": [
+    {
+      "name": "Rookie Field",
+      "briefing": "Welcome to your first asteroid challenge. This is a relatively sparse field meant to test your basic navigation skills. Avoid collisions and maintain control of your ship while scoring points by destroying asteroids.",
+      "debriefing": "A solid start! You've shown good potential with your navigation skills. The next field will be more challenging, so stay focused.",
+      "config": {
+        "type": "asteroids",
+        "asteroids": 8,
+        "difficulty": 1
+      },
+      "objectives": {
+        "survive_time": 45,
+        "kills": 3
+      }
+    },
+    {
+      "name": "Medium Density",
+      "briefing": "This asteroid field has moderate density. You'll need to be more precise with your movements. Remember that your score depends on how many asteroids you can destroy while keeping your ship intact.",
+      "debriefing": "Impressive! Your ability to weave through the field while taking out targets shows real skill. The competition committee has taken notice of your performance.",
+      "config": {
+        "type": "asteroids",
+        "asteroids": 12,
+        "difficulty": 2
+      },
+      "objectives": {
+        "survive_time": 60,
+        "kills": 5
+      }
+    },
+    {
+      "name": "Hazard Zone",
+      "briefing": "Now things get serious. This field contains a high density of asteroids, including several large ones that will break into smaller pieces when hit. Stay alert and keep moving!",
+      "debriefing": "Outstanding performance! Few pilots make it through the Hazard Zone with such a high score. You're proving yourself to be a true contender for the championship.",
+      "config": {
+        "type": "asteroids",
+        "asteroids": 15,
+        "difficulty": 3
+      },
+      "objectives": {
+        "survive_time": 90,
+        "kills": 8
+      }
+    },
+    {
+      "name": "The Gauntlet",
+      "briefing": "The final challenge! This is the densest, most chaotic asteroid field in the championship. Only the best pilots can navigate it successfully. Show us what you're made of!",
+      "debriefing": "Incredible! You've mastered The Gauntlet, proving yourself to be the best asteroid pilot in the sector. Your score will be recorded in the championship annals for future pilots to challenge.",
+      "config": {
+        "type": "asteroids",
+        "asteroids": 20,
+        "difficulty": 4
+      },
+      "objectives": {
+        "survive_time": 120,
+        "kills": 12
+      }
+    }
+  ]
+}
