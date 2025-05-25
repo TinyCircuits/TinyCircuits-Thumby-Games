@@ -1312,6 +1312,7 @@ while True:
             
             while True:
                 # Run current mission and get score and success status
+                hudShip = None
                 mission_result = run_campaign(campaign)
                 mission_score = mission_result[0]
                 mission_success = mission_result[1]
