@@ -1303,9 +1303,10 @@ while True:
         die()    
         game_over()
     elif (game == 2):  # Campaigns
+        collect()
         campaign_engine = CampaignEngine()
         campaign = campaign_engine.run_campaign_menu(Stars(20,4,0))
-        
+        collect()
         if campaign:
             current_mission_attempt = 0
             max_attempts = 3  # Maximum number of attempts per mission
@@ -1313,6 +1314,7 @@ while True:
             while True:
                 # Run current mission and get score and success status
                 hudShip = None
+                collect()
                 mission_result = run_campaign(campaign)
                 mission_score = mission_result[0]
                 mission_success = mission_result[1]
@@ -1323,6 +1325,9 @@ while True:
                     current_mission_attempt = 0  # Reset attempt counter
                     
                     if action == "complete" or action == "exit":
+                        campaign_engine = None
+                        campaign = None
+                        collect()
                         break
                 else:
                     # Mission failed
