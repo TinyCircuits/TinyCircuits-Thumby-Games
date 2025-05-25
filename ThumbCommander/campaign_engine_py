@@ -21,6 +21,7 @@ class CampaignEngine:
         self.current_mission = 0
         self.total_score = 0
         self.campaign_saves = {}
+        self.campaign_order = []
         self.load_campaigns()
         self.background = None
         display.setFont("/lib/font3x5.bin", 3, 5, 1)
@@ -30,16 +31,20 @@ class CampaignEngine:
         try:
             # Get list of campaign files
             campaign_files = [f for f in os.listdir(self.game_loc) if f.endswith("_campaign.json")]
+            campaign_files.sort()
             self.campaigns = {}
+            self.campaign_order = []
             
             for file in campaign_files:
                 try:
                     with open(self.game_loc + file, 'r') as f:
                         campaign_data = json.loads(f.read())
-                        self.campaigns[campaign_data["title"]] = {
+                        campaign_title = campaign_data["title"]
+                        self.campaigns[campaign_title] = {
                             "file": file,
                             "description": campaign_data.get("description", "No description")
                         }
+                        self.campaign_order.append(campaign_title)
                 except (OSError, ValueError, KeyError) as e:
                     # Skip invalid campaign files
                     print(f"Error loading {file}: {e}")
@@ -54,6 +59,7 @@ class CampaignEngine:
         except OSError:
             # No campaigns found
             self.campaigns = {}
+            self.campaign_order = []
 
     def load_campaign(self, campaign_file):
         """Load a specific campaign file"""
@@ -98,7 +104,7 @@ class CampaignEngine:
             self.show_message("No campaigns available", "Please add campaign files to the game directory")
             return None
             
-        campaigns = list(self.campaigns.keys())
+        campaigns = self.campaign_order
         selected = 0
         
         while True:
