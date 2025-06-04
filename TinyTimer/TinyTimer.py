@@ -268,10 +268,11 @@ while(1):
             timerDone = 0
         else:
             if not xScroll:
-                if not isStopwatch:
-                    if stopwatchMS or stopwatchS or stopwatchM: lastStopwatchTime = stopwatchTime
-                    stopwatchStart = t()
-                isStopwatch = not isStopwatch
+                if not yScroll:
+                    if not isStopwatch:
+                        if stopwatchMS or stopwatchS or stopwatchM: lastStopwatchTime = stopwatchTime
+                        stopwatchStart = t()
+                    isStopwatch = not isStopwatch
             else:
                 if isSettingTimer:
                     timerM, timerS, timerMS = startTimerData
