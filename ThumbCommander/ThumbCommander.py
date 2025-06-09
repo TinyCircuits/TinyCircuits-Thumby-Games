@@ -1,7 +1,7 @@
 from sys import path
 loc = "/Games/ThumbCommander/"
 path.insert(0, '/Games/ThumbCommander')
-from grayscale import display, Sprite
+from grayscale import display, Sprite, IS_THUMBY_COLOR
 import Intro
 
 #show the Intro while loading
@@ -10,8 +10,11 @@ Intro.__init__()
 Intro.start()
 
 from machine import freq
-# Overclock. It doesn't seem to run above 250MHz
-freq(200_000_000)
+if not IS_THUMBY_COLOR:
+  # Overclock. It doesn't seem to run above 250MHz
+  freq(200_000_000)
+else:
+  freq(300_000_000)
 
 from thumbyButton import buttonA, buttonB, buttonU, buttonD, buttonL, buttonR, dpadPressed, inputJustPressed
 from thumbyHardware import reset
