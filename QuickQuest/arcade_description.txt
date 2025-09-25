@@ -1,0 +1,6 @@
+Quick Quest
+V 1.0
+
+A simple RPG where you must balance your health, wealth, and happiness to reach (and defeat) the dragon!
+
+By Darya Noghani
