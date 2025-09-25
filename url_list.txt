@@ -38,6 +38,11 @@ https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/ThumbCommander/explode_56.SHD.bin
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/ThumbCommander/medie_74.BIT.bin
 
+NAME=TinyTimer
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyTimer/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyTimer/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyTimer/TinyTimer.py
+
 NAME=QuickQuest
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/QuickQuest/QuickQuest.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/QuickQuest/arcade_description.txt
@@ -126,11 +131,6 @@ https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/EscapeRoom2/arcade_title_video.webm
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/EscapeRoom2/EscapeRoom2.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/EscapeRoom2/images.bin
-
-NAME=TinyTimer
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyTimer/arcade_description.txt
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyTimer/arcade_title_video.webm
-https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyTimer/TinyTimer.py
 
 NAME=Thexecutor
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Thexecutor/arcade_description.txt
