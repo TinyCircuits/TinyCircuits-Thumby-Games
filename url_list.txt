@@ -3,6 +3,13 @@ https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Bugdivers/Bugdivers.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Bugdivers/emulator_video.webm
 
+NAME=SwordPlay
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/SwordPlay/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/SwordPlay/constants.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/SwordPlay/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/SwordPlay/SwordPlay.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/SwordPlay/gamepad.py
+
 NAME=ThumbCommander
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/ThumbCommander/astroid2_56.SHD.bin
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/ThumbCommander/astroid2_56.BIT.bin
