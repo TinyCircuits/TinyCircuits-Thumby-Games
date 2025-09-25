@@ -38,6 +38,11 @@ https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/ThumbCommander/explode_56.SHD.bin
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/ThumbCommander/medie_74.BIT.bin
 
+NAME=QuickQuest
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/QuickQuest/QuickQuest.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/QuickQuest/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/QuickQuest/arcade_title_video.webm
+
 NAME=2pddl42ppl
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/2pddl42ppl/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/2pddl42ppl/2pddl42ppl.py
