@@ -1,0 +1,131 @@
+{
+  "title": "Thumb Commander Legacy: Vega Campaign",
+  "description": "Fight the Kilrathi Empire as a rookie pilot aboard the TCS Tiger's Claw in humanity's darkest hour.",
+  "intro": "2654. The Kilrathi Empire invades human space. You're a rookie pilot on the TCS Tiger's Claw under Colonel Halcyon. Fight across the Vega Sector against overwhelming odds. The Kilrathi show no mercy - neither can you.",
+  "outro": "Victory! The Kilrathi fleet is broken and their advance halted. You've saved countless lives and bought the Confederation time. But the war continues. Greater challenges await.",
+  "missions": [
+    {
+      "name": "First Blood",
+      "briefing": "First mission, pilot. Small Kilrathi patrol in Gimle system. Seek and destroy. You fly with Paladin. Follow his lead and remember your training.",
+      "debriefing": "Good work, rookie. You showed good instincts. Those scouts were gathering intel on our shipping lanes. You've bought us time.",
+      "config": {
+        "type": "dogfight",
+        "enemies": 2,
+        "difficulty": 1
+      },
+      "objectives": {
+        "kills": 3
+      }
+    },
+    {
+      "name": "Asteroid Run",
+      "briefing": "Freighter trapped in McAuliffe asteroid field. Medical supplies on board. Navigate the field and escort to safety. Asteroids kill as surely as Kilrathi.",
+      "debriefing": "Excellent flying! The medical supplies will save lives at the front. Your navigation skills are impressive for a rookie.",
+      "config": {
+        "type": "asteroids",
+        "asteroids": 12,
+        "difficulty": 2
+      },
+      "objectives": {
+        "survive_time": 90
+      }
+    },
+    {
+      "name": "Kilrathi Patrol",
+      "briefing": "Full Kilrathi squadron spotted in Dakota system near the jump point. You and Spirit fly search and destroy. Expect heavy resistance.",
+      "debriefing": "Impressive! Full squadron eliminated. Intel from the wreckage suggests they were preparing something big. Command is analyzing the data.",
+      "config": {
+        "type": "dogfight",
+        "enemies": 4,
+        "difficulty": 2
+      },
+      "objectives": {
+        "kills": 8
+      }
+    },
+    {
+      "name": "Supply Run Defense",
+      "briefing": "Critical convoy moving through Venice system. Kilrathi fighters moving to intercept. Escort convoy through danger zone. Ships are unarmed.",
+      "debriefing": "Convoy safe. The supplies will keep our fighters flying. Command noted your dedication to protecting civilians.",
+      "config": {
+        "type": "mixed",
+        "enemies": 3,
+        "asteroids": 8,
+        "difficulty": 2
+      },
+      "objectives": {
+        "kills": 6,
+        "survive_time": 120
+      }
+    },
+    {
+      "name": "Recon Strike",
+      "briefing": "Kilrathi listening post in Rostov system monitoring our fleet movements. Destroy the post and defenders. Critical strike mission.",
+      "debriefing": "Mission accomplished! Listening post destroyed, intelligence network disrupted. Data cores contain valuable enemy fleet info.",
+      "config": {
+        "type": "dogfight",
+        "enemies": 5,
+        "difficulty": 3
+      },
+      "objectives": {
+        "kills": 10
+      }
+    },
+    {
+      "name": "Desperate Defense",
+      "briefing": "Red alert! Massive Kilrathi fleet hitting Firekka system. Evacuation underway. Hold the line at all costs. All fighters scrambled.",
+      "debriefing": "Against all odds, you held! Evacuation successful, thousands saved. The Kilrathi paid dearly but they'll be back.",
+      "config": {
+        "type": "mixed",
+        "enemies": 6,
+        "asteroids": 10,
+        "difficulty": 3
+      },
+      "objectives": {
+        "kills": 12,
+        "survive_time": 180
+      }
+    },
+    {
+      "name": "Behind Enemy Lines",
+      "briefing": "Major Kilrathi supply depot in Nephele system. Deep in enemy territory, heavily defended. Solo mission. Get in, destroy depot, get out.",
+      "debriefing": "Incredible! Single-handed destruction of their primary depot. Explosion visible from three systems. Cripples enemy ops for months.",
+      "config": {
+        "type": "dogfight",
+        "enemies": 7,
+        "difficulty": 4
+      },
+      "objectives": {
+        "kills": 15
+      }
+    },
+    {
+      "name": "The Gauntlet",
+      "briefing": "Kilrathi blockade in Vega system. Minefields and patrols. Clear path for our fleet to reach final battle. Entire defense network will try to stop you.",
+      "debriefing": "You did it! Path clear, fleet moving through. Kilrathi blockade shattered. Prepare for final battle - humanity's fate hangs in balance.",
+      "config": {
+        "type": "mixed",
+        "enemies": 8,
+        "asteroids": 15,
+        "difficulty": 4
+      },
+      "objectives": {
+        "kills": 18,
+        "survive_time": 240
+      }
+    },
+    {
+      "name": "Final Assault",
+      "briefing": "Final battle for Vega Sector. Kilrathi flagship and battle group making last stand. Target the flagship. Destroy it and enemy fleet scatters.",
+      "debriefing": "VICTORY! Kilrathi flagship destroyed, fleet in retreat! You've broken their invasion force. Vega Sector safe. You're a hero of the Confederation.",
+      "config": {
+        "type": "dogfight",
+        "enemies": 10,
+        "difficulty": 5
+      },
+      "objectives": {
+        "kills": 25
+      }
+    }
+  ]
+}

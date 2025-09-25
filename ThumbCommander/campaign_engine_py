@@ -1,0 +1,606 @@
+from thumbyButton import buttonA, buttonB, buttonU, buttonD, buttonL, buttonR, dpadPressed, inputJustPressed
+from grayscale import display, Sprite
+from time import sleep
+from utime import ticks_ms, ticks_diff
+import json
+import os
+from machine import freq
+from gc import collect
+
+# Constants
+WIDTH = const(72) 
+HEIGHT = const(40)
+MAX_TEXT_WIDTH = const(70)
+TEXT_SCROLL_DELAY = const(40)  # ms between text scroll steps
+
+class CampaignEngine:
+    def __init__(self, game_loc="/Games/ThumbCommander/"):
+        self.game_loc = game_loc
+        self.campaign_data = None
+        self.current_campaign = None
+        self.current_mission = 0
+        self.total_score = 0
+        self.campaign_saves = {}
+        self.campaign_order = []
+        self.load_campaigns()
+        self.background = None
+        display.setFont("/lib/font3x5.bin", 3, 5, 1)
+
+    def load_campaigns(self):
+        """Load all available campaign files from the game directory"""
+        try:
+            # Get list of campaign files
+            campaign_files = [f for f in os.listdir(self.game_loc) if f.endswith("_campaign.json")]
+            campaign_files.sort()
+            self.campaigns = {}
+            self.campaign_order = []
+            
+            for file in campaign_files:
+                try:
+                    with open(self.game_loc + file, 'r') as f:
+                        campaign_data = json.loads(f.read())
+                        campaign_title = campaign_data["title"]
+                        self.campaigns[campaign_title] = {
+                            "file": file,
+                            "description": campaign_data.get("description", "No description")
+                        }
+                        self.campaign_order.append(campaign_title)
+                except (OSError, ValueError, KeyError) as e:
+                    # Skip invalid campaign files
+                    print(f"Error loading {file}: {e}")
+            
+            # Load saved games
+            try:
+                with open(self.game_loc + "campaign_saves.json", 'r') as f:
+                    self.campaign_saves = json.loads(f.read())
+            except (OSError, ValueError):
+                # No saves yet or corrupted file
+                self.campaign_saves = {}
+        except OSError:
+            # No campaigns found
+            self.campaigns = {}
+            self.campaign_order = []
+
+    def load_campaign(self, campaign_file):
+        """Load a specific campaign file"""
+        try:
+            with open(self.game_loc + campaign_file, 'r') as f:
+                self.campaign_data = json.loads(f.read())
+                self.current_campaign = self.campaign_data["title"]
+                return True
+        except (OSError, ValueError, KeyError) as e:
+            print(f"Error loading campaign: {e}")
+            return False
+
+    def save_progress(self):
+        """Save current campaign progress"""
+        if not self.current_campaign:
+            return False
+            
+        self.campaign_saves[self.current_campaign] = {
+            "mission": self.current_mission,
+            "score": self.total_score
+        }
+        
+        try:
+            with open(self.game_loc + "campaign_saves.json", 'w') as f:
+                f.write(json.dumps(self.campaign_saves))
+            return True
+        except OSError:
+            return False
+
+    def load_progress(self, campaign_title):
+        """Load saved progress for a campaign"""
+        if campaign_title in self.campaign_saves:
+            save_data = self.campaign_saves[campaign_title]
+            self.current_mission = save_data["mission"]
+            self.total_score = save_data["score"]
+            return True
+        return False
+
+    def select_campaign_menu(self):
+        """Show menu to select a campaign"""
+        if not self.campaigns:
+            self.show_message("No campaigns available", "Please add campaign files to the game directory")
+            return None
+            
+        campaigns = self.campaign_order
+        selected = 0
+        
+        while True:
+            display.fill(0)
+            if self.background:
+                self.background.run(0)
+                
+            # Draw header
+            display.drawText("SELECT CAMPAIGN", 8, 2, 1)
+            display.drawLine(0, 9, 72, 9, 1)
+            
+            # Calculate which campaigns to show (only show 2 at a time)
+            start_idx = max(0, selected - (0 if selected == 0 else 1))
+            
+            # Draw campaigns - only show 2 at a time with more spacing
+            for i in range(start_idx, min(start_idx + 2, len(campaigns))):
+                base_y_pos = 12 + (i - start_idx) * 15  # Increased spacing
+                text_color = 1 if i == selected else 3
+                
+                # Display campaign name with word wrapping
+                campaign_name = campaigns[i]
+                
+                # If too long, split into two lines
+                if len(campaign_name) > 16:
+                    # Find a good split point
+                    split_point = 15
+                    while split_point > 0 and campaign_name[split_point] != ' ':
+                        split_point -= 1
+                    
+                    if split_point == 0:  # No space found, just split at character 15
+                        first_line = campaign_name[:15]
+                        second_line = campaign_name[15:]
+                    else:
+                        first_line = campaign_name[:split_point]
+                        second_line = campaign_name[split_point+1:]
+                    
+                    display.drawText(first_line, 4, base_y_pos, text_color)
+                    display.drawText(second_line, 4, base_y_pos + 6, text_color)
+                    
+                    # Show tag next to first line
+                    if campaigns[i] in self.campaign_saves:
+                        display.drawText("CON", 60, base_y_pos, text_color)
+                    else:
+                        display.drawText("NEW", 60, base_y_pos, text_color)
+                else:
+                    # Single line display
+                    display.drawText(campaign_name, 4, base_y_pos + 3, text_color)
+                    
+                    # Show tag
+                    if campaigns[i] in self.campaign_saves:
+                        display.drawText("CON", 60, base_y_pos + 3, text_color)
+                    else:
+                        display.drawText("NEW", 60, base_y_pos + 3, text_color)
+            
+            # Draw cursor/selection indicator
+            cursor_y = 12 + (selected - start_idx) * 15 + 3
+            display.drawText(".", 0, cursor_y, 1)
+            
+            # Draw back instruction
+            display.drawText("B:Back", 2, 39, 3)
+            
+            display.update()
+            
+            if buttonU.justPressed():
+                selected = (selected - 1) % len(campaigns)
+                sleep(0.15)
+            elif buttonD.justPressed():
+                selected = (selected + 1) % len(campaigns)
+                sleep(0.15)
+            elif buttonA.justPressed():
+                return campaigns[selected]
+            elif buttonB.justPressed():
+                return None
+                
+    def campaign_info_screen(self, campaign_title):
+        """Show campaign info and ask to start new or continue"""
+        campaign = self.campaigns[campaign_title]
+        has_save = campaign_title in self.campaign_saves
+        
+        # Wrap description text
+        desc = campaign["description"]
+        wrapped_desc = []
+        words = desc.split()
+        line = ""
+        
+        for word in words:
+            test_line = line + word + " "
+            test_width = len(test_line) * 4  # Approximate width
+            
+            if test_width <= MAX_TEXT_WIDTH:
+                line = test_line
+            else:
+                wrapped_desc.append(line)
+                line = word + " "
+        
+        if line:
+            wrapped_desc.append(line)
+            
+        # Calculate total text height and set up scrolling
+        text_height = len(wrapped_desc) * 7  # Use smaller line spacing
+        scroll_pos = 0
+        max_scroll = max(0, text_height - 18)  # 18 is the available text area height
+        
+        last_scroll_time = ticks_ms()
+        scroll_speed = 1
+        
+        # Option selection
+        selected = 0 if has_save else 0  # Default to continue if available
+        
+        while True:
+            display.fill(0)
+            if self.background:
+                self.background.run(0)
+                
+            # Draw header
+            title_text = campaign_title[:16]  # Limit title length
+            display.drawText(title_text, 2, 2, 1)
+            display.drawLine(0, 9, 72, 9, 1)
+            
+            # Draw description with scrolling
+            content_y = 12 - scroll_pos
+            for line in wrapped_desc:
+                if 10 < content_y < 28:  # Only draw visible lines
+                    display.drawText(line, 2, content_y, 3)
+                content_y += 7  # Smaller line spacing
+            
+            # Draw options bar with solid background
+            display.drawFilledRectangle(0, 30, 72, 10, 0)  # Clear the button area
+            
+            # Draw the options
+            if has_save:
+                save = self.campaign_saves[campaign_title]
+                mission_num = save["mission"] + 1
+                display.drawText("CONTINUE", 2, 32, 1 if selected == 0 else 3)
+                display.drawText("NEW", 40, 32, 1 if selected == 1 else 3)
+                display.drawText("BACK", 56, 32, 1 if selected == 2 else 3)
+            else:
+                display.drawText("START", 2, 32, 1 if selected == 0 else 3)
+                display.drawText("BACK", 56, 32, 1 if selected == 1 else 3)
+            
+            # Draw scroll indicators if needed
+            if scroll_pos > 0:
+                display.drawText("^", 68, 11, 1)  # Up arrow
+            if scroll_pos < max_scroll:
+                display.drawText("v", 68, 25, 1)  # Down arrow
+                
+            display.update()
+            
+            # Handle input
+            current_time = ticks_ms()
+            
+            # Scrolling
+            if buttonU.pressed() and scroll_pos > 0:
+                if ticks_diff(current_time, last_scroll_time) > TEXT_SCROLL_DELAY:
+                    scroll_pos -= scroll_speed
+                    last_scroll_time = current_time
+            elif buttonD.pressed() and scroll_pos < max_scroll:
+                if ticks_diff(current_time, last_scroll_time) > TEXT_SCROLL_DELAY:
+                    scroll_pos += scroll_speed
+                    last_scroll_time = current_time
+            
+            # Option selection
+            elif buttonL.justPressed():
+                if has_save:
+                    selected = (selected - 1) % 3
+                else:
+                    selected = (selected - 1) % 2
+                sleep(0.15)
+            elif buttonR.justPressed():
+                if has_save:
+                    selected = (selected + 1) % 3
+                else:
+                    selected = (selected + 1) % 2
+                sleep(0.15)
+            elif buttonA.justPressed():
+                if selected == 0:
+                    if has_save:
+                        # Continue game
+                        return "continue"
+                    else:
+                        # New game
+                        return "new"
+                elif selected == 1:
+                    if has_save:
+                        # New game
+                        return "new"
+                    else:
+                        # Back to campaign selection
+                        return "back"
+                else:  # selected == 2, only possible with has_save
+                    # Back to campaign selection
+                    return "back"
+            elif buttonB.justPressed():
+                # Back to campaign selection
+                return "back"
+
+    def show_scrolling_text(self, title, text, continue_text="Press A to continue"):
+        """Display scrolling text screen with title and content"""
+        display.setFont("/lib/font3x5.bin", 3, 5, 1)
+        
+        # Wrap text to fit screen width, respecting newlines
+        wrapped_text = []
+        paragraphs = text.split("\n")
+        
+        for paragraph in paragraphs:
+            # If empty paragraph (double newline), add an empty line
+            if paragraph.strip() == "":
+                wrapped_text.append("")
+                continue
+                
+            words = paragraph.split()
+            line = ""
+            
+            for word in words:
+                test_line = line + word + " "
+                test_width = len(test_line) * 4  # Approximate width based on font
+                
+                if test_width <= MAX_TEXT_WIDTH:
+                    line = test_line
+                else:
+                    wrapped_text.append(line)
+                    line = word + " "
+            
+            if line:
+                wrapped_text.append(line)
+            
+        # Calculate total text height and set up scrolling
+        text_height = len(wrapped_text) * 8
+        scroll_pos = 0
+        max_scroll = max(0, text_height - 20)  # 20 is the available text area height
+        
+        last_scroll_time = ticks_ms()
+        scroll_speed = 1  # Pixels per scroll step
+        
+        while True:
+            display.fill(0)
+            if self.background:
+                self.background.run(0)
+                
+            # Draw header with title
+            display.drawText(title, (72 - len(title) * 4) // 2, 2, 1)
+            display.drawLine(0, 9, 72, 9, 1)
+            
+            # Draw text content with scrolling
+            content_y = 12 - scroll_pos
+            for line in wrapped_text:
+                if 10 < content_y < 30:  # Only draw visible lines
+                    if line.strip():  # Only draw non-empty lines
+                        display.drawText(line, 2, content_y, 3)
+                content_y += 8
+            
+            # Draw continue prompt at bottom
+            if scroll_pos >= max_scroll:
+                display.drawText(continue_text, (72 - len(continue_text) * 4) // 2, 32, 1)
+                
+            # Draw scroll indicators
+            if scroll_pos > 0:
+                display.drawText("^", 68, 11, 1)  # Up arrow
+            if scroll_pos < max_scroll:
+                display.drawText("v", 68, 28, 1)  # Down arrow
+                
+            display.update()
+            
+            # Handle scrolling with time-based delay
+            current_time = ticks_ms()
+            
+            if buttonD.pressed() and scroll_pos < max_scroll:
+                if ticks_diff(current_time, last_scroll_time) > TEXT_SCROLL_DELAY:
+                    scroll_pos += scroll_speed
+                    last_scroll_time = current_time
+            elif buttonU.pressed() and scroll_pos > 0:
+                if ticks_diff(current_time, last_scroll_time) > TEXT_SCROLL_DELAY:
+                    scroll_pos -= scroll_speed
+                    last_scroll_time = current_time
+            elif buttonA.justPressed() and scroll_pos >= max_scroll:
+                return
+            elif buttonB.justPressed():
+                return
+
+    def show_mission_briefing(self, mission):
+        """Show mission briefing for the current mission"""
+        if not self.campaign_data or self.current_mission >= len(self.campaign_data["missions"]):
+            return
+            
+        mission_data = self.campaign_data["missions"][self.current_mission]
+        
+        # Separate title and mission name for better display
+        title = f"MISSION {self.current_mission + 1}"
+        mission_name = mission_data['name']
+        
+        # Get briefing text with mission name as first line
+        text = f"{mission_name}\n\n{mission_data['briefing']}"
+        
+        # Append objectives information to the briefing
+        objectives = mission_data.get("objectives", {})
+        if objectives:
+            text += "\n\nMISSION OBJECTIVES:"
+            if "survive_time" in objectives:
+                text += f"\n- Survive for {objectives['survive_time']} seconds"
+            if "kills" in objectives:
+                text += f"\n- Destroy {objectives['kills']} enemies/asteroids"
+        
+        # Show mission briefing with just the mission number as title
+        self.show_scrolling_text(title, text)
+
+    def show_mission_debriefing(self, mission_score):
+        """Show mission debriefing with score and continue story"""
+        if not self.campaign_data or self.current_mission >= len(self.campaign_data["missions"]):
+            return
+            
+        mission_data = self.campaign_data["missions"][self.current_mission]
+        title = f"MISSION {self.current_mission + 1} COMPLETE"
+        text = f"Score: {mission_score}\nTotal: {self.total_score + mission_score}\n\n{mission_data['debriefing']}"
+        
+        self.show_scrolling_text(title, text)
+        
+        # Update total score
+        self.total_score += mission_score
+        
+        # Advance to next mission
+        self.current_mission += 1
+        
+        # Save progress
+        self.save_progress()
+        
+        # Check if campaign is complete
+        if self.current_mission >= len(self.campaign_data["missions"]):
+            self.show_campaign_complete()
+            return True
+        
+        return False
+
+    def show_campaign_complete(self):
+        """Show campaign completion screen"""
+        if not self.campaign_data:
+            return
+            
+        title = "CAMPAIGN COMPLETE"
+        text = f"Total Score: {self.total_score}\n\n{self.campaign_data.get('outro', 'Congratulations on completing the campaign!')}"
+        
+        self.show_scrolling_text(title, text)
+        
+        # Reset campaign progress
+        if self.current_campaign in self.campaign_saves:
+            del self.campaign_saves[self.current_campaign]
+            self.save_progress()
+
+    def show_message(self, title, message):
+        """Show a simple message box"""
+        display.fill(0)
+        if self.background:
+            self.background.run(0)
+            
+        # Draw box
+        display.drawRectangle(5, 5, 62, 30, 1)
+        display.drawFilledRectangle(5, 5, 62, 8, 1)
+        
+        # Draw title
+        display.drawText(title, 7, 7, 0)
+        
+        # Draw message (simple, no wrapping)
+        display.drawText(message, 7, 15, 1)
+        
+        # Draw prompt
+        display.drawText("Press A to continue", 7, 25, 1)
+        
+        display.update()
+        
+        while not buttonA.justPressed():
+            pass
+        
+        sleep(0.2)
+
+    @micropython.native
+    def get_mission_config(self):
+        """Get the configuration for the current mission"""
+        if not self.campaign_data or self.current_mission >= len(self.campaign_data["missions"]):
+            return None
+            
+        return self.campaign_data["missions"][self.current_mission]["config"]
+        
+    def get_mission_objectives(self):
+        """Get the objectives for the current mission"""
+        if not self.campaign_data or self.current_mission >= len(self.campaign_data["missions"]):
+            return None
+            
+        return self.campaign_data["missions"][self.current_mission].get("objectives", {})
+
+    def run_campaign_menu(self, background=None):
+        """Main method to run the campaign selection and management"""
+        self.background = background
+        
+        while True:
+            # Select campaign
+            campaign_title = self.select_campaign_menu()
+            if not campaign_title:
+                return None
+                
+            # Show campaign info and get action
+            action = self.campaign_info_screen(campaign_title)
+            if action == "back":
+                # Go back to campaign selection
+                continue
+            elif not action:
+                return None
+                
+            # Load campaign data
+            campaign_file = self.campaigns[campaign_title]["file"]
+            if not self.load_campaign(campaign_file):
+                self.show_message("Error", "Failed to load campaign")
+                return None
+                
+            # Handle continue or new game
+            if action == "continue":
+                self.load_progress(campaign_title)
+            else:
+                # New game - show intro
+                self.current_mission = 0
+                self.total_score = 0
+                if "intro" in self.campaign_data:
+                    self.show_scrolling_text("INTRODUCTION", self.campaign_data["intro"])
+            
+            return self  # Return self so the main game can access missions
+
+    def run_post_mission_menu(self, mission_score):
+        """Show post-mission menu with options to continue, save, or exit"""
+        is_complete = self.show_mission_debriefing(mission_score)
+        if is_complete:
+            return "complete"
+            
+        selected = 0
+        options = ["CONTINUE", "SAVE & EXIT"]
+        
+        while True:
+            display.fill(0)
+            if self.background:
+                self.background.run(0)
+                
+            # Draw header
+            display.drawText("MISSION COMPLETE", 2, 2, 1)
+            display.drawLine(0, 9, 72, 9, 1)
+            
+            # Draw options
+            for i, option in enumerate(options):
+                y_pos = 15 + i * 10
+                display.drawText(option, 20, y_pos, 1 if i == selected else 3)
+            
+            display.update()
+            
+            if buttonU.justPressed():
+                selected = (selected - 1) % len(options)
+                sleep(0.15)
+            elif buttonD.justPressed():
+                selected = (selected + 1) % len(options)
+                sleep(0.15)
+            elif buttonA.justPressed():
+                if selected == 0:
+                    return "continue"
+                else:
+                    return "exit"
+
+    def show_mission_failed(self, attempt, max_attempts):
+        """Show mission failed screen with attempt information"""
+        display.fill(0)
+        if self.background:
+            self.background.run(0)
+            
+        display.setFont("/lib/font5x7.bin", 5, 7, 1)
+        display.drawText("MISSION", 15, 10, 1)
+        display.drawText("FAILED", 18, 20, 1)
+        display.update()
+        sleep(1)
+        
+        display.setFont("/lib/font3x5.bin", 3, 5, 1)
+        display.fill(0)
+        if self.background:
+            self.background.run(0)
+            
+        display.drawText(f"Attempt {attempt} of {max_attempts}", 2, 10, 1)
+        display.drawText("Press A to retry", 2, 20, 1)
+        display.update()
+        
+        # Wait for button press
+        while not buttonA.justPressed():
+            pass
+        sleep(0.2)
+
+    def show_mission_success(self):
+        """Show mission success screen"""
+        display.fill(0)
+        if self.background:
+            self.background.run(0)
+            
+        display.setFont("/lib/font5x7.bin", 5, 7, 1)
+        display.drawText("MISSION", 15, 10, 1)
+        display.drawText("COMPLETE", 10, 20, 1)
+        display.update()
+        sleep(2)
+        display.setFont("/lib/font3x5.bin", 3, 5, 1)
