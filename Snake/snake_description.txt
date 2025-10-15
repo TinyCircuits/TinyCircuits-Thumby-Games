@@ -1,3 +1,0 @@
-snake by kari
-this is just a simple version of classic game snake i made for a video i shared over on my youtube channel
-if you want to learn more on how i made this and the game logic, check out my video here ---> https://youtu.be/iz1wbxlsdkQ
