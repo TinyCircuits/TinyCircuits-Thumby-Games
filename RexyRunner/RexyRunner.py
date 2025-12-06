@@ -55,7 +55,7 @@ def set_theme(night):
         FG_COLOR = WHITE
         BG_COLOR = BLACK
 
-thumby.display.setFPS(20)  # 20 FPS is smooth and light
+thumby.display.setFPS(20)  # 20 FPS
 
 # -------------------------------
 # Screen States
@@ -74,6 +74,7 @@ GROUND_Y = SCREEN_H - GROUND_PAD - 1
 GRAVITY = 0.45
 JUMP_VELOCITY = -6.0
 
+# Game scroll speed: original pace, auto-accel with distance
 SPEED_START = 1.55
 SPEED_MAX = 3.6
 ACCELERATION = 0.0009
@@ -432,11 +433,20 @@ class Trex:
     def current_rows(self):
         if self.crashed:
             return self.crash_rows
+
+        # Shared frame index so run and duck animate at the same rate
+        idx = (self.tick // 5) % len(self.run_frames)
+
         if self.jumping:
+            # Allow duck animation while jumping if duck is held
+            if self.ducking:
+                return self.duck_frames[idx]
             return self.jump_rows
+
+        # On the ground: duck vs run
         if self.ducking:
-            return self.duck_frames[(self.tick // 2) % len(self.duck_frames)]
-        return self.run_frames[self.tick % len(self.run_frames)]
+            return self.duck_frames[idx]
+        return self.run_frames[idx]
 
     def current_size(self):
         return rows_size(self.current_rows())
@@ -462,7 +472,7 @@ class Trex:
     def set_duck(self, pressed):
         self.ducking = pressed and not self.crashed
 
-    def update(self):
+    def update(self, run_speed):
         if self.crashed:
             return
         _, h = self.current_size()
@@ -476,7 +486,10 @@ class Trex:
                 self.jumping = False
         else:
             self.y = self.ground_top_y(h)
-            self.tick = (self.tick + 1) & 0x07
+            # Animation tick: starts a bit faster now, speeds up further as run_speed grows
+            extra = max(0.0, run_speed - SPEED_START)
+            anim_step = 2 + int(extra * 1.5)  # 2 at start, higher as speed increases
+            self.tick = (self.tick + anim_step) & 0xFF
 
     def draw(self, d):
         draw_rows(d, int(self.x), int(self.y), self.current_rows())
@@ -599,7 +612,7 @@ class Game:
         self.achievement_next = ACHIEVEMENT_EVERY
         self.ground_scroll = 0.0
         self.night = False
-        self.next_theme = 700
+        self.next_theme = 100   # color swap every 100
         set_theme(self.night)
 
     def reset(self):
@@ -630,9 +643,11 @@ class Game:
         if not self.started or self.crashed:
             return
 
+        # Auto speed-up with distance (not player controlled)
         if self.speed < SPEED_MAX:
             self.speed += ACCELERATION
 
+        # Distance & score
         self.distance += self.speed
         new_score = int(self.distance * 0.08)
         if new_score > self.score:
@@ -641,13 +656,16 @@ class Game:
                 self.achievement_next += ACHIEVEMENT_EVERY
                 beep(900, 30)
 
+            # Day/night theme swap every 100 points
             if self.score >= self.next_theme:
                 self.night = not self.night
-                self.next_theme += 700
+                self.next_theme += 100
                 set_theme(self.night)
 
+        # Scroll ground
         self.ground_scroll += self.speed
 
+        # Obstacles
         for ob in self.obstacles:
             ob.update(self.speed)
         self.obstacles = [o for o in self.obstacles if not o.remove]
@@ -663,17 +681,20 @@ class Game:
             else:
                 self.obstacles.append(Obstacle(small=False, multi=random.randint(1, 3)))
 
+        # Clouds
         for cl in self.clouds:
             cl.update(self.speed)
         self.clouds = [c for c in self.clouds if not c.remove]
         self.maybe_spawn_cloud()
 
+        # Pterodactyls
         for f in self.fliers:
             f.update(self.speed)
         self.fliers = [f for f in self.fliers if not f.remove]
         self.maybe_spawn_ptero()
 
-        self.trex.update()
+        # Player (pass current speed so animation scales with it)
+        self.trex.update(self.speed)
 
         # Ground obstacle collision
         if self.obstacles:
@@ -726,7 +747,7 @@ def draw_loading_screen(d, ticks):
     scroll = ticks * 0.4
     draw_ground(d, scroll)
 
-    frame = DINO_RUN_1 if ((ticks // 4) % 2) == 0 else DINO_RUN_2
+    frame = DINO_RUN_1 if ((ticks // 5) % 2) == 0 else DINO_RUN_2
     dw, dh = rows_size(frame)
     dino_x = 6
     dino_y = GROUND_Y - dh
@@ -754,11 +775,11 @@ def draw_title_screen(d, hiscore, ticks):
     cloud_y = 12
     draw_rows(d, cloud_x, cloud_y, CLOUD_SMALL)
 
-    # Scrolling ground
+    # Scrolling ground (0.6 per tick, chill preview)
     ground_scroll = ticks * 0.6
     draw_ground(d, ground_scroll)
 
-    # Running dino near bottom-left
+    # Running dino near bottom-left, slower title animation (every 5 ticks)
     frame = DINO_RUN_1 if ((ticks // 5) % 2) == 0 else DINO_RUN_2
     dw, dh = rows_size(frame)
     dino_x = 4
@@ -791,12 +812,30 @@ def draw_title_screen(d, hiscore, ticks):
 
     d.update()
 
-def draw_gameover_menu(d, score, hiscore):
+def draw_gameover_menu(d, score, hiscore, ticks):
     d.fill(BG_COLOR)
-    d.drawText("GAME OVER", 6, 6, FG_COLOR)
-    d.drawText("Score:" + str(score), 4, 16, FG_COLOR)
-    d.drawText("A=Restart", 4, 26, FG_COLOR)
-    d.drawText("B=Title", 4, 32, FG_COLOR)
+
+    # Centered "GAME OVER"
+    title = "GAME OVER"
+    t_w = len(title) * 6
+    t_x = (SCREEN_W - t_w) // 2
+    d.drawText(title, t_x, 2, FG_COLOR)
+
+    # Centered score + hi-score line
+    score_text = "S:" + str(score) + " H:" + str(hiscore)
+    s_w = len(score_text) * 6
+    s_x = (SCREEN_W - s_w) // 2
+    if s_x < 0:
+        s_x = 0
+    d.drawText(score_text, s_x, 12, FG_COLOR)
+
+    # Blinking A=Restart (flashes)
+    if (ticks // 10) % 2 == 0:
+        d.drawText("A=Restart", 4, 22, FG_COLOR)
+
+    # Static B=Title
+    d.drawText("B=Title", 4, 30, FG_COLOR)
+
     d.update()
 
 # -------------------------------
@@ -809,6 +848,7 @@ prevJump = False  # tracks A or B for variable jump
 screen_state = STATE_LOADING
 loading_ticks = 0
 title_ticks = 0
+gameover_ticks = 0
 
 while True:
     if screen_state == STATE_LOADING:
@@ -862,7 +902,7 @@ while True:
             thumby.buttonR.pressed()
         )
 
-        # Keep speed-drop on D-pad Down justPressed
+        # Keep speed-drop on D-pad Down justPressed (affects fall, not game scroll)
         if thumby.buttonD.justPressed():
             game.trex.speed_drop()
 
@@ -874,18 +914,25 @@ while True:
 
         if game.crashed:
             screen_state = STATE_GAMEOVER_MENU
+            gameover_ticks = 0  # reset game over animation timer
 
     elif screen_state == STATE_GAMEOVER_MENU:
+        gameover_ticks += 1
+
         # A = restart run (menu still uses A)
         if thumby.buttonA.justPressed():
             game.reset()
             game.started = True
             screen_state = STATE_PLAYING
             prevJump = False
+            gameover_ticks = 0
 
         # B = back to title screen
         if thumby.buttonB.justPressed():
             screen_state = STATE_TITLE
             title_ticks = 0
+            gameover_ticks = 0
 
-        draw_gameover_menu(thumby.display, game.score, game.hiscore)
+        draw_gameover_menu(thumby.display, game.score, game.hiscore, gameover_ticks)
+
+
