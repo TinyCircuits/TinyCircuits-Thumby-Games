@@ -1,1 +1,0 @@
-Rexy Runner is a Thumby game I made inspired by the Chrome Dino Run game. Coded specifically for the Thumby hardware, it has save states to keep a persistent High Score, includes jumping, ducking and incorporates Night and Day color swapping as you progress further. The further you go the faster it gets and the more obstacles you have to avoid. How far will you be able to go?
