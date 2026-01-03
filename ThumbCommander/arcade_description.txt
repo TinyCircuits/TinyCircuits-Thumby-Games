@@ -1,3 +1,4 @@
+-- WHEN UPGRADING: MAKE SURE TO DELETE OLD VERSION COMPLETELY FIRST --
 Are you one to remember the classic Wing Commander Games? 
 Now is your time to jump into the cockpit on your Thumby and Thumby Color. 
 Dash through classic astroid fields and engage in dogfights with nether ending enemy ships in direct action mode.
