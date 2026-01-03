@@ -1048,10 +1048,8 @@ class SettingsMenu:
             
             if buttonU.justPressed():
                 self.selected = (self.selected - 1) % len(self.settings_items)
-                sleep(0.15)
             elif buttonD.justPressed():
                 self.selected = (self.selected + 1) % len(self.settings_items)
-                sleep(0.15)
             elif buttonA.justPressed():
                 # Check for platform-specific action first
                 result = self.handle_special_action(self.selected)
