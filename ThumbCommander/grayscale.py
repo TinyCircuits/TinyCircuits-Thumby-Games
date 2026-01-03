@@ -7,35 +7,15 @@ from math import sqrt, floor
 from array import array
 from thumbyButton import buttonA, buttonB, buttonU, buttonD, buttonL, buttonR
 from sys import modules
-
+from fpmath import fpmul, fpdiv
 __version__ = '4.0.2-hemlock'
-IS_THUMBY_COLOR = False
-try:
-  import engine_main 
-  import engine
-  import engine_draw
-  from engine_nodes import Sprite2DNode, CameraNode
-  from engine_resources import TextureResource
-  from engine_math import Vector2
-
-  IS_THUMBY_COLOR = True
-except ImportError:
-   pass
 
 emulator = None
 try:
     import emulator
 except ImportError:
     pass
-
-@micropython.viper
-def fpdiv(a:int, b:int) -> int:
-    return ((a << 6) // (b >> 6)) << 4
-
-@micropython.viper
-def fpmul(a:int, b:int) -> int:
-    return (a >> 6) * (b >> 6) >> 4
-        
+    
 class Sprite:
     @micropython.native
     def __init__(self, width, height, bitmapData, x = 0, y=0, key=-1, mirrorX=False, mirrorY=False):
@@ -230,7 +210,6 @@ class Grayscale:
         self.frameRate = 0
 
         self._initEmuScreen()
-        self._initColorScreen()
 
         if 'thumbyGraphics' in modules:
             self.buffer[:] = modules['thumbyGraphics'].display.display.buffer
@@ -238,7 +217,7 @@ class Grayscale:
 
         self.brightness(self._brightness)
 
-        if not emulator and not IS_THUMBY_COLOR:
+        if not emulator:
             try:
                 with open("thumbyGS.cfg", "r") as fh:
                     vls = fh.read().split('\n')
@@ -274,25 +253,6 @@ class Grayscale:
             return
         Pin(2, Pin.OUT) # Ready display handshake pin
         emulator.screen_breakpoint(ptr16(self.drawBuffer))
-        self._clearEmuFunctions()
-
-    @micropython.viper
-    def _initColorScreen(self):
-        if not IS_THUMBY_COLOR:
-            return
-
-        engine.fps_limit(240)
-        self.tex = TextureResource(72, 40)
-        self.spr = Sprite2DNode()
-        self.spr.texture = self.tex
-        self.spr.layer = 7
-        self.spr.scale = Vector2(1.75, 1.75)
-        self.cam = CameraNode()
-        
-        self.colors = array('H', [0x0000,0xFFFF,0x4208,0xBDF7])
-        self.color_map = ptr16(self.colors)
-        self.bufsize = int(len(self.buffer))
-
         self._clearEmuFunctions()
         
     def _clearEmuFunctions(self):
@@ -334,9 +294,6 @@ class Grayscale:
             emulator.screen_breakpoint(1)
             self.show()
             return
-        if IS_THUMBY_COLOR:
-            self.show()
-            return
         
         if self._state[_ST_THREAD] == _THREAD_RUNNING:
             return
@@ -351,10 +308,6 @@ class Grayscale:
     def disableGrayscale(self):
         if emulator:
             emulator.screen_breakpoint(0)
-            self.show()
-            return
-        
-        if IS_THUMBY_COLOR:
             self.show()
             return
         
@@ -421,33 +374,6 @@ class Grayscale:
                 idle()
         elif emulator:
             mem32[0xD0000000+0x01C] = 1 << 2
-        elif IS_THUMBY_COLOR:
-            fb = ptr16(self.tex.data)
-            buffer = ptr8(self.buffer)
-            shading = ptr8(self.shading)
-            color_map = ptr16(self.color_map)
-            bufsize: int = int(self.bufsize)
-            
-            b: int = 0
-            while b < bufsize:
-                x: int = b % 72
-                y: int = (b // 72) * 8
-                base_idx: int = y * 72 + x             
-                buf_byte: int = int(buffer[b])
-                shade_byte: int = int(shading[b])
-                
-                fb[base_idx] = color_map[(buf_byte & 1) | ((shade_byte & 1) << 1)]
-                fb[base_idx + 72] = color_map[((buf_byte >> 1) & 1) | (((shade_byte >> 1) & 1) << 1)]
-                fb[base_idx + 144] = color_map[((buf_byte >> 2) & 1) | (((shade_byte >> 2) & 1) << 1)]
-                fb[base_idx + 216] = color_map[((buf_byte >> 3) & 1) | (((shade_byte >> 3) & 1) << 1)]
-                fb[base_idx + 288] = color_map[((buf_byte >> 4) & 1) | (((shade_byte >> 4) & 1) << 1)]
-                fb[base_idx + 360] = color_map[((buf_byte >> 5) & 1) | (((shade_byte >> 5) & 1) << 1)]
-                fb[base_idx + 432] = color_map[((buf_byte >> 6) & 1) | (((shade_byte >> 6) & 1) << 1)]
-                fb[base_idx + 504] = color_map[((buf_byte >> 7) & 1) | (((shade_byte >> 7) & 1) << 1)]
-                
-                b += 1
-            
-            engine.tick()
         else:
             self._dc(1)
             self._spi.write(self.buffer)
@@ -838,6 +764,21 @@ class Grayscale:
             shading[o] &= im
 
     @micropython.viper
+    def getPixel(self, x:int, y:int) -> int:
+        if x < 0 or x >= _WIDTH or y < 0 or y >= _HEIGHT:
+            return 0
+        o = (y >> 3) * _WIDTH + x
+        m = 1 << (y & 7)
+        buffer = ptr8(self.buffer)
+        shading = ptr8(self.shading)
+        colour = 0
+        if buffer[o] & m:
+            colour = 1
+        if shading[o] & m:
+            colour |= 2
+        return colour
+
+    @micropython.viper
     def drawLine(self, x0:int, y0:int, x1:int, y1:int, colour:int):
         if x0 == x1:
             self.drawFilledRectangle(x0, y0, 1, y1 - y0, colour)
@@ -1151,6 +1092,9 @@ class Grayscale:
     @micropython.native
     def drawSpriteWithScale(self, s):
         self.blitScaled(s.bitmap, s.x, s.y, s.scaledWidth, s.scaledHeight, s.key, s.mirrorX, s.mirrorY, fpdiv(256<<16, s.scale)>>16, s.width)
-        
+
+def create_sprite(width, height, bitmap_data, x=0, y=0, key=-1, mirrorX=False, mirrorY=False, scale=1.00):   
+    return Sprite(width, height, bitmap_data, x, y, key, mirrorX, mirrorY)
+
 display = Grayscale()
 display.enableGrayscale()
