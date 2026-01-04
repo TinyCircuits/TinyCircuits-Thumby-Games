@@ -1,1 +1,21 @@
 # ThumbCommander
+Are you one to remember the classic Wing Commander Games? 
+Now is your time to jump into the cockpit on your Thumby and Thumby Color. 
+Dash through classic astroid fields and engage in dogfights with nether ending enemy ships in direct action mode.
+The game includes 4 campaigns that take you back to the classic scenery and fights you might rememeber as I do.
+You can change and extend the campaigns to your liking with a simple JSON structure defining each campaign (see respective readme)
+Use the Settings Menu to understand and change controls, adjust volume and turn off vibration (ThumbyColor for audio and vibration only)
+This would not have been possible without all the great graphic of the Wing Commander Encyclopedia Project. 
+
+The Game support Thumby and ThumbyColor with the same code base. For this I extended the Thumby grayscale API to the ThumbyColor supporting full color and System Features. 
+The Audio is based on transistortester's bad-apple demo. I extended the IMA audio framework to use failsave threading and performant playback on the second core. Audio supports background playback and FX during game play.
+All cutscenes can be canceled with the MENU button / B-button (ThumbyColor / Thumby).
+
+Because of the memory constrains of the Thumby I had to pre-compile most files into mpy binary. 
+Full source code can be found at: https://github.com/xris99/ThumbCommander. As the ThumbyColor does not have a full powered emulator, I added a PC wrapper that let's the color version run on any Mac / PC
+
+v1.0: initial releaese
+v1.1: added ability to fly through space, added afterburner, added Setting menu to configure input
+v1.5: added Campaign Mode and improved my KnownSpace3DModel. Improved Afterburner and enabled full stop of the ship.
+v1.6: (current_release) added support for ThumbyColor. Note that this is just enabling the grayscape version to run on the ThumbyColor. Performance is not great, but best I can get out of the machine. This is due to each frame needing to be converted bitwise to RGB565 and scaled up. Performnace will significantly increase with switch to native ThumbyColor support.
+v2.0: Native ThumbyColor support, incl. Cutscenes, Audio, Vibrations, better gameplay, better cockpits, enemy AI, more objects, etc. The changes are so extensive, test for yourself. This version brings the game closer to the original PC version and provides hours of exiting game play
