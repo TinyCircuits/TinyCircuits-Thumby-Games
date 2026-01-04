@@ -11,6 +11,7 @@ The Game support Thumby and ThumbyColor with the same code base. For this I exte
 The Audio is based on transistortester's bad-apple demo. I extended the IMA audio framework to use failsave threading and performant playback on the second core. Audio supports background playback and FX during game play.
 All cutscenes can be canceled with the MENU button / B-button (ThumbyColor / Thumby).
 
+Because of the memory constrains of the Thumby I had to pre-compile most files into mpy binary. 
 Full source code can be found at: https://github.com/xris99/ThumbCommander. As the ThumbyColor does not have a full powered emulator, I added a PC wrapper that let's the color version run on any Mac / PC
 
 v1.0: initial releaese
