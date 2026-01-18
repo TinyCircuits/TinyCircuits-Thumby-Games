@@ -1,9 +1,10 @@
 import time
 import random
-import thumby
 import sys
 
 sys.path.insert(1, "/Games/TinyCity")
+
+from interface import get_interface
 
 from data import (
     LOGO,
@@ -28,6 +29,7 @@ from data import (
     TILE_ICON_COMMERCIAL_TOOL,
     TILE_ICON_INDUSTRIAL_TOOL,
     TILE_ICON_POWERPLANT_TOOL,
+    TILE_ICON_TREES_TOOL,
     TILE_ICON_PARK_TOOL,
     TILE_ICON_POLICE_TOOL,
     TILE_ICON_FIRE_TOOL,
@@ -109,7 +111,7 @@ TOOL_ICONS = {
     BUILDING_POWERPLANT: TILE_ICON_POWERPLANT_TOOL,
     BUILDING_PARK: TILE_ICON_PARK_TOOL,
     BUILDING_THEME_PARK: TILE_ICON_THEME_PARK_TOOL,
-    BUILDING_TREES: TILE_TREES,
+    BUILDING_TREES: TILE_ICON_TREES_TOOL,
     BUILDING_SCHOOL: TILE_ICON_SCHOOL_TOOL,
     BUILDING_POLICE: TILE_ICON_POLICE_TOOL,
     BUILDING_FIRE: TILE_ICON_FIRE_TOOL,
@@ -137,6 +139,7 @@ terrain_index = 0
 random_preview_map = None
 
 SIM = None
+iface = get_interface("thumby")
 
 
 def proc_at_tile(x, y):
@@ -212,8 +215,8 @@ def draw_notification():
         elapsed = time.ticks_diff(time.ticks_ms(), notification_start_time)
         if elapsed < NOTIFICATION_LENGTH:
             for y in range(SCREEN_HEIGHT - 8, SCREEN_HEIGHT):
-                thumby.display.drawLine(0, y, SCREEN_WIDTH, y, 0)
-            thumby.display.drawText(current_notification, 1, SCREEN_HEIGHT - 6, 1)
+                iface.display.drawLine(0, y, SCREEN_WIDTH, y, 0)
+            iface.display.drawText(current_notification, 1, SCREEN_HEIGHT - 6, 1)
         else:
             current_notification = ""
             notification_start_time = None
@@ -222,7 +225,7 @@ def draw_notification():
 def draw_terrain_tile(tile_x, tile_y, map_x, map_y):
     terrain = SIM.terrain_map[map_y][map_x]
     tile = TILE_WATER if terrain else TILE_LAND
-    thumby.display.blit(tile, tile_x, tile_y, TILE_SIZE, TILE_SIZE, BLIT_OPAQUE, 0, 0)
+    iface.display.blit(tile, tile_x, tile_y, TILE_SIZE, TILE_SIZE, BLIT_OPAQUE, 0, 0)
 
 
 def draw_road(tile_x, tile_y, neighbours, is_bridge):
@@ -260,7 +263,7 @@ def draw_road(tile_x, tile_y, neighbours, is_bridge):
             tile = TILE_ROAD_HORIZONTAL
         else:
             tile = TILE_ROAD_CROSS
-    thumby.display.blit(tile, tile_x, tile_y, TILE_SIZE, TILE_SIZE, BLIT_OPAQUE, 0, 0)
+    iface.display.blit(tile, tile_x, tile_y, TILE_SIZE, TILE_SIZE, BLIT_OPAQUE, 0, 0)
 
 
 def draw_traffic_overlay(tile_x, tile_y, neighbours, color):
@@ -275,25 +278,25 @@ def draw_traffic_overlay(tile_x, tile_y, neighbours, color):
     if horizontal:
         for y in (tile_y + 2, tile_y + 5):
             for x in range(tile_x + offsets[0], tile_x + TILE_SIZE - 1, 4):
-                thumby.display.drawLine(x, y, x + 1, y, color)
+                iface.display.drawLine(x, y, x + 1, y, color)
     if vertical:
         for x in (tile_x + 2, tile_x + 5):
             for y in range(tile_y + offsets[0], tile_y + TILE_SIZE - 1, 4):
-                thumby.display.drawLine(x, y, x, y + 1, color)
+                iface.display.drawLine(x, y, x, y + 1, color)
 
 
 def draw_power(tile_x, tile_y, neighbours, color):
     cx = tile_x + 3
     cy = tile_y + 3
     if neighbours & 1:
-        thumby.display.drawLine(cx, tile_y, cx, cy, color)
+        iface.display.drawLine(cx, tile_y, cx, cy, color)
     if neighbours & 2:
-        thumby.display.drawLine(cx, cy, tile_x + 7, cy, color)
+        iface.display.drawLine(cx, cy, tile_x + 7, cy, color)
     if neighbours & 4:
-        thumby.display.drawLine(cx, cy, cx, tile_y + 7, color)
+        iface.display.drawLine(cx, cy, cx, tile_y + 7, color)
     if neighbours & 8:
-        thumby.display.drawLine(tile_x, cy, cx, cy, color)
-    thumby.display.setPixel(cx, cy, color)
+        iface.display.drawLine(tile_x, cy, cx, cy, color)
+    iface.display.setPixel(cx, cy, color)
 
 
 def draw_building_tile(tile, tile_x, tile_y, map_x, map_y, building, info):
@@ -307,7 +310,7 @@ def draw_building_tile(tile, tile_x, tile_y, map_x, map_y, building, info):
         height = info["height"]
     expected_len = width * height * TILE_SIZE * TILE_SIZE // 8
     if len(tile) == TILE_SIZE or len(tile) != expected_len:
-        thumby.display.blit(
+        iface.display.blit(
             tile, tile_x, tile_y, TILE_SIZE, TILE_SIZE, BLIT_OPAQUE, 0, 0
         )
         return
@@ -329,7 +332,7 @@ def draw_building_tile(tile, tile_x, tile_y, map_x, map_y, building, info):
                 if tile[index] & bit:
                     sub_tile[px] |= 1 << (py % 8)
 
-    thumby.display.blit(
+    iface.display.blit(
         sub_tile, tile_x, tile_y, TILE_SIZE, TILE_SIZE, BLIT_OPAQUE, 0, 0
     )
 
@@ -372,7 +375,7 @@ def draw_building(tile_x, tile_y, map_x, map_y, building):
             if building.population_density >= threshold and TILES_BUILDING:
                 proc_val = proc_at_tile(building.x + local_x, building.y + local_y)
                 small_tile = TILES_BUILDING[proc_val & 7]
-                thumby.display.blit(
+                iface.display.blit(
                     small_tile,
                     tile_x,
                     tile_y,
@@ -398,7 +401,7 @@ def draw_building(tile_x, tile_y, map_x, map_y, building):
                 (blink_frame // 3) + (map_x - building.x) + (map_y - building.y)
             ) % 2
             fire_tile = TILE_FIRE_1 if phase == 0 else TILE_FIRE_2
-            thumby.display.blit(
+            iface.display.blit(
                 fire_tile, tile_x, tile_y, TILE_SIZE, TILE_SIZE, BLIT_OPAQUE, 0, 0
             )
 
@@ -491,15 +494,15 @@ def draw_cursor():
                         p -= bottom_len
                         x = px
                         y = py + height_px - 2 - p
-            thumby.display.setPixel(x, y, cursor_color)
+            iface.display.setPixel(x, y, cursor_color)
         pos += step
 
 
 def draw_hud():
     for y in range(0, 8):
-        thumby.display.drawLine(0, y, SCREEN_WIDTH, y, 0)
-    thumby.display.drawText("$" + str(SIM.money), 0, 0, 1)
-    thumby.display.drawText(SIM.get_month_year(), 40, 0, 1)
+        iface.display.drawLine(0, y, SCREEN_WIDTH, y, 0)
+    iface.display.drawText("$" + str(SIM.money), 0, 0, 1)
+    iface.display.drawText(SIM.get_month_year(), 40, 0, 1)
     if DEBUG_HOVER:
         map_x = cursor_x + scroll_x
         map_y = cursor_y + scroll_y
@@ -511,9 +514,9 @@ def draw_hud():
         ):
             debug = SIM.get_growth_debug(building)
             for y in range(8, 16):
-                thumby.display.drawLine(0, y, SCREEN_WIDTH, y, 0)
+                iface.display.drawLine(0, y, SCREEN_WIDTH, y, 0)
             for y in range(16, 24):
-                thumby.display.drawLine(0, y, SCREEN_WIDTH, y, 0)
+                iface.display.drawLine(0, y, SCREEN_WIDTH, y, 0)
             line1 = "D{} R{} P{}".format(
                 debug["density"], debug["road_connections"], int(debug["has_power"])
             )
@@ -522,41 +525,41 @@ def draw_hud():
                 line2 = "Sc-- Po{}".format(debug["pollution"])
             else:
                 line2 = "Sc{} Po{}".format(score, debug["pollution"])
-            thumby.display.drawText(line1, 0, 8, 1)
-            thumby.display.drawText(line2, 0, 16, 1)
+            iface.display.drawText(line1, 0, 8, 1)
+            iface.display.drawText(line2, 0, 16, 1)
 
 
 def draw_menu():
     for y in range(14, SCREEN_HEIGHT):
-        thumby.display.drawLine(0, y, SCREEN_WIDTH, y, 0)
+        iface.display.drawLine(0, y, SCREEN_WIDTH, y, 0)
     tool = get_current_tool()
     if tool is None:
-        thumby.display.drawText("No tools", 0, 16, 1)
-        thumby.display.drawText("B:Exit", 40, 32, 1)
+        iface.display.drawText("No tools", 0, 16, 1)
+        iface.display.drawText("B:Exit", 40, 32, 1)
         return
     tool_name = tool["name"]
     cost = tool.get("cost")
     if isinstance(tool["id"], int):
         cost = BUILDING_INFO[tool["id"]]["cost"]
 
-    thumby.display.drawText(tool_name, 0, 16, 1)
+    iface.display.drawText(tool_name, 0, 16, 1)
     if cost is None:
         cost_text = "--"
     else:
         cost_text = "$" + str(cost)
-    thumby.display.drawText(cost_text, 0, 24, 1)
+    iface.display.drawText(cost_text, 0, 24, 1)
     if tool["id"] == "budget":
         action_text = "A:Open"
     elif tool["id"] == "save":
         action_text = "A:Save"
     else:
         action_text = "A:Select"
-    thumby.display.drawText(action_text, 0, 32, 1)
-    thumby.display.drawText("B:Exit", 40, 32, 1)
+    iface.display.drawText(action_text, 0, 32, 1)
+    iface.display.drawText("B:Exit", 40, 32, 1)
 
     icon = TOOL_ICONS.get(tool["id"])
     if icon:
-        thumby.display.blit(
+        iface.display.blit(
             icon, SCREEN_WIDTH - TILE_SIZE, 16, TILE_SIZE, TILE_SIZE, BLIT_OPAQUE, 0, 0
         )
 
@@ -589,29 +592,29 @@ def draw_budget_menu():
     road_cost = (num_road_tiles * ROAD_MAINTENANCE_COST) // 100
     cash_flow = taxes - (police_cost + fire_cost + road_cost + school_cost)
 
-    thumby.display.drawText("C/F $" + str(cash_flow), 0, 0, 1)
-    thumby.display.drawText(SIM.get_month_year(), 40, 0, 1)
-    thumby.display.drawText("Tax " + str(SIM.tax_rate) + "%", 45, 7, 1)
-    thumby.display.drawText("Tax $" + str(taxes), 0, 7, 1)
-    thumby.display.drawText("POP " + str(pop_total), 0, 14, 1)
+    iface.display.drawText("C/F $" + str(cash_flow), 0, 0, 1)
+    iface.display.drawText(SIM.get_month_year(), 40, 0, 1)
+    iface.display.drawText("Tax " + str(SIM.tax_rate) + "%", 45, 7, 1)
+    iface.display.drawText("Tax $" + str(taxes), 0, 7, 1)
+    iface.display.drawText("POP " + str(pop_total), 0, 14, 1)
 
-    thumby.display.blit(
+    iface.display.blit(
         TILE_ICON_POLICE_TOOL, 0, 20, TILE_SIZE, TILE_SIZE, BLIT_OPAQUE, 0, 0
     )
-    thumby.display.drawText("$" + str(police_cost), 10, 21, 1)
-    thumby.display.blit(
+    iface.display.drawText("$" + str(police_cost), 10, 21, 1)
+    iface.display.blit(
         TILE_ICON_FIRE_TOOL, 0, 29, TILE_SIZE, TILE_SIZE, BLIT_OPAQUE, 0, 0
     )
-    thumby.display.drawText("$" + str(fire_cost), 10, 31, 1)
+    iface.display.drawText("$" + str(fire_cost), 10, 31, 1)
 
-    thumby.display.blit(
+    iface.display.blit(
         TILE_ICON_ROAD_TOOL, 32, 20, TILE_SIZE, TILE_SIZE, BLIT_OPAQUE, 0, 0
     )
-    thumby.display.drawText("$" + str(road_cost), 41, 21, 1)
-    thumby.display.blit(
+    iface.display.drawText("$" + str(road_cost), 41, 21, 1)
+    iface.display.blit(
         TILE_ICON_SCHOOL_TOOL, 32, 29, TILE_SIZE, TILE_SIZE, BLIT_OPAQUE, 0, 0
     )
-    thumby.display.drawText("$" + str(school_cost), 41, 31, 1)
+    iface.display.drawText("$" + str(school_cost), 41, 31, 1)
 
 
 def draw_terrain_preview(terrain, x, y, width, height):
@@ -622,7 +625,7 @@ def draw_terrain_preview(terrain, x, y, width, height):
         for px in range(width):
             map_x = (px * map_w) // width
             is_land = terrain[map_y][map_x] == 0
-            thumby.display.setPixel(x + px, y + py, 1 if is_land else 0)
+            iface.display.setPixel(x + px, y + py, 1 if is_land else 0)
 
 
 def generate_random_terrain(width, height, land_threshold=180, smooth_steps=3):
@@ -731,24 +734,24 @@ def init_game(terrain=None):
 def save_game():
     try:
         try:
-            thumby.saveData.delItem("sim")
+            iface.saveData.delItem("sim")
         except Exception:
             pass
         if terrain_index >= len(TERRAIN_MAPS):
             terrain_bytes = bytearray()
             for row in SIM.terrain_map:
                 terrain_bytes.extend(row)
-            thumby.saveData.setItem("terrain_random", terrain_bytes)
+            iface.saveData.setItem("terrain_random", terrain_bytes)
         else:
             try:
-                thumby.saveData.delItem("terrain_random")
+                iface.saveData.delItem("terrain_random")
             except Exception:
                 pass
-        thumby.saveData.setItem(
+        iface.saveData.setItem(
             "sim",
             SIM.to_save_bytes(include_terrain=False, terrain_index=terrain_index),
         )
-        thumby.saveData.save()
+        iface.saveData.save()
         show_notification("Saved")
         return True
     except Exception as exc:
@@ -761,14 +764,14 @@ def save_game():
 
 
 def load_game():
-    if not thumby.saveData.hasItem("sim"):
+    if not iface.saveData.hasItem("sim"):
         show_notification("No save")
         return False
     try:
-        data = thumby.saveData.getItem("sim")
+        data = iface.saveData.getItem("sim")
         terrain_override = None
-        if thumby.saveData.hasItem("terrain_random"):
-            terrain_bytes = thumby.saveData.getItem("terrain_random")
+        if iface.saveData.hasItem("terrain_random"):
+            terrain_bytes = iface.saveData.getItem("terrain_random")
             if isinstance(terrain_bytes, list):
                 terrain_bytes = bytearray(terrain_bytes)
             if len(terrain_bytes) == 48 * 48:
@@ -802,12 +805,12 @@ def load_game():
 
 def init_save_data():
     try:
-        thumby.saveData.setName("TinyCity")
-        thumby.saveData.hasItem("sim")
+        iface.saveData.setName("TinyCity")
+        iface.saveData.hasItem("sim")
         return
     except Exception:
         try:
-            thumby.saveData.setName("TinyCity2")
+            iface.saveData.setName("TinyCity2")
             show_notification("Save reset")
         except Exception:
             pass
@@ -858,11 +861,11 @@ def handle_input():
     global view_mode, menu_index, current_tool_index, terrain_index, move_hold_frames
 
     if view_mode == VIEW_MAIN_MENU:
-        if thumby.buttonU.justPressed():
+        if iface.buttonU.justPressed():
             menu_index = (menu_index - 1) % len(MENU_OPTIONS)
-        if thumby.buttonD.justPressed():
+        if iface.buttonD.justPressed():
             menu_index = (menu_index + 1) % len(MENU_OPTIONS)
-        if thumby.buttonA.justPressed():
+        if iface.buttonA.justPressed():
             if MENU_OPTIONS[menu_index] == "New Game":
                 terrain_index = 0
                 view_mode = VIEW_TERRAIN_SELECT
@@ -878,13 +881,13 @@ def handle_input():
         max_scroll_y = SIM.map_height - VISIBLE_HEIGHT + MAP_PADDING_TILES
         move_dx = 0
         move_dy = 0
-        if thumby.buttonU.pressed():
+        if iface.buttonU.pressed():
             move_dy = -1
-        elif thumby.buttonD.pressed():
+        elif iface.buttonD.pressed():
             move_dy = 1
-        if thumby.buttonL.pressed():
+        if iface.buttonL.pressed():
             move_dx = -1
-        elif thumby.buttonR.pressed():
+        elif iface.buttonR.pressed():
             move_dx = 1
 
         if move_dx or move_dy:
@@ -940,13 +943,13 @@ def handle_input():
                 scroll_x += 1
                 moved = True
         clamp_cursor_to_map()
-        if thumby.buttonA.justPressed():
+        if iface.buttonA.justPressed():
             place_current_tool()
-        if moved and thumby.buttonA.pressed():
+        if moved and iface.buttonA.pressed():
             tool = get_current_tool()
             if tool and tool["id"] == "road":
                 place_current_tool()
-        if thumby.buttonB.justPressed():
+        if iface.buttonB.justPressed():
             view_mode = VIEW_MENU
             visible_tools = SIM.get_visible_tools()
             if visible_tools:
@@ -956,14 +959,14 @@ def handle_input():
     if view_mode == VIEW_MENU:
         visible_tools = SIM.get_visible_tools()
         if not visible_tools:
-            if thumby.buttonB.justPressed():
+            if iface.buttonB.justPressed():
                 view_mode = VIEW_MAP
             return
-        if thumby.buttonL.justPressed():
+        if iface.buttonL.justPressed():
             current_tool_index = (current_tool_index - 1) % len(visible_tools)
-        if thumby.buttonR.justPressed():
+        if iface.buttonR.justPressed():
             current_tool_index = (current_tool_index + 1) % len(visible_tools)
-        if thumby.buttonA.justPressed():
+        if iface.buttonA.justPressed():
             tool_id = visible_tools[current_tool_index]["id"]
             if tool_id == "budget":
                 view_mode = VIEW_BUDGET
@@ -973,34 +976,34 @@ def handle_input():
                     view_mode = VIEW_MAP
             else:
                 view_mode = VIEW_MAP
-        if thumby.buttonB.justPressed():
+        if iface.buttonB.justPressed():
             view_mode = VIEW_MAP
         return
 
     if view_mode == VIEW_BUDGET:
-        if thumby.buttonU.justPressed():
+        if iface.buttonU.justPressed():
             SIM.tax_rate = min(30, SIM.tax_rate + 1)
-        if thumby.buttonD.justPressed():
+        if iface.buttonD.justPressed():
             SIM.tax_rate = max(0, SIM.tax_rate - 1)
-        if thumby.buttonA.justPressed() or thumby.buttonB.justPressed():
+        if iface.buttonA.justPressed() or iface.buttonB.justPressed():
             view_mode = VIEW_MENU
         return
     if view_mode == VIEW_TERRAIN_SELECT:
         total_terrains = len(TERRAIN_MAPS) + 1
-        if thumby.buttonL.justPressed():
+        if iface.buttonL.justPressed():
             terrain_index = (terrain_index - 1) % total_terrains
             if terrain_index == len(TERRAIN_MAPS):
                 global random_preview_map
                 random_preview_map = None
-        if thumby.buttonR.justPressed():
+        if iface.buttonR.justPressed():
             terrain_index = (terrain_index + 1) % total_terrains
             if terrain_index == len(TERRAIN_MAPS):
                 global random_preview_map
                 random_preview_map = None
-        if thumby.buttonU.justPressed() and terrain_index == len(TERRAIN_MAPS):
+        if iface.buttonU.justPressed() and terrain_index == len(TERRAIN_MAPS):
             global random_preview_map
             random_preview_map = generate_random_terrain(48, 48)
-        if thumby.buttonA.justPressed():
+        if iface.buttonA.justPressed():
             if terrain_index < len(TERRAIN_MAPS):
                 init_game(TERRAIN_MAPS[terrain_index])
             else:
@@ -1008,32 +1011,32 @@ def handle_input():
                     random_preview_map = generate_random_terrain(48, 48)
                 init_game(random_preview_map)
             view_mode = VIEW_MAP
-        if thumby.buttonB.justPressed():
+        if iface.buttonB.justPressed():
             view_mode = VIEW_MAIN_MENU
         return
 
 
 def draw_main_menu():
-    thumby.display.blit(LOGO, 16, 0, 40, 20, BLIT_OPAQUE, 0, 0)
+    iface.display.blit(LOGO, 16, 0, 40, 20, BLIT_OPAQUE, 0, 0)
     for i, option in enumerate(MENU_OPTIONS):
         y = 24 + i * 8
         prefix = ">" if i == menu_index else " "
-        thumby.display.drawText(prefix + option, 16, y, 1)
+        iface.display.drawText(prefix + option, 16, y, 1)
     version_text = "v" + VERSION
     version_x = SCREEN_WIDTH - (len(version_text) * 4) - 1
-    version_y = SCREEN_HEIGHT - 6
-    thumby.display.drawText(version_text, version_x, 0, 1)
+    version_y = 0
+    iface.display.drawText(version_text, version_x, version_y, 1)
 
 
 def draw_terrain_menu():
-    thumby.display.drawText("TERRAIN", 2, 2, 1)
+    iface.display.drawText("TERRAIN", 2, 2, 1)
     if terrain_index < len(TERRAIN_MAPS):
         name = TERRAIN_NAMES[terrain_index]
     else:
         name = "Random"
-    thumby.display.drawText(name, 5, 12, 1)
+    iface.display.drawText(name, 5, 12, 1)
     if terrain_index >= len(TERRAIN_MAPS):
-        thumby.display.drawText("^Generate", 2, 22, 1)
+        iface.display.drawText("^Generate", 2, 22, 1)
     preview_size = 20
     preview_x = SCREEN_WIDTH - preview_size - 8
     preview_y = 4
@@ -1051,38 +1054,38 @@ def draw_terrain_menu():
             draw_terrain_preview(
                 random_preview_map, preview_x, preview_y, preview_size, preview_size
             )
-    thumby.display.drawLine(
+    iface.display.drawLine(
         preview_x - 1, preview_y - 1, preview_x + preview_size, preview_y - 1, 1
     )
-    thumby.display.drawLine(
+    iface.display.drawLine(
         preview_x - 1,
         preview_y + preview_size,
         preview_x + preview_size,
         preview_y + preview_size,
         1,
     )
-    thumby.display.drawLine(
+    iface.display.drawLine(
         preview_x - 1, preview_y - 1, preview_x - 1, preview_y + preview_size, 1
     )
-    thumby.display.drawLine(
+    iface.display.drawLine(
         preview_x + preview_size,
         preview_y - 1,
         preview_x + preview_size,
         preview_y + preview_size,
         1,
     )
-    thumby.display.drawText("< > A", 1, 34, 1)
-    thumby.display.drawText("B:Back", 45, 34, 1)
+    iface.display.drawText("< > A", 1, 34, 1)
+    iface.display.drawText("B:Back", 45, 34, 1)
 
 
 init_save_data()
-thumby.display.setFont("/lib/font3x5.bin", 3, 5, 1)
+iface.display.setFont("/lib/font3x5.bin", 3, 5, 1)
 
 init_game()
 
 while True:
     blink_frame = (blink_frame + 1) % 24
-    thumby.display.fill(0)
+    iface.display.fill(0)
 
     if view_mode == VIEW_MAIN_MENU:
         draw_main_menu()
@@ -1101,5 +1104,5 @@ while True:
 
     draw_notification()
     handle_input()
-    thumby.display.update()
+    iface.display.update()
     time.sleep(0.05)

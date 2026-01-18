@@ -405,7 +405,9 @@ class Sim:
         return None
 
     def is_terrain_clear(self, x, y):
-        return self.terrain_map[y][x] == 0
+        if 0 <= x < self.map_width and 0 <= y < self.map_height:
+            return self.terrain_map[y][x] == 0
+        return False
 
     def get_connections(self, x, y):
         if 0 <= x < self.map_width and 0 <= y < self.map_height:
@@ -517,6 +519,8 @@ class Sim:
             return False
 
         building = self.buildings[slot]
+        if building.type == BUILDING_RUBBLE:
+            self.destroy_building(building, rubble=False)
         building.type = building_type
         building.x = x
         building.y = y
@@ -547,6 +551,9 @@ class Sim:
         building.on_fire = 0
         if rubble:
             building.type = BUILDING_RUBBLE
+            building.population_density = 0
+            building.heavy_traffic = False
+            building.has_power = False
             building.rubble_width = width
             building.rubble_height = height
             for j in range(building.y, building.y + height):
@@ -820,7 +827,7 @@ class Sim:
                         if (
                             other.type
                             and other is not building
-                            and (other.has_power or other.type == BUILDING_PARK)
+                            and (other.has_power or other.type == BUILDING_PARK or other.type == BUILDING_TREES)
                             and not other.on_fire
                         ):
                             distance = self._manhattan_distance(building, other)
@@ -1246,7 +1253,6 @@ class Sim:
         sim.time_to_next_disaster = time_to_next_disaster
         sim.calculate_power_connectivity()
         sim.count_population()
-        sim.do_budget()
         sim.terrain_index = terrain_index
         sim._rebuild_building_map()
         return sim
@@ -1311,7 +1317,7 @@ class Sim:
                 if (
                     other.type
                     and other is not building
-                    and (other.has_power or other.type == BUILDING_PARK)
+                    and (other.has_power or other.type == BUILDING_PARK or other.type == BUILDING_TREES)
                     and not other.on_fire
                 ):
                     distance = self._manhattan_distance(building, other)
