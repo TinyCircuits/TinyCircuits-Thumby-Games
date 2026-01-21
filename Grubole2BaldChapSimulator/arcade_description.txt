@@ -1,0 +1,11 @@
+Grubole 2 Bald Chap Simulator
+
+Rogue hairs sprout like weeds. Pimples erupt without warning. And you’re the only thing standing between order and follicular chaos. An intense challenge built around timing and precision. 
+
+Keep the bald head clean. Trim hairs before they grow too long. Cream pimples before they mature.
+A trim [start]
+B apply cream [quit]
+L/R steer cream
+
+Author: musialmi
+Version: 1.0
