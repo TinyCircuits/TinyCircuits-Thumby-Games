@@ -1,6 +1,7 @@
 import time
 import random
 import sys
+import gc
 
 sys.path.insert(1, "/Games/TinyCity")
 
@@ -732,35 +733,41 @@ def init_game(terrain=None):
 
 
 def save_game():
-    try:
+    last_exc = None
+    for attempt in range(2):
         try:
-            iface.saveData.delItem("sim")
-        except Exception:
-            pass
-        if terrain_index >= len(TERRAIN_MAPS):
-            terrain_bytes = bytearray()
-            for row in SIM.terrain_map:
-                terrain_bytes.extend(row)
-            iface.saveData.setItem("terrain_random", terrain_bytes)
-        else:
+            gc.collect()
+            if attempt:
+                init_save_data()
             try:
-                iface.saveData.delItem("terrain_random")
+                iface.saveData.delItem("sim")
             except Exception:
                 pass
-        iface.saveData.setItem(
-            "sim",
-            SIM.to_save_bytes(include_terrain=False, terrain_index=terrain_index),
-        )
-        iface.saveData.save()
-        show_notification("Saved")
-        return True
-    except Exception as exc:
-        try:
-            print("Save error:", exc)
-        except Exception:
-            pass
-        show_notification("Save failed")
-        return False
+            if terrain_index >= len(TERRAIN_MAPS):
+                terrain_bytes = bytearray()
+                for row in SIM.terrain_map:
+                    terrain_bytes.extend(row)
+                iface.saveData.setItem("terrain_random", terrain_bytes)
+                del terrain_bytes
+            else:
+                try:
+                    iface.saveData.delItem("terrain_random")
+                except Exception:
+                    pass
+            sim_bytes = SIM.to_save_bytes(
+                include_terrain=False, terrain_index=terrain_index
+            )
+            iface.saveData.setItem("sim", sim_bytes)
+            del sim_bytes
+            gc.collect()
+            iface.saveData.save()
+            show_notification("Saved")
+            return True
+        except Exception as exc:
+            last_exc = exc
+
+    show_notification("Save failed")
+    return False
 
 
 def load_game():
@@ -781,6 +788,10 @@ def load_game():
                     terrain_override.append(
                         bytearray(terrain_bytes[start : start + 48])
                     )
+            try:
+                del terrain_bytes
+            except Exception:
+                pass
         sim = Sim.from_save_bytes(
             data,
             notify_callback=handle_sim_notification,
@@ -789,6 +800,11 @@ def load_game():
     except Exception:
         show_notification("Load error")
         return False
+    try:
+        del data
+    except Exception:
+        pass
+    gc.collect()
 
     global SIM, cursor_x, cursor_y, scroll_x, scroll_y
     SIM = sim
@@ -809,11 +825,7 @@ def init_save_data():
         iface.saveData.hasItem("sim")
         return
     except Exception:
-        try:
-            iface.saveData.setName("TinyCity2")
-            show_notification("Save reset")
-        except Exception:
-            pass
+        pass
 
 
 def clamp_cursor_to_map():

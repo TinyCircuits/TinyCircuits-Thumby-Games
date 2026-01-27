@@ -827,7 +827,11 @@ class Sim:
                         if (
                             other.type
                             and other is not building
-                            and (other.has_power or other.type == BUILDING_PARK or other.type == BUILDING_TREES)
+                            and (
+                                other.has_power
+                                or other.type == BUILDING_PARK
+                                or other.type == BUILDING_TREES
+                            )
                             and not other.on_fire
                         ):
                             distance = self._manhattan_distance(building, other)
@@ -1317,7 +1321,11 @@ class Sim:
                 if (
                     other.type
                     and other is not building
-                    and (other.has_power or other.type == BUILDING_PARK or other.type == BUILDING_TREES)
+                    and (
+                        other.has_power
+                        or other.type == BUILDING_PARK
+                        or other.type == BUILDING_TREES
+                    )
                     and not other.on_fire
                 ):
                     distance = self._manhattan_distance(building, other)

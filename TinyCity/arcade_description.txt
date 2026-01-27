@@ -4,4 +4,4 @@ Build and manage a growing metropolis in this tiny city sim. Balance zones and r
 Source here: https://github.com/chrisdiana/TinyCity
 
 Author: Chris Diana
-Version: 1.1
+Version: 1.2
