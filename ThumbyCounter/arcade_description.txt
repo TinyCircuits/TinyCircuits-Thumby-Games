@@ -1,0 +1,1 @@
+A minimal click counter for Thumby Color, built to feel intuitive no matter how you hold the device. Use A, LB, or RB to add to the count and B to reset. Rotate the screen with the D-pad; menu navigation automatically adapts to the current orientation. Press MENU to access instructions or quit.
