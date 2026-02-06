@@ -4,4 +4,6 @@ Let's deduce the hidden four-digit number.
 Each of the four digits is different.
 For each of your guessed digits, if only the digit is correct, you get a ‘Blow’ hint (represented by △). If both the digit and position are correct, you get a ‘Hit’ hint (represented by ♥).
 If you achieve ‘4 Hits’, you've guessed correctly.
+
 Aim to get the correct answer in as few attempts as possible.
+Pressing B on the number input screen allows you to view the previous history. The history display scrolls vertically.

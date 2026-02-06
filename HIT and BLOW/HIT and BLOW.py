@@ -66,6 +66,11 @@ bm_Baloon3 = bytearray([  1,254,254,254,254,254,254,254,254,254,254,254,254,254,
   0,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255, 96, 64,
 255,254,254,254,254,254,254,126, 62, 62,126, 62, 62,126,254,190,190, 62, 62,254,254,254, 62,190, 62,254,254,254,190, 62, 62,254,254,254,254,255])
 
+
+# BITMAP: width: 17, height: 5
+bm_HitBrow= bytearray([121,113, 99,113,121,255,255,127,127,127,255,255,103,107,109,107,103])
+
+
 # BITMAP: width: 7, height: 11
 bm_BNum0 = bytearray([  1,  0,252,252,  0,  0,  1, 28, 24,249,249, 24, 24, 28])
 bm_BNum1 = bytearray([255,255,252,  0,  0,  0,255, 31, 31,159,152,152,152,159])
@@ -128,6 +133,10 @@ Booking=0
 Tm=0
 
 Test=0
+Record=[]
+index=0
+Rec_Y=0
+
 
 while(1):###########################################################
     t0 = time.ticks_ms()   # Get time (ms)
@@ -162,26 +171,25 @@ while(1):###########################################################
                     R=random.randint(0,5)
                     for i in range(4):
                         Answer[i]=numbers[R+i]
-          
-          
+                    Record=[]
                 
-        elif(Mode==1):# Input Number
+        elif(Mode==1):# Game Start
             Mode=2
             Cur=0
             Cnt02=0
             MyNum_defY=20
             MyNum_Y=40
             
-        elif(Mode==2):# Hit & Blow
+        elif(Mode==2):# Hit &　Blow　Check
             if(Booking==0):
-                Mode=3
+                Mode=3#  Bingo!Check
                 MyNum_defY=26
                 Cnt03=0
                 Tm=Tm+1 # Charange Times
                 if (Tm>99):
                     Tm=99
             
-        elif(Mode==3):#  Bingo!
+        elif(Mode==3)and(Cnt03>29):#  Bingo!
             if(Hit==4):
                 Mode=4
                 Cur_Bingo=70
@@ -196,7 +204,8 @@ while(1):###########################################################
         elif(Mode==4)and(Cur_Bingo==0): 
             Mode=0
             def_X=30
-            
+ 
+
             
             
 
@@ -212,16 +221,18 @@ while(1):###########################################################
             def_X=30
             RipCount=8
             Mode=0
-        elif(Mode==2):
+        elif(Mode==2)and(len(Record)>0):
+            Mode=5 # Record Display
+            index=0 #Display Record Target
+            Rec_Y=0
+            
+        elif(Mode==3)and(Cnt03>29):
             if(Test!=2):
                 Test=0
             else:
                 Test=0
-        elif(Mode==3):
-            if(Test!=2):
-                Test=0
-            else:
-                Test=0
+        elif(Mode==5):
+            Mode=2 #Exit Recor Display
         else:    
             RipCount=12
 
@@ -252,6 +263,13 @@ while(1):###########################################################
             MyNum[Cur]=tmp-1
             if(MyNum[Cur]<0):
                 MyNum[Cur]=9
+
+    if (thumby.buttonD.pressed()):
+        if(Mode==5):
+            Rec_Y=Rec_Y-4
+            if (Rec_Y-4<0):
+                Rec_Y=0
+                
  # U Button ***************************************************** UP Button 
     if (thumby.buttonU.justPressed()):
         if(Mode==2):
@@ -259,19 +277,70 @@ while(1):###########################################################
             MyNum[Cur]=tmp+1
             if(MyNum[Cur]>9):
                 MyNum[Cur]=0
-                               
+ 
+    if (thumby.buttonU.pressed()):
+        if(Mode==5):
+            Rec_Y=Rec_Y+4
+            if (Rec_Y+4>(len(Record)*16)):
+                Rec_Y=(len(Record)*16)
+                                              
            
                 
-# **************************************************************# Draw BackGround **********************************************
-    ofst=int(cnt)
-    Sprite_BG0 = thumby.Sprite(38, 40, bm_BG0,ofst-76,0)
-    Sprite_BG1 = thumby.Sprite(38, 40, bm_BG1,ofst-38)
-    Sprite_BG2 = thumby.Sprite(38, 40, bm_BG0,ofst+0,0)
-    Sprite_BG3 = thumby.Sprite(38, 40, bm_BG1,ofst+38,0)
-    thumby.display.drawSprite(Sprite_BG0)
-    thumby.display.drawSprite(Sprite_BG1)
-    thumby.display.drawSprite(Sprite_BG2)
-    thumby.display.drawSprite(Sprite_BG3)
+# # Draw BackGround ************************************************************************************************************
+
+    if(Mode!=5):# Mode5 is Record Display
+        ofst=int(cnt)
+        Sprite_BG0 = thumby.Sprite(38, 40, bm_BG0,ofst-76,0)
+        Sprite_BG1 = thumby.Sprite(38, 40, bm_BG1,ofst-38)
+        Sprite_BG2 = thumby.Sprite(38, 40, bm_BG0,ofst+0,0)
+        Sprite_BG3 = thumby.Sprite(38, 40, bm_BG1,ofst+38,0)
+        thumby.display.drawSprite(Sprite_BG0)
+        thumby.display.drawSprite(Sprite_BG1)
+        thumby.display.drawSprite(Sprite_BG2)
+        thumby.display.drawSprite(Sprite_BG3)
+        
+    else:
+
+        index=0
+        for R_tmp in Record:
+            Num_tmp1=R_tmp%10
+
+            Ytmp=33+Rec_Y-index*14
+            
+            Sprite_HB = thumby.Sprite(17, 5, bm_HitBrow ,18,Ytmp)
+            thumby.display.drawSprite(Sprite_HB)            
+            
+            Sprite_MyN= thumby.Sprite(5,7, tbl_SmallNum[Num_tmp1],36,Ytmp)        
+            thumby.display.drawSprite(Sprite_MyN) #BloW      
+            
+            R_tmp=int(R_tmp/10)
+            Num_tmp1=R_tmp%10
+            Sprite_MyN= thumby.Sprite(5,7, tbl_SmallNum[Num_tmp1],24,Ytmp)       
+            thumby.display.drawSprite(Sprite_MyN) #Hit
+            
+            R_tmp=int(R_tmp/10)
+            Num_tmp1=R_tmp%10
+            Sprite_MyN= thumby.Sprite(5,7, tbl_SmallNum[Num_tmp1],23,Ytmp-7)       
+            thumby.display.drawSprite(Sprite_MyN) #Number4
+
+            R_tmp=int(R_tmp/10)
+            Num_tmp1=R_tmp%10
+            Sprite_MyN= thumby.Sprite(5,7, tbl_SmallNum[Num_tmp1],16,Ytmp-7)       
+            thumby.display.drawSprite(Sprite_MyN) #Number3
+
+            R_tmp=int(R_tmp/10)
+            Num_tmp1=R_tmp%10
+            Sprite_MyN= thumby.Sprite(5,7, tbl_SmallNum[Num_tmp1],9,Ytmp-7)       
+            thumby.display.drawSprite(Sprite_MyN) #Number2
+
+            R_tmp=int(R_tmp/10)
+            Num_tmp1=R_tmp%10
+            Sprite_MyN= thumby.Sprite(5,7, tbl_SmallNum[Num_tmp1],2,Ytmp-7)       
+            thumby.display.drawSprite(Sprite_MyN) #Number1
+    
+            index =index+1
+
+
 
 
 # Draw girl ****************************************************
@@ -342,9 +411,9 @@ while(1):###########################################################
             thumby.display.drawSprite(Sprite_Bal1)               
 
         if(Cnt03==29):            
-            RipCount=8        
-        if(Cnt03>30):
-            Cnt03=30
+            RipCount=8  
+
+        if(Cnt03>=30):
             Hit=0
             Blow=0
             for Num in range(4):
@@ -362,8 +431,17 @@ while(1):###########################################################
                 for i in range(0,Blow,1):
                     Sprite_HB= thumby.Sprite(7,6, bm_Triangle ,4+i*8,15-(Hit==0)*4)
                     thumby.display.drawSprite(Sprite_HB)
+            if(Cnt03==30):
+                tmp=MyNum[0]*100000
+                tmp=tmp+MyNum[1]*10000
+                tmp=tmp+MyNum[2]*1000
+                tmp=tmp+MyNum[3]*100
+                tmp=tmp+Hit*10
+                tmp=tmp+Blow
+                Record.insert(0,tmp)
+            Cnt03=31
 
-
+                
 
 
 # Baloon_A =====================================================
