@@ -1,3 +1,8 @@
+NAME=Thumbius
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Thumbius/Thumbius.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Thumbius/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Thumbius/arcade_discription.txt
+
 NAME=Snake
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Snake/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Snake/snake_video.webm
