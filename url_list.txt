@@ -20,6 +20,11 @@ https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyCity/sim.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyCity/TinyCity.py
 
+NAME=1nvader
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/1nvader/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/1nvader/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/1nvader/1nvader.py
+
 NAME=Grubol1Kapor3D
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Grubol1Kapor3D/Grubol1Kapor3D.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Grubol1Kapor3D/arcade_description.txt
