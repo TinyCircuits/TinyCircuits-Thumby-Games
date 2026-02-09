@@ -1,2 +1,0 @@
-version = 1.6
-name = ThumbCommander
