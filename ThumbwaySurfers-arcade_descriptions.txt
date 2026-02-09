@@ -1,0 +1,12 @@
+The goal is to avoid the blocks moving in your direction, you can pause, and retry if needed, Try to get the best score!
+Share the highest score with, friends and family
+This is just a fun little way to pass the time, based off of the well known game, Subway Surfers
+
+To start, press "A"
+To move, press the Left and Right buttons.
+To pause, press "B"
+To UN-pause, press "A"
+To retry, press "B"
+
+Thumbway Surfers, By Ultra.
+[THIS IS MY FIRST GOOD GAME, WHOO HOO! (*<*)]
