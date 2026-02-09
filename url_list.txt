@@ -7,6 +7,11 @@ https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/WhiteBlack/WhiteBlack.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/WhiteBlack/opening.py
 
+NAME=3GruboliMiloMove
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/3GruboliMiloMove/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/3GruboliMiloMove/3GruboliMiloMove.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/3GruboliMiloMove/arcade_title_video.webm
+
 NAME=TinyCity
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyCity/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyCity/arcade_title_video.webm
@@ -14,6 +19,16 @@ https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyCity/interface.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyCity/sim.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyCity/TinyCity.py
+
+NAME=Grubol1Kapor3D
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Grubol1Kapor3D/Grubol1Kapor3D.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Grubol1Kapor3D/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Grubol1Kapor3D/arcade_title_video.webm
+
+NAME=Grubole2BaldChapSimulator
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Grubole2BaldChapSimulator/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Grubole2BaldChapSimulator/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Grubole2BaldChapSimulator/Grubole2BaldChapSimulator.py
 
 NAME=ThumbCommander
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/ThumbCommander/target_7_7.BIT.bin
