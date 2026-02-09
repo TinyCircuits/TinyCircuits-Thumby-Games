@@ -7,6 +7,14 @@ https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/WhiteBlack/WhiteBlack.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/WhiteBlack/opening.py
 
+NAME=TinyCity
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyCity/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyCity/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyCity/data.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyCity/interface.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyCity/sim.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinyCity/TinyCity.py
+
 NAME=ThumbCommander
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/ThumbCommander/target_7_7.BIT.bin
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/ThumbCommander/platform_constants.mpy
