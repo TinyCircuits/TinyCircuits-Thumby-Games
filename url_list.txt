@@ -1,3 +1,11 @@
+NAME=HIT and BLOW
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/HIT and BLOW/HIT and BLOW.mp4
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/HIT and BLOW/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/HIT and BLOW/Thumby_HITandBLOW.mp4
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/HIT and BLOW/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/HIT and BLOW/HIT and BLOW.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/HIT and BLOW/HIT and BLOW.txt
+
 NAME=Grubol1Kapor3D
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Grubol1Kapor3D/Grubol1Kapor3D.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Grubol1Kapor3D/arcade_description.txt
