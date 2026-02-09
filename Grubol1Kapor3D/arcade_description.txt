@@ -1,0 +1,11 @@
+Grubol 1 Kapor 3D
+
+One of the most energetic experiences on Thumby: run your spaceship through as many gates as possible.
+
+Fly forward and pass cleanly through every gate. Each successful gate increases your score and spawns the next one at a new angle — and slightly narrower than before.
+L/R move left/right
+A start
+B quit
+
+Author: musialmi
+Version: 1.0
