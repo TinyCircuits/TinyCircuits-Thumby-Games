@@ -1,3 +1,12 @@
+NAME=WhiteBlack
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/WhiteBlack/closing.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/WhiteBlack/LICENSE
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/WhiteBlack/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/WhiteBlack/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/WhiteBlack/game.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/WhiteBlack/WhiteBlack.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/WhiteBlack/opening.py
+
 NAME=SpaceHunters
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/SpaceHunters/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/SpaceHunters/SpaceHunters.blocks
