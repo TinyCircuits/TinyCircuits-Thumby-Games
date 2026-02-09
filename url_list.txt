@@ -1,3 +1,9 @@
+NAME=SpaceHunters
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/SpaceHunters/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/SpaceHunters/SpaceHunters.blocks
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/SpaceHunters/arcade_title_video.webm
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/SpaceHunters/SpaceHunters.py
+
 NAME=Thumbius
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Thumbius/Thumbius.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/Thumbius/arcade_title_video.webm
