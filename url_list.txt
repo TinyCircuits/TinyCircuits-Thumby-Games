@@ -7,6 +7,11 @@ https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/WhiteBlack/WhiteBlack.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/WhiteBlack/opening.py
 
+NAME=SortingAlgorithms
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/SortingAlgorithms/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/SortingAlgorithms/SortingAlgorithms.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/SortingAlgorithms/arcade_title_video.webm
+
 NAME=SpaceHunters
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/SpaceHunters/arcade_description.txt
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/SpaceHunters/SpaceHunters.blocks
