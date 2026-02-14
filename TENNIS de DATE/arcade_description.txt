@@ -1,6 +1,6 @@
 << TENNIS de DATE >>
 
-Enjoy rallying with her!
+Enjoy rallying with your GirlFriend!
 The player automatically moves to follow the ball, so just specify the direction to hit it.
 Direction has five levels left and right.
 To time your shot, watch the ball's shadow to get the hang of it.
