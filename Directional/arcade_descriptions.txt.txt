@@ -1,0 +1,6 @@
+How to play:
+Press DOWN/LEFT to go in that direction
+Press A/B to toggle directions
+
+Stay on the track by flipping directions. The game will speed up the longer that you play.
+Have fun :)
