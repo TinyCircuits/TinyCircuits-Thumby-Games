@@ -1,0 +1,11 @@
+<< TENNIS de DATE >>
+
+Enjoy rallying with your GirlFriend!
+The player automatically moves to follow the ball, so just specify the direction to hit it.
+Direction has five levels left and right.
+To time your shot, watch the ball's shadow to get the hang of it.
+As the rally continues, she gets tired, her movement slows down, and her returns become erratic.
+Try to keep the rally going as long as possible.
+
+Author: Kouji-MAT
+Version: 1.0
