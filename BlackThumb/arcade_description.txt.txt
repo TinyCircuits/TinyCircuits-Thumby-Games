@@ -1,0 +1,13 @@
+BlackThumb is a variation of blackjack made to be played on the Thumby including plenty of diverse features:
+Classic Blackjack gameplay (hit / stand / double down)
+Bet system with multiple stake options (including ALL-IN mode)
+Streak-based multiplier system for bigger winnings
+High score saving (persistent storage)
+Simple 2-row card layout (fits up to 10 cards)
+Dealer hidden-card mechanic
+Sound effects + win/lose tunes
+Stats screen (money, best score, streak, multiplier)
+Tips/help screen with controls guide
+Lightweight pixel-style UI optimised for Thumby screen
+Randomized gameplay each round (true seed randomness)
+Quick restart / one-button interaction flow
