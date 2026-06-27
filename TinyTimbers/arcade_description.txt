@@ -1,0 +1,21 @@
+This is a simple game of a lumberjack and a 
+infinet tree.
+use the D-pad to chop the left side of the 
+tree and use the A/B buttons foe the right.
+But don't hit a branch! or you'll be knocked 
+out and loose!
+try to get the highest score with out letting
+the timer run out!
+
+Game dev: Mr.Giraffe
+
+Game Idea from: 
+my little bro
+
+Majority of pixel
+art from:
+AyreGitar
+
+Join the Thumby Discord
+Server! 
+https://discord.gg/uwSRkKjS

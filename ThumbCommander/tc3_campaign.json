@@ -1,0 +1,135 @@
+{
+  "title": "Thumb Commander Legacy II: Vengeance",
+  "description": "Ten years later, return as Colonel Blair aboard TCS Concordia. Face new Kilrathi threats and uncover treason within Confed.",
+  "intro": "Ten years after Vega. You're Colonel Blair, veteran hero but career nearly destroyed by treason accusations and Tiger's Claw loss. Aboard dreadnought TCS Concordia, you seek redemption. Kilrathi return with stealth fighters, led by Prince Thrakhath. Someone feeds intel to the enemy. Uncover the traitor and restore your honor.",
+  "outro": "War over! Thrakhath dead, Kilrathi surrendered, humanity at peace. You've redeemed your honor and proven yourself the greatest pilot in history. Traitor Jazz exposed, stealth threat eliminated. The universe is safe.",
+  "missions": [
+    {
+      "name": "Return to Duty",
+      "briefing": "Welcome back, Colonel. Ten years were difficult but Confed needs you. Increased Kilrathi activity near Enigma Sector. Simple patrol with Lt. Hobbes. Show you haven't lost your edge.",
+      "debriefing": "Good to see you haven't lost your touch. Hobbes was impressed. Enemy using new ship designs. Intel wants gun camera footage. Good to have you back.",
+      "config": {
+        "type": "dogfight",
+        "enemies": 3,
+        "difficulty": 2
+      },
+      "objectives": {
+        "kills": 5
+      }
+    },
+    {
+      "name": "Stealth Attack",
+      "briefing": "Three fighters destroyed by unknown enemy. Pilots never saw what hit them. Suggests cloaked fighters. Patrol attack area and investigate. Extremely dangerous.",
+      "debriefing": "Incredible! You encountered a stealth fighter and survived. Data invaluable - enemy can cloak but not invincible. Your quick thinking saved your life.",
+      "config": {
+        "type": "mixed",
+        "enemies": 2,
+        "asteroids": 8,
+        "difficulty": 3
+      },
+      "objectives": {
+        "kills": 4,
+        "survive_time": 120
+      }
+    },
+    {
+      "name": "Convoy Escort",
+      "briefing": "Critical convoy through Tesla system. New fighter components and prototypes. Stealth attacks make route dangerous. Escort convoy, protect from threats.",
+      "debriefing": "Outstanding! Convoy safe despite attacks. Components already being installed on front-line fighters. Protecting supply lines vital to victory.",
+      "config": {
+        "type": "mixed",
+        "enemies": 4,
+        "asteroids": 6,
+        "difficulty": 3
+      },
+      "objectives": {
+        "kills": 8,
+        "survive_time": 150
+      }
+    },
+    {
+      "name": "Intelligence Gathering",
+      "briefing": "Kilrathi comm relay in Ghorah Khar coordinating stealth attacks. Destroy relay, capture intel data. Heavily defended, stealth fighters may be present.",
+      "debriefing": "Mission accomplished! Relay destroyed, data recovered. Intel reveals scope of stealth program - more extensive than feared. Data helps develop countermeasures.",
+      "config": {
+        "type": "dogfight",
+        "enemies": 5,
+        "difficulty": 3
+      },
+      "objectives": {
+        "kills": 12
+      }
+    },
+    {
+      "name": "Traitor's Trail",
+      "briefing": "Enemy attacks suggest traitor feeding Kilrathi our fleet movements. Investigate suspicious rendezvous in Locanda system. Someone on Concordia meets enemy agents.",
+      "debriefing": "Shocking! Evidence points to high command. Rendezvous real, classified codes exchanged. Close to identifying traitor. Trust no one - enemy has eyes everywhere.",
+      "config": {
+        "type": "mixed",
+        "enemies": 6,
+        "asteroids": 10,
+        "difficulty": 4
+      },
+      "objectives": {
+        "kills": 10,
+        "survive_time": 180
+      }
+    },
+    {
+      "name": "The Trap",
+      "briefing": "Trap set for traitor. False intel leaked about secret Canewdon mission. If spy aboard, Kilrathi will wait there. Scout ahead, confirm if they took bait.",
+      "debriefing": "Trap worked! Kilrathi waiting in exact position from false intel. Proves we have spy aboard Concordia. Net closing around traitor.",
+      "config": {
+        "type": "dogfight",
+        "enemies": 7,
+        "difficulty": 4
+      },
+      "objectives": {
+        "kills": 15
+      }
+    },
+    {
+      "name": "Jazz's Betrayal",
+      "briefing": "Traitor identified - Jazz, your Academy friend. Fed intel for months, including Tiger's Claw location. Escaping in stolen fighter. Stop him at all costs.",
+      "debriefing": "It's done. Jazz paid for betrayal, security leak plugged. I know this was difficult - he was your friend. But his actions killed thousands. You did right.",
+      "config": {
+        "type": "mixed",
+        "enemies": 8,
+        "asteroids": 12,
+        "difficulty": 4
+      },
+      "objectives": {
+        "kills": 18,
+        "survive_time": 200
+      }
+    },
+    {
+      "name": "Stealth Fighter Base",
+      "briefing": "Main stealth production facility located in Niven system. This base launched attacks terrorizing shipping. Penetrate defenses, destroy facility. End stealth threat.",
+      "debriefing": "Magnificent! Base completely destroyed. Explosions visible from orbit as cloaking stockpile exploded. No more invisible attacks. War tide turned.",
+      "config": {
+        "type": "mixed",
+        "enemies": 9,
+        "asteroids": 15,
+        "difficulty": 5
+      },
+      "objectives": {
+        "kills": 20,
+        "survive_time": 240
+      }
+    },
+    {
+      "name": "Thrakhath's Challenge",
+      "briefing": "Final confrontation. Prince Thrakhath challenges you to single combat. He ordered Tiger's Claw destruction. Entire Kilrathi fleet watching. Defeat him, break their will.",
+      "debriefing": "VICTORY! Thrakhath dead, Kilrathi suing for peace! Your triumph in combat broke their spirit, ended their will to fight. War over. You've brought peace to galaxy.",
+      "config": {
+        "type": "dogfight",
+        "enemies": 12,
+        "difficulty": 5
+      },
+      "objectives": {
+        "kills": 30
+      }
+    }
+  ]
+}

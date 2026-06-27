@@ -1,0 +1,92 @@
+TarGoal (Targets, Goals)
+
+WARNING: Read all of this before using the app.
+And keep in mind that is not a game, just a kinda usefull app.
+
+
+"Ever wondered where to make a to-do list and keep it with you wherever you go?
+Are you afraid of the idea that it's hard to make such an app with save option?
+Don't worry! We have what you need, except for turning the device off before quiting the app... This way will don't save the changes you made..."
+
+
+Remember the buttons map:
+
+____|UP|____       (A)
+LEFT   RIGHT   (B)
+---|DOWN|---
+
+---OR---
+
+____|^|____      (A)
+<--    -->   (B)
+----|v|----
+
+Controls(be careful for combination, respect the order of pressing!!):
+
+After the thumbnail disappears:
+You are in:
+=LIST OF TARGETS/TASKS MODE (just a simple list)=
+- ^ - navigate up through the list of targets/tasks
+- v - navigate down through the list of targets/tasks
+- <-- - Change "backwards" through the list of icons for the respective task you are on
+- --> - Change "forwards" through the list of icons for the respective task you are on
+
+-> How to "tick" a target?(more exactly, will be a line that cut the text) 
+- (B) + ^ - mark or unmark the target
+
+-> How to unmark all targets?
+- (A) + ^ - unmark all targets
+
+-> How to make a new task?
+- (B) + <-- - Enter "NEW TARGET MODE"
+
+=NEW TARGET MODE=
+You will see that the screen had changed.
+Well you are in an mini text typer with a mini keyboard to navigate and change the keymaps on.
+How can you use it?:
+You will see a white-small-square indicator. It indicates on which letter/character you are on the minikeyboard.
+- ^ , v , <-- , --> - Use D-pad buttons to navigate one the small keyboard
+- (A) - cycle through the group of keymaps
+- (B) - type that letter/character!
+- (A) + <-- - you will exit from that mode, saving what you wrote
+(You can delete a character by navigating with the indicator on the "<--" , left arrow, which is a Backspace :] ; There's no ENTER/"new line" or full-delete options. )
+
+Keep in mind that when you are making a new target, it will add under/next to the one you were on! ;)
+
+You will go back, but there are some modes left to explain:
+
+-> How to switch between two targets?
+- (B) + --> - a switch icon will appear (I know it will be hard to press with two fingers, so I recommend to press those two close buttons with one finger ;] )
+You will see that an icon of two arrows, meaning...
+=SWITCH TARGETS MODE=
+You will see also the number of the target you have selected to switch. Now you can go to any other target you already have and press again:
+- (B) + --> - Now your switching method is done! After that , the icon of the 2 arrows will disappear!
+(Sadly, you can cancel it by "switching" to the same target...)
+
+And the last MODE:
+- (B) + v - a trash bin icon with a question mark will appear
+You will be locked on that target you were and you have to answer if you want it deleted for sure?:
+=TRASH BIN MODE=
+- <-- - YES (Yes, it will be gone)
+- --> - NO (You will keep it, no worries)
+
+"Last MODE? How do I exit the app?! BUT HOW DO I SAVE??"
+"Wow, wow, calm down. Here we are, at the last thing..."
+-> How do I save?
+-> How do I quit?
+- (A) + <-- - Save the list of targets/tasks and quit with no more problem!
+
+!!AGAIN, DON'T POWER OFF THE DEVICE IF YOU WANT TO SAVE THE LIST!!
+
+EXTENSION: It also works in combination with my other app I made, the "Keyboard".
+
+"Thanks for reading!! ^w^ <3
+Have a nice day full of tasks!! :))"
+
+"Oh man... A lot to do, right? Well let's tick them all as soon as possible, trying our best!! ^u^"
+
+Author: Nemo Fishman
+
+Version: 0.2 (launched on February 02, 2023)
+
+If you want to get in contact with the creator or others , here you can go! On Discord comunity, by this link: https://discord.gg/nzZdW5VwfC

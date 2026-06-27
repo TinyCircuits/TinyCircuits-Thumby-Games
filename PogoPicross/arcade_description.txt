@@ -1,0 +1,3 @@
+A simple nonogram/picross puzzle game thing, made by Pogostix, ver 1.1, spring 2025.
+You can create custom puzzles! Guide included in the files.
+If you have any questions/comments, I can be reached @Pogostix in the Thumby Discord. Enjoy!

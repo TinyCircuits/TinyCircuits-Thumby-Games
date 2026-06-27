@@ -1,14 +1,13 @@
 '''
   Simple puzzle game for Thumby.
-  Adaption of code by Joachim Wiberg available at: https://github.com/troglobit 
+  Adaption of code by Joachim Wiberg available at: https://github.com/troglobit
 '''
 import thumby
 import time
-import uos
 import random
-import machine
+from machine import freq
 
-machine.freq(48000000)
+freq(48_000_000)
 
 TinyBlocksSplash = bytearray([170,85,170,85,170,85,170,85,170,85,170,85,170,21,10,5,2,1,0,1,0,1,0,1,0,1,0,1,0,1,8,121,8,1,120,1,120,16,33,120,1,24,97,24,1,0,1,0,1,0,1,0,1,0,1,2,5,10,85,170,85,170,85,170,85,170,85,170,85,170,85,170,
            170,85,170,85,170,85,170,85,170,85,170,85,2,0,0,0,0,0,254,34,34,34,34,220,0,254,0,0,0,0,252,6,2,2,6,252,0,252,6,2,2,2,0,254,16,104,132,2,0,28,34,34,34,194,0,0,0,0,0,2,85,170,85,170,85,170,85,170,85,170,85,170,
@@ -79,7 +78,7 @@ shapes = [
   16,  TR,  TC,  BC,
   17,  TL,  MR,  ML,
   5,  TC,  BC,  BL,
-  6,  TC,  BC,  2 * B_COLS,   # sticks out 
+  6,  TC,  BC,  2 * B_COLS,   # sticks out
 ]
 
 shapePos = random.randint(1, 10000000) % 7 * 4
@@ -88,11 +87,11 @@ shape = [0,0,0,0]
 ghost_flicker = False
 
 def clearScreen():
-      
+
   thumby.display.drawFilledRectangle(34,2,36,12-1 ,0)
   thumby.display.drawFilledRectangle(39-5,18,14,12-1,0)
   thumby.display.drawFilledRectangle(52,18,18,12-1,0)
-  
+
   thumby.display.drawRectangle(34-1,2-1,36+2,12+2-1,1)
   thumby.display.drawRectangle(39-1-5,18-1,14+2,12+2-1,1)
   thumby.display.drawRectangle(52-1,18-1,18+2,12+2-1,1)
@@ -142,7 +141,7 @@ def updateScreen(showGhost = False, ghostPos = None):
   #while (lines_cleared >= 10):
     #lines_cleared -= 10
     #level+=1
-  
+
   thumby.display.drawText('%05d' % (points), 36+2, 4,1)
   thumby.display.drawText('%02d' % lines_cleared, 36+18+2, 20,1)
   # level
@@ -177,13 +176,13 @@ def next_shape():
   return next;
 
 def show_high_score():
-    
+
   for y in range(40):
     thumby.display.drawFilledRectangle(8,40-y,20,1,1)
     time.sleep_ms(15)
     thumby.display.update()
     thumby.audio.play(100+(40-y)*20, 50)
-  
+
   for i in range(41):
     thumby.display.drawFilledRectangle(8,0,20,i,0)
     thumby.display.drawText("G", 11, -2+5+0,1)
@@ -196,7 +195,7 @@ def show_high_score():
     thumby.display.drawText("R", 20, 2+5+24,1)
     time.sleep_ms(10)
     thumby.display.update()
-  
+
   lastUpdate=time.ticks_ms()
   while(getcharinputNew()==' '):
     color = 1
@@ -229,7 +228,7 @@ while(True):
   pos = 17+3
   backup = []
   movingLeftOrRight = 0
-  
+
   thumby.display.fill(0)
   thumby.display.blit(TinyBlocksSplash, 0,0, 72, 40,0,0,0)
   #thumby.display.update()
@@ -238,7 +237,7 @@ while(True):
   #thumby.display.fillRect(10,24,72-20,16,0)
   isdisplayed=0;
   thumby.display.update()
-  
+
   while(getcharinputNew()==' '):
     if((time.ticks_ms()//1000)&1):
       if isdisplayed == 0 :
@@ -266,12 +265,12 @@ while(True):
   print("startloop")
   lastUpdate=time.ticks_ms()
   lastDrop=time.ticks_ms()
-  
+
   thumby.display.fill(0)
   for x in range(72/2):
     for y in range(5):
       thumby.display.blit(bytearray([0x55,0xAA]), x*2, y*8, 2, 8,0,0,0)
-      
+
   while (1):
     ghost_flicker = not ghost_flicker
     c=getcharinputNew()
@@ -293,7 +292,7 @@ while(True):
                 c = 'R'
     else:
         lastUpdate=time.ticks_ms()
-    
+
     #continue
     if (c == keys[KEY_DROP]):
       #print(B_COLS,pos, pos//B_COLS)
@@ -343,7 +342,7 @@ while(True):
     if (c == keys[KEY_ROT_L]):
       backup = shape
       shape = shapes[4*shape[0]:4*shape[0]+4]
-      # Check if it fits, if not restore shape from backup 
+      # Check if it fits, if not restore shape from backup
       if (fits_in (shape, pos)==0):
         shape = backup
     if (c == keys[KEY_ROT_R]):
@@ -373,5 +372,5 @@ while(True):
     place (shape, pos, 7);
     updateScreen (showGhost = True, ghostPos = ghost);
     place (shape, pos, 0);
-    
+
   a=0

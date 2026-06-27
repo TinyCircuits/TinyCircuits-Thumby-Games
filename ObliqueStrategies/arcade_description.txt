@@ -1,0 +1,4 @@
+A Thumby version of Brian Eno and Peter Schmidt's Oblique Strategies deck:
+https://en.wikipedia.org/wiki/Oblique_Strategies
+
+Use it to shake up your thinking when you're stuck on a problem.

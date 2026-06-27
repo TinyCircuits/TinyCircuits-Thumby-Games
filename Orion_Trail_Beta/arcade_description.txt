@@ -1,0 +1,7 @@
+Orion Trail
+
+Orion trail is a space survival game loosely based on the MS DOS video game Oregon Trail. The goal of this game is
+to explore the universe and survive for as many days as possible.
+
+Author: Sandy
+Version: 4

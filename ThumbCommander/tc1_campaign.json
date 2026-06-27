@@ -1,0 +1,62 @@
+{
+  "title": "Freedom Flight",
+  "description": "The Kilrathi Empire has launched an all-out attack on the Terran Confederation. Your missions will take you into the heart of enemy territory.",
+  "intro": "The year is 2654. The Terran Confederation is locked in a deadly war with the Kilrathi Empire. As a pilot aboard the carrier TCS Tiger's Claw, you have been assigned to a series of crucial missions that could turn the tide of the war. Your skills in the cockpit will determine the fate of humanity.",
+  "outro": "Thanks to your incredible piloting skills, the Kilrathi attack has been repelled. The Tiger's Claw and her crew owe you their lives. This victory marks a turning point in the war, but the Kilrathi threat remains. The Confederation will need your skills again soon, pilot.",
+  "missions": [
+    {
+      "name": "First Flight",
+      "briefing": "Welcome to your first combat mission, pilot. We've detected a Kilrathi scout wing with minimal escorts. Your orders are to engage and destroy all enemies in the area. This is a basic patrol, so expect light resistance - perfect for a rookie.",
+      "debriefing": "Nice work out there! You handled yourself well for a first mission. The intelligence we gathered from the destroyed scouts will be valuable for planning our next move against the Kilrathi forces.",
+      "config": {
+        "type": "dogfight",
+        "enemies": 1,
+        "difficulty": 1
+      },
+      "objectives": {
+        "kills": 2
+      }
+    },
+    {
+      "name": "Asteroid Danger",
+      "briefing": "The Kilrathi are using a dense asteroid field as cover for their operations. Navigate through the field and collect intelligence by surviving as long as possible. Watch those rocks, pilot!",
+      "debriefing": "Impressive flying through that asteroid field! Few pilots have the skill to navigate such dangerous conditions. The data you collected reveals Kilrathi supply routes we can target in future operations.",
+      "config": {
+        "type": "asteroids",
+        "asteroids": 10,
+        "difficulty": 2
+      },
+      "objectives": {
+        "survive_time": 60
+      }
+    },
+    {
+      "name": "Ambush Point",
+      "briefing": "Intelligence suggests a Kilrathi transport will be passing through this sector soon. However, we suspect it's a trap. Your mission is to fly in, engage any enemies, and be prepared for unexpected resistance.",
+      "debriefing": "That was indeed an ambush! The Kilrathi were waiting with more ships than expected, but you handled it expertly. This victory has disrupted their supply lines significantly.",
+      "config": {
+        "type": "mixed",
+        "enemies": 2,
+        "asteroids": 5,
+        "difficulty": 3
+      },
+      "objectives": {
+        "kills": 5,
+        "survive_time": 45
+      }
+    },
+    {
+      "name": "Final Strike",
+      "briefing": "This is it, pilot. We've located a Kilrathi command ship coordinating attacks in this sector. Destroy it at all costs. Expect heavy resistance - they'll throw everything they have at you to protect their commander.",
+      "debriefing": "Outstanding work! The destruction of that command ship has thrown the Kilrathi forces into disarray. Your actions today have saved countless lives and given the Confederation a crucial advantage in this sector.",
+      "config": {
+        "type": "dogfight",
+        "enemies": 3,
+        "difficulty": 4
+      },
+      "objectives": {
+        "kills": 10
+      }
+    }
+  ]
+}

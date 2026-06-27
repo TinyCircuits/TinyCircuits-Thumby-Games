@@ -1,0 +1,9 @@
+WhiteBlack
+
+Is the next card White or Black? Guess!
+
+B: White
+A: Black
+
+Author: Brian B Akbarian
+Version: 1.0

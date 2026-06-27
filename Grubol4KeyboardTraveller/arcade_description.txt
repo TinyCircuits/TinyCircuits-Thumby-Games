@@ -1,0 +1,13 @@
+﻿Grubol 4 Keyboard Traveler
+
+A pocket-sized typing challenge. You hop across a miniature keyboard, picking out letters one by one to assemble whatever password the level throws at you - sometimes normal words, sometimes... not so normal. Early stages guide you gently. Later ones expect you to remember layouts, stay calm, and trust your muscle memory.
+
+Pick a letter, build the word, and keep going. Simple idea, surprisingly tense execution.
+L/R/U/D move
+A press key
+
+B show/hide keyboard
+
+
+Author: musialmi
+Version: 1.0

@@ -1,0 +1,12 @@
+A complete port of the iconic animated music video
+
+If you don't mind having no audio, you can delete the file "badapple.zdp" to save storage space
+Requires 0.9 MB free, or 0.3 MB with no audio
+
+Press B to stop the video, press A to print memory usage (if connected to a computer)
+
+More information available at https://github.com/transistortester/thumby-bad-apple as well as in the description of https://www.youtube.com/watch?v=vbBQ11BZWoU
+
+Author: transistortester
+
+If you want to contact the author, please consider joining the official discord server - I'm usually lurking in there

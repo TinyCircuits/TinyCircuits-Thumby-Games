@@ -1,0 +1,92 @@
+Xirby's Dreamland
+Vol.1 Coco Clouds
+_______________________________________________
+
+Very Simple, Short Game with fun graphics~!
+
+Music included with multiple Original tracks
+
+All Music was hand composed by myself, which sounds pretty great in the emulator!
+However, my Thumby has a broken speaker, so sadly I could not test music on real device.
+
+All Art was also drawn by myself on Pixaki an ipad application for pixel art and animations. The art is loosely based on famous characters, but was shrunk and drawn
+to fit a tiny 72x40 1 bit screen.
+
+Game was tested and played in Emulator and on Real Device 
+______________________________________________________________________________
+
+Game Description and Game Play
+
+This game starts with a classic Xintendo opening, along with a XameFreak easter egg. 
+During the opening title sequence, you can speed up by pressing up or down.
+
+During the long credits sequence, you can press U,U,D,D,L,R,L,R,B,A to get a secret start to the game. 
+
+Otherwise, press A to START
+
+The game starts with Xirby flying with no enemies, while you test out the controls
+
+A - Menu
+B - Return
+U - Fly up
+D - Fly down
+R - Speed up (Works better on real device than in emulator)
+L - Slow Down
+ 
+
+Level 1 : Fly past moving enemies and collect hearts
+Horizontal Movement
+
+Level 3: Gain ability to move Left and Right. Press B for attack
+Vertical Rising Movement
+
+A - Menu and Center Screen
+B - Return and Attack
+U - Fly up
+D - Fly down
+R - Fly Right
+L - Fly Left
+
+
+Level 4: Fight Boss by pressing B for attack. Press A to check health. 
+No Screen Movement
+Objects falling vertically
+Boss can inflict damage from tree branches - Check Health Manually
+
+Fight Boss to get to end scene then fly up for Game Over. 
+
+Level 5: Game Over
+Horizantal and Vertical 
+
+
+Health can go into the negative when healed, when Damage Bar reaches 58
+Game Over. 
+
+____________________________________________________________
+
+Game Improvements
+
+This code could be improved by storing Graphics and Music in separate.py files and 
+calling to the Main.py for better organization. However, when play testing in emulator , this caused a lot of call and import problems (especially if the emulation check boxes were not in order). 
+
+I decided for simplicity of a new learner reading my code to store it all in one place, but it does make it very tedious to read. 
+
+Game could probably be better organized than using if statements to switch screen to screen and to trigger events. 
+
+Game play could be improved by adding more enemy spawn variations, more graphics, and more levels. I limited the spawn amounts for visibility reasons, as the screen size is very small and it is hard to see multiple moving objects at once on a moving background. 
+
+________________________________________________________________
+
+Best parts of the game that can be copied to other games:
+
+The Class objects creating the Character, Enemy, Item. 
+The use of Collision Detection
+The Health Meter and Heart System
+The Sparkle effects and moving backgrounds 
+The use of changing music per scene
+The Fun Intro Sequence Animation with Xintendo and Xame Freak
+The secret Code detection function
+
+
+
+

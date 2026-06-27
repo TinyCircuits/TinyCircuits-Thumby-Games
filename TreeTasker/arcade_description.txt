@@ -1,0 +1,57 @@
+TreeTasker 
+by Nemo.the.fishboy
+
+!! A better app than an other one I made, "TarGoal", which has just a simple list of tasks or goals where you can cross them or not, and WITH MANY 2 BUTTONS COMBINATIONS :( That's frustrating to remember all the button combinations and what they do... So I came with a great idea of making a little complex view of tasks and a complex way of organizing them.
+
+WARNING: Read all of this before using the app.
+And keep in mind that is not a game, just a kinda usefull app.
+
+
+"- Oh man... I want to use at least a device where I can write my tasks easily and check, tick, cross,whatever on them...
+- No problem!! We have TreeTasker, a way of writing your task and organizing them even as "subtasks" I call them! You will find out!"
+
+
+Remember the buttons map:
+
+____|UP|____       (A)
+LEFT   RIGHT   (B)
+---|DOWN|---
+
+---OR---
+
+____|^|____      (A)
+<--    -->   (B)
+----|v|----
+
+Controls(be careful for combination, respect the order of pressing!!):
+
+After the thumbnail disappears:
+= <,>,v,^ - are for navigating through the tasks or tabs,
+/or/ for moving when it comes to move something
+/or/ for going through the keymap
+
+= B - is more often for approving
+/or/ for changing the task's status
+/or/ for selecting a character when writing
+/or/ for as a "YES" button
+
+= A - is more often for canceling
+/or/ opening actions() list (like, adding a new task, or a new subtask, or for renaming, etc)
+/or/ for exiting
+/or/ for changing the keymap
+/or/ for  as a "NO" button
+
+--> The first tab is for saving your current day, or to clear the boxes from the list by moving to the next day (already arrived in your present time)
+--> And the other 2 are for Going through the "Daily List" or "List of tasks"(which can be completed whenever you like)
+
+"Thanks for reading!! ^w^ <3
+Have a nice day planning out things!! :))"
+
+"Now we can view the tasks more simply and completing them easily, can't we? ^u^"
+
+Author: Nemo Fishman
+
+Version: 0.1 (launched on May 3, 2023)
+
+(!) If you meet some errors and (read down)
+(!) If you want to get in contact with the creator or others , here you can go! On Discord comunity, by this link: https://discord.gg/nzZdW5VwfC

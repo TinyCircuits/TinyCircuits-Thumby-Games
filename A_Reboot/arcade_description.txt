@@ -1,0 +1,5 @@
+An app that reboots thumby for all the times when you don't want to flick the tiny power switch twice and hurt for finger
+
+Author: LebbieTheLuke
+Version: 1.0
+License: None

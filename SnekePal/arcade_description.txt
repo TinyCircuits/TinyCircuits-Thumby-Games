@@ -1,0 +1,6 @@
+Sneke Pal
+
+Relive the experience of the classic snake game!  There are 5 levels to choose from... can you beat your high score?
+
+Author: Demod
+Version: 1.0

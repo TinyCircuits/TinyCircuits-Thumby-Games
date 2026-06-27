@@ -1,0 +1,7 @@
+Sword Play
+
+Simple mini hack and slash arcade game.
+Defeat endless waves of enemies to earn prizes and get the high score!
+
+Author: Ian Johnson
+Version 1.0

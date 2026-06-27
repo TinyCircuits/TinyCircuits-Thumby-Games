@@ -1,0 +1,13 @@
+Rocket Cup
+
+Drive your car into the ball and hit it into the goal to score points. Try to score more points than your opponent!
+
+Features:
+ - Play versus CPU
+ - Play versus Player (via link cable)
+ - Optional grayscale graphics
+ - Optional sound effects
+ - Three CPU levels (Easy, Medium, Hard)
+
+Author: Demod
+Version: 1.0

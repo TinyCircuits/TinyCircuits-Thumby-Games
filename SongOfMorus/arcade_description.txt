@@ -1,0 +1,7 @@
+Song of Morus - Thumby version
+
+Small boss fight game between a young Taoist Priestess and a demon boy. Move up and down to dodge enemy bullets. Auto shoot.
+
+Song of Morus is my personal project series. It's a set of  world setting and art design for me to experiment different ideas. As I recently get a Thumby, i decide to make a Thumby game for this series.  
+
+Author: @SunnyChowTheGuy

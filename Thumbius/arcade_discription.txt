@@ -1,0 +1,21 @@
+This is a remake of a spooky urban legend of the killer arcade game POLYBIUS.
+It keeps most of the notable features including the ship, the enemies, and the strange rotating map.
+
+INSTRUCTIONS
+
+Controls:
+
+- Use WASD or D-Pad to move your space ship (the triangle) across the screen
+
+- Press A to shoot
+
+Gameplay:
+
+- Dodge the solid squares that move around the center hexagon
+- Shoot the sonic squares to move on to the next phase
+
+- Every phase gets faster and with more enemies
+
+- The amount of enemies to defeat increases every phase
+
+Have fun playing!

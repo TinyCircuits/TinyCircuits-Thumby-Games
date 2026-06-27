@@ -1,0 +1,6 @@
+Simon-inspired game to test your tiny short term memory. Repeat arrows or button sequences following music and screen indications.
+
+All of a sudden Thumby memory seems huge right? Well, the code for this game is less than 50 lines. Check it out and get inspired to make your own game ;D
+
+Author: isaacbernat
+Version: 1.0

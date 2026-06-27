@@ -1,0 +1,9 @@
+Bugdivers version 0.1
+
+The game is a recreation of the popular game Helldivers but now on a keychain console.
+The objective is to destroy bug hives with the help of stratagems and extract safely from the mission.
+Every replay has a randomly generated layout.
+Use the D-pad to move, the A button to shoot and the B button to bring up the stratagem console.
+A+B reveals the code combinations for each stratagem (a turret, a machine gun, an airstrike and supply drops for ammo and health).
+
+I hope you enjoy it!

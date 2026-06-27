@@ -1,0 +1,51 @@
+ThumbyAI
+
+A Celsius-to-Fahrenheit AI Demo
+
+This little demo showcases a simple neural network 
+designed to learn and predict Fahrenheit values 
+from Celsius inputs. The network consists of 1 input, 
+5 hidden neurons with sigmoid activation, and 1 
+linear output. Training occurs over 500 epochs on a 
+dataset of Celsius-to-Fahrenheit pairs (0-100°C in 
+steps of 5), normalized for the sigmoid function. 
+After training, the network's predictions, weights, 
+and biases are displayed. Predictions should
+approach real-world values, but will vary greatly in 
+accuracy as this is a very simple neural net with 
+training parameters limited for the sake of time
+and clear readability.
+
+A compact and interactive introduction to neural 
+networks, intended to be used for both fun and 
+education for anyone interested in exploring the 
+basics of neural networks and AI. A perfect project
+for Thumby! Try giving it new datasets to learn 
+something different, or see if you can increase it's 
+accuracy by changing the number of epochs or altering 
+the training rate (can drastically increase training 
+time which is about 20 seconds using default parameters).
+Maybe add a new layer of neurons or use a different
+function besides sigmoid (ReLU, Tanh, Softmax, etc.).
+There are lot's of possibilities here. Have fun!
+
+Features include:
+
+A fancy training screen that says "Please Wait" 
+so you know it's not frozen (a feature requested 
+by my very patient and helpful playtester <3).
+
+A brief explanation of the network structure and 
+training process.
+
+A scrollable results page showing predictions and 
+final network parameters.
+Controls:
+
+Use the D-pad to navigate menus or scroll text.
+Press A to select an option or start training.
+Press B to exit to the main menu.
+
+
+Author: PanduhBeer
+Version: 1.0

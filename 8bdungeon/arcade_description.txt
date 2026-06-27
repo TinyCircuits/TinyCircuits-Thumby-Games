@@ -1,0 +1,3 @@
+8bdungeon, short for 8-Bitty Dungeon, is a rogue-like dungeon crawler. 
+
+More detailed information is available at https://8bdungeon.github.io/

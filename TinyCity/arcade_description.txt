@@ -1,0 +1,7 @@
+TinyCity
+
+Build and manage a growing metropolis in this tiny city sim. Balance zones and resources, hit milestones to gain bonuses and navigate disasters that are randomly generated.
+Source here: https://github.com/chrisdiana/TinyCity
+
+Author: Chris Diana
+Version: 1.2

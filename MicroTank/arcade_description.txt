@@ -1,0 +1,8 @@
+A top-down tank game. Bounce your bullets off the walls to take out all the enemies in the fastest time possible!
+
+Dpad - move/aim
+A - fire
+B - pause
+
+Author: Jeremy Payne (moddedBear)
+v1.0

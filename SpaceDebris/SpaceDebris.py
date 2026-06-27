@@ -21,21 +21,16 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '''
 
+import thumby
 import time
-import uos
 import random
 import gc
-import utime
 import math
-import thumby
-import machine
+from machine import freq
 
-#machine.freq(48000000) 
-machine.freq(125000000) 
+freq(125_000_000)
 
 gc.enable() # This line helps make sure we don't run out of memory
-
-from framebuf import FrameBuffer, MONO_VLSB # Graphics stuff
 
 splash = (0,0,0,224,248,76,198,196,108,56,0,0,0,192,248,124,102,102,38,4,0,0,128,60,102,66,198,140,8,0,0,0,192,248,62,2,6,4,156,240,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
            0,0,131,131,0,0,1,3,2,0,2,0,3,3,0,0,0,0,0,130,0,0,1,131,2,2,2,3,0,2,0,0,3,130,130,130,3,1,1,0,2,0,128,0,0,0,0,0,0,0,0,128,128,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -58,7 +53,7 @@ UpRightMovingFrame1 = (0,0,0,0,128,128,64,64,32,96,224,0,0,0,0,0,
            0,0,72,53,25,19,6,28,12,3,0,0,0,0,0,0)
 UpRightMovingFrame2 = (0,0,0,0,128,128,64,64,32,96,224,0,0,0,0,0,
            0,32,16,29,41,19,6,28,12,3,0,0,0,0,0,0)
-           
+
 RightNeutral = (0,0,0,0,32,224,160,32,64,64,128,128,0,0,0,0,
            0,0,0,0,4,7,5,4,2,2,1,1,0,0,0,0)
 RightMovingFrame1 = (0,128,64,128,32,224,160,32,64,64,128,128,0,0,0,0,
@@ -120,7 +115,7 @@ class Asteroid:
         self.yv = random.randint(-300, 300) / 1000.0
         self.xm = True if(random.randint(0, 1) == 1) else False
         self.ym = True if(random.randint(0, 1) == 1) else False
-        
+
 # Ship projectile
 
 class ShipBullet:
@@ -130,16 +125,6 @@ class ShipBullet:
         self.XVel = _xv
         self.YVel = _yv
         self.Life = 240
-
-# Very fast pseudorandom function
-
-@micropython.viper
-def qrandom(qrseed: int) -> int:
-    #qrseed ^= (qrseed << 10)
-    # qrseed ^= (qrseed >> 17)
-    #qrseed ^= (qrseed << 2)
-    return qrseed
-    
 
 @micropython.viper
 def DrawStars():
@@ -169,13 +154,15 @@ def DrawStars():
             x += 2
         #print(y)
         y += 2
-        
+
 asteroids = []
 # Generate asteroids
 for i in range(0, 5):
     asteroids.append(Asteroid())
 
 bullets = []
+
+thumby.saveData.setName("SpaceDebris")
 
 def UpdateBullets():
     # Bullet dynamics and drawing
@@ -207,7 +194,7 @@ def UpdateBullets():
         bullet.Life -= 1
         if(bullet.Life <= 0):
             bullets.remove(bullet)
-            
+
 def UpdateAsteroids():
     # Draw/update asteroids or the markers to them
     for asteroid in asteroids:
@@ -267,7 +254,7 @@ while(thumby.buttonA.pressed() == True or thumby.buttonB.pressed() == True):
 startTime = time.ticks_ms()
 
 while(GameRunning == True):
-    t0 = utime.ticks_us()
+    t0 = time.ticks_us()
     thumby.audio.stop()
     # Figure out the direction of the D-pad
     if(thumby.buttonR.pressed() == True):
@@ -296,7 +283,7 @@ while(GameRunning == True):
     elif(thumby.buttonU.pressed() == True):
         direction = 0
         thumby.audio.set(thrusterFreq)
-        
+
     # Draw the correct orientation and state, also dynaaaaaamics
     if(direction == 0):
         CurSpr = UpNeutral
@@ -308,11 +295,11 @@ while(GameRunning == True):
             else:
                 CurSpr = UpMovingFrame2
             YVel -= Accel
-        if(thumby.buttonB.pressed() == True and ReloadTimer == 0):
+        if(thumby.buttonA.pressed() == True and ReloadTimer == 0):
             bulletNoiseDuration = 200
             bullets.append(ShipBullet(XPos-1, YPos - 8, XVel, YVel-BulletVel))
             ReloadTimer = MaxFps * 0.5
-            
+
     elif(direction == 1):
         CurSpr = UpRightNeutral
         XMirror = False
@@ -324,11 +311,11 @@ while(GameRunning == True):
                 CurSpr = UpRightMovingFrame2
             YVel -= Accel * 0.707106
             XVel += Accel * 0.707106
-        if(thumby.buttonB.pressed() == True and ReloadTimer == 0):
+        if(thumby.buttonA.pressed() == True and ReloadTimer == 0):
             bulletNoiseDuration = 200
             bullets.append(ShipBullet(XPos+7, YPos - 7, XVel+BulletVel*0.707106, YVel-BulletVel*0.707106))
             ReloadTimer = MaxFps * 0.5
-            
+
     elif(direction == 2):
         CurSpr = RightNeutral
         XMirror = False
@@ -339,11 +326,11 @@ while(GameRunning == True):
             else:
                 CurSpr = RightMovingFrame2
             XVel += Accel
-        if(thumby.buttonB.pressed() == True and ReloadTimer == 0):
+        if(thumby.buttonA.pressed() == True and ReloadTimer == 0):
             bulletNoiseDuration = 200
             bullets.append(ShipBullet(XPos+8, YPos-1, XVel+BulletVel, YVel))
             ReloadTimer = MaxFps * 0.5
-            
+
     elif(direction == 3):
         CurSpr = UpRightNeutral
         XMirror = False
@@ -355,11 +342,11 @@ while(GameRunning == True):
                 CurSpr = UpRightMovingFrame2
             YVel += Accel * 0.707106
             XVel += Accel * 0.707106
-        if(thumby.buttonB.pressed() == True and ReloadTimer == 0):
+        if(thumby.buttonA.pressed() == True and ReloadTimer == 0):
             bulletNoiseDuration = 200
             bullets.append(ShipBullet(XPos+7, YPos+7, XVel+BulletVel*0.707106, YVel+BulletVel*0.707106))
             ReloadTimer = MaxFps * 0.5
-            
+
     elif(direction == 4):
         CurSpr = UpNeutral
         XMirror = False
@@ -370,11 +357,11 @@ while(GameRunning == True):
             else:
                 CurSpr = UpMovingFrame2
             YVel += Accel
-        if(thumby.buttonB.pressed() == True and ReloadTimer == 0):
+        if(thumby.buttonA.pressed() == True and ReloadTimer == 0):
             bulletNoiseDuration = 200
             bullets.append(ShipBullet(XPos-1, YPos+8, XVel, YVel+BulletVel))
             ReloadTimer = MaxFps * 0.5
-            
+
     elif(direction == 5):
         CurSpr = UpRightNeutral
         XMirror = True
@@ -386,11 +373,11 @@ while(GameRunning == True):
                 CurSpr = UpRightMovingFrame2
             YVel += Accel * 0.707106
             XVel -= Accel * 0.707106
-        if(thumby.buttonB.pressed() == True and ReloadTimer == 0):
+        if(thumby.buttonA.pressed() == True and ReloadTimer == 0):
             bulletNoiseDuration = 200
             bullets.append(ShipBullet(XPos-7, YPos+7, XVel-BulletVel*0.707106, YVel+BulletVel*0.707106))
             ReloadTimer = MaxFps * 0.5
-            
+
     elif(direction == 6):
         CurSpr = RightNeutral
         XMirror = True
@@ -401,11 +388,11 @@ while(GameRunning == True):
             else:
                 CurSpr = RightMovingFrame2
             XVel -= Accel
-        if(thumby.buttonB.pressed() == True and ReloadTimer == 0):
+        if(thumby.buttonA.pressed() == True and ReloadTimer == 0):
             bulletNoiseDuration = 200
             bullets.append(ShipBullet(XPos-8, YPos-1, XVel-BulletVel, YVel))
             ReloadTimer = MaxFps * 0.5
-            
+
     elif(direction == 7):
         CurSpr = UpRightNeutral
         XMirror = True
@@ -417,52 +404,50 @@ while(GameRunning == True):
                 CurSpr = UpRightMovingFrame2
             YVel -= Accel * 0.707106
             XVel -= Accel * 0.707106
-        if(thumby.buttonB.pressed() == True and ReloadTimer == 0):
+        if(thumby.buttonA.pressed() == True and ReloadTimer == 0):
             bulletNoiseDuration = 200
             bullets.append(ShipBullet(XPos-7, YPos-7, XVel-BulletVel*0.707106, YVel-BulletVel*0.707106))
             ReloadTimer = MaxFps * 0.5
-    
+
     if(XVel*XVel+YVel*YVel >= MaxShipVel * MaxShipVel):
         ilen = (1.0/math.sqrt(XVel*XVel+YVel*YVel))*MaxShipVel
         XVel *= ilen
         YVel *= ilen
-        
-    
+
+
     if(bulletNoiseDuration != 0):
         thumby.audio.set(bulletNoiseDuration+50)
-        
+
     elif(thumby.buttonU.pressed() == False and thumby.buttonD.pressed() == False and thumby.buttonL.pressed() == False and thumby.buttonR.pressed() == False):
         thumby.audio.stop()
-        
+
     bulletNoiseDuration -= 15;
     if(bulletNoiseDuration < 0):
         bulletNoiseDuration = 0
-            
+
     # Update position
     XPos += XVel
     YPos += YVel
-        
+
     thumby.display.fill(0)
-    
+
     UpdateBullets()
-    
+
     ReloadTimer = ReloadTimer - 1 if ReloadTimer > 0 else 0
-        
+
     #Draw random but position-dependent stars
     DrawStars()
-    
+
     UpdateAsteroids()
-        
+
     # Draw the ship
     thumby.display.blit(bytearray(CurSpr), round(72/2-8), round(40/2-8), 16, 16, 0, XMirror, YMirror)
-    #display.text(str(1000000/(utime.ticks_us()-t0)), 0, 0, 1)
     thumby.display.update()
     if(len(asteroids) == 0):
         GameRunning = False
-    #print(utime.ticks_us() - t0)
-    while(utime.ticks_us() - t0 < 1000000 / MaxFps):
+    while(time.ticks_us() - t0 < 1000000 / MaxFps):
         pass
-    
+
 endTime = time.ticks_ms()
 
 thumby.audio.stop()
@@ -475,13 +460,17 @@ elif(time.ticks_diff(endTime, startTime) < 200000):
     thumby.display.drawText("Done!", 0, 0, 1)
 elif(time.ticks_diff(endTime, startTime) < 300000):
     thumby.display.drawText("C'mon!", 0, 0, 1)
-thumby.display.drawText(str(time.ticks_diff(endTime, startTime) / 1000) + "s", 0, 8, 1)
+thisTime = time.ticks_diff(endTime, startTime) / 1000
+thumby.display.drawText(str(thisTime) + "s", 0, 8, 1)
+high = 1000000
+if thumby.saveData.hasItem("highscore"):
+    high = thumby.saveData.getItem("highscore")
+    thumby.display.drawText("Best: "+str(high) + "s", 0, 16, 1)
+if thisTime < high:
+    thumby.saveData.setItem("highscore", thisTime)
+    thumby.saveData.save()
 thumby.display.update()
 
 time.sleep_ms(3000)
 
-machine.reset()
-#exec(open("/main.py").read())
-
-
-
+thumby.reset() # Exit game to main menu

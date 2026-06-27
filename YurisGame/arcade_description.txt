@@ -1,0 +1,7 @@
+Yuri's Game
+
+Hold A/B button to pick up a bubble. Use directional buttons to move the bubble and merge it with other bubbles. Your goal is to form a single large bubble.
+
+Author: Douz
+Version: 1.1
+Note: 1.1 Reduced difficulty. Optimized animation.

@@ -1,0 +1,13 @@
+<< Thumbs Run >>
+
+Let's drive to the beach!
+The accelerator is automatic.
+The steering wheel doesn't return automatically, so you don't need to hold it during turns.
+ Once the turn is complete, press the opposite button to straighten up.
+If you can't make a turn, use braking to get through it.
+Right... Right button or B button.
+Left... Left button.
+Brake... A button.
+
+Author: Kouji-MAT
+Version: 1.0

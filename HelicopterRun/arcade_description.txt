@@ -1,0 +1,14 @@
+Helicopter Run
+
+Hold A or B to apply lift.
+
+Dodge, duck, and navigate your way through the obstacles to try to get as much distance as possible.
+
+This helicopter is made for speed.
+This helicopter is made for running.
+The chopper's engine has the need to be humming.
+
+Made with Blockly with blocks found here: https://gist.githubusercontent.com/fuglaro/7387dd4b3540cfd592b8bbfe5f6965ae/raw/7b2083fa75e0d4d938f064f8fe4a6fac255ef1f8/HelicopterRunV1.blocks
+
+Author: Seth W & Co
+Version: 1

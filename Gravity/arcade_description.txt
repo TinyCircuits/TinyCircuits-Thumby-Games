@@ -1,0 +1,5 @@
+Ride your dirt bike across 30 increasingly difficult terrain levels and beat your best times. Try the new endless mode - how far can you get without crashing. A thumby homage to a classic J2ME mobile game.
+
+Author: austinio7116 - many thanks to PresentFox | Thunder2.5D for the initial bike wheel physics engine
+Version: 1.0
+License: GPL3

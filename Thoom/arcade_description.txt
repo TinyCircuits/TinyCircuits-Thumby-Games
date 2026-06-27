@@ -1,0 +1,15 @@
+Thoom
+
+This game title has been an inside joke in community for a while, but it's finally here. Behold! The First First-person shooter game in thumby ... Thoom.
+
+This is a demake version Doom written in MicoPython, with raycasting pseudo-3D and sprite scaling (for upscale only, it looks unrecognizable when downscale).
+
+As a proof of concept, there is only one level, filled with Demons and Imps, and locked doors requiring key card to open, and last but not least a small bossfight.
+
+Hope you enjoy this short game. And hope you use this project to create something more fun. (sorry for ugly codes)
+
+Author: @SunnyChowTheGuy
+Cover Art: @AyreGuitar
+project forked from 3D MAZE developed by 3DSage
+
+PS strafing is important

@@ -1,0 +1,12 @@
+--CONTROLS--
+A to acelerate
+Left/Right to turn
+B to use super boost
+
+Thumby Surf is a game where your goal is to try and get as far as you on this infinite map.
+There is a persistent high score system and at 10,000 meters, there is a special suprise.
+Collect boosts to quickly gain score.
+
+Author:Eri
+Discord:pikachu1260
+Version: 1.0

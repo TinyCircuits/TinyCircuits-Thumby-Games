@@ -1,0 +1,10 @@
+TheTowers
+
+A tiny version of the classic Towers of Hanoi puzzle game.  It gives the option of 3, 5, or 7 disks for varying difficulties.  Challenge yourself to solve The Towers in as fewest moves as possible!
+
+Title:          TheTowers
+Author:         Lennen R. Madere
+Discord Name:   GlennMad#5026
+Additional Code
+    Credit:     SHDWWZRD - NeoRetro Games
+Version:        1.0

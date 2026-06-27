@@ -1,0 +1,33 @@
+Virtual Star Pet is a game that simulates a virtual pet.
+First it starts as a blackhole baby, and then it grows to a star when it reaches more than 5 Levels. 
+
+Pet has these modes: Happy, Not Happy, Sad, Angry, Sick
+
+There are Games, Food, Toy, and Healthy Choices
+Press up to see STATS
+Press Down to get to main screen
+Press A to select
+Press B to exit
+
+Mini Games:
+Press Right and Left to change digit's place
+Press up and down to change number
+press A to enter answer
+Press B to exit 
+If you win, you get Smart Points
+
+Mini Games:
+
+Roman Number: The screen prints a Roman Number, translate to a normal digit
+Example: 
+III=3
+
+Binary Beats: The screen prints a binary number, transate to a normal digit
+Example: 100=4
+
+Witch's Hex: The screen prints a Hexidecimal number, transate to a normal digit
+Example: 4=4
+
+Palindrome Pal: The screen prints a number, enter what number multiplied to that digit would make a palindrome answer
+Example: 5 * 11 = 55 which is a Palindrome
+Example: 101 * 4 = 404 

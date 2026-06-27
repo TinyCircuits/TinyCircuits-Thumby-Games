@@ -1,0 +1,1 @@
+This is a tiny little driving game I made using the block code editor! Press "A" to start, left and right to steer, and press "A" on the game over screen to go back to the main menu. Have fun :D

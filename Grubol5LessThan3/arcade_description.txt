@@ -1,0 +1,12 @@
+﻿Grubol 5 <3
+
+A memory duel disguised as a numbers game. First you study your opponents - three-digit warriors lined up across the battlefield. You get only a few seconds per enemy, depending on the league you’ve entered. Some leagues are generous. Others... not so much. Then the screen goes dark, and it’s your turn to pick your own fighters.
+
+The higher number wins. Use your memory and strategy thinking to be the best.
+L/R move screen
+U/D switch warriors
+A confirm warrior
+B skip animations
+
+Author: musialmi
+Version: 1.0

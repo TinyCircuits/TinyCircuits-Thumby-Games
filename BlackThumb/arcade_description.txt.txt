@@ -1,0 +1,15 @@
+BlackThumb is a variation of blackjack made to be played on the Thumby including plenty of diverse features:
+
+*CREDITS FOR BATTERY FUNCTION GO TO AyreGuitar AND ALL THOSE THEY CREDITED*
+
+Blackjack gameplay (hit, stand, double)
+Betting system with starting $100
+Win streak multiplier
+All-in (double or nothing)
+Difficulty: NORMAL / HARD 
+Saves high score and best streak
+Menus: title, bets, tips, stats
+Battery indicator
+Card graphics and animations
+Sound effects and win/lose tunes
+Toggle view (player/dealer hand)

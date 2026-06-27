@@ -1,0 +1,11 @@
+Tinymine
+
+Search for gold in an ASCII art underground world.
+
+Hazards await, but riches too!
+
+v1.1
+You can now speed run: if you complete the whole game without dying, a time is displayed. My best: 723s.
+Minor fix to level 4: could run through a slope.
+
+(Tech note: music written with TinyTunes)

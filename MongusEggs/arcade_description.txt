@@ -1,0 +1,7 @@
+A short arcade style score game.
+Collect the eggs and avoid the black hole!
+
+Use dpad up & down to move.
+
+Diablohead Games
+Ver1.0

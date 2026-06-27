@@ -1,0 +1,13 @@
+Tiny Calc
+
+The littlest calculator.
+Highlight numbers and symbols with the D-pad, press the highlighted number
+or symbol with the A-button, and clear with the B-button.
+Additionally supports '**' for powers, e.g: 4**2=16.
+
+Created with Blockly as a test of the Blockly integration into
+the Thumby Code Editor. See the Blockly file here:
+https://gist.github.com/fuglaro/b28aad6fe35f5af5f70ffbfb9723cc7e
+
+Author: HemlockMay
+Version: 1.0.0

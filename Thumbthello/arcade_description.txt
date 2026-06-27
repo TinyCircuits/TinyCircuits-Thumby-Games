@@ -1,0 +1,6 @@
+Thumbthello
+
+Author: @marcepolis
+Version 1.0.0
+
+Thumbthello is a tiny Othello/Reversi game made for Thumby. Play as black against a simple CPU opponent, move the cursor with the D-pad, and press A to place your token.

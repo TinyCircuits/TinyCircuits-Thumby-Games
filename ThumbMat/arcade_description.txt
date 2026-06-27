@@ -1,0 +1,8 @@
+A basic timer for a Rubik's cube
+
+
+Controls:
+Up: Gets the timer ready
+Right: Generates 10 random moves for a scramble, keep pressing right to get more moves.
+Left: See the average of all your solves in a session
+Down: See the average of the 5 previous solves.

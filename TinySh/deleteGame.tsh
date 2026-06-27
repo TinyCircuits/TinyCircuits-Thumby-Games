@@ -1,0 +1,19 @@
+# Find the game directories
+find --type d
+grep ^/Games/[^/]+/$
+
+# Let the user pick one
+choose
+set gameDir |
+
+# Abort?
+echo {gameDir}
+if empty
+jump :end
+
+# Delete the game directory that the user asked for
+run /Games/TinySh/deleteDir.tsh {gameDir}
+
+# Announce result in trad terse style
+echo {gameDir}
+:end

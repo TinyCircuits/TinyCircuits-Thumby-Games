@@ -1,0 +1,33 @@
+Asteroids for Thumby! (again)
+
+-----------------------------
+CONTROLS:
+
+MENU:
+
+While in the menu press up or down to increase or decrease the number of rounds you want to play. Press B to start playing. Rounds are a set of one to five asteroids. The number of asteroids in a round is determined randomly. The number of rounds is displayed in the left corner.
+
+GAMEPLAY:
+
+Press left or right to turn your ship. Press A to fire and B to enter hyperspace. Hyperspace teleports you randomly around to map in order to escape tight situations. Unlike normal asteroids your ship has infinite bullets and three lives. If you run out of lives press any button in the game over screen in order to go back to the menu.
+
+GOOD LUCK PILOT!
+-----------------------------
+
+Just a simple asteroids clone for Thumby. I may or may not add the alien spaceships later.
+
+------------------------------------------------------
+
+I made this for a school project that was supposed to have a single if statement and a list. I went a little overboard and completed it in 4 days instead of the given month. The result was this masterpiece of a game.
+
+-----------------------------------------------------------------------------
+
+I made this so I can put whatever I want here and no one can dispute it. The person who made this game is cool! 
+
+----------------------------------------
+
+Speaking of... Game by -----> NO1TEHM. 
+
+--------------------------------------
+Author: No1tehm
+Version: 1.0

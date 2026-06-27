@@ -1,0 +1,5 @@
+A simple golf game with 6 courses
+
+Version: 1.0
+Author: Luke Cann
+Website: lc-apps.co.uk

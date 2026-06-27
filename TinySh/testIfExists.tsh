@@ -1,0 +1,59 @@
+# This file exists, surely
+if exists /Games/TinySh/TinySh.py
+jump :exists1
+# Don't put a comment immediately after the if!
+
+# If we got here, the file does not exist.
+echo Oops: TinySh does not exist! (plain)
+jump :end
+
+:exists1
+# If we got here, the file exists.
+# Let's do it another way
+find --type f *.py
+grep --fixed /Games/TinySh/TinySh.py
+if exists |
+jump :exists2
+# Don't put a comment immediately after the if!
+
+# If we got here, the file does not exist.
+echo Oops: TinySh does not exist! (pipe)
+jump :end
+
+:exists2
+# Let's go wild
+set openCurly {
+set filename /Games/TinySh/TinySh.py
+set closeCurly }
+echo {openCurly}filename{closeCurly}
+if exists |
+jump :exists3
+# Don't put a comment immediately after the if!
+
+# If we got here, the file does not exist.
+echo Oops: TinySh does not exist! (wild)
+jump :end
+
+:exists3
+# exist is equivalent to exists
+if exist /Games/TinySh/TinySh.py
+jump :exists4
+# Don't put a comment immediately after the if!
+
+# If we got here, the file does not exist.
+echo Oops: TinySh does not exist! (exist-no-s)
+jump :end
+
+:exists4
+# relative path should work
+changedir /Games/TinySh
+if exists TinySh.py
+jump :exists5
+
+# If we got here, the file does not exist.
+echo Oops: TinySh does not exist! (relative path)
+jump :end
+
+:exists5
+echo All OK
+:end

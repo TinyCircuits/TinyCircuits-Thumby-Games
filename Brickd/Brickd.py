@@ -172,7 +172,7 @@ while(1):
             thumby.display.drawLine(15, 37, 55, 37, 0)
         
         if thumby.buttonA.pressed(): # go back to game menu
-            machine.reset() 
+            thumby.reset() 
             
         elif thumby.buttonB.pressed(): # Re-initialize values of variables to play again
             lose = False  

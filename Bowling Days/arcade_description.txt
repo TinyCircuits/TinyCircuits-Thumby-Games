@@ -1,0 +1,38 @@
+<< Bowling Days >>
+
+Let's play Bowling!!
+
+Pitching Steps
+1) Determine your stance
+  Use the L/R buttons to move the girl left or right.
+  (The starting position is not always the same.)
+2) Aim
+  Use the L/R buttons to move the arrow.
+  The arrow is constantly wavering left and right.
+  Time your press and press the A button to confirm.
+  You can return to step 1 by pressing the B button.
+  (You cannot go back once you’ve passed step 2.)
+3) Determine Power
+  The power meter is moving left and right.
+  Time your press and press the A button to confirm.
+4) Set the spin.
+  The spin meter is moving from side to side.
+  Time your press and press the A button to confirm.
+
+This will start the throw.
+There are no gutters in this game.
+In cases like a split, you can attack with a curve from the very outside.
+-------------------------------------- -
+If you press the U button in Step 1 to view your scorecard.
+Press the B button to return from the scorecard screen.
+
+You can also press the B button while holding the D button in Step 1, the game will switch to a mode where you can view the ball and pins colliding from a bird’s-eye view.
+(A circular icon will appear in the top-left corner when the mode changes.)
+Since the positions of the ball and pins are easy to see, this also serves as a helpful hint for your strategy.
+---------------------------------------
+The game auto-saves after every throw, so even if you turn off the power, you can pick up where you left off next time.
+
+
+Author: Kouji-MAT
+Version: 1.0
+

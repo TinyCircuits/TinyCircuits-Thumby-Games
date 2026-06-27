@@ -1,0 +1,12 @@
+Tinynvaders
+
+Horizontal shoot 'em up game, inspired by Space Invaders
+
+Press A to Shoot
+Press B to Use a Shield, if avaiable
+D-Pad Up/Down to control your ship
+
+Each 5 kills grant you a shield, max stock is 1 shield at a time.
+
+Author: tibonev @ classicgames.com.br
+Version: 1.0

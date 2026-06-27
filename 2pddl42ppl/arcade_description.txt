@@ -1,0 +1,6 @@
+2-players on a single Thumby! Use familiar Pong mechanics against each other in Versus mode. Choose Coop mode to achieve your best time and bouncing stats or even solo mode for a greater individual challenge!
+
+Physics, paddle, balls... up to 8 parameters adjustable using ingame settings menu to make each experience unique. All this under 0x100 (255) lines of code. Check it out here or in github.com/isaacbernat/2pddl42ppl and get inspired to make your own games ;D
+
+Author: isaacbernat
+Version: 1.0

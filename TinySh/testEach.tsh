@@ -1,0 +1,88 @@
+# Setup
+pwd
+set oldDir |
+if not exists /Saves
+makedir /Saves
+if not exists /Saves/TinySh
+makedir /Saves/TinySh
+changedir /Saves/TinySh
+
+# Write some numbers to a temp file
+set tmp /Saves/TinySh/tmp
+echo 1
+> {tmp}
+echo 2
+>> {tmp}
+
+# Show the numbers
+show {tmp}
+
+# Iterate over the numbers
+each
+copy {tmp} |
+# Don't put a comment immediately after the each!
+
+if not exists 1
+jump :barf1
+if not exists 2
+jump :barf2
+
+delete 1
+delete 2
+delete {tmp}
+
+# Let's try a backup
+set tmp /tmpTestEachDir
+if not exists {tmp}
+makedir {tmp}
+find --type f
+grep ^/Games/TinySh/[^/]+\.tsh$
+each
+copy | {tmp}
+# Don't put a comment immediately after the each!
+if not exists {tmp}/testEach.tsh
+jump :barf3
+
+# Let's clean up after ourselves
+find --type f
+grep ^{tmp}/[^/]+\.tsh$
+each
+delete |
+# Don't put a comment immediately after the each!
+if exists {tmp}/testEach.tsh
+jump :barf4
+rmdir {tmp}
+if exists {tmp}
+jump :barf5
+
+changedir {oldDir}
+echo All OK
+jump :end
+
+:barf1
+changedir {oldDir}
+echo Expected file 1 not found
+jump :end
+
+:barf2
+changedir {oldDir}
+echo Expected file 2 not found
+jump :end
+
+:barf3
+changedir {oldDir}
+echo Expected file {tmp}/testEach.tsh not found
+jump :end
+
+:barf4
+changedir {oldDir}
+echo Unexpected file {tmp}/testEach.tsh found
+jump :end
+
+:barf5
+changedir {oldDir}
+echo Unexpected existence of {tmp}
+jump :end
+
+
+:end

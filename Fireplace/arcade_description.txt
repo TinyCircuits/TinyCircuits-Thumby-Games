@@ -1,0 +1,10 @@
+Fireplace
+
+Pull up a seat by the fire, weary traveller, and rest your tired feet.
+Take a moment to hear the crackle and let the charred air fill slow breaths...
+
+Press A to launch the grayscale calibrator, to save the configuration for
+all games to use.
+
+Author: FugLaro and the Grayscale Brain Titans
+Version: v1

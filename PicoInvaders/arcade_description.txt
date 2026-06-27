@@ -1,0 +1,15 @@
+Pico Invaders!
+When these nasty Aliens threaten
+your livelihood what are you to do?
+BLAST away at these Aliens 
+and defend your territory!
+With this EXCITING game
+action packed with all the
+nasties and baddies of outer space
+what are you to do to defend
+your territory?
+
+Author : Anonymou$
+Date : 10/31/2022
+
+Version : 1.0

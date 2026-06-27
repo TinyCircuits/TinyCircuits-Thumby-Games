@@ -1,0 +1,10 @@
+Dr. C. Dice Version 1.1
+By Charles "Cyndi" Cavanaugh, Ph.D.
+Game of dice with selectable number of sides. 
+A 6-sided die is default.
+You may choose as few as 2 sides, which would be equivalent to a coin toss game.
+You may also choose larger numbers of sides for special games. Theoretically the limit would be the maximum size of the random number generated.
+A test mode will run 100 rolls of the chosen dice and display the number of times it landed on each side.
+A battery voltage input is used to give a varying number of extra pre-rolls in case the pseudo-random generator needs a bit of extra randomness.
+This game is for entertainment purposes only.
+Author information: https://www.cyndicavanaugh.com

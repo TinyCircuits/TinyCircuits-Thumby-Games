@@ -1,0 +1,745 @@
+# Menu background
+-999,"MENU"
+0,   ("1","[w.pattern_toplit_wall,w.pattern_stalagmites,w.pattern_stalagmites_fill,w.pattern_cave,w.pattern_cave_fill]",(bytearray(), bytearray()),0)
+
+# Cave with Bones
+1120,"CHAPTER~1: \n The_Cave"
+
+50,  ("1","[w.pattern_toplit_wall,w.pattern_stalagmites,w.pattern_stalagmites_fill,w.pattern_cave,w.pattern_cave_fill]",(bytearray([Bones,Skittle]), bytearray([37,2])),0)
+250, "@: Hi Glow!"
+0,   "^: Hi Umby!"
+0,   "@: These monsters are destroying our cave!"
+0,   "^: Where did they come from?"
+0,   "@: I dont know..."
+0,   "^: Do you think it was Lung?"
+0,   "@: Maybe..."
+0,   "@: But this isn't like his usual tricks."
+
+200, "Aim rockets: [UP/DOWN]"
+
+200, "---->"
+0,   "^: Hey Umby..."
+0,   "@: Yes, Glow?"
+0,   "^: They seem to be coming from outside."
+0,   "@: Indeed."
+0,   "@: Lets head to the entrance."
+60,  "---->"
+120, "---->"
+120, "---->"
+
+200, "Umbys platforms: B*2"
+200, "Glows tunnelling: [RIGHT/LEFT]+B [TAPPING:B]"
+200, "Shoot each other, not yourself!"
+
+600, "^: What are you thinking, Umby?"
+0,   "@: I think something is seriously wrong..."
+0,   "@: These monsters..."
+0,   "@: I've never seen anything like them before."
+0,   "@: They seem really..."
+0,   "^: Alien?"
+0,   "@: Yes! They have, green blood!"
+0,   "^: Well, the cave entrance is just up ahead."
+60,  "---->"
+
+# Stop monster spawning
+200, ("1","[w.pattern_toplit_wall,w.pattern_stalagmites,w.pattern_stalagmites_fill,w.pattern_cave,w.pattern_cave_fill]",(bytearray(), bytearray()),0)
+
+200, "^: Ummm... Umby?..."
+0,   "@: Yes Glow?..."
+0,   "^: What's that rumbling?"
+0,   "@: Whatever it is, it's big..."
+0,   "@: and it's invaded the wrong cave!"
+0,   "^: Right. Lets rumble!"
+
+200, "Get ready!"
+0,   BonesBoss
+0,   "@: Nailed that hit!!"
+0,   "^: Sweet!"
+
+600, "@: Nice work, Glow!"
+0,   "^: Back at ya, Umby!"
+0,   "@: I think we cleared the whole swarm."
+0,   "^: Is that all of them?"
+0,   "@: Let's head outside and find out..."
+
+# Cave entrance tunnel
+80, ("1","[pattern_none,pattern_none,pattern_fill,w.pattern_tunnel,pattern_fill]",(bytearray(), bytearray()),0)
+
+# Exit tunnel into plains
+200, ("2","[w.pattern_cloudy_snowy_mountains,w.pattern_ferns,w.pattern_ferns_fill,w.pattern_cloudy_plains,pattern_fill]",(bytearray(), bytearray()),0)
+100, ("2","[w.pattern_cloudy_snowy_mountains,w.pattern_ferns,w.pattern_ferns_fill,w.pattern_cloudy_plains,pattern_fill]",(bytearray([Bones]), bytearray([110])),0)
+
+130, "@: WOAH!"
+0,   "^: SQUIRM!"
+0,   "@: They are everywhere!"
+0,   "^: What are we going to do?"
+0,   "@: Keep blasting and get moving!"
+0,   "@: Theres a forest up ahead we can use for cover."
+0,   "^: Ok. I've got your back."
+0,   "@: Let's roll..."
+
+70,  ("2","[w.pattern_cloudy_snowy_mountains,w.pattern_ferns,w.pattern_ferns_fill,w.pattern_cloudy_plains,pattern_fill]",(bytearray(), bytearray()),0)
+150, "CHAPTER~2: \n The_Forest"
+50,  ("2","[w.pattern_cloudy_snowy_mountains,w.pattern_ferns,w.pattern_ferns_fill,w.pattern_cloudy_plains,pattern_fill]",(bytearray([Bones,Stomper]), bytearray([90,40])),0)
+
+750, "^: Doing well there, Umby!"
+0,   "@: You too, Glow!"
+0,   "@: The forest is just up ahead!"
+0,   "^: NICE!"
+
+# Enter forest
+370, ("3","[w.pattern_tree_wall,w.pattern_mid_forest,w.pattern_mid_forest_fill,w.pattern_forest,w.pattern_forest_fill]",(bytearray(), bytearray()),0)
+
+360, "^: Phew! We made it!"
+0,   "@: That, we did!"
+0,   "@: This should provide us with some cover while we think."
+0,   "^: Cool. Um... Umby..."
+0,   "@: Yes, Glow?"
+0,   "^: Did you happen to look up back there?"
+0,   "@: I did, and I guess you are referring to..."
+0,   "@: The giant alien mothership dominating the sky?"
+0,   "^: Yeah. That. So what should we do?"
+0,   "@: Let's head in further for safety."
+0,   "@: I need to come up with a plan."
+0,   "^: Sweet! No need to rush anyway..."
+0,   "^: We dont want to be the early worm."
+0,   "@: HA! No, we dont."
+
+# Forest monsters
+180, ("3","[w.pattern_tree_wall,w.pattern_mid_forest,w.pattern_mid_forest_fill,w.pattern_forest,w.pattern_forest_fill]",(bytearray([Pillar, Hoot]), bytearray([30, 15])),0)
+
+800, "@: Alright Glow..."
+0,   "@: Here's what I'm thinking..."
+0,   "^: I'm all ears, Umby!"
+0,   "@: Our cave is not safe,"
+0,   "^: Lol, nope!"
+0,   "@: And this thing is widespread,"
+0,   "^: No kidding!"
+0,   "@: And you know I dont like to just wait out a problem!"
+0,   "^: You are nothing if not tenatious!"
+0,   "@: So let's fix this ourselves."
+0,   "^: No way out but through!"
+0,   "^: ...just one question..."
+0,   "^: How???"
+0,   "@: Simple. We head to the mothership."
+0,   "^: In space...?"
+0,   "@: Yes. We hitch a ride..."
+0,   "^: On a monster?"
+0,   "@: No, on a Space-Y rocket!"
+0,   "^: Space... Y ??"
+0,   "@: Why??.. To kill the aliens!"
+0,   "^: Okay, but where will we find a Space-Y rocket?"
+0,   "@: We live near a Space-Y launchpad!"
+0,   "@: Literally like every 3 weeks or so, the whole cave shakes itself half loose, and you always ask -What's that?-, and I always say -The downside of living near a Space-Y launch facility!-"
+0,   "@: It's on the other side of the forest."
+0,   "^: Ah!... Cool!... Well..."
+0,   "^: I'm game!"
+0,   "@: Nice! You rock!"
+0,   "^: Let's roll."
+
+# Back to the plains (less monsters this time)
+400, ("2","[w.pattern_cloudy_snowy_mountains,w.pattern_ferns,w.pattern_ferns_fill,w.pattern_cloudy_plains,pattern_fill]",(bytearray([Bones]), bytearray([10])),0)
+
+200, "^: Hey!"
+0,   "^: Umby, I see it!"
+0,   "@: Hey, yeah! There it is."
+0,   "^: One shiny rocket."
+0,   "@: Looks like the aliens have seen it too..."
+0,   "^: What is that? A dragon?"
+0,   "@: Its some kind of giant alien worm..."
+0,   "^: Well, let's go pick on something definitely not our own size!"
+0,   "@: Ha! Right behind you, Glow!"
+
+# Stop monsters spawning
+100, ("2","[w.pattern_cloudy_snowy_mountains,w.pattern_ferns,w.pattern_ferns_fill,w.pattern_cloudy_plains,pattern_fill]",(bytearray(), bytearray()),0)
+
+# Boss Battle: Dragon Bones
+300, "Get ready!"
+100, DragonBones
+-999,"^: Nice one, Umby!"
+0,   "@: You too, Glow!"
+0,   "^: That thing was nuts!"
+0,   "@: Indeed. These things are a blight on our home. This monstrous beast is even more reason to dig in and press on."
+0,   "^: Let's go eat the frog!"
+0,   "@: Eat the frog???"
+0,   "^: Yeah!"
+0,   "@: Do you mean we should try to do something impossible but by never giving up, eventually succeed?"
+0,   "^: Umm... sure!"
+0,   "@: I suppose you are right anyway..."
+0,   "@: Eventually the worm eats all!!"
+0,   "^: Too right! Let's go catch a rocket!"
+
+1600,"CHAPTER~3: \n Space-Y"
+
+100, ("2", "[w.pattern_cloudy_snowy_mountains,w.pattern_chain_link_fence,pattern_fill,w.pattern_fence_top,pattern_fill]",(bytearray([Pillar,Bones,Stomper]), bytearray([10,10,10])),0)
+
+300,  "\n \n ____RESTRICTED____ _______AREA_______"
+300,  "\n \n ____AUTHORIZED____ __PERSONEL_ONLY!__"
+300,  "\n \n ______ACTIVE______ ___LAUNCH__SITE___"
+
+100,  "^: I get the feeling they don't want us here!"
+0,    "@: I get the feeling they have enough of their own things to worry about."
+0,    "^: No kidding!"
+
+300,  "\n \n _____SPACE-Y...___ _BECAUSE_ITS_COOL!"
+300,  "\n \n __SEVERE__DANGER__ _OF_INCINERATION!_"
+300,  "\n \n _____SPACE-Y______ __PERSONEL_ONLY!__"
+300,  "\n \n __NO_TRESPASSING__ _SECURE__FACILITY_"
+
+300,  "@: Glow, I see the launch area."
+0,    "^: Me too, Umby!"
+0,    "@: If we can cross it, we'll just need a way onboard."
+0,    "^: Check out all the alien crawlers we need to fight through."
+0,    "@: Nice and clear of dragons though."
+0,    "^: Yep. Thanks to us!"
+0,    "@: Let's worm our way in."
+0,    "^: Lol! Go you!"
+
+# Molaar infested launch area
+100, ("4","[w.pattern_cloudy_snowy_mountains,w.pattern_launch_back,pattern_fill,w.pattern_launch_area,w.pattern_launch_area_fill]",(bytearray([Bones,Stomper,Molaar]), bytearray([10,5,60])),0)
+
+900,  "@: Nice spree there, Glow!"
+0,    "^: Umby, I'm almost enjoying this!"
+0,    "@: It's nice to make the most of it."
+0,    "@: It looks like we are about halfway through this swarm."
+0,    "^: So we just have more mulch to make!"
+0,    "@: Yep, one monster at a time..."
+
+# Launch area (close to rocket, only monsters are stompers)
+900, ("4","[w.pattern_cloudy_snowy_mountains,w.pattern_launch_back,pattern_fill,w.pattern_launch_area,w.pattern_launch_area_fill]",(bytearray([Stomper]), bytearray([20])),0)
+
+200,  "^: Umby, we are major mulch machines!"
+0,    "@: No time to dawdle, Glow."
+0,    "@: Looks like they're getting ready for something..."
+0,    "^: Something like a launch sequence?"
+0,    "@: Precisely."
+0,    "@: This is the one time we want to be the early worm!"
+0,    "^: Last one on's a rotten egg!"
+0,    "@: Mmmm... Delicious!"
+
+# Launch pad (with stompers)
+200, ("4","[w.pattern_cloudy_snowy_mountains,w.pattern_launch_back,pattern_fill,w.pattern_launch_pad,w.pattern_launch_pad_fill]",(bytearray([Stomper]), bytearray([60])),0)
+
+300,  "\n \n ____PREPARING_____ _LAUNCH_SEQEUENCE_"
+
+100, "^: Look Umby! An open latch!"
+0,   "@: I don't know how you see so well without eyes."
+0,   "^: There's just enough wiggle room to squeeze in!"
+
+# Create rocket and start countdown (moves +500 into distance automatically)
+200, "Hurry!"
+0,   LeftDoor
+### Note: Rocket ship script handled by LeftDoor monster with events.
+
+0,   ("4","[pattern_none,pattern_none,pattern_fill,pattern_none,pattern_fill]",(bytearray(), bytearray()),1)
+0,   "^: WOAH!"
+0,   "@: Did..."
+0,   "@: Did we make it to space?!!"
+0,   "^: I think we did!!"
+0,   "^: That was insane!"
+0,   "@: We are a couple of lucky worms!"
+0,   "@: Let's not test it though..."
+0,   "@: Let's get away from this wreckage."
+0,   "^: Sure thing, Umby!"
+0,   "@: Careful with the low gravity!"
+
+1000,("5","[w.pattern_nebula,pattern_none,pattern_fill,pattern_none,pattern_fill]",(bytearray(), bytearray()),1)
+
+200, ("5","[w.pattern_nebula,w.pattern_orbitals,w.pattern_orbitals_fill,pattern_none,pattern_fill]",(bytearray(), bytearray()),1)
+
+200, "CHAPTER~4: \n Among the Stars"
+
+80,  ("5","[w.pattern_nebula,w.pattern_orbitals,w.pattern_orbitals_fill,w.pattern_orbitals,w.pattern_orbitals_fill]",(bytearray(), bytearray()),1)
+
+80,  "^: It's so pretty!"
+0,   "@: It is! My eyes are just starting to adjust to the stars."
+0,   "^: Really? They're so bright!"
+0,   "^: They remind me of all the glow worms back home."
+0,   "@: Home... I miss home."
+0,   "^: Me too, Umby."
+0,   "@: All the more reason to protect it!"
+0,   "^: Totes. No use dwelling on the past, when we have already come so far."
+0,   "@: Where is the alien mothership anyway?"
+0,   "^: You don't see it?"
+0,   "^: It's literally directly in front of us."
+0,   "^: It's in the distance, but the Space-Y chums at least set us on a good direction."
+0,   "@: So nice of them. Straight ahead it is then!"
+0,   "^: Yet again!"
+
+1000,"^: Umby, check out that alien swarm!"
+0,   "@: Looks like they've organised a welcome squad!"
+0,   "^: No kidding!"
+0,   "@: They've finally realised that they've really opened up a can of worms!"
+0,   "^: LOL! ... a can labelled KAPOW!"
+0,   "@: HA! Well... let's make that can of worms properly explode!"
+0,   "^: Boom! Boom!, Umby!"
+
+# Incoming E-Falcon
+80,  ("5","[w.pattern_nebula,w.pattern_orbitals,w.pattern_orbitals_fill,w.pattern_orbitals,w.pattern_orbitals_fill]",(bytearray([Bones, EFalcon]), bytearray([10, 40])),1)
+
+# E-Falcon swarm
+1400,"^: Here comes the swarm!"
+0,   "@: We've got this, Glow!"
+80,  "Get ready!"
+0,   ("5","[w.pattern_nebula,w.pattern_orbitals,w.pattern_orbitals_fill,w.pattern_orbitals,w.pattern_orbitals_fill]",(bytearray([Bones, EFalcon]), bytearray([10, 150])),1)
+
+# Calmer second wave with Probers
+400, "^: What are those things incoming?!"
+0,   "@: They look like alien cephalopods!"
+0,   "^: They look NASTY!"
+0,   ("5","[w.pattern_nebula,w.pattern_orbitals,w.pattern_orbitals_fill,w.pattern_orbitals,w.pattern_orbitals_fill]",(bytearray([Bones, EFalcon, Prober]), bytearray([10, 30, 20])),1)
+
+800, ("5","[w.pattern_nebula,w.pattern_orbitals,w.pattern_orbitals_fill,w.pattern_orbitals,w.pattern_orbitals_fill]",(bytearray([Bones, EFalcon, Prober]), bytearray([5, 10, 5])),1)
+
+100, "@: Looks like that's the worst of them."
+0,   "^: Straight ahead to the mothership."
+
+# Gap between planets and mothership
+615, ("5","[w.pattern_nebula,w.pattern_orbitals,w.pattern_orbitals_fill,pattern_none,pattern_fill]",(bytearray([]), bytearray([])),1)
+
+# Mothership hull
+125, ("5","[w.pattern_nebula,w.pattern_orbitals,w.pattern_orbitals_fill,pattern_fill,w.pattern_hull]",(bytearray([]), bytearray([])),1)
+0,   "^: Umby, we finally made it!"
+0,   "@: We are on fire, Glow!"
+0,   "^: How do we get onboard?"
+0,   "@: Let's blast a hole through the hull."
+0,   "^: That's just the kind of destruction I'm after!"
+0,   "@: Nice. Then let's worm our way in, with maximum destruction!"
+
+100, ("5","[w.pattern_nebula,w.pattern_orbitals,w.pattern_orbitals_fill,pattern_fill,w.pattern_hull]",(bytearray([Stomper]), bytearray([120])),1)
+
+# Mothership biohall
+300, ("6","[w.pattern_biomechanical_hall_wall,w.pattern_alien_totem_plants,pattern_fill,w.pattern_alien_totem_floor,pattern_fill]",(bytearray([]), bytearray([])),0)
+0,   "^: Woah! Gravity!"
+0,   "@: Must be artificial alien tech from the spaceship."
+0,   "^: Whatever it is, it feels good!"
+0,   "^: I like knowing which way is up, Umby."
+0,   "@: Ditto, Glow."
+0,   "@: I like knowing which way is down!"
+
+100, "CHAPTER~5: \n Mothership Chip"
+
+100,  "^: Well Umby, we're in."
+0,   "@: We are indeed, Glow."
+0,   "@: Now we just need to find their weak spot."
+0,   "^: Shall we just wreak as much havock as possible?"
+0,   "@: Well, yes, but let's also be a little bit targeted."
+0,   "^: How so?"
+0,   "@: Let's try and hunt down their computer mainframe."
+0,   "@: If we can take that out, then maybe we can take down the whole ship."
+0,   "^: Sounds like a plan!"
+0,   "^: But... while we are searching it out..."
+0,   "^: Can we bust things up a little?"
+0,   "@: Glow, I wouldn't have it any other way!"
+
+140, Wyvern
+0,   Wyvern
+
+200, ("6","[w.pattern_biomechanical_hall_wall,w.pattern_alien_totem_plants,pattern_fill,w.pattern_alien_totem_floor,pattern_fill]",(bytearray([Wyvern, Prober, Bones, Skittle]), bytearray([2, 20, 30, 40])),0)
+
+# Vents
+800, ("6","[w.pattern_biomechanical_hall_wall,pattern_none,pattern_fill,w.pattern_vents,w.pattern_alien_vent_decay]",(bytearray([Skittle, Bones]), bytearray([40,10])),0)
+
+80, "^: Where to now, Umby?"
+0, "@: Let's head through those vents."
+0, "^: Sure thing!"
+
+# Lab
+400, ("6","[pattern_none,w.pattern_biomechanical_lab_wall,pattern_fill,w.pattern_biomechanical_lab,w.pattern_biomechanical_fill]",(bytearray([Prober, Bones]), bytearray([5, 40])),0)
+
+140, "^: What is this place?"
+0,   "^: Is this a cargo bay?"
+0,   "@: I have no idea, but it's definitely not a computer mainframe"
+0,   "@: Let's keep going."
+
+# Vents
+1000,("6","[pattern_none,w.pattern_biomechanical_lab_wall,pattern_fill,w.pattern_vents,w.pattern_alien_vent_decay]",(bytearray([Skittle, Bones]), bytearray([40,10])),0)
+
+80,  "^: Umby, more vents!"
+0,   "@: Maybe these will lead somewhere more fruitful..."
+
+# Electrical ducts
+200, ("6","[pattern_none,w.pattern_cathedral,pattern_fill,w.pattern_cabling,w.pattern_cabling_fill]",(bytearray([Molaar, Prober, Bones]), bytearray([20,2,5])),0)
+
+300, "@: Glow, I might be being overly optimistic..."
+0,   "@: But are these electrical ducts?"
+0,   "^: I don't know..."
+0,   "^: Everything is looking pretty alien to me."
+0,   "@: Pun intended?"
+0,   "^: As always, Umby!"
+
+# Cathedral with alien totem floor
+800, ("6","[pattern_none,w.pattern_cathedral,pattern_fill,w.pattern_slim_room,pattern_fill]",(bytearray([]), bytearray([])),0)
+
+200, "@: Maybe I was wrong, Glow"
+0,   "^: How so, Umby?"
+0,   "@: There's no cabling in here... just..."
+0,   "@: What are these things anyway? Wyverns?"
+0,   "^: They can't be... not enough legs."
+0,   "@: Wormyverns then?"
+0,   "^: Actually, it's just Wyrms"
+0,   "@: Biggest ones I've ever seen!"
+
+80,  Wyvern
+0,   Wyvern
+0,   Wyvern
+0,   Wyvern
+
+# Diode ducts
+800, ("6","[pattern_none,w.pattern_quilted_diodes,pattern_fill,w.pattern_cabled_room,w.pattern_cabling_fill]",(bytearray([Skittle, Prober]), bytearray([30,5])),0)
+
+300, "^: Well, this is starting to feel a bit more mainframey!"
+0,   "@: That's exactly what I was thinking..."
+0,   "^: Permission to destroy everything?"
+0,   "@: Granted and encouraged!"
+
+# Mainframe core
+700, ("6","[pattern_none,w.pattern_quilted_diodes,pattern_fill,w.pattern_bimechanical_mainframe,w.pattern_biomechanical_fill]",(bytearray([Skittle, Stomper]), bytearray([30,20])),0)
+
+400, "^: That looks promising!"
+0,   "^: Is that it?"
+0,   "@: I've never seen an alien mainframe core, but that feels very much like an alien mainframe core."
+0,   "@: Let's absolutely destroy it."
+
+80,  "Get ready!"
+
+80,  CPU
+0,   "^: And done!"
+0, ("6","[pattern_none,w.pattern_quilted_diodes,pattern_fill,w.pattern_bimechanical_mainframe,w.pattern_biomechanical_fill]",(bytearray([]), bytearray([])),0)
+
+300, "@: Okay, so that ended with a bit of a whimper."
+0,   "^: I found it to be a satisfying bang, but you're right..."
+0,   "^: The ship is still intact, and the lights are still on."
+0,   "@: Maybe there is more up ahead?"
+0,   "^: Can't hurt to try!"
+
+# Diode ducts
+400, ("6","[pattern_none,w.pattern_quilted_diodes,pattern_fill,w.pattern_cabled_room,w.pattern_cabling_fill]",(bytearray([Bones]), bytearray([50])),0)
+
+# Cathedral
+400, ("6","[pattern_none,w.pattern_cathedral,pattern_fill,w.pattern_slim_room,pattern_fill]",(bytearray([]), bytearray([])),0)
+200, Wyvern
+0,   Wyvern
+
+# Electrical ducts
+400, ("6","[pattern_none,w.pattern_cathedral,pattern_fill,w.pattern_cabling,w.pattern_cabling_fill]",(bytearray([Molaar, Bones]), bytearray([20,20])),0)
+
+# Vents
+400, ("6","[pattern_none,w.pattern_biomechanical_lab_wall,pattern_fill,w.pattern_vents,w.pattern_alien_vent_decay]",(bytearray([Bones]), bytearray([40])),0)
+
+# Lab
+200, ("6","[pattern_none,w.pattern_biomechanical_lab_wall,pattern_fill,w.pattern_biomechanical_lab,w.pattern_biomechanical_fill]",(bytearray([]), bytearray([])),0)
+
+300, "@: Looks like that's the end of it."
+0,   "^: Maybe we can find another?"
+0,   "@: I think I just have to admit that I know nothing about alien technology."
+0,   "^: I thought it was a good try..."
+0,   "@: How do you feel about just destroying everything in our path?"
+0,   "^: Umby, I thought you'd never ask!"
+0,   "@: Right then. Wanton destruction, it is!"
+
+140,  "CHAPTER~6: \n Dolphins"
+
+# Lab
+200, ("6","[pattern_none,w.pattern_biomechanical_lab_wall,pattern_fill,w.pattern_biomechanical_lab,w.pattern_biomechanical_fill]",(bytearray([Wyvern, Prober, Molaar, Skittle, ChargingBones, Stomper]), bytearray([7, 5, 30, 10, 10, 10])),0)
+
+# Vents
+600, ("6","[pattern_none,w.pattern_biomechanical_lab_wall,pattern_fill,w.pattern_vents,w.pattern_alien_vent_decay]",(bytearray([Molaar]), bytearray([40])),0)
+
+# Jail
+800, ("7","[w.pattern_studding,w.pattern_cell,pattern_fill,w.pattern_prison,pattern_fill]",(bytearray([]), bytearray([])),0)
+
+140, "^: A jail?"
+0,   "@: It does seem like the kind of place you get locked up..."
+
+200, "^: Another one of those alien swarms!"
+0,   "@: No problems. We've handled this before."
+
+80,  "Get ready!"
+
+80,  BonesBoss
+0,   "@: Nice work!"
+0,   "^: Whatever we're doing, we seem to be making them mad!"
+0,   "@: Maybe that means we are heading in the right direction."
+0,   "^: Let's find out!"
+
+500, Lung
+0,   Hold
+0,   "|Lung: Umby! Glow!"
+0,   "|Well if it isn't the wormy duo!"
+0,   "^: Lung?"
+0,   "@: Lung! What are you doing here?!"
+0,   "|Lung: Well, as you can see, I'm not a particularly welcome guest."
+0,   "^: We've been feeling the same way."
+0,   "@: What happened? How did you get here?"
+0,   "|Lung: Same reason as you, by the looks of it."
+0,   "|I hitched a ride on one of those floating skulls. They might just be heads, but they have a pretty cosy respiratory system. My plan was to see if I could hunt down the swarm's hive mind."
+0,   "^: You've been trying to take down these aliens too?!"
+0,   "|Lung: Trying, yes. Succeeding? No."
+0,   "^: We tried to take down their mainframe."
+0,   "|Lung: Well that won't work."
+0,   "|Their whole ship is a bio-computer."
+0,   "@: Did you find their hive mind?"
+0,   "|Lung: Sadly, no, and I've seen enough to know that they don't even work as a collective."
+0,   "@: What do you mean?"
+0,   "|Lung: Well, they really like to barter..."
+0,   "|In a big way."
+0,   "@: Barter???"
+0,   "|Lung: Yep! It's their main invasion strategy..."
+0,   "|Find the owners, buy them out."
+0,   "^: But nobody owns the planet!"
+0,   "|Lung: Well the aliens think they do now."
+0,   "@: Who did they buy it from?!"
+0,   "|Lung: The dolphins."
+0,   "^: The dolphins?!??!!!!"
+0,   "|Lung: Yep, the dolphins. Who else would they go to?"
+0,   "|The most intelligent species are the Worms, but they love earth, earth is like their favourite thing, they would never sell it."
+0,   "|Next up were Humans, but the aliens didn't think they were valid owners..."
+0,   "|They never took care of the place."
+0,   "@: True."
+0,   "^: Yep."
+0,   "|Lung: That left the Octopus, and the Dolphins... and the Dolphins were only too keen to sell the place."
+0,   "@: What did they sell it for?!"
+0,   "|Lung: Mock tuna."
+0,   "|Well, mock tuna and a really really giant tank."
+0,   "|They are on board this ship now..."
+0,   "@: Wait. Two things..."
+0,   "@: Firstly, they already had those things - actual tuna, and the entire ocean!"
+0,   "|Lung: Kind of... there hasn't been much tuna since the humans got to it. Here, they have synthesisers. They can have as much mock tuna as they want!"
+0,   "@: Fair enough. But secondly, are you saying there is a really really giant tank on board, with enough salty water to destroy even the largest bio-computer?"
+0,   "|Lung: That... that might actually work!"
+0,   "^: What?"
+0,   "@: We smash the tank, then flood the ship."
+0,   "^: Where is the tank?"
+0,   "|Lung: If you keep going straight ahead, you'll come up underneath it, where all the support structures are."
+0,   "@: This is amazing! We finally have a real plan!"
+0,   "^: What about you, Lung?"
+0,   "|Lung: Me? I'll have the best chance if you can disable all their systems."
+0,   "|You pull this off, and I'm sure I'll find a way out."
+0,   "@: Alright, Lung. Good luck then."
+0,   "|Lung: Same goes to the both of you!"
+
+# Vents
+500,("6","[pattern_none,w.pattern_biomechanical_lab_wall,pattern_fill,w.pattern_vents,w.pattern_alien_vent_decay]",(bytearray([Molaar, Bones]), bytearray([30,10])),0)
+
+
+# Biohall
+300, ("6","[w.pattern_biomechanical_hall_wall,w.pattern_alien_totem_plants,pattern_fill,w.pattern_alien_totem_floor,pattern_fill]",(bytearray([]), bytearray([])),0)
+
+140, "CHAPTER~7: \n Bring a Towel"
+
+# Undertank
+300, ("6","[w.pattern_biomechanical_hall_wall,w.pattern_bio_pillars,pattern_fill,w.pattern_undertank,pattern_fill]",(bytearray([]), bytearray([])),0)
+
+240, "^: I think we might be under the tank..."
+0,   "@: I think you might be right."
+
+40,  "Get ready!"
+
+70,  "@: That pillar looks load bearing..."
+0,   "^: Let's shoot it down!"
+
+10,  TankPillar
+0,   MiniShake
+0,   "^: Nice!"
+0,   "@: That didn't quite do it..."
+0,   "^: I see another up ahead."
+0,   "@: Let's take them all down!"
+
+300,  TankPillar
+0,   Shake
+
+100,  TankPillar
+0,   BigShake
+0,   "@: I think it is finally starting to give way!"
+0,   "^: Can't be much more now..."
+
+300,  TankPillar
+0,   Flood
+0,   SuperShake
+# Low gravity and shake
+0,   ("6","[pattern_fill,pattern_fill,pattern_fill,w.pattern_flood,pattern_fill]",(bytearray([Bones]), bytearray([80])),3)
+0,   "^: Woooohooo!"
+0,   "@: I think that did it!"
+0,   "^: It's definitely extremely flooded!"
+0,   "@: And telling by the way the whole ship is shaking, it feels like it's falling out of the sky!"
+0,   "@: Let's see if we can find a safe way off the ship."
+0,   "^: Lead the way!"
+
+# Medium shake
+700, ("6","[pattern_fill,pattern_fill,pattern_fill,w.pattern_flood,pattern_fill]",(bytearray([Bones]), bytearray([20])),5)
+0,   "^: It's getting worse!"
+0,   "@: I think we might have hit re-entry."
+
+100, ("6","[pattern_fill,pattern_fill,pattern_fill,w.pattern_flood,pattern_fill]",(bytearray([Bones,ChargingBones]), bytearray([30,20])),5)
+
+# Large shake
+140, ("6","[pattern_fill,pattern_fill,pattern_fill,w.pattern_flood,pattern_fill]",(bytearray([ChargingBones]), bytearray([20])),7)
+0,   "@: Yep, this is clearly getting worse. I hope the ship holds together."
+0,   "^: What?! What happens if it doesn't?"
+0,   "@: Bad things. So let's keep moving!"
+
+# Normal gravity no shake
+200, SuperShake
+0,   ("6","[pattern_fill,pattern_fill,pattern_fill,w.pattern_flood,pattern_fill]",(bytearray([]), bytearray([])),0)
+
+200, "^: Have we crash landed?!"
+0,   "@: I think we have..."
+0,   "@: There's something about that authentic real gravity that feels like home."
+0,   "^: Did we just save the world?"
+0,   "@: I hope so. Actually, I just hope our cave is now nice, quiet, and safe."
+0,   "^: Let's find a way off this wreck and see where we landed."
+0,   "@: And let's go see if those aliens are still a problem."
+
+# Ship hull
+200, ("5","[pattern_fill,pattern_fill,pattern_fill,pattern_fill,w.pattern_hull]",(bytearray([]), bytearray([])),0)
+
+# Forest
+200, ("3","[w.pattern_tree_wall,w.pattern_mid_forest,w.pattern_mid_forest_fill,w.pattern_forest,w.pattern_forest_fill]",(bytearray([Pillar, Hoot]), bytearray([30, 15])),0)
+
+80,  "^: We landed in the forest!"
+0,   "@: Well, we landed in 'A' forest!"
+0,   "@: Is this ours?"
+0,   "^: It's totally ours, Umby. I recognise the trees, and the types of biodiversity. That's our species of caterpillar!"
+0,   "@: Well, I wish it was more friendly!"
+0,   "@: But I think you are right."
+0,   "@: You know you really surprise me sometimes, Glow... almost as much as how we landed in our own forest. What are the chances?!"
+0,   "^: It's like I've said: We are a lucky couple of worms, Umby."
+0,   "@: That we are!"
+
+80,  "^: How are we going to get around the ship?"
+0,   "@: We aren't. The cave's dead ahead. We must have gotten turned around when we were crash landing."
+0,   "^: No it's definitely, back that way."
+0,   "@: I had thought so too, but check out where the sun is."
+0,   "^: Woah! I guess space is pretty disorientating."
+0,   "^: Okay, so let's keep going and head back to our cave."
+0,   "@: Lead on!"
+
+400, "@: All the aliens are falling from the sky!"
+0,   "^: Do you think we did that?!"
+0,   "@: Maybe they did function as a collective?"
+
+80, ("3","[w.pattern_tree_wall,w.pattern_mid_forest,w.pattern_mid_forest_fill,w.pattern_forest,w.pattern_forest_fill]",(bytearray([Pillar, Hoot, FallingBones]), bytearray([15, 15, 200])),0)
+
+900, ("3","[w.pattern_tree_wall,w.pattern_mid_forest,w.pattern_mid_forest_fill,w.pattern_forest,w.pattern_forest_fill]",(bytearray([Pillar, Hoot]), bytearray([20, 15])),0)
+140, "^: Umby..."
+0,   "^: Seems like the monster rain has stopped!"
+0,   "@: I'm seeing clear skies ahead!"
+0,   "^: We literally took them down!"
+0,   "@: We took them all down!"
+
+100, ("2","[w.pattern_cloudy_snowy_mountains,w.pattern_ferns,w.pattern_ferns_fill,w.pattern_cloudy_plains,pattern_fill]",(bytearray(), bytearray()),0)
+
+400, "@: Maybe I spoke too soon..."
+0,   "^: Yeah... whatever that is... it's huge!"
+0,   "@: I think that might be the alien hive mind that Lung was after."
+0,   "^: Giant alien brain... Check! Out for revenge... Check!"
+0,   "^: How'd this thing find us anyway?"
+0,   "@: It's literally a giant floating brain, and we haven't been particularly subtle."
+0,   "^: Fair enough."
+0,   "^: How about we give it some shock therapy?"
+0,   "@: Savage, Glow, but yes, let's finish this!"
+
+300, "CHAPTER~8: \n Hive Mind"
+
+200, "Get ready!"
+
+#0, "CHAPTER~X: \n TEST"
+
+400, freq(180000000)
+0,   MegaBones
+0,   freq(133000000)
+0,   SuperShake
+0,   "^: Squirm!"
+0,   "@: Squirm indeed!"
+0,   "@: Absolutely astounding work there, Glow!"
+0,   "^: Just trying to keep up with all your awesome!..."
+0,   "^: We did pretty good there, didn't we, Umby?"
+0,   "@: That we did, Glow, and then some!"
+0,   "^: Is that it? Have we taken them down for good?"
+0,   "@: I think so, but I still want to see if our cave is okay."
+0,   "^: Well, it's not far ahead now."
+
+800,("1","[pattern_none,pattern_none,pattern_fill,w.pattern_tunnel,pattern_fill]",(bytearray(), bytearray()),0)
+
+440, ("1","[w.pattern_toplit_wall,w.pattern_stalagmites,w.pattern_stalagmites_fill,w.pattern_cave,w.pattern_cave_fill]",(bytearray([]), bytearray([])),0)
+
+500, "@: Home!"
+0,   "^: Ah! I love home!"
+0,   "@: We did it, Glow."
+0,   "^: We sure did, Umby..."
+0,   "^: and with maximum destruction!"
+0,   "@: HA! No kidding."
+0,   "^: Not bad for a couple of worms."
+0,   "@: Not bad indeed!"
+
+340, "Thank you for playing!"
+
+250, "Watch out for Umby_n_Glow's next adventure!"
+
+## Credits ##
+300, ("1", "[w.pattern_toplit_wall,pattern_none,pattern_fill,pattern_room,pattern_fill]",(bytearray(), bytearray()), 0)
+200, "~CREDITS~"
+160, "A convex.cc game by John VL"
+160, "For my Mum, who taught me how to tinker."
+160, "Hardware, Reference, and Dev Platform: ------------------"
+160, "TinyCircuits"
+160, "Special Thanks To: ------------------"
+160, "Lily VL"
+160, "Ann VL"
+160, "Chelsea W"
+160, "TinyCircuits"
+160, "TinyCircuits Thumby Discord Channel"
+160, "Auri"
+160, "Adrian 2 Cool"
+160, "AyreGuitar"
+160, "-BBH-"
+160, "DarkGizmo"
+160, "Doogle"
+160, "Laverena"
+160, "Mason W."
+160, "Nicole D"
+160, "Timendus"
+160, "TPReal"
+160, "transistortester"
+160, "Xyvir"
+160, "Game Development: ------------------"
+160, "John VL"
+160, "Chelsea W"
+160, "Graphics: ------------------"
+160, "Font by Auri"
+160, "John VL"
+160, "Lily VL"
+160, "Grayscale By: ------------------"
+160, "The Grayscale Brain Titans"
+160, "Timendus"
+160, "Doogle"
+160, "HemlockMay"
+160, "dan5sch"
+160, "Story and Writing: ------------------"
+160, "FugLaro"
+160, "DarkGizmo"
+160, "Audio: ------------------"
+160, "Doogle"
+160, "HemlockMay"
+160, "transistortester"
+160, "Play Testers: ------------------"
+160, "Adrian 2 Cool"
+160, "Andy N"
+160, "Ann VL"
+160, "Doogle"
+160, "John VL"
+160, "JohnnyArigatto"
+160, "JohnnyArway"
+160, "Laverina"
+160, "Lily VL"
+160, "Mevlan S"
+160, "Paul K"
+160, "Pugremix"
+160, "Vince B"
+160, "Thank you for playing!"
+
+400,  ("1","[w.pattern_toplit_wall,w.pattern_stalagmites,w.pattern_stalagmites_fill,w.pattern_cave,w.pattern_cave_fill]",(bytearray([Bones,Skittle]), bytearray([37,2])),0)
+
+3000000, "GOODBYE!"
+100, StopIteration()

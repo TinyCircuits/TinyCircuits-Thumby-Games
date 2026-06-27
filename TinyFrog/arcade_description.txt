@@ -1,0 +1,12 @@
+Tiny Frog
+
+Guide each frog home avoiding obstacles along the way.
+
+Scoring:
+* 10 points for each step forward
+* 50 points for each frog home safely
+* 1000 points for all frogs home safely
+* 10 points per remaining second on timer
+
+Author: @zachfalcone
+Version: 1.0

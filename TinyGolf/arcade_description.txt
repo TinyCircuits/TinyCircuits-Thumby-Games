@@ -1,0 +1,16 @@
+Tiny Golf
+
+Play nine holes of mini golf action, made tiny!
+
+Features:
+- A variety of terrain and hazards
+- Detailed vector graphics and physics
+- Continuous play (with autosave) and practice mode
+- Grayscale and black-and-white graphics options
+
+NOTE: framerate is choppy in the emulator, but is much better on the Thumby
+
+The full, commented code is available at https://github.com/dan5sch/thumby-mini-golf-public
+
+Version: 1.0
+Author: Daniel Schroeder / dan5sch

@@ -1,0 +1,8 @@
+Cosmic Survivor
+
+Bullet heaven space roguelike
+Avoid the enemy spaceships and collect powerups to build your ship into an unstoppable force
+
+Author: austinio7116
+Version: 0.2
+

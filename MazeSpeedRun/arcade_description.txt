@@ -1,0 +1,8 @@
+Maze Speed Run
+
+Race through randomly generated mazes of increasing complexity and size over 6 levels.
+Maze generation has variable branching parameters for interesting replayability.
+Level 6 requires good eyesight.  How quickly can you get around - can you beat the timer?
+
+Author: austinio7116
+Version: 0.1

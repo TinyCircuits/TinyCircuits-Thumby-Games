@@ -1,0 +1,9 @@
+Sorting Algorithms
+
+Use the up and down buttons to select a sorting algorithm.
+Press A to select the algorithm.
+While viewing an algorithm, press A to restart it or B to go back to the menu.
+Enjoy :)
+
+Author: Eli Harrison
+Version: 1.0

@@ -1,0 +1,17 @@
+A simple flashlight script so that you have a mini flashlight to help you find things under your couch or something, I'm not sure I just made this for fun lol
+-------------------
+Created by @BBfiChe on Discord
+-------------------
+Updates:
+-------------------
+Update 1.0.2
+ - Added a brightness level changer
+ - Thumby starts the game at screen's max brightness
+ - Removed the ablility to turn off the flashlight as it was not very useful
+ - Removed flashlight symbol
+
+Update 1.0.1
+ - Updated dark screen flashlight to appear off instead of on.
+
+Update 1.0.0
+ - Added Flashlight game.

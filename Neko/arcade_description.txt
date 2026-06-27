@@ -1,0 +1,5 @@
+Neko runs around your Thumby but can't get off the screen. Sometimes Neko is sleepy; sometimes skittish.
+
+The name means cat in Japanese. On other platforms, Neko chases the mouse pointer, but here there isn't one. Instead, watch some typical cat behaviour. The only interaction you can have is to wake Neko up.
+
+For more info about Neko, see Wikipedia.
