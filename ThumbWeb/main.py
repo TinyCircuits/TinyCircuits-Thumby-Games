@@ -12,7 +12,7 @@ visible_lines = 5
 history = []
 current_req = None
 
-page_lines = ["Press A at the top to", "type a search"]
+page_lines = ["Press A to", "type a search"]
 page_links = {}
 
 keyboard = [
@@ -26,7 +26,7 @@ keyboard = [
 btn_prev = {"U": False, "D": False, "L": False, "R": False, "A": False, "B": False}
 
 def get_btn_clicks():
-    """Returns True only on the exact frame a button is first pressed."""
+
     global btn_prev
     clicks = {}
     for name, btn in [("U", thumby.buttonU), ("D", thumby.buttonD), ("L", thumby.buttonL), ("R", thumby.buttonR), ("A", thumby.buttonA), ("B", thumby.buttonB)]:
@@ -36,7 +36,7 @@ def get_btn_clicks():
     return clicks
 
 def open_keyboard():
-    """Opens the interactive typing grid and returns the entered string."""
+
     search_query = ""
     kx, ky = 0, 0
     
@@ -44,7 +44,7 @@ def open_keyboard():
     
     while True:
         thumby.display.fill(0)
-        thumby.display.drawText("SEARCH QUERY", 0, 0, 1)
+        thumby.display.drawText("SEARCH", 0, 0, 1)
         thumby.display.drawText(search_query[-12:], 0, 9, 1)
         thumby.display.drawLine(0, 17, 72, 17, 1)
         
@@ -161,7 +161,7 @@ def main_loop():
                         history.append(current_req)
                     
                     current_req = f"SEARCH:{query}"
-                    page_lines = ["Loading search...", "Please wait..."]
+                    page_lines = ["Loading...", "Fooding"]
                     page_links = {}
                     scroll_offset = 0
                     print(current_req)
@@ -175,7 +175,7 @@ def main_loop():
                         history.append(current_req)
                         
                     current_req = f"GET:{target_url}"
-                    page_lines = ["Loading site...", "Please wait..."]
+                    page_lines = ["Loading...", "Fooding"]
                     page_links = {}
                     scroll_offset = 0
                     print(current_req)
@@ -184,13 +184,13 @@ def main_loop():
         elif clicks["B"]:
             if len(history) > 0:
                 current_req = history.pop()
-                page_lines = ["Loading previous...", "Please wait..."]
+                page_lines = ["Loading back", "Fooding"]
                 page_links = {}
                 scroll_offset = 0
                 print(current_req)
             else:
                 current_req = None
-                page_lines = ["Press A at the top to", "type a search query...", "-----------------", "No active connection."]
+                page_lines = ["Press A top", "type a search", "-----------------"]
                 page_links = {}
                 scroll_offset = 0
 #shield
