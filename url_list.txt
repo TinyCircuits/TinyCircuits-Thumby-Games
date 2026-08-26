@@ -1,3 +1,10 @@
+NAME=ThumbWeb
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/ThumbWeb/windows.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/ThumbWeb/main.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/ThumbWeb/linux.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/ThumbWeb/mac.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/ThumbWeb/instructions.txt
+
 NAME=MidiPlayer
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/MidiPlayer/polysynth.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/MidiPlayer/emulator_video.webm
