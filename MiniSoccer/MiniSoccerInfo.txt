@@ -1,0 +1,20 @@
+During the world cup, I got inspired to make a Soccer game, so this is MiniSoccer, a miniature version of the popular EA Sports FC, here is how to play:
+
+For the menu, A is select, B is go back, and D-Pad is to navigate.
+
+While attacking, A is shoot, B is pass, A+B is high pass, D-Pad is to move, and pressing two opposite directions on the D-Pad makes you do a skill move, which prevents the ball from being taken from you.
+
+While defending, A is to slide tackle, and B is to switch player.
+
+Another main feature in this game is buying card packs to upgrade your team, each stat that a player has will make them play better in the game. There are also 3 rarities you can get, gold, diamond, and chroma.
+
+Each of these rarities improve all stats on the card.
+
+Gold = +5, Diamond = +10, and Chroma = +17. Gold is 20% chance, Diamond is 5%, and Chroma is 1%.
+
+There are also a few celebrations you can do after scoring, but I'll let you figure them out.
+
+More updates to come!
+
+Author: BOOM
+Version: 1.0
