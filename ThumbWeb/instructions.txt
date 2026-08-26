@@ -1,0 +1,79 @@
+Made by Eri 
+
+Discord: pikachu1260 
+
+======= Installation Process =======
+
+=== For Mac users: ===
+
+* File path MUST be set to "/Games/WebSearch/WebSearch.py"
+
+Install Homebrew then beautifulsoup4:
+
+* Open Terminal app
+* `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
+* `brew install python-requests python-serial python-beautifulsoup4`
+
+OR you can use pip: (!!!This command bypasses the system warnings and as the name implies, could break your system, low chance though so yeah)
+
+* Open Terminal app
+* `pip3 install beautifulsoup4 requests pyserial --break-system-packages`
+
+=== For Linux users: ===
+
+* File path MUST be set to "/Games/WebSearch/WebSearch.py" when loading on the Thumby
+
+Grant serial permissions:
+
+* `sudo usermod -a -G dialout $USER`
+* Then restart your computer
+
+Install using apt: (Debian/Ubuntu/Raspberry Pi OS)
+
+* `sudo apt update`
+* `sudo apt install python3-bs4 python3-requests python3-serial` 
+
+
+
+OR using pip if you prefer: (!!!This command bypasses the system warnings and as the name implies, could break your system, low chance though so yeah)
+
+* `pip3 install beautifulsoup4 requests pyserial --break-system-packages`
+
+=== For Windows users: ===
+
+* File path MUST be set to "/Games/WebSearch/WebSearch.py"
+
+Verify Python installation:
+
+* Press Win + R, type "cmd", and press Enter to open Command Prompt
+* Run `python --version`
+* If not installed, run `winget install Python.Python.3.12` or download from python.org (make sure to check "Add Python to PATH" during setup)
+
+Install dependencies:
+
+* Open Command Prompt
+* `python -m pip install beautifulsoup4 requests pyserial`
+
+======= Installation Process =======
+
+======= Running the script =======
+
+* Open your Terminal app (Mac/Linux) or Command Prompt (Windows)
+* Run "cd" to the file path of your folder
+* OR run "cd" with a space and drag your folder with the files into the window
+* Run `python3 mac.py` for mac
+* OR run `python3 linux.py` for linux
+* OR run `python windows.py` for windows
+* Then connect the Thumby to the computer and run main.py on the Thumby
+* Keep the computer and Thumby connected at all times when you browse 
+* Requires a data transfer capable cable
+======= Running the script =======
+
+Notes:
+
+* The Thumby requires connection to the computer script to move the cursor
+* Search will NOT work if the connection is lost (obviously)
+* On Linux systems other than Debian/Ubuntu/Raspberry Pi OS, compatibility may vary
+
+
+!!! I AM NOT RESPONSIBLE IF ANYTHING POTENTIALLY BAD HAPPENS TO EITHER YOUR COMPUTER OR YOUR THUMBY !!!
