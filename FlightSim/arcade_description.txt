@@ -1,1 +1,17 @@
-This is a pretty basic flight sim there is currently no landing or taking off. Use the arrow keys to fly around in an infinite space dont fly too low or youll crash!
+A mostly-featured flight simulator for Thumby, built on top of (and
+fixing/extending) TinyCircuits' "Foxgine" 3D tech demo.
+
+Controls:
+  D-Pad Up/Down    - pitch (climb / dive)
+  D-Pad Left/Right - turn (yaw + bank)
+  A                - throttle up
+  B                - throttle down / brake
+
+Take off down the runway, fly through the 4 checkpoint gates, then try
+to bring it back down on the runway gently (low speed, wings level,
+nose level) for a landing. Stall by flying too slow, or crash into
+the ground/mountains, and you'll need to restart.
+
+
+Author: @butterofdispensing
+Credits: @presentfox for Foxgine
