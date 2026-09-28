@@ -1,11 +1,16 @@
-New Bouncer
+BunnyBitch is a colorful platform adventure made for Thumby Color.
 
-New Bouncer is the exciting sequel to the previous Bouncer game for the Thumby. Have a blast that's bound to happen through an endless amount of gameplay as you help Paddy and Bouncer navigate a place filled with Bricks, Buggies, and that grumpy ol' Blocky! But don't let Bouncer fall off the screen, or it's Game Over!
+Guide a cute but fearless bunny through six different worlds: Sunny Meadow, Magic Mushroom Forest, Snow and Ice World, Candy World, Volcano World, and Night Dream World. Collect flowers, defeat different enemies, ride moving platforms, and battle a boss at the end of every world.
 
-Previously released on Itch.io on June 21st, 2026.
+Open the Flower Shop to spend collected flowers on power-ups. Buy or find the Flower Blaster, temporary Super Jump, and Extra Lives.
 
-LINK ON ITCH.IO: https://william-crawford.itch.io/new-bouncer-for-thumby
+Controls
+- Left/Right: Move
+- A: Jump
+- B: Jump before obtaining the blaster; shoot while carrying the blaster
+- Menu: Open the Flower Shop
+- Shop Up/Down: Select an item
+- Shop A: Buy
+- Shop B or Menu: Close the shop
 
-Author: William Crawford
-Version 1.0.0
-Size: 0.08 MB
+Platform: Thumby Color
