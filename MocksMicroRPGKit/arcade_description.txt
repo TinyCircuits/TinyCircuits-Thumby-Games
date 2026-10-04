@@ -1,0 +1,21 @@
+Mock's Micro RPG Kit Ver. 1.0
+
+Author: Jason R. Wilson, Mock Ravage Games (https://mockravage.itch.io}
+
+A system-agnostic micro RPG toolkit for solo roleplaying, including random generators for:
+
+Die rolling (1d4 all the way to 1d100)
+Oracle questions (Yes, No, etc.)
+Encounters
+NPC Reactions
+Loot
+Prompts for your next adventure or scene
+Plot Twists
+Dungeons
+Weather
+A resource/HP tracker (work in process). Saves to the Thumby's battery so that even when turning off the system, it will still keep the value. Only good for one thing, so I'm still debating if I like this or not.
+Card generator (separate menu system containing random generators for standard playing cards to include or not include Jokers, tarot cards, and UNO cards to be used in your favorite RPG)
+
+I continue to find ways to make my portable solo RPG systems smaller and smaller, and I thought this would be a great project to try out. I realize that the original Thumby is a very niche product, but I do hope others like myself find use with this tiny RPG kit!
+
+
