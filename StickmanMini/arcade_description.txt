@@ -1,0 +1,16 @@
+Stickman Mini
+Version 1.0
+Made by: TU APODO AQUI
+
+A platformer adventure across 8 worlds: Jungle, Snow, Volcano, Water City,
+Cloudland, Wonder Beach, Outer Space and Blacky's Castle!
+Collect gems, beat the clock and defeat 2 bosses: King Shark and Blacky.
+
+Controls:
+  Left/Right = walk
+  A = jump (in water: tap A to swim)
+  B = punch
+  B while running = belly dive attack!
+
+Una aventura de plataformas en 8 mundos. Junta gemas, gana antes de que
+se acabe el tiempo y vence al Rey Tiburon y a Blacky!
