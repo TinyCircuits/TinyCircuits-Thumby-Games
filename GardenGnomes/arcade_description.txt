@@ -1,1 +1,30 @@
-GardenGnomes by Pewality
+<GardenGnomes> 
+------------------------------------------------------
+
+<Controls>
+Menu screen has Play, Characters, Background and tutorial and use the D pad to control it 
+
+1. Play button or start)
+ use A to control the power bar 
+2. Mechanic) 
+Slam/hop Mechanic) when in motion click A/B to slam on the ground or when your on ground stuck click A/B to hop
+Escape in game) when you got a bad start or get stuck just click B twice to go to Menu
+3. Characters)
+There are 4 different characters to choose, each dose something different you can press B to choose in Menu 
+4. Background)
+You have a choice to turn it off or on if you dont like it 
+5. Tutorial) 
+Shows all the controls and everything you need to know about the game
+6. GUI)
+Highscore, Score and Altitude of how high you are in meters
+7. Gameover) 
+When you die it shows game over and you have to press a button so it sends you to Menu
+------------------------------------------------------
+
+Garden Gnomes is a game from google which is a google doodle back in 2018 https://www.google.com/logos/2018/gnomes/gnomes18.html which is slightly similar of what I made and the game I recreated is a game where you have a catapult and you shoot garden gnomes and try to get as far as you can. There are 4 different characters and have a different affect the first one is the Normal gnome which is a Normal gnome bounces normally, the gravity is normal and other normal stuff. The second gnome is the Mini gnome it's slightly smaller then the normal gnome which is affected by gravity more, Is less bouncy, and other mini stuff. The third gnome is the Big gnome which is affected by gravity less then the Normal Gnome and bounces more. And the last gnome is the tall gnome which is afected by gravity the same as normal it jumps less then the normal gnome. There are also stuff that help you go further and stop you, the mushrooms - its like a spring that sends you up, the flower - which give you a boost, the log canoon -shoots you like a canoon or gives you a boost, the mud - slows you down or stops you. 
+------------------------------------------------------
+
+I made this game because I just wanted to play Garden Gnomes on my little device and also because I was bored
+
+Author: Pewality
+Version: 1.0
