@@ -1,0 +1,4 @@
+This is a basic tool that lets you read .txt files so you could even read your book on your thumby. 
+Press B to exit and it will save your location. 
+This isn't very complicated because this is my first thing on the Thumby Arcade.
+Author: niaziy168
