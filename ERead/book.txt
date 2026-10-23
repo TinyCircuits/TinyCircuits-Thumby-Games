@@ -1,0 +1,1 @@
+Paste the text of your document in here to read it. This is a basic tool that lets you read .txt files so you could even read your book on your thumby. Press B to exit and it will save your location.
