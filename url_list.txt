@@ -1,3 +1,8 @@
+NAME=StickmanMini
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/StickmanMini/StickmanMini.py
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/StickmanMini/arcade_description.txt
+https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/StickmanMini/arcade_title_video.webm
+
 NAME=TinySkylines
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinySkylines/TinySkylines.py
 https://raw.githubusercontent.com/TinyCircuits/TinyCircuits-Thumby-Games/master/TinySkylines/arcade_description.txt
