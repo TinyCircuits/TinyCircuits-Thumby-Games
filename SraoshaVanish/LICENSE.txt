@@ -1,0 +1,60 @@
+SRAOSHA VANISH — Custom Game License
+License text version 1.0
+Copyright (c) 2026 AZ-aeon.
+Created by AZ-aeon. Original world and characters: AEON.
+
+1. Scope
+This license applies to the AZ-aeon-owned game code, artwork, audio, text,
+and other original materials included in this SRAOSHA VANISH release.
+Third-party components, if any, remain subject to their own licenses.
+Rights not expressly granted here are reserved, subject to applicable law
+and the platform permissions described below. This is not an open-source license.
+
+2. Playing the game and reading the code
+You may download, install, run and play this release, and make copies needed
+for your own use and backup. You may read the source code.
+Being able to read or download the code does not grant permission to reuse
+it in another project or to redistribute it beyond the permissions below.
+
+3. Screenshots, gameplay and fan content
+You may create and share screenshots, gameplay videos, recordings,
+livestreams and reviews of the game. Music and sound effects heard as part
+of that gameplay may remain in those videos, recordings and livestreams.
+Original fan-created content inspired by AEON, such as fan art, is welcome
+and may be shared. This permission does not authorize redistribution of
+the game or extraction and reuse of its original asset files.
+Please identify SRAOSHA VANISH when sharing content about the game.
+Creator credit to AZ-aeon is appreciated when practical, but is not a
+condition of the permissions in this section.
+Please respect the original AEON characters, artwork, worldbuilding and music.
+Do not represent your content as an official AZ-aeon release or endorsement.
+
+4. Modifications, redistribution and asset reuse
+Except as expressly permitted in this license, prior permission from
+AZ-aeon is required to modify or redistribute the game or its source code,
+reuse code in another project, or extract and reuse or separately distribute
+original artwork, music, sound effects or other game assets.
+Screenshots and gameplay sharing under section 3 are expressly permitted
+and do not require separate permission.
+Any separately authorized modification or redistribution must preserve the
+copyright and license notices and any credits required by that authorization.
+
+5. GitHub and authorized distribution
+Nothing in this license restricts rights granted under GitHub's applicable
+Terms of Service when the creator makes this repository public, including
+viewing and forking through GitHub's supported functionality.
+Those platform rights do not by themselves grant additional permission to
+reuse the code or assets in unrelated projects.
+If AZ-aeon submits or explicitly authorizes this release for the official
+Thumby Arcade, TinyCircuits may host and distribute the authorized release
+and display its supplied listing materials for that purpose, preserving
+these license and copyright notices. This does not authorize unrelated
+third-party mirrors or asset libraries.
+
+6. Other rights and permissions
+This license does not restrict uses permitted by applicable law independently
+of this license, or permissions separately granted by the rights holder.
+For uses outside these permissions, obtain authorization from AZ-aeon
+before proceeding. Merely requesting permission does not grant it.
+
+Thank you for playing SRAOSHA VANISH!

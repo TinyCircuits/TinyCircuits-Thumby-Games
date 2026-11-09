@@ -1,0 +1,14 @@
+SRAOSHA VANISH
+Credits & Usage Notes
+Created by AZ-aeon
+Original world and characters: AEON
+Copyright (c) 2026 AZ-aeon.
+Screenshots, gameplay videos, livestreams, reviews and fan content are welcome!
+Creator credit is appreciated when practical.
+Please respect the original AEON characters, artwork, worldbuilding and music.
+We kindly ask that original artwork and audio not be extracted for unrelated projects without checking the applicable permissions.
+For game modifications or redistribution, please follow the license terms applicable to the published version and preserve any required credits.
+Thank you for playing SRAOSHA VANISH!
+
+The applicable license for this release is LICENSE.txt in this directory.
+These usage notes summarize the policy; LICENSE.txt provides the permissions and conditions.
