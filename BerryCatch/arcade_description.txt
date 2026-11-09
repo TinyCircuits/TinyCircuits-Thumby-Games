@@ -1,0 +1,11 @@
+Berry Catch
+By Hannah Brownson
+Version 1.0
+
+Berries are falling and so are rocks. Run your little croc along the shore and catch as many berries as you can. Every berry you catch makes them fall faster and more rocks start mixing in. Catch three rocks and it's game over.
+
+Controls:
+Left/Right - move
+A - start / play again
+
+Your best score is saved between sessions.
