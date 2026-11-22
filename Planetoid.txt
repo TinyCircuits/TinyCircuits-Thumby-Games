@@ -1,0 +1,33 @@
+<Planetoid> 
+------------------------------------------------------
+
+<Controls>
+Menu screen has Play, Gravity, Decay, Super and use the D pad to control the menu
+
+1. Menu tutorial) 
+Click Play to start the game, Gravity is you can turn it off or on, Decay is the longer you stay on a planet the smaller it becomes, Super is when you click "play" you spawn on top a giant planet
+
+2. Instructions) 
+D pad = move around
+
+Up arrow on D pad and A/B is jump
+
+Don't get crushed by other planets or fall off the screen. That's how you die
+
+The longer you stay off ground the faster the points go 
+
+6. GUI)
+Its just the score
+
+7. Gameover) 
+When you die it shows your score and your Best score and if clicked on A you will retry but if clicked on B that menu which sends you to menu
+------------------------------------------------------
+
+Credits for to Matt for discovering this game and making it on khan academy https://www.khanacademy.org/computer-programming/planetoid/5671635075203072
+------------------------------------------------------
+
+
+I made this game because I wanted to play planet-oid on my mini device and if you play this game on your device it looks so good on it.
+
+Author: Pewality
+Version: 1.0 - First and Last version
