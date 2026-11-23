@@ -1,0 +1,10 @@
+MaidDash2
+
+My friend and I made this game together over the course of a month.
+It's just a mini-game where a laid-back-looking maid runs and jumps around, so feel free to give it a try.
+
+Controls:
+A: Jump,Air-Jump
+
+Author:klyn & nemo
+Version: 1.0.0
