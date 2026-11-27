@@ -1,0 +1,20 @@
+SRAOSHA VANISH
+Version: 0.11.1
+Created by AZ-aeon
+A monochrome arcade puzzle set in the original world of AEON.
+The angels always win! Your challenge is to choose the best attack materials to match the weaknesses of mysterious, malformed gods.
+Choose 3 ammunition types from 5 candidates and aim for a high score before time runs out.
+FEATURES
+- 30 unique enemies
+- 22 ammunition types
+- 11 angels with 20 different forms
+- 63 encyclopedia entries
+- 1, 3, 5 and 10-minute modes
+- Music, sound effects and saved high scores
+CONTROLS
+Title: A to start, LEFT/RIGHT/UP for encyclopedias.
+In-game: A to continue or lock an ammo choice.
+Ammo selection: LEFT/RIGHT to move, B to unlock.
+Encyclopedias: Direction buttons to browse, B to return.
+Hold B for 10 seconds during gameplay to return to title.
+Victory belongs to the angels. The score is yours!
