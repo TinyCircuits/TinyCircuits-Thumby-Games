@@ -1,0 +1,5 @@
+Title: F1 DRIVE
+Description: A retro pseudo-3D F1 arcade racer. Dodge rival cars and set a high score!
+Author: Rehaan Thakkar
+Version: 3.0
+Instructions: Use Left and Right D-Pad to steer. Press A to start or retry.
