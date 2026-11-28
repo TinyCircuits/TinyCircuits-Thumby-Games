@@ -1,0 +1,12 @@
+﻿Grubol 7 PieRog
+
+One of the most addictive puzzle experiences on Thumby: match symbols across a 4x4 grid and clear as many tiles as you can before you run out of space.
+
+Place 2- and 3-tile pieces to link identical symbols, earn wonga, and level up. Use combos, jokers, and quirky dwarfs - or jump straight into Time Attack mode.
+
+U/D/L/R move / switch floors
+A place piece (hold for dwarf market)
+B rotate
+
+Author: musialmi
+Version: 1.0
